@@ -5,11 +5,12 @@ struct RacingPenguinData {
 };
 
 static struct RacingPenguinData sRacingPenguinData[] = {
-    { 55, 200.0f, 200.0f },
-    { 164, 350.0f, 250.0f },
+    { 55, 200.0f, 200.0f }, { 164, 350.0f, 250.0f },
 };
 
 void bhv_racing_penguin_init(void) {
+    // TODO: do we want the penguin to be big or small?
+    // for now, is small.
     if (gMarioState->numStars == 120) {
         obj_scale(8.0f);
         o->header.gfx.scale[1] = 5.0f;

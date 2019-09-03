@@ -18,6 +18,7 @@
 #include "rendering_graph_node.h"
 #include "level_update.h"
 #include "engine/geo_layout.h"
+#include "bingo.h"
 #include "save_file.h"
 
 struct SpawnInfo gPlayerSpawnInfos[1];
@@ -64,15 +65,12 @@ u8 D_8032CEEC[] = {
 };
 
 Vp D_8032CF00 = { {
-    { 640, 480, 511, 0 },
-    { 640, 480, 511, 0 },
+    { 640, 480, 511, 0 }, { 640, 480, 511, 0 },
 } };
 
 #ifdef VERSION_EU
 const char *gNoControllerMsg[] = {
-    "NO CONTROLLER",
-    "MANETTE DEBRANCHEE",
-    "CONTROLLER FEHLT",
+    "NO CONTROLLER", "MANETTE DEBRANCHEE", "CONTROLLER FEHLT",
 };
 #endif
 
@@ -356,6 +354,7 @@ void render_game(void) {
 
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 0, BORDER_HEIGHT, 320,
                       240 - BORDER_HEIGHT);
+        bingo_update(BINGO_UPDATE_TIMER_FRAME);
         render_hud();
 
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 0, 0, 320, 240);

@@ -5,7 +5,7 @@
 # obtain a list of segments from the *.s files in bin directory
 SEGMENTS := $(notdir $(basename $(wildcard bin/*.s))) $(addprefix $(VERSION)/,$(notdir $(basename $(wildcard bin/$(VERSION)/*.s))))
 ACTORS := $(filter %/,$(wildcard actors/*/))
-TEXTURE_DIRS := $(addprefix textures/,$(SEGMENTS)) $(ACTORS) textures/intro_raw
+TEXTURE_DIRS := $(addprefix textures/,$(SEGMENTS)) $(ACTORS) textures/intro_raw textures/segment2/custom
 
 # NOTE: textures assume naming convention "texture.<encoding>.png" generates "texture.<encoding>"
 
@@ -140,7 +140,7 @@ $(BUILD_DIR)/bin/common1.elf: SEGMENT_ADDRESS := 0x03000000
 # as-is.
 # TODO: Generate these rules from the level configs?
 
-define level_rules = 
+define level_rules =
     $(1)_SEG7_FILES     := $$(basename $$(notdir $$(wildcard levels/$(1)/*.png)))
     $(1)_SEG7_FILES_RAW := $(shell find levels/$(1)/ -type f -iname '*')
     $$(BUILD_DIR)/bin/$(1)/leveldata.o: $$(addprefix $$(BUILD_DIR)/levels/$(1)/,$$($(1)_SEG7_FILES)) $$($(1)_SEG7_FILES_RAW)
@@ -188,7 +188,7 @@ $(eval $(call level_rules,menu,0x07000000,generic)) # Menu (File Select)
 # --------------------------------------
 
 # Others
-SEGMENT2_FILES               := $(basename $(wildcard $(TEXTURE_DIR)/segment2/*.png))
+SEGMENT2_FILES               := $(basename $(wildcard $(TEXTURE_DIR)/segment2/*.png)) $(basename $(wildcard $(TEXTURE_DIR)/segment2/custom/*.png))
 TITLE_SCREEN_BG_FILES        := $(basename $(wildcard $(TEXTURE_DIR)/title_screen_bg/*.png))
 SPOOKY_FILES                 := $(basename $(wildcard $(TEXTURE_DIR)/spooky/*.png))
 GENERIC_FILES                := $(basename $(wildcard $(TEXTURE_DIR)/generic/*.png))

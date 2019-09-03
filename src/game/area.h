@@ -3,6 +3,9 @@
 
 #include "types.h"
 
+#define PSS_STAR_SLOW 0
+#define PSS_STAR_FAST 1
+
 enum CourseNum
 {
     COURSE_NONE,                       // (0)  Overworld (Castle Grounds, etc)

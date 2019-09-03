@@ -59,7 +59,11 @@ enum MenuButtonTypes {
     MENU_BUTTON_SOUND_MODE,
     MENU_BUTTON_STEREO,
     MENU_BUTTON_MONO,
-    MENU_BUTTON_HEADSET
+    MENU_BUTTON_HEADSET,
+
+    // Seed Menu (SEED)
+    MENU_BUTTON_SEED_RESET,
+    MENU_BUTTON_SEED_RETURN
 };
 
 extern Gfx main_menu_seg7_dl_070073A0[];
@@ -71,6 +75,7 @@ extern Gfx dl_ia8_text_end[];
 extern Gfx main_menu_seg7_dl_0700D108[];
 extern Gfx main_menu_seg7_dl_0700D160[];
 extern u8 seg2_level_name_table[];
+extern u8 seg2_act_name_table[];
 extern u32 gGlobalTimer;
 
 extern void beh_yellow_background_menu_init(void);

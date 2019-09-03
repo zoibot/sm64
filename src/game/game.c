@@ -15,6 +15,7 @@
 #include "audio/external.h"
 #include <prevent_bss_reordering.h>
 #include "game.h"
+#include "bingo_board_setup.h"
 
 // FIXME: I'm not sure all of these variables belong in this file, but I don't
 // know of a good way to split them

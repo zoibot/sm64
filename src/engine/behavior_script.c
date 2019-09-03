@@ -12,8 +12,9 @@
 #include "game/obj_behaviors_2.h"
 #include "behavior_data.h"
 #include "game/object_list_processor.h"
+#include "engine/rand.h"
 
-static u16 gRandomSeed16;
+u16 gRandomSeed16;
 
 // unused
 static void func_80383B70(u32 segptr) {
@@ -21,7 +22,7 @@ static void func_80383B70(u32 segptr) {
     gCurrentObject->stackIndex = 0;
 }
 
-u16 RandomU16(void) {
+u16 OldRandomU16(void) {
     u16 temp1, temp2;
 
     if (gRandomSeed16 == 22026) {
@@ -47,6 +48,14 @@ u16 RandomU16(void) {
     }
 
     return gRandomSeed16;
+}
+
+u32 RandomU32(void) {
+    return genrand_int32();
+}
+
+u16 RandomU16(void) {
+    return (u16) RandomU32();
 }
 
 f32 RandomFloat(void) {

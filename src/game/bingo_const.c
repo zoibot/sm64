@@ -1,0 +1,90 @@
+#include <ultra64.h>
+#include "area.h"
+
+// TODO: This should be a hash-map or something
+char *courseAbbreviations[24] = { "BOB",   "WF",   "JRB", "CCM",   "BBH",   "HMC",   "LLL",   "SSL",
+                                  "DDD",   "SL",   "WDW", "TTM",   "THI",   "TTC",   "RR",    "BitDW",
+                                  "BitFS", "BitS", "PSS", "CotMC", "TotWC", "VCutM", "WMotR", "SA" };
+
+s32 course_1ups[15] = { 3, 4, 2,
+                        5, // ignore the impossible 1up in CCM
+                        2, 4, 8, 9, 1, 4, 4, 11, 10, 4, 9 };
+
+// https://docs.google.com/spreadsheets/d/1MDgm0yj5IJeqYMJlOdbKyIz66aX1Y3dYm79_wIePxY0/edit#gid=0
+// https://www.youtube.com/playlist?list=PLP0jCPw9IPWhdWX4Ae24hjdX2CH15GKTg
+s32 possibleABC[32][2] = {
+    { COURSE_BOB, 1 },
+    { COURSE_BOB, 2 },
+    // BOB6 is possible but 11 minutes long, requiring extensive cloning
+    { COURSE_WF, 3 },
+    { COURSE_WF, 4 },
+    { COURSE_WF, 6 },
+    // JRB1 is possible but 12 minutes long and very precise
+    { COURSE_JRB, 2 }, // pretty hard and quite boring...
+    { COURSE_CCM, 1 },
+    { COURSE_CCM, 2 },
+    { COURSE_CCM, 3 },
+    // CCM4 is possible but there is a hard bounce
+    { COURSE_CCM, 5 },
+    // BBH1 is possible but requires VSC
+    { COURSE_HMC, 1 },
+    { COURSE_LLL, 1 },
+    { COURSE_LLL, 2 },
+    { COURSE_LLL, 3 },
+    { COURSE_LLL, 4 },
+    { COURSE_SSL, 1 }, // is really precise... may wanna kill it
+    { COURSE_SSL, 2 },
+    // DDD5 is possible but super hard
+    { COURSE_SL, 2 },
+    { COURSE_SL, 3 },
+    { COURSE_SL, 4 },
+    { COURSE_SL, 5 },
+    // SL6 is possible but requires lots of Spindrift RNG
+    { COURSE_WDW, 1 },
+    // WDW3 is possible but totally RNG (for getting past Chuckya)
+    // TTM1 is possible but 11 mins long and requires a HOLP placement
+    { COURSE_TTM, 2 },
+    { COURSE_TTM, 3 },
+    { COURSE_TTM, 4 },
+    { COURSE_TTM, 5 },
+    { COURSE_TTM, 6 },
+    { COURSE_THI, 1 }, // should have a hint, as it requires some knowledge
+    { COURSE_THI, 2 },
+    { COURSE_THI, 3 },
+    // THI4 is possible but borderline too hard (need fly guy bounce to get in pipe)
+    { COURSE_THI, 6 } // requires some knowledge but isn't too hard either
+};
+
+s32 get_1ups_in_level(enum CourseNum course) {
+    return course_1ups[course - 1];
+}
+
+s32 starTimes[90][3] = {
+    { COURSE_BOB, 1, 66 }, { COURSE_BOB, 2, 127 }, { COURSE_BOB, 3, 29 }, { COURSE_BOB, 4, 69 },
+    { COURSE_BOB, 5, 46 }, { COURSE_BOB, 6, 19 },  { COURSE_WF, 1, 45 },  { COURSE_WF, 2, 21 },
+    { COURSE_WF, 3, 14 },  { COURSE_WF, 4, 39 },   { COURSE_WF, 5, 17 },  { COURSE_WF, 6, 19 },
+    { COURSE_JRB, 1, 63 }, { COURSE_JRB, 2, 50 },  { COURSE_JRB, 3, 56 }, { COURSE_JRB, 4, 80 },
+    { COURSE_JRB, 5, 16 }, { COURSE_JRB, 6, 29 },  { COURSE_CCM, 1, 37 }, { COURSE_CCM, 2, 28 },
+    { COURSE_CCM, 3, 69 }, { COURSE_CCM, 4, 56 },  { COURSE_CCM, 5, 55 }, { COURSE_CCM, 6, 13 },
+    { COURSE_BBH, 1, 78 }, { COURSE_BBH, 2, 50 },  { COURSE_BBH, 3, 17 }, { COURSE_BBH, 4, 78 },
+    { COURSE_BBH, 5, 39 }, { COURSE_BBH, 6, 40 },  { COURSE_HMC, 1, 23 }, { COURSE_HMC, 2, 68 },
+    { COURSE_HMC, 3, 37 }, { COURSE_HMC, 4, 38 },  { COURSE_HMC, 5, 17 }, { COURSE_HMC, 6, 23 },
+    { COURSE_LLL, 1, 28 }, { COURSE_LLL, 2, 37 },  { COURSE_LLL, 3, 21 }, { COURSE_LLL, 4, 17 },
+    { COURSE_LLL, 5, 26 }, { COURSE_LLL, 6, 28 },  { COURSE_SSL, 1, 25 }, { COURSE_SSL, 2, 10 },
+    { COURSE_SSL, 3, 23 }, { COURSE_SSL, 4, 42 },  { COURSE_SSL, 5, 67 }, { COURSE_SSL, 6, 72 },
+    { COURSE_DDD, 1, 49 }, { COURSE_DDD, 2, 45 },  { COURSE_DDD, 3, 96 }, { COURSE_DDD, 4, 53 },
+    { COURSE_DDD, 5, 21 }, { COURSE_DDD, 6, 63 },  { COURSE_SL, 1, 14 },  { COURSE_SL, 2, 19 },
+    { COURSE_SL, 3, 8 },   { COURSE_SL, 4, 20 },   { COURSE_SL, 5, 46 },  { COURSE_SL, 6, 25 },
+    { COURSE_WDW, 1, 20 }, { COURSE_WDW, 2, 22 },  { COURSE_WDW, 3, 49 }, { COURSE_WDW, 4, 28 },
+    { COURSE_WDW, 5, 87 }, { COURSE_WDW, 6, 62 },  { COURSE_TTM, 1, 25 }, { COURSE_TTM, 2, 52 },
+    { COURSE_TTM, 3, 35 }, { COURSE_TTM, 4, 11 },  { COURSE_TTM, 5, 23 }, { COURSE_TTM, 6, 16 },
+    { COURSE_THI, 1, 35 }, { COURSE_THI, 2, 30 },  { COURSE_THI, 3, 71 }, { COURSE_THI, 4, 28 },
+    { COURSE_THI, 5, 41 }, { COURSE_THI, 6, 63 },  { COURSE_TTC, 1, 16 }, { COURSE_TTC, 2, 19 },
+    { COURSE_TTC, 3, 13 }, { COURSE_TTC, 4, 35 },  { COURSE_TTC, 5, 23 }, { COURSE_TTC, 6, 22 },
+    { COURSE_RR, 1, 28 },  { COURSE_RR, 2, 170 },  { COURSE_RR, 3, 33 },  { COURSE_RR, 4, 20 },
+    { COURSE_RR, 5, 19 },  { COURSE_RR, 6, 47 }
+};
+
+s32 get_time_for_star(enum CourseNum course, s32 star) {
+    return starTimes[(course - 1) * 6 + star][2];
+}

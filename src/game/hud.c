@@ -10,11 +10,13 @@
 #include "hud.h"
 #include "segment2.h"
 #include "area.h"
+#include "bingo_ui.h"
+#include "bingo.h"
 #include "save_file.h"
 
 /* Originally hud_print.c
  * This file seems to draw the in-game HUD
- **/
+**/
 
 enum PowerMeterAnimation {
     POWER_METER_HIDDEN,
@@ -61,8 +63,8 @@ void render_hud_camera(s32 x, s32 y, u8 texture[]) {
     gDPPipeSync(gDisplayListHead++);
     gDPSetTextureImage(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, (u32) texture);
     gSPDisplayList(gDisplayListHead++, &dl_hud_img_load_tex_block);
-    gSPTextureRectangle(gDisplayListHead++, x << 2, y << 2, (x + 15) << 2, (y + 15) << 2,
-                        G_TX_RENDERTILE, 0, 0, 0x1000, 0x400);
+    gSPTextureRectangle(gDisplayListHead++, x << 2, y << 2, (x + 16) << 2, (y + 16) << 2,
+                        G_TX_RENDERTILE, 0, 0, 0x400, 0x400);
 }
 
 void render_hud_c_buttons(s32 x, s32 y, u8 texture[]) {
@@ -78,8 +80,8 @@ void render_hud_c_buttons(s32 x, s32 y, u8 texture[]) {
     gDPSetTextureImage(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, (u32) texture);
     gDPLoadSync(gDisplayListHead++);
     gDPLoadBlock(gDisplayListHead++, G_TX_LOADTILE, 0, 0, 63, 1024);
-    gSPTextureRectangle(gDisplayListHead++, x << 2, y << 2, (x + 7) << 2, (y + 7) << 2, G_TX_RENDERTILE,
-                        0, 0, 0x1000, 0x400);
+    gSPTextureRectangle(gDisplayListHead++, x << 2, y << 2, (x + 8) << 2, (y + 8) << 2, G_TX_RENDERTILE,
+                        0, 0, 0x400, 0x400);
 }
 
 void func_802E21A4(s16 numHealthWedges) {
@@ -218,12 +220,6 @@ void render_hud_hp(void) {
 
     gUnknownPowerMeterVar += 1;
 }
-
-#ifdef VERSION_JP
-#define HUD_TOP_Y 210
-#else
-#define HUD_TOP_Y 209
-#endif
 
 void render_hud_mario_lives(void) {
     print_text(22, HUD_TOP_Y, ","); // 'Mario Head' glyph
@@ -378,33 +374,46 @@ void render_hud(void) {
         dl_add_new_ortho_matrix();
 #endif
 
-        if (gCurrentArea != NULL && gCurrentArea->camera->currPreset == CAMERA_PRESET_INSIDE_CANNON) {
-            RenderHudCannonReticle();
-        }
+        if (gPlayer1Controller->buttonDown & L_TRIG) {
+            draw_bingo_screen();
+        } else {
+            if (gbBingoCompleted) {
+                draw_bingo_win_screen();
+            }
 
-        if (hudDisplayFlags & HUD_DISPLAY_FLAG_LIVES) {
-            render_hud_mario_lives();
-        }
+            if (gbBingoShowTimer) {
+                draw_bingo_hud_timer();
+            }
 
-        if (hudDisplayFlags & HUD_DISPLAY_FLAG_COIN_COUNT) {
-            render_hud_coins();
-        }
+            if (gCurrentArea != NULL
+                && gCurrentArea->camera->currPreset == CAMERA_PRESET_INSIDE_CANNON) {
+                RenderHudCannonReticle();
+            }
 
-        if (hudDisplayFlags & HUD_DISPLAY_FLAG_STAR_COUNT) {
-            render_hud_stars();
-        }
+            if (hudDisplayFlags & HUD_DISPLAY_FLAG_LIVES) {
+                render_hud_mario_lives();
+            }
 
-        if (hudDisplayFlags & HUD_DISPLAY_FLAG_UNKNOWN_0010) {
-            func_802E29D4();
-        }
+            if (hudDisplayFlags & HUD_DISPLAY_FLAG_COIN_COUNT) {
+                render_hud_coins();
+            }
 
-        if (hudDisplayFlags & HUD_DISPLAY_FLAG_CAMERA_AND_POWER) {
-            render_hud_hp();
-            show_camera_status();
-        }
+            if (hudDisplayFlags & HUD_DISPLAY_FLAG_STAR_COUNT) {
+                render_hud_stars();
+            }
 
-        if (hudDisplayFlags & HUD_DISPLAY_FLAG_TIMER) {
-            render_hud_timer();
+            if (hudDisplayFlags & HUD_DISPLAY_FLAG_UNKNOWN_0010) {
+                func_802E29D4();
+            }
+
+            if (hudDisplayFlags & HUD_DISPLAY_FLAG_CAMERA_AND_POWER) {
+                render_hud_hp();
+                show_camera_status();
+            }
+
+            if (hudDisplayFlags & HUD_DISPLAY_FLAG_TIMER) {
+                render_hud_timer();
+            }
         }
     }
 }

@@ -17,6 +17,8 @@
 #include "behavior_actions.h"
 #include "audio/external.h"
 #include "behavior_data.h"
+#include "bingo.h"
+#include "bingo_star_tracking.h"
 
 #define INT_GROUND_POUND_OR_TWIRL (1 << 0) // 0x00000001
 #define INT_PUNCH (1 << 1)                 // 0x00000002
@@ -706,6 +708,10 @@ void reset_mario_pitch(struct MarioState *m) {
 
 u32 interact_coin(struct MarioState *m, UNUSED u32 interactType, struct Object *o) {
     m->numCoins += o->oDamageOrCoinValue;
+    // Tell Bingo we got a coin
+    gbCoinsJustGotten = o->oDamageOrCoinValue;
+    bingo_update(BINGO_UPDATE_COIN);
+
     m->healCounter += 4 * o->oDamageOrCoinValue;
 
     o->oInteractStatus = INT_STATUS_INTERACTED;
@@ -766,8 +772,10 @@ u32 interact_star_or_key(struct MarioState *m, UNUSED u32 interactType, struct O
         starIndex = (o->oBehParams >> 24) & 0x1F;
         save_file_collect_star_or_key(m->numCoins, starIndex);
 
-        m->numStars =
-            save_file_get_total_star_count(gCurrSaveFileNum - 1, COURSE_MIN - 1, COURSE_MAX - 1);
+        m->numStars = bingo_get_star_count();
+        // OLD:
+        // m->numStars = save_file_get_total_star_count(
+        //     gCurrSaveFileNum - 1, COURSE_MIN - 1, COURSE_MAX - 1);
 
         if (!noExit) {
             drop_queued_background_music();
@@ -777,7 +785,7 @@ u32 interact_star_or_key(struct MarioState *m, UNUSED u32 interactType, struct O
         play_sound(SOUND_MENU_STARSOUND, m->marioObj->header.gfx.cameraToObject);
 #ifndef VERSION_JP
         update_mario_sound_and_camera(m);
-        // func_802521A0
+// func_802521A0
 #endif
 
         if (grandStar) {

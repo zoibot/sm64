@@ -52,10 +52,10 @@ void spawn_macro_abs_yrot_2params(u32 model, u32 *behavior, s16 x, s16 y, s16 z,
 }
 
 /*
- * Spawns an object at an absolute location with rotation around the y-axis and
- * a single parameter filling up the upper byte of newObj->oBehParams.
- * The object will not spawn if 'behavior' is NULL.
- */
+* Spawns an object at an absolute location with rotation around the y-axis and
+* a single parameter filling up the upper byte of newObj->oBehParams.
+* The object will not spawn if 'behavior' is NULL.
+*/
 void spawn_macro_abs_yrot_param1(u32 model, u32 *behavior, s16 x, s16 y, s16 z, s16 ry, s16 param) {
     if (behavior != NULL) {
         struct Object *newObj = spawn_object_abs_with_rot(
@@ -66,7 +66,8 @@ void spawn_macro_abs_yrot_param1(u32 model, u32 *behavior, s16 x, s16 y, s16 z, 
 
 /*
  * Spawns an object at an absolute location with currently 3 unknown variables that get converted to
- * floats. Oddly enough, this function doesn't care if 'behavior' is NULL or not.
+ * floats.
+ * Oddly enough, this function doesn't care if 'behavior' is NULL or not.
  */
 void spawn_macro_abs_special(u32 model, u32 *behavior, s16 x, s16 y, s16 z, s16 unkA, s16 unkB,
                              s16 unkC) {
@@ -158,7 +159,7 @@ void spawn_macro_objects(s16 areaIndex, s16 *macroObjList) {
                                           0,                          // X-rotation
                                           convert_rotation(macroObject[MACRO_OBJ_Y_ROT]), // Y-rotation
                                           0                                               // Z-rotation
-                );
+                                          );
 
             newObj->oUnk1A8 = macroObject[MACRO_OBJ_PARAMS];
             newObj->oBehParams = ((macroObject[MACRO_OBJ_PARAMS] & 0x00FF) << 16)

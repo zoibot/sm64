@@ -35,6 +35,8 @@ extern s16 gCutsceneMsgXOffset;
 extern s16 gCutsceneMsgYOffset;
 extern s8 D_8036008E;
 
+s32 strlen_tiny(const char *str);
+
 extern void func_802D6440(void);
 extern void dl_add_new_translation_matrix(s8 pushOp, f32 x, f32 y, f32 z);
 extern void dl_add_new_rotation_matrix(s8 pushOp, f32 a, f32 x, f32 y, f32 z);
@@ -42,8 +44,10 @@ extern void dl_add_new_scale_matrix(s8 pushOp, f32 x, f32 y, f32 z);
 extern void dl_add_new_ortho_matrix(void);
 extern void func_802D6AFC(u8 c);
 extern void PrintGenericText(s16 x, s16 y, const u8 *str);
+extern void PrintTinyText(s16 x, s16 y, const u8 *str);
 extern void PutString(s8 font, s16 x, s16 y, const u8 *str);
 extern void PrintRegularText(s16 x, s16 y, const u8 *str);
+void PrintRegularTextButTiny(s16 x, s16 y, const u8 *str);
 extern void print_credits_str_dialog(s16 x, s16 y, const u8 *str);
 extern void handleMenuScrolling(s8 scrollDirection, s8 *currentIndex, s8 minIndex, s8 maxIndex);
 #if defined(VERSION_US) || defined(VERSION_EU)

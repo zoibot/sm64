@@ -71,6 +71,9 @@ texture_colorful_char_K:
 texture_colorful_char_L:
 .incbin "textures/segment2/segment2.02A00.rgba16"
 
+texture_colorful_char_Lflip:
+.incbin "textures/segment2/custom/segment2.02A00flip.rgba16"
+
 texture_colorful_char_M:
 .incbin "textures/segment2/segment2.02C00.rgba16"
 
@@ -165,6 +168,27 @@ texture_colorful_char_coin:
 
 texture_colorful_char_mario_head:
 .incbin "textures/segment2/segment2.05A00.rgba16"
+
+seg2_texture_hand:
+.incbin "textures/segment2/custom/segment2.hand_small.rgba16"
+
+seg2_texture_goomba:
+.incbin "textures/segment2/custom/segment2.goomba.rgba16"
+
+seg2_texture_abutton:
+.incbin "textures/segment2/custom/segment2.abutton.rgba16"
+
+seg2_texture_timer:
+.incbin "textures/segment2/custom/segment2.timer.rgba16"
+
+seg2_texture_1up:
+.incbin "textures/segment2/custom/segment2.1up.rgba16"
+
+seg2_texture_allstarslevel:
+.incbin "textures/segment2/custom/segment2.allstarslevel.rgba16"
+
+seg2_texture_bobomb:
+.incbin "textures/segment2/custom/segment2.bobomb.rgba16"
 
 texture_colorful_char_star:
 .incbin "textures/segment2/segment2.05C00.rgba16"
@@ -1358,6 +1382,34 @@ texture_colorful_char_arrow_up:
 texture_colorful_char_arrow_down:
 .incbin "textures/segment2/segment2.081D0.rgba16"
 
+seg2_texture_B1:
+.incbin "textures/segment2/custom/segment2.B1.rgba16"
+
+seg2_texture_B2:
+.incbin "textures/segment2/custom/segment2.B2.rgba16"
+
+seg2_texture_B3:
+.incbin "textures/segment2/custom/segment2.B3.rgba16"
+
+seg2_texture_B4:
+.incbin "textures/segment2/custom/segment2.B4.rgba16"
+
+seg2_texture_bbutton:
+.incbin "textures/segment2/custom/segment2.bbutton.rgba16"
+
+seg2_texture_zbutton:
+.incbin "textures/segment2/custom/segment2.zbutton.rgba16"
+
+seg2_texture_multicoin:
+.incbin "textures/segment2/custom/segment2.coins.rgba16"
+
+seg2_texture_failed:
+.incbin "textures/segment2/custom/segment2.nope.rgba16"
+
+seg2_texture_yellowbox:
+.incbin "textures/segment2/custom/segment2.yellowbox.rgba16"
+
+
 # HUD print table 0x02008250-0x02008337
 glabel seg2_hud_lut
 .if VERSION_EU == 1
@@ -1388,10 +1440,12 @@ glabel seg2_hud_lut
     .word texture_colorful_char_W,                   0x0, texture_colorful_char_Y,                   0x0
     .word                   0x0,                   0x0,                   0x0,                   0x0
     .word                   0x0,                   0x0,                   0x0,                   0x0
-    .word                   0x0,                   0x0,                   0x0,                   0x0
-    .word                   0x0,                   0x0, texture_colorful_char_multiply, texture_colorful_char_coin
-    .word texture_colorful_char_mario_head, texture_colorful_char_star,                   0x0,                   0x0
-    .word texture_colorful_char_apostrophe, texture_colorful_char_double_quote
+
+    .word texture_colorful_char_Lflip,seg2_texture_bobomb, seg2_texture_allstarslevel, seg2_texture_1up
+    .word    seg2_texture_timer,  seg2_texture_abutton, texture_colorful_char_multiply,  texture_colorful_char_coin
+    .word texture_colorful_char_mario_head, texture_colorful_char_star, seg2_texture_hand, seg2_texture_goomba
+    .word texture_colorful_char_apostrophe, texture_colorful_char_double_quote,  seg2_texture_bbutton,   seg2_texture_zbutton
+    .word seg2_texture_multicoin,  seg2_texture_failed, seg2_texture_yellowbox
 .else
     .word texture_colorful_num_0, texture_colorful_num_1, texture_colorful_num_2, texture_colorful_num_3
     .word texture_colorful_num_4, texture_colorful_num_5, texture_colorful_num_6, texture_colorful_num_7
@@ -1648,8 +1702,10 @@ glabel seg2_hud_camera_lut
 
 glabel dl_hud_img_begin # 0x0200EC60 - 0x0200EC98
 gsDPPipeSync
-gsDPSetCycleType G_CYC_COPY
+gsDPSetCycleType G_CYC_1CYCLE
+gsDPSetCombineModeLERP1Cycle G_CCMUX_0, G_CCMUX_0, G_CCMUX_0, G_CCMUX_TEXEL0, G_ACMUX_0, G_ACMUX_0, G_ACMUX_0, G_ACMUX_TEXEL0
 gsDPSetTexturePersp G_TP_NONE
+gsDPSetTextureFilter G_TF_POINT
 gsDPSetAlphaCompare G_AC_THRESHOLD
 gsDPSetBlendColor 255, 255, 255, 255
 .ifdef VERSION_EU
@@ -1661,10 +1717,10 @@ gsDPSetRenderMode G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2
 gsSPEndDisplayList
 
 glabel dl_hud_img_load_tex_block # 0x0200EC98 - 0x0200ECC8
-gsDPSetTile G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, 0, G_TX_LOADTILE, 0, G_TX_WRAP | G_TX_NOMIRROR, 4, G_TX_NOLOD, G_TX_WRAP | G_TX_NOMIRROR, 4, G_TX_NOLOD
+gsDPSetTile G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, 0, G_TX_LOADTILE, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, G_TX_NOLOD, G_TX_WRAP | G_TX_NOMIRROR, 5, G_TX_NOLOD
 gsDPLoadSync
 gsDPLoadBlock 7, 0, 0, 0x0FF, 0x200
-gsDPSetTile G_IM_FMT_RGBA, G_IM_SIZ_16b, 4, 0, G_TX_RENDERTILE, 0, G_TX_WRAP | G_TX_NOMIRROR, 4, G_TX_NOLOD, G_TX_WRAP | G_TX_NOMIRROR, 4, G_TX_NOLOD
+gsDPSetTile G_IM_FMT_RGBA, G_IM_SIZ_16b, 4, 0, G_TX_RENDERTILE, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, G_TX_NOLOD, G_TX_WRAP | G_TX_NOMIRROR, 5, G_TX_NOLOD
 gsDPSetTileSize 0, 0, 0, 60, 60
 gsSPEndDisplayList
 
@@ -2234,6 +2290,435 @@ gsSP2Triangles  6,  7,  8, 0x0,  9, 10, 11, 0x0
 gsSP1Triangle 12, 13, 14, 0x0
 gsSPEndDisplayList
 
+glabel my_fancy_custom_text_dl
+gsDPPipeSync
+gsDPSetTexturePersp G_TP_NONE
+gsDPSetCombineModeLERP1Cycle G_CCMUX_TEXEL0, G_CCMUX_0, G_CCMUX_ENVIRONMENT, G_CCMUX_0, G_ACMUX_TEXEL0, G_ACMUX_0, G_ACMUX_ENVIRONMENT, G_ACMUX_0
+gsDPSetEnvColor 255, 255, 255, 255
+gsDPSetRenderMode G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2
+gsDPSetTextureFilter G_TF_POINT
+gsDPSetTile G_IM_FMT_IA, G_IM_SIZ_8b, 0, 0, G_TX_LOADTILE, 0, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOLOD, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOLOD
+gsDPTileSync
+gsDPSetTile G_IM_FMT_IA, G_IM_SIZ_8b, 1, 0, G_TX_RENDERTILE, 0, G_TX_CLAMP | G_TX_NOMIRROR, 3, G_TX_NOLOD, G_TX_CLAMP | G_TX_NOMIRROR, 3, G_TX_NOLOD
+gsDPSetTileSize 0, 0, 0, 28, 28
+gsSPEndDisplayList
+
+texture_0700AC40: # 0x0700AC40
+.incbin "textures/segment2/custom/main_menu_seg7_us.0AC40.ia8"
+
+ texture_0700AC80: # 0x0700AC80
+.incbin "textures/segment2/custom/main_menu_seg7_us.0AC80.ia8"
+
+ texture_0700ACC0: # 0x0700ACC0
+.incbin "textures/segment2/custom/main_menu_seg7_us.0ACC0.ia8"
+
+ texture_0700AD00: # 0x0700AD00
+.incbin "textures/segment2/custom/main_menu_seg7_us.0AD00.ia8"
+
+ texture_0700AD40: # 0x0700AD40
+.incbin "textures/segment2/custom/main_menu_seg7_us.0AD40.ia8"
+
+ texture_0700AD80: # 0x0700AD80
+.incbin "textures/segment2/custom/main_menu_seg7_us.0AD80.ia8"
+
+ texture_0700ADC0: # 0x0700ADC0
+.incbin "textures/segment2/custom/main_menu_seg7_us.0ADC0.ia8"
+
+ texture_0700AE00: # 0x0700AE00
+.incbin "textures/segment2/custom/main_menu_seg7_us.0AE00.ia8"
+
+ texture_0700AE40: # 0x0700AE40
+.incbin "textures/segment2/custom/main_menu_seg7_us.0AE40.ia8"
+
+ texture_0700AE80: # 0x0700AE80
+.incbin "textures/segment2/custom/main_menu_seg7_us.0AE80.ia8"
+
+ texture_0700AEC0: # 0x0700AEC0
+.incbin "textures/segment2/custom/main_menu_seg7_us.0AEC0.ia8"
+
+ texture_0700AF00: # 0x0700AF00
+.incbin "textures/segment2/custom/main_menu_seg7_us.0AF00.ia8"
+
+ texture_0700AF40: # 0x0700AF40
+.incbin "textures/segment2/custom/main_menu_seg7_us.0AF40.ia8"
+
+ texture_0700AF80: # 0x0700AF80
+.incbin "textures/segment2/custom/main_menu_seg7_us.0AF80.ia8"
+
+ texture_0700AFC0: # 0x0700AFC0
+.incbin "textures/segment2/custom/main_menu_seg7_us.0AFC0.ia8"
+
+ texture_0700B000: # 0x0700B000
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B000.ia8"
+
+ texture_0700B040: # 0x0700B040
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B040.ia8"
+
+ texture_0700B080: # 0x0700B080
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B080.ia8"
+
+ texture_0700B0C0: # 0x0700B0C0
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B0C0.ia8"
+
+ texture_0700B100: # 0x0700B100
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B100.ia8"
+
+ texture_0700B140: # 0x0700B140
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B140.ia8"
+
+ texture_0700B180: # 0x0700B180
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B180.ia8"
+
+ texture_0700B1C0: # 0x0700B1C0
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B1C0.ia8"
+
+ texture_0700B200: # 0x0700B200
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B200.ia8"
+
+ texture_0700B240: # 0x0700B240
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B240.ia8"
+
+ texture_0700B280: # 0x0700B280
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B280.ia8"
+
+ texture_0700B2C0: # 0x0700B2C0
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B2C0.ia8"
+
+ texture_0700B300: # 0x0700B300
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B300.ia8"
+
+ texture_0700B340: # 0x0700B340
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B340.ia8"
+
+ texture_0700B380: # 0x0700B380
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B380.ia8"
+
+ texture_0700B3C0: # 0x0700B3C0
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B3C0.ia8"
+
+ texture_0700B400: # 0x0700B400
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B400.ia8"
+
+ texture_0700B440: # 0x0700B440
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B440.ia8"
+
+ texture_0700B480: # 0x0700B480
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B480.ia8"
+
+ texture_0700B4C0: # 0x0700B4C0
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B4C0.ia8"
+
+ texture_0700B500: # 0x0700B500
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B500.ia8"
+
+ texture_0700B540: # 0x0700B540
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B540.ia8"
+
+ texture_0700B580: # 0x0700B580
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B580.ia8"
+
+ texture_0700B5C0: # 0x0700B5C0
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B5C0.ia8"
+
+ texture_0700B600: # 0x0700B600
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B600.ia8"
+
+ texture_0700B640: # 0x0700B640
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B640.ia8"
+
+ texture_0700B680: # 0x0700B680
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B680.ia8"
+
+ texture_0700B6C0: # 0x0700B6C0
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B6C0.ia8"
+
+ texture_0700B700: # 0x0700B700
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B700.ia8"
+
+ texture_0700B740: # 0x0700B740
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B740.ia8"
+
+ texture_0700B780: # 0x0700B780
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B780.ia8"
+
+ texture_0700B7C0: # 0x0700B7C0
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B7C0.ia8"
+
+ texture_0700B800: # 0x0700B800
+.incbin "textures/segment2/custom/main_menu_seg7_us.0B800.ia8"
+
+texture_48:
+.incbin "textures/segment2/custom/tinyfont.48.ia8"
+
+texture_49:
+.incbin "textures/segment2/custom/tinyfont.49.ia8"
+
+texture_50:
+.incbin "textures/segment2/custom/tinyfont.50.ia8"
+
+texture_51:
+.incbin "textures/segment2/custom/tinyfont.51.ia8"
+
+texture_52:
+.incbin "textures/segment2/custom/tinyfont.52.ia8"
+
+texture_53:
+.incbin "textures/segment2/custom/tinyfont.53.ia8"
+
+texture_54:
+.incbin "textures/segment2/custom/tinyfont.54.ia8"
+
+texture_55:
+.incbin "textures/segment2/custom/tinyfont.55.ia8"
+
+texture_56:
+.incbin "textures/segment2/custom/tinyfont.56.ia8"
+
+texture_57:
+.incbin "textures/segment2/custom/tinyfont.57.ia8"
+
+texture_65:
+.incbin "textures/segment2/custom/tinyfont.65.ia8"
+
+texture_66:
+.incbin "textures/segment2/custom/tinyfont.66.ia8"
+
+texture_67:
+.incbin "textures/segment2/custom/tinyfont.67.ia8"
+
+texture_68:
+.incbin "textures/segment2/custom/tinyfont.68.ia8"
+
+texture_69:
+.incbin "textures/segment2/custom/tinyfont.69.ia8"
+
+texture_70:
+.incbin "textures/segment2/custom/tinyfont.70.ia8"
+
+texture_71:
+.incbin "textures/segment2/custom/tinyfont.71.ia8"
+
+texture_72:
+.incbin "textures/segment2/custom/tinyfont.72.ia8"
+
+texture_73:
+.incbin "textures/segment2/custom/tinyfont.73.ia8"
+
+texture_74:
+.incbin "textures/segment2/custom/tinyfont.74.ia8"
+
+texture_75:
+.incbin "textures/segment2/custom/tinyfont.75.ia8"
+
+texture_76:
+.incbin "textures/segment2/custom/tinyfont.76.ia8"
+
+texture_77:
+.incbin "textures/segment2/custom/tinyfont.77.ia8"
+
+texture_78:
+.incbin "textures/segment2/custom/tinyfont.78.ia8"
+
+texture_79:
+.incbin "textures/segment2/custom/tinyfont.79.ia8"
+
+texture_80:
+.incbin "textures/segment2/custom/tinyfont.80.ia8"
+
+texture_81:
+.incbin "textures/segment2/custom/tinyfont.81.ia8"
+
+texture_82:
+.incbin "textures/segment2/custom/tinyfont.82.ia8"
+
+texture_83:
+.incbin "textures/segment2/custom/tinyfont.83.ia8"
+
+texture_84:
+.incbin "textures/segment2/custom/tinyfont.84.ia8"
+
+texture_85:
+.incbin "textures/segment2/custom/tinyfont.85.ia8"
+
+texture_86:
+.incbin "textures/segment2/custom/tinyfont.86.ia8"
+
+texture_87:
+.incbin "textures/segment2/custom/tinyfont.87.ia8"
+
+texture_88:
+.incbin "textures/segment2/custom/tinyfont.88.ia8"
+
+texture_89:
+.incbin "textures/segment2/custom/tinyfont.89.ia8"
+
+texture_90:
+.incbin "textures/segment2/custom/tinyfont.90.ia8"
+
+texture_97:
+.incbin "textures/segment2/custom/tinyfont.97.ia8"
+
+texture_98:
+.incbin "textures/segment2/custom/tinyfont.98.ia8"
+
+texture_99:
+.incbin "textures/segment2/custom/tinyfont.99.ia8"
+
+texture_100:
+.incbin "textures/segment2/custom/tinyfont.100.ia8"
+
+texture_101:
+.incbin "textures/segment2/custom/tinyfont.101.ia8"
+
+texture_102:
+.incbin "textures/segment2/custom/tinyfont.102.ia8"
+
+texture_103:
+.incbin "textures/segment2/custom/tinyfont.103.ia8"
+
+texture_104:
+.incbin "textures/segment2/custom/tinyfont.104.ia8"
+
+texture_105:
+.incbin "textures/segment2/custom/tinyfont.105.ia8"
+
+texture_106:
+.incbin "textures/segment2/custom/tinyfont.106.ia8"
+
+texture_107:
+.incbin "textures/segment2/custom/tinyfont.107.ia8"
+
+texture_108:
+.incbin "textures/segment2/custom/tinyfont.108.ia8"
+
+texture_109:
+.incbin "textures/segment2/custom/tinyfont.109.ia8"
+
+texture_110:
+.incbin "textures/segment2/custom/tinyfont.110.ia8"
+
+texture_111:
+.incbin "textures/segment2/custom/tinyfont.111.ia8"
+
+texture_112:
+.incbin "textures/segment2/custom/tinyfont.112.ia8"
+
+texture_113:
+.incbin "textures/segment2/custom/tinyfont.113.ia8"
+
+texture_114:
+.incbin "textures/segment2/custom/tinyfont.114.ia8"
+
+texture_115:
+.incbin "textures/segment2/custom/tinyfont.115.ia8"
+
+texture_116:
+.incbin "textures/segment2/custom/tinyfont.116.ia8"
+
+texture_117:
+.incbin "textures/segment2/custom/tinyfont.117.ia8"
+
+texture_118:
+.incbin "textures/segment2/custom/tinyfont.118.ia8"
+
+texture_119:
+.incbin "textures/segment2/custom/tinyfont.119.ia8"
+
+texture_120:
+.incbin "textures/segment2/custom/tinyfont.120.ia8"
+
+texture_121:
+.incbin "textures/segment2/custom/tinyfont.121.ia8"
+
+texture_122:
+.incbin "textures/segment2/custom/tinyfont.122.ia8"
+
+glabel seg2_tiny_font_lut
+.word texture_48, texture_49, texture_50, texture_51
+.word texture_52, texture_53, texture_54, texture_55
+.word texture_56, texture_57, texture_65, texture_66
+.word texture_67, texture_68, texture_69, texture_70
+.word texture_71, texture_72, texture_73, texture_74
+.word texture_75, texture_76, texture_77, texture_78
+.word texture_79, texture_80, texture_81, texture_82
+.word texture_83, texture_84, texture_85, texture_86
+.word texture_87, texture_88, texture_89, texture_90
+.word texture_97, texture_98, texture_99, texture_100
+.word texture_101, texture_102, texture_103, texture_104
+.word texture_105, texture_106, texture_107, texture_108
+.word texture_109, texture_110, texture_111, texture_112
+.word texture_113, texture_114, texture_115, texture_116
+.word texture_117, texture_118, texture_119, texture_120
+
+# .word texture_121, texture_122, 0, 0
+# .word 0, 0, 0, 0
+.word texture_121, texture_122, texture_0700B680, texture_0700B7C0
+.word texture_0700B740, texture_0700B780,       0x00000000,       0x00000000
+
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+
+.word       0x00000000,       0x00000000,       0x00000000, texture_0700B640
+# .word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+
+.word       0x00000000,       0x00000000,       0x00000000, texture_0700B600
+# .word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+
+.word       0x00000000, texture_0700B800,       0x00000000,       0x00000000
+# .word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+
+.word       0x00000000,       0x00000000, texture_0700B6C0,       0x00000000
+# .word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+
+.word texture_0700B700,       0x00000000,       0x00000000,       0x00000000
+# .word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+
+.word       0x00000000, texture_0700B540, texture_0700B5C0, texture_0700B580
+# .word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+
+.word       0x00000000,       0x00000000,       0x00000000,       0x00000000
+
 # 14A60-15BAD: count and triangles?
 # 14A60: triangle mesh
 glabel seg2_triangle_mesh # 0x02014A60
@@ -2247,6 +2732,7 @@ glabel seg2_triangle_mesh # 0x02014A60
 .hword 511, 614,   0 # 6
 .hword 307, 614,   0 # 7
 .hword 307, 583,   1 # 8
+
 .hword 358, 614,   0 # 9
 .hword 256, 614,   0 # 10
 .hword 256, 553,   1 # 11

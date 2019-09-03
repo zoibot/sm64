@@ -15,6 +15,7 @@
 #include "eu_translation.h"
 #include "ingame_menu.h"
 #include "engine/math_util.h"
+#include "print.h"
 
 extern Gfx *gDisplayListHead;
 extern s32 gGlobalTimer;
@@ -158,6 +159,21 @@ u8 gDialogCharWidths[256] = { // TODO: Is there a way to auto generate this?
 };
 #endif
 
+u8 gDialogCharWidthsButTiny[256] = {
+    4, 4, 4,  4, 4,  4, 4, 4, 4, 4,                                                 // numbers
+    4, 4, 4,  4, 4,  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, // capital letters
+    4, 4, 4,  4, 4,  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, // lowercase letters
+    4, 4, 8,  6, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 8, 8, 8, 7, 7, 6, 7, 7, 0, 0, 0, 0, 0,
+    0, 0, 0,  0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0,  0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    5, 6, 0,  0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0,  0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 7,  5, 10, 5, 9, 8, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 7, 7, 6, 6, 8, 0, 8,
+    8, // < the filled star icon
+    6, 4, 10, 0, 0
+
+};
+
 s8 gDialogBoxState = DIALOG_STATE_OPENING;
 f32 gDialogBoxOpenTimer = DEFAULT_DIALOG_BOX_ANGLE;
 f32 gDialogBoxScale = DEFAULT_DIALOG_BOX_SCALE;
@@ -184,6 +200,16 @@ s32 gInGameLanguage;
 #else
 #define MAX_STRING_WIDTH 16
 #endif
+
+s32 strlen_tiny(const char *str) {
+    s32 i = 0;
+    s32 width = 0;
+    while (str[i] != '\0') {
+        width += gDialogCharWidthsButTiny[tiny_text_convert_ascii(str[i])];
+        i++;
+    }
+    return width;
+}
 
 // dl_add_new_identity_matrix?
 void func_802D6440(void) {
@@ -312,6 +338,34 @@ static u8 *func_802D69A0(u16 *in, s16 width, s16 height) {
     }
 
     return out;
+}
+
+void render_generic_char_but_tiny(u8 c) {
+    void **smallFontLUT;
+    void *packedTexture;
+#ifdef VERSION_JP
+    void *unpackedTexture;
+#endif
+
+    smallFontLUT = segmented_to_virtual(seg2_tiny_font_lut);
+    packedTexture = segmented_to_virtual(smallFontLUT[c]);
+
+#ifdef VERSION_JP
+    unpackedTexture = func_802D69A0(packedTexture, 8, 16);
+
+    gDPPipeSync(gDisplayListHead++);
+    gDPSetTextureImage(gDisplayListHead++, G_IM_FMT_IA, G_IM_SIZ_8b, 1, VIRTUAL_TO_PHYSICAL(unpackedTexture));
+#else
+#ifdef VERSION_US
+    gDPPipeSync(gDisplayListHead++);
+#endif
+    gDPSetTextureImage(gDisplayListHead++, G_IM_FMT_IA, G_IM_SIZ_16b, 1, VIRTUAL_TO_PHYSICAL(packedTexture));
+#endif
+    gSPDisplayList(gDisplayListHead++, dl_ia8_render_char);
+#ifdef VERSION_EU
+    gSPTextureRectangleFlip(gDisplayListHead++, gDialogX << 2, (gDialogY - 16) << 2,
+                            (gDialogX + 8) << 2, gDialogY << 2, 0, 0x200, 0x100, 0x400, 0x400);
+#endif
 }
 
 void render_generic_char(u8 c) {
@@ -586,6 +640,153 @@ void PrintGenericText(s16 x, s16 y, const u8 *str) {
 #endif
 }
 
+void PrintTinyText(s16 x, s16 y, const u8 *str) {
+    UNUSED s8 mark = DIALOG_MARK_NONE; // unused in EU
+    s32 strPos = 0;
+    u8 lineNum = 1;
+#ifdef VERSION_EU
+    s16 xCoord = x;
+    s16 yCoord = 240 - y;
+#endif
+
+#ifndef VERSION_EU
+    // create_new_translation_matrix
+    dl_add_new_translation_matrix(MENU_MTX_PUSH, x, y, 0.0f);
+#endif
+
+    while (str[strPos] != DIALOG_CHAR_TERMINATOR) {
+        switch (str[strPos]) {
+#ifdef VERSION_EU
+            case DIALOG_CHAR_SPACE:
+                xCoord += 5;
+                break;
+            case DIALOG_CHAR_NEWLINE:
+                yCoord += 16;
+                xCoord = x;
+                lineNum++;
+                break;
+            case DIALOG_CHAR_LOWER_A_GRAVE:
+            case DIALOG_CHAR_LOWER_A_CIRCUMFLEX:
+            case DIALOG_CHAR_LOWER_A_UMLAUT:
+                render_lowercase_diacritic(&xCoord, &yCoord, ASCII_TO_DIALOG('a'), str[strPos] & 0xF);
+                break;
+            case DIALOG_CHAR_UPPER_A_UMLAUT: // @bug grave and circumflux (0x64-0x65) are absent here
+                render_uppercase_diacritic(&xCoord, &yCoord, ASCII_TO_DIALOG('A'), str[strPos] & 0xF);
+                break;
+            case DIALOG_CHAR_LOWER_E_GRAVE:
+            case DIALOG_CHAR_LOWER_E_CIRCUMFLEX:
+            case DIALOG_CHAR_LOWER_E_UMLAUT:
+            case DIALOG_CHAR_LOWER_E_ACUTE:
+                render_lowercase_diacritic(&xCoord, &yCoord, ASCII_TO_DIALOG('e'), str[strPos] & 0xF);
+                break;
+            case DIALOG_CHAR_UPPER_E_GRAVE:
+            case DIALOG_CHAR_UPPER_E_CIRCUMFLEX:
+            case DIALOG_CHAR_UPPER_E_UMLAUT:
+            case DIALOG_CHAR_UPPER_E_ACUTE:
+                render_uppercase_diacritic(&xCoord, &yCoord, ASCII_TO_DIALOG('E'), str[strPos] & 0xF);
+                break;
+            case DIALOG_CHAR_LOWER_U_GRAVE:
+            case DIALOG_CHAR_LOWER_U_CIRCUMFLEX:
+            case DIALOG_CHAR_LOWER_U_UMLAUT:
+                render_lowercase_diacritic(&xCoord, &yCoord, ASCII_TO_DIALOG('u'), str[strPos] & 0xF);
+                break;
+            case DIALOG_CHAR_UPPER_U_UMLAUT: // @bug grave and circumflex (0x84-0x85) are absent here
+                render_uppercase_diacritic(&xCoord, &yCoord, ASCII_TO_DIALOG('U'), str[strPos] & 0xF);
+                break;
+            case DIALOG_CHAR_LOWER_O_CIRCUMFLEX:
+            case DIALOG_CHAR_LOWER_O_UMLAUT:
+                render_lowercase_diacritic(&xCoord, &yCoord, ASCII_TO_DIALOG('o'), str[strPos] & 0xF);
+                break;
+            case DIALOG_CHAR_UPPER_O_UMLAUT: // @bug circumflex (0x95) is absent here
+                render_uppercase_diacritic(&xCoord, &yCoord, ASCII_TO_DIALOG('O'), str[strPos] & 0xF);
+                break;
+            case DIALOG_CHAR_LOWER_I_CIRCUMFLEX:
+            case DIALOG_CHAR_LOWER_I_UMLAUT:
+                render_lowercase_diacritic(&xCoord, &yCoord, DIALOG_CHAR_I_NO_DIA, str[strPos] & 0xF);
+                break;
+#else // i.e. not EU
+            case DIALOG_CHAR_PREFIX_DAKUTEN:
+                mark = DIALOG_MARK_DAKUTEN;
+                break;
+            case DIALOG_CHAR_PREFIX_HANDAKUTEN:
+                mark = DIALOG_MARK_HANDAKUTEN;
+                break;
+            case DIALOG_CHAR_NEWLINE:
+                gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
+                dl_add_new_translation_matrix(MENU_MTX_PUSH, x, y - (lineNum * MAX_STRING_WIDTH), 0.0f);
+                lineNum++;
+                break;
+            case DIALOG_CHAR_HANDAKUTEN:
+                dl_add_new_translation_matrix(MENU_MTX_PUSH, -2.0f, -5.0f, 0.0f);
+                render_generic_char(DIALOG_CHAR_PREFIX_HANDAKUTEN);
+                gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
+                break;
+#endif
+#ifndef VERSION_JP
+            case 0xD0: // '/'
+#ifdef VERSION_US
+                dl_add_new_translation_matrix(MENU_MTX_NOPUSH, (f32)(gDialogCharWidths[DIALOG_CHAR_SPACE] * 2), 0.0f, 0.0f);
+#elif defined(VERSION_EU)
+                xCoord += gDialogCharWidths[DIALOG_CHAR_SPACE] * 2;
+#endif
+                break;
+            case DIALOG_CHAR_MULTI_THE:
+#ifdef VERSION_EU
+                put_multi_text_string(&xCoord, &yCoord, STRING_THE);
+#else
+                put_multi_text_string(STRING_THE);
+#endif
+                break;
+            case DIALOG_CHAR_MULTI_YOU:
+#ifdef VERSION_EU
+                put_multi_text_string(&xCoord, &yCoord, STRING_YOU);
+#else
+                put_multi_text_string(STRING_YOU);
+#endif
+                break;
+#endif
+#ifndef VERSION_EU
+            case DIALOG_CHAR_SPACE:
+#ifdef VERSION_JP
+                dl_add_new_translation_matrix(MENU_MTX_NOPUSH, 5.0f, 0.0f, 0.0f);
+                break;
+#else
+                // TODO: probably use the tiny widths here?
+                dl_add_new_translation_matrix(MENU_MTX_NOPUSH, (f32)(gDialogCharWidths[DIALOG_CHAR_SPACE]), 0.0f, 0.0f);
+#endif
+#endif
+                break; // ? needed to match
+            default:
+#ifdef VERSION_EU
+                render_generic_char_at_pos(xCoord, yCoord, str[strPos]);
+                xCoord += gDialogCharWidths[str[strPos]];
+                break;
+#else
+                render_generic_char_but_tiny(str[strPos]);
+                if (mark != DIALOG_MARK_NONE) {
+                    dl_add_new_translation_matrix(MENU_MTX_PUSH, 5.0f, 5.0f, 0.0f);
+                    render_generic_char_but_tiny(mark + 0xEF);
+                    gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
+                    mark = DIALOG_MARK_NONE;
+                }
+
+#ifdef VERSION_JP
+                dl_add_new_translation_matrix(MENU_MTX_NOPUSH, 10.0f, 0.0f, 0.0f);
+#else
+                dl_add_new_translation_matrix(MENU_MTX_NOPUSH, (f32)(gDialogCharWidths[str[strPos]]), 0.0f, 0.0f);
+                break; // what an odd difference. US added a useless break here.
+#endif
+#endif
+        }
+
+        strPos++;
+    }
+
+#ifndef VERSION_EU
+    gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
+#endif
+}
+
 #ifdef VERSION_EU
 void put_hud_char_umlaut(s16 x, s16 y, u8 chr) {
     void **fontLUT = segmented_to_virtual(seg2_hud_lut); // 0-9 A-Z Alphanumeric Font
@@ -745,6 +946,67 @@ void PrintRegularText(s16 x, s16 y, const u8 *str) {
                 curX += 9;
 #else
                 curX += gDialogCharWidths[str[strPos]];
+#endif
+        }
+        strPos++;
+    }
+}
+
+void PrintRegularTextButTiny(s16 x, s16 y, const u8 *str) {
+    UNUSED s8 mark = DIALOG_MARK_NONE; // unused in EU
+    s32 strPos = 0;
+    s32 curX = x;
+    s32 curY = y;
+    void **fontLUT = segmented_to_virtual(seg2_tiny_font_lut);
+
+    while (str[strPos] != DIALOG_CHAR_TERMINATOR) {
+        switch (str[strPos]) {
+#ifdef VERSION_EU
+            case DIALOG_CHAR_UPPER_A_UMLAUT:
+                put_menu_char_umlaut(curX, curY, ASCII_TO_DIALOG('A'));
+                curX += gDialogCharWidths[str[strPos]];
+                break;
+            case DIALOG_CHAR_UPPER_U_UMLAUT:
+                put_menu_char_umlaut(curX, curY, ASCII_TO_DIALOG('U'));
+                curX += gDialogCharWidths[str[strPos]];
+                break;
+            case DIALOG_CHAR_UPPER_O_UMLAUT:
+                put_menu_char_umlaut(curX, curY, ASCII_TO_DIALOG('O'));
+                curX += gDialogCharWidths[str[strPos]];
+                break;
+#else
+            case DIALOG_CHAR_PREFIX_DAKUTEN:
+                mark = DIALOG_MARK_DAKUTEN;
+                break;
+            case DIALOG_CHAR_PREFIX_HANDAKUTEN:
+                mark = DIALOG_MARK_HANDAKUTEN;
+                break;
+#endif
+            case HUD_CHAR_SPACE:
+                curX += 4;
+                break;
+            default:
+                gDPSetTextureImage(gDisplayListHead++, G_IM_FMT_IA, G_IM_SIZ_8b, 1, fontLUT[str[strPos]]);
+                gDPLoadSync(gDisplayListHead++);
+                gDPLoadBlock(gDisplayListHead++, 7, 0, 0, (0x40 - 1), 0x800);
+                gSPTextureRectangle(gDisplayListHead++, curX << 2, curY << 2, (curX + 8) << 2,
+                                    (curY + 8) << 2, 0, 0, 0, 0x400, 0x400);
+
+#ifndef VERSION_EU
+                if (mark != DIALOG_MARK_NONE) {
+                    gDPSetTextureImage(gDisplayListHead++, G_IM_FMT_IA, G_IM_SIZ_8b, 1, fontLUT[mark + 0xEF]);
+                    gDPLoadSync(gDisplayListHead++);
+                    gDPLoadBlock(gDisplayListHead++, 7, 0, 0, (0x40 - 1), 0x800);
+                    gSPTextureRectangle(gDisplayListHead++, (curX + 6) << 2, (curY - 7) << 2,
+                                        (curX + 14) << 2, (curY + 1) << 2, 0, 0, 0, 0x400, 0x400);
+
+                    mark = DIALOG_MARK_NONE;
+                }
+#endif
+#ifdef VERSION_JP
+                curX += 9;
+#else
+                curX += gDialogCharWidthsButTiny[str[strPos]];
 #endif
         }
         strPos++;
@@ -2250,6 +2512,7 @@ void func_802DA8EC(void) {
 #endif
 
     courseIndex = gCurrCourseNum - 1;
+    // TODO: this should probably use bingo's flags
     starFlags = save_file_get_star_flags(gCurrSaveFileNum - 1, gCurrCourseNum - 1);
 
 #ifdef VERSION_EU

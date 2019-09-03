@@ -8,6 +8,8 @@
 #include "level_update.h"
 #include "save_file.h"
 #include "sound_init.h"
+#include "bingo.h"
+#include "bingo_star_tracking.h"
 
 #define MENU_DATA_MAGIC 0x4849
 #define SAVE_FILE_MAGIC 0x4441
@@ -75,7 +77,26 @@ STATIC_ASSERT(ARRAY_COUNT(gLevelToCourseNumTable) == LEVEL_COUNT - 1,
 // This was probably used to set progress to 100% for debugging, but
 // it was removed from the release ROM.
 static void no_op(void) {
-    UNUSED s32 pad;
+    int i;
+    gSaveBuffer.files[0][0].capLevel = 0;
+    gSaveBuffer.files[0][0].capArea = 0;
+    gSaveBuffer.files[0][0].capPos[0] = 0;
+    gSaveBuffer.files[0][0].capPos[1] = 0;
+    gSaveBuffer.files[0][0].capPos[2] = 0;
+    gSaveBuffer.files[0][0].flags = 0x1F10FFCF;
+    // TODO: Determine if we need the cannons open or not.
+    for (i = 0; i < 15; i++) {
+        gSaveBuffer.files[0][0].courseStars[i] = 0xFF;
+    }
+    gSaveBuffer.files[0][0].courseStars[16] = 0x01;
+    gSaveBuffer.files[0][0].courseStars[17] = 0x01;
+    gSaveBuffer.files[0][0].courseStars[18] = 0x01;
+    gSaveBuffer.files[0][0].courseStars[19] = 0x03;
+    gSaveBuffer.files[0][0].courseStars[20] = 0x01;
+    gSaveBuffer.files[0][0].courseStars[21] = 0x01;
+    gSaveBuffer.files[0][0].courseStars[22] = 0x01;
+    gSaveBuffer.files[0][0].courseStars[23] = 0x01;
+    gSaveBuffer.files[0][0].courseStars[24] = 0x01;
 }
 
 /**
@@ -415,6 +436,11 @@ void save_file_collect_star_or_key(s16 coinScore, s16 starIndex) {
             break;
 
         default:
+            // Tell bingo we got a star
+            gbStarIndex = starIndex;
+            bingo_set_star(courseIndex, starIndex);
+            bingo_update(BINGO_UPDATE_STAR);
+
             if (!(save_file_get_star_flags(fileIndex, courseIndex) & starFlag)) {
                 save_file_set_star_flags(fileIndex, courseIndex, starFlag);
             }

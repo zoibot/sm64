@@ -80,9 +80,10 @@ void bhv_courtyard_boo_triplet_init(void) {
     s32 i;
     struct Object *boo;
 
-    if (gHudDisplay.stars < 12) {
-        mark_object_for_deletion(o);
-    } else {
+    // if (gHudDisplay.stars < 12) {
+    //     mark_object_for_deletion(o);
+    // } else
+    {
         for (i = 0; i < 3; i++) {
             boo = spawn_object_relative(
                 0x01, sCourtyardBooTripletPositions[i][0], sCourtyardBooTripletPositions[i][1],
@@ -610,9 +611,10 @@ void ActionBooWithCage3(void) {
 
 void bhv_boo_with_cage_init(void) {
     struct Object *cage;
-    if (gHudDisplay.stars < 12)
-        mark_object_for_deletion(o);
-    else {
+    // if(gDisplayedStars < 12)
+    //     mark_object_for_deletion(o);
+    // else
+    {
         cage = spawn_object(o, MODEL_HAUNTED_CAGE, bhvBooCage);
         cage->oBehParams = o->oBehParams;
     }
@@ -678,8 +680,8 @@ void bhv_boo_in_castle_loop(void) {
     o->oBooBaseScale = 2.0f;
     if (o->oAction == 0) {
         obj_hide();
-        if (gHudDisplay.stars < 12)
-            mark_object_for_deletion(o);
+        // if(gDisplayedStars < 12)
+        //     mark_object_for_deletion(o);
         if (gMarioCurrentRoom == 1)
             o->oAction++;
     } else if (o->oAction == 1) {

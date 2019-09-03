@@ -1,4 +1,5 @@
 #include <ultra64.h>
+#include <PR/os_libc.h>
 
 #include "sm64.h"
 #include "audio/external.h"
@@ -13,6 +14,9 @@
 #include "spawn_object.h"
 #include "file_select.h"
 #include "object_list_processor.h"
+#include "bingo.h"
+#include "bingo_board_setup.h"
+#include "strcpy.h"
 
 #include "text_strings.h"
 
@@ -20,7 +24,7 @@
 static s16 sSoundTextX; // The current sound mode is automatically centered on US due to the large
                         // length difference between options.
 #endif
-static struct Object *sMainMenuButtons[32];
+static struct Object *sMainMenuButtons[35];
 static u8 sYesNoColor[2];
 static s8 sSelectedButtonID = MENU_BUTTON_NONE; // The button that was most recently clicked.
 static s8 sCurrentMenuLevel =
@@ -62,6 +66,8 @@ static unsigned char textSelectFile[] = { TEXT_SELECT_FILE };
 static unsigned char textScore[] = { TEXT_SCORE };
 static unsigned char textCopy[] = { TEXT_COPY };
 static unsigned char textErase[] = { TEXT_ERASE };
+static unsigned char textSeeds[] = { TEXT_SEEDS };
+static unsigned char textReset[] = { TEXT_RESET };
 static unsigned char textCheckFile[] = { TEXT_CHECK_FILE };
 static unsigned char textNoSavedDataExists[] = { TEXT_NO_SAVED_DATA_EXISTS };
 static unsigned char textCopyFile[] = { TEXT_COPY_FILE };
@@ -72,6 +78,26 @@ static unsigned char textSavedDataExists[] = { TEXT_SAVED_DATA_EXISTS };
 static unsigned char textNoFileToCopyFrom[] = { TEXT_NO_FILE_TO_COPY_FROM };
 static unsigned char textYes[] = { TEXT_YES };
 static unsigned char textNo[] = { TEXT_NO };
+static unsigned char text123[] = { TEXT_123 };
+static unsigned char text456[] = { TEXT_456 };
+static unsigned char text789[] = { TEXT_789 };
+static unsigned char text_0_[] = { TEXT__0_ };
+static unsigned char textRandom[] = { TEXT_RANDOM };
+
+s32 gBingoSeedIsSet = 0;
+// We can support seeds up to 4,294,967,295, but since this is a weird number,
+// we cap it at 999,999,999, which is 9 digits long. "RANDOM" is 6 characters
+// long, so:
+u8 gBingoSeedRandomText[] = { TEXT_RANDOM, 0xFF, 0xFF, 0xFF };
+u8 gBingoSeedText[] = { TEXT_RANDOM, 0xFF, 0xFF, 0xFF };
+
+void seed_reset(void) {
+    s32 i;
+    gBingoSeedIsSet = 0;
+    for (i = 0; i < 10; i++) {
+        gBingoSeedText[i] = gBingoSeedRandomText[i];
+    }
+}
 
 void beh_yellow_background_menu_init(void) {
     gCurrentObject->oFaceAngleYaw = 0x8000;
@@ -670,6 +696,105 @@ static void erase_menu_check_clicked_buttons(struct Object *eraseButton) {
     }
 }
 
+static void seed_menu_create_buttons(struct Object *seedButton) {
+    sMainMenuButtons[MENU_BUTTON_SEED_RESET] =
+        spawn_object_rel_with_rot(seedButton, 12, bhvMenuButton, 711, -388, -100, 0, -0x8000, 0);
+    sMainMenuButtons[MENU_BUTTON_SEED_RESET]->oMenuButtonScale = 0.11111111f;
+
+    sMainMenuButtons[MENU_BUTTON_SEED_RETURN] =
+        spawn_object_rel_with_rot(seedButton, 6, bhvMenuButton, -711, -388, -100, 0, -0x8000, 0);
+    sMainMenuButtons[MENU_BUTTON_SEED_RETURN]->oMenuButtonScale = 0.11111111f;
+}
+
+static s32 seed_keypad_get_number(void) {
+    s32 x = sClickPos[0];
+    s32 y = sClickPos[1];
+    s32 col = -1;
+    s32 row = -1;
+    s32 keypad[3][3] = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
+
+    if (x >= -33 && x <= -15) {
+        col = 0;
+    } else if (x >= -6 && x <= 12) {
+        col = 1;
+    } else if (x >= 21 && x <= 39) {
+        col = 2;
+    }
+
+    if (col == -1) {
+        return -1;
+    }
+
+    if (y <= 25 && y >= 7) {
+        row = 0;
+    } else if (y <= -2 && y >= -20) {
+        row = 1;
+    } else if (y <= -38 && y >= -47) {
+        row = 2;
+    } else if (y <= -68 && y >= -81) {
+        if (col == 1) {
+            return 0;
+        } else {
+            return -1;
+        }
+    }
+
+    if (row == -1) {
+        return -1;
+    }
+
+    return keypad[row][col];
+}
+
+static void seed_push_key(s32 key) {
+    s32 i;
+    if (!gBingoSeedIsSet) {
+        // First keypress
+        for (i = 0; i < 9; i++) {
+            gBingoSeedText[i] = 0x00;
+        }
+        gBingoSeedIsSet = 1;
+    }
+    // Shift everything by 1 and add key to back
+    for (i = 0; i < (9 - 1); i++) {
+        gBingoSeedText[i] = gBingoSeedText[i + 1];
+    }
+    gBingoSeedText[8] = key;
+}
+
+static void seed_menu_check_clicked_buttons(struct Object *seedButton) {
+    int buttonId;
+    s32 keyEntered;
+
+    if (seedButton->oMenuButtonState == MENU_BUTTON_STATE_FULLSCREEN) {
+        // code that's half copy-pasted, half ad-hoc fixed makes you look like
+        // a MANIAC tbh
+        for (buttonId = MENU_BUTTON_SEED_RESET; buttonId <= MENU_BUTTON_SEED_RETURN; buttonId++) {
+            s16 buttonX = sMainMenuButtons[buttonId]->oPosX;
+            s16 buttonY = sMainMenuButtons[buttonId]->oPosY;
+
+            if (button_clicked_test(buttonX, buttonY, 22.0f) == TRUE) {
+                if (seedButton->oMenuButtonActionPhase == 0) {
+                    play_sound(SOUND_MENU_CLICKFILESELECT, gDefaultSoundArgs);
+                    sMainMenuButtons[buttonId]->oMenuButtonState = MENU_BUTTON_STATE_ZOOM_IN_OUT;
+                    // sSelectedButtonID = buttonId;
+                }
+                if (buttonId == MENU_BUTTON_SEED_RETURN) {
+                    sSelectedButtonID = buttonId;
+                    sCurrentMenuLevel = MENU_LAYER_SUBMENU;
+                } else {
+                    seed_reset();
+                }
+                break;
+            }
+        }
+        keyEntered = seed_keypad_get_number();
+        if (keyEntered != -1) {
+            seed_push_key(keyEntered);
+        }
+    }
+}
+
 static void sound_mode_menu_create_buttons(struct Object *soundModeButton) {
     // Stereo option button
     sMainMenuButtons[MENU_BUTTON_STEREO] = spawn_object_rel_with_rot(
@@ -748,9 +873,10 @@ static void return_to_main_menu(s16 prevMenuButtonId, struct Object *sourceButto
             }
         }
         if (prevMenuButtonId == MENU_BUTTON_SOUND_MODE) {
-            for (buttonID = 29; buttonID < 32; buttonID++) {
-                mark_obj_for_deletion(sMainMenuButtons[buttonID]);
-            }
+            // for (buttonID = 29; buttonID < 32; buttonID++)
+            //     mark_obj_for_deletion(sMainMenuButtons[buttonID]);
+            mark_obj_for_deletion(sMainMenuButtons[MENU_BUTTON_SEED_RETURN]);
+            mark_obj_for_deletion(sMainMenuButtons[MENU_BUTTON_SEED_RESET]);
         }
     }
 }
@@ -913,7 +1039,7 @@ void bhvMenuButtonManager_init(void) {
     sMainMenuButtons[MENU_BUTTON_ERASE] = spawn_object_rel_with_rot(
         gCurrentObject, MODEL_MAIN_MENU_RED_ERASE_BUTTON, bhvMenuButton, 2134, -3500, 0, 0, 0, 0);
     sMainMenuButtons[MENU_BUTTON_ERASE]->oMenuButtonScale = 1.0f;
-    // Sound mode menu button
+    // Seed mode menu button
     sMainMenuButtons[MENU_BUTTON_SOUND_MODE] = spawn_object_rel_with_rot(
         gCurrentObject, MODEL_MAIN_MENU_PURPLE_SOUND_BUTTON, bhvMenuButton, 6400, -3500, 0, 0, 0, 0);
     sMainMenuButtons[MENU_BUTTON_SOUND_MODE]->oMenuButtonScale = 1.0f;
@@ -977,7 +1103,8 @@ static void main_menu_check_clicked_buttons(void) {
             break;
         case MENU_BUTTON_SOUND_MODE:
             play_sound(SOUND_MENU_CAMERAZOOMIN, gDefaultSoundArgs);
-            sound_mode_menu_create_buttons(sMainMenuButtons[MENU_BUTTON_SOUND_MODE]);
+            // sound_mode_menu_create_buttons(sMainMenuButtons[MENU_BUTTON_SOUND_MODE]);
+            seed_menu_create_buttons(sMainMenuButtons[MENU_BUTTON_SOUND_MODE]);
             break;
     }
 
@@ -1075,8 +1202,17 @@ void bhvMenuButtonManager_loop(void) {
                                         sMainMenuButtons[MENU_BUTTON_ERASE_COPY_FILE]);
             break;
 
+        case MENU_BUTTON_SEED_RESET:
+            seed_reset();
+            sSelectedButtonID = MENU_BUTTON_SOUND_MODE;
+            break;
+        // fall-through
         case MENU_BUTTON_SOUND_MODE:
-            sound_mode_menu_check_clicked_buttons(sMainMenuButtons[MENU_BUTTON_SOUND_MODE]);
+            // sound_mode_menu_check_clicked_buttons(sMainMenuButtons[MENU_BUTTON_SOUND_MODE]);
+            seed_menu_check_clicked_buttons(sMainMenuButtons[MENU_BUTTON_SOUND_MODE]);
+            break;
+        case MENU_BUTTON_SEED_RETURN:
+            return_to_main_menu(MENU_BUTTON_SOUND_MODE, sMainMenuButtons[MENU_BUTTON_SEED_RETURN]);
             break;
         case MENU_BUTTON_STEREO:
             return_to_main_menu(MENU_BUTTON_SOUND_MODE, sMainMenuButtons[MENU_BUTTON_STEREO]);
@@ -1227,7 +1363,7 @@ static void display_file_star_count(s8 fileNum, s16 x, s16 y) {
 static void draw_main_menu(void) {
     gSPDisplayList(gDisplayListHead++, dl_rgba16_text_begin);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sTextBaseAlpha);
-    // Display "SELECT FILE" text
+// Display "SELECT FILE" text
 #ifdef VERSION_JP
     PutString(1, 96, 35, textSelectFile);
 #else
@@ -1251,8 +1387,9 @@ static void draw_main_menu(void) {
     PrintGenericText(52, 39, textScore);
     PrintGenericText(117, 39, textCopy);
     PrintGenericText(177, 39, textErase);
-    sSoundTextX = get_str_x_pos_from_center(254, textSoundModes[sSoundMode], 10.0f);
-    PrintGenericText(sSoundTextX, 39, textSoundModes[sSoundMode]);
+    PrintGenericText(238, 39, textSeeds);
+// sSoundTextX = get_str_x_pos_from_center(254, textSoundModes[sSoundMode], 10.0f);
+// PrintGenericText(sSoundTextX, 39, textSoundModes[sSoundMode]);
 #endif
     // Display file names
     gSPDisplayList(gDisplayListHead++, dl_ia8_text_end);
@@ -1636,6 +1773,39 @@ static void draw_erase_menu(void) {
     gSPDisplayList(gDisplayListHead++, main_menu_seg7_dl_0700D160);
 }
 
+static void draw_seed_mode_menu(void) {
+    s32 xSeedPos;
+    unsigned char textEnterSeed[] = { TEXT_ENTER_SEED };
+    // Display "ENTER SEED" text
+    // gSPDisplayList(gDisplayListHead++, seg2_dl_0200ED00);
+    // gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sTextBaseAlpha);
+    menu_print_title_text(2, 100, 35, textEnterSeed);
+
+    gSPDisplayList(gDisplayListHead++, dl_rgba16_text_end);  // TODO: needed?
+    gSPDisplayList(gDisplayListHead++, dl_ia8_text_begin);
+
+    // Display return, reset
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sTextBaseAlpha);
+    PrintGenericText(47, 35, textReset);
+    PrintGenericText(240, 35, textReturn);
+
+    // Display keypad
+    menu_print_title_text(2, 125, 100, text123);
+    menu_print_title_text(2, 125, 100 + (30 * 1), text456);
+    menu_print_title_text(2, 125, 100 + (30 * 2), text789);
+    menu_print_title_text(2, 125 + 3, 100 + (30 * 3), text_0_); // move right slightly
+
+    // Display seed
+    if (gBingoSeedIsSet) {
+        xSeedPos = 105;
+    } else {
+        xSeedPos = 125;
+    }
+    menu_print_title_text(2, xSeedPos, 100 + (30 * -1), gBingoSeedText);
+
+    gSPDisplayList(gDisplayListHead++, dl_ia8_text_end);
+}
+
 static void draw_sound_mode_menu(void) {
     s32 mode;
 #ifndef VERSION_JP
@@ -1783,7 +1953,7 @@ static void draw_file_scores(s8 fileNum) {
     gSPDisplayList(gDisplayListHead++, main_menu_seg7_dl_0700D108);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sTextBaseAlpha);
 
-    //! Print course scores (for loops exist for a reason!)
+//! Print course scores (for loops exist for a reason!)
 
 #ifdef VERSION_JP
 #define PADDING 0
@@ -1878,7 +2048,8 @@ static void draw_current_menu(void) {
             draw_file_scores(3);
             break;
         case MENU_BUTTON_SOUND_MODE:
-            draw_sound_mode_menu();
+            // draw_sound_mode_menu();
+            draw_seed_mode_menu();
             break;
     }
     if (save_file_exists(0) == TRUE && save_file_exists(1) == TRUE && save_file_exists(2) == TRUE
@@ -1939,7 +2110,20 @@ void LevelProc_801766DC(UNUSED s32 a, UNUSED s32 b) {
     sSoundMode = save_file_get_sound_mode();
 }
 
+u32 get_seed(void) {
+    if (!gBingoSeedIsSet) {
+        return gGlobalTimer; // good enough as a seed
+    }
+    // no pow() so i'm lazy
+    return (gBingoSeedText[0] * 100000000 + gBingoSeedText[1] * 10000000 + gBingoSeedText[2] * 1000000
+            + gBingoSeedText[3] * 100000 + gBingoSeedText[4] * 10000 + gBingoSeedText[5] * 1000
+            + gBingoSeedText[6] * 100 + gBingoSeedText[7] * 10 + gBingoSeedText[8] * 1);
+}
+
 int LevelProc_801768A0(UNUSED s32 a, UNUSED s32 b) {
     area_update_objects();
+    if (D_801A7C0C && !gBingoInitialized) {
+        setup_bingo_objectives(get_seed());
+    }
     return D_801A7C0C;
 }

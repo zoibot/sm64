@@ -1,5 +1,8 @@
 // spawn_star.c.inc
 
+#include "game/bingo.h"
+#include "../bingo_star_tracking.h"
+
 static struct ObjectHitbox sCollectStarHitbox = {
     /* interactType:      */ INTERACT_STAR_OR_KEY,
     /* downOffset:        */ 0,
@@ -17,7 +20,8 @@ void bhv_collect_star_init(void) {
     u8 sp1E;
 
     sp1F = (o->oBehParams >> 24) & 0xFF;
-    sp1E = save_file_get_star_flags(gCurrSaveFileNum - 1, gCurrCourseNum - 1);
+    // sp1E = save_file_get_star_flags(gCurrSaveFileNum - 1, gCurrCourseNum - 1);
+    sp1E = bingo_get_course_flags(gCurrCourseNum - 1);
     if (sp1E & (1 << sp1F)) {
         o->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_TRANSPARENT_STAR];
     } else {
@@ -149,6 +153,7 @@ void bhv_hidden_red_coin_star_init(void) {
 
     sp36 = count_objects_with_behavior(bhvRedCoin);
     if (sp36 == 0) {
+        // TODO: this should probably not be MODEL_STAR, idk.
         sp30 =
             spawn_object_abs_with_rot(o, 0, MODEL_STAR, bhvStar, o->oPosX, o->oPosY, o->oPosZ, 0, 0, 0);
         sp30->oBehParams = o->oBehParams;

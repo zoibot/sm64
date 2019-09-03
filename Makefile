@@ -8,8 +8,7 @@ default: all
 
 # Version of the game to build
 VERSION ?= us
-# Graphics microcode used
-GRUCODE ?= f3d_old
+GRUCODE ?= f3dex
 # If COMPARE is 1, check the output sha1sum when building 'all'
 COMPARE ?= 1
 # If NON_MATCHING is 1, define the NON_MATCHING macro when building
@@ -144,12 +143,7 @@ GODDARD_SRC_DIRS := src/goddard src/goddard/dynlists
 LEVEL_DIRS := $(patsubst levels/%,%,$(dir $(wildcard levels/*/header.s)))
 
 MIPSISET := -mips2 -32
-
-ifeq ($(VERSION),eu)
-  OPT_FLAGS := -O2
-else
-  OPT_FLAGS := -g
-endif
+OPT_FLAGS := -O2
 
 # File dependencies and variables for specific files
 include Makefile.split

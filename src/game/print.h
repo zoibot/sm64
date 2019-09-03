@@ -8,6 +8,15 @@
 #define TEXRECT_MIN_Y 5
 #define TEXRECT_MAX_Y 220
 
+
+extern void print_text_large(int, int, const char *);
+extern void print_text_tiny(int, int, const char *);
+extern void print_text_not_tiny(int, int, const char *);
+extern void print_vertical_line(int, int);
+extern void print_horizontal_line(int);
+extern void print_hand(int x, int y);
+extern u8 tiny_text_convert_ascii(char);
+
 #define GLYPH_SPACE           -1
 #define GLYPH_U               30
 #define GLYPH_EXCLAMATION_PNT 36

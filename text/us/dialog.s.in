@@ -2245,6 +2245,21 @@ Dialog169: # 0x0200D504
         "Anyone entering this cave\n"
         "without permission will\n"
         "meet certain disaster.")
+.balign 4
+Dialog170:
+.byte _("Hello1!\n"
+        "Hello2!\n"
+        "Hello3!\n"
+        "Hello4!\n"
+        "Hello5!\n"
+        "Hello6!\n"
+        "Hello7!\n"
+        "Hello8!\n"
+        "Hello9!\n"
+        "Hello0!\n"
+        "Hello11!\n"
+        "Hello22!\n"
+        "Hello33!\n")
 
 # dialog table 0x0200D548
 .balign 4
@@ -2633,4 +2648,4 @@ glabel seg2_dialog_table # 0x0200DFE8
 .word dialog_text_156, dialog_text_157, dialog_text_158, dialog_text_159
 .word dialog_text_160, dialog_text_161, dialog_text_162, dialog_text_163
 .word dialog_text_164, dialog_text_165, dialog_text_166, dialog_text_167
-.word dialog_text_168, dialog_text_169, 0x0
+.word dialog_text_168, dialog_text_169, 0x0, 0x0

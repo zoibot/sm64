@@ -1,5 +1,7 @@
 // bobomb.c.inc
 
+#include "game/bingo.h"
+
 static struct ObjectHitbox sBobombHitbox = {
     /* interactType:      */ INTERACT_GRABBABLE,
     /* downOffset:        */ 0,
@@ -24,6 +26,7 @@ void func_802E5B7C(void) {
         ObjSpawnYellowCoins(o, 1);
         o->oBehParams = 0x100;
         set_object_respawn_info_bits(o, 1);
+        bingo_update(BINGO_UPDATE_KILLED_BOBOMB);
     }
 }
 

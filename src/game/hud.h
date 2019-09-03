@@ -3,6 +3,12 @@
 
 #include "types.h"
 
+#ifdef VERSION_JP
+#define HUD_TOP_Y 210
+#else
+#define HUD_TOP_Y 209
+#endif
+
 /* Segment 3 */
 extern u8 *power_meter_seg3_health_icons_030293E0[];
 extern Gfx* power_meter_seg3_dl_03029480;     //u8 []?

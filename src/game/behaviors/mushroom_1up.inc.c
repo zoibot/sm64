@@ -1,5 +1,7 @@
 // mushroom_1up.c.inc
 
+#include "game/bingo.h"
+
 void bhv_1up_interact(void) {
     UNUSED s32 sp1C;
 
@@ -7,6 +9,7 @@ void bhv_1up_interact(void) {
         play_sound(SOUND_GENERAL_1UP, gDefaultSoundArgs);
         gMarioState->numLives++;
         o->activeFlags = 0;
+        bingo_update(BINGO_UPDATE_GOT_1UP);
     }
 }
 

@@ -19,6 +19,8 @@
 #include "obj_behaviors.h"
 #include "display.h"
 #include "save_file.h"
+#include "bingo.h"
+#include "bingo_star_tracking.h"
 #include "debug_course.h"
 #ifdef VERSION_EU
 #include "memory.h"
@@ -427,7 +429,7 @@ void init_mario_after_warp(void) {
 #else
             && sWarpDest.nodeId == 31
 #endif
-        )
+                )
             play_sound(SOUND_MENU_MARIOCASTLEWARP, gDefaultSoundArgs);
 #ifndef VERSION_JP
         if (sWarpDest.levelNum == 16 && sWarpDest.areaIdx == 1
@@ -904,7 +906,8 @@ void update_hud_values(void) {
         }
 #endif
 
-        gHudDisplay.stars = gMarioState->numStars;
+        // gHudDisplay.stars = gMarioState->numStars;  // bingo overrides latter value
+        gHudDisplay.stars = bingo_get_star_count();
         gHudDisplay.lives = gMarioState->numLives;
         gHudDisplay.keys = gMarioState->numKeys;
 
@@ -946,6 +949,17 @@ s32 play_mode_normal(void) {
                    && (gPlayer1Controller->buttonPressed & START_BUTTON)) {
             level_trigger_warp(gMarioState, WARP_OP_DEMO_NEXT);
         }
+    }
+
+    // not sure where to put this, but this should be fine...
+    if (gPlayer1Controller->buttonDown & A_BUTTON) {
+        bingo_update(BINGO_UPDATE_A_PRESSED);
+    }
+    if (gPlayer1Controller->buttonDown & B_BUTTON) {
+        bingo_update(BINGO_UPDATE_B_PRESSED);
+    }
+    if (gPlayer1Controller->buttonDown & Z_TRIG) {
+        bingo_update(BINGO_UPDATE_Z_PRESSED);
     }
 
     func_8024A02C();
@@ -1257,6 +1271,10 @@ s32 lvl_set_current_level(UNUSED s16 arg0, s32 levelNum) {
     D_8032C9E0 = 0;
     gCurrLevelNum = levelNum;
     gCurrCourseNum = gLevelToCourseNumTable[levelNum - 1];
+    // TODO: There might be some weird edge-cases here, but
+    // we want to clear out failures when you go back to the castle after
+    // dying or exiting course.
+    bingo_update(BINGO_UPDATE_COURSE_CHANGED);
 
     if (gCurrDemoInput != NULL || gCurrCreditsEntry != NULL || gCurrCourseNum == COURSE_NONE) {
         return 0;

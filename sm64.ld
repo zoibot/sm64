@@ -83,6 +83,16 @@ SECTIONS
       BUILD_DIR/src/game/game.o(.text);
       BUILD_DIR/src/game/sound_init.o(.text);
       BUILD_DIR/src/game/level_update.o(.text);
+      BUILD_DIR/src/game/bingo.o(.text);
+      BUILD_DIR/src/game/bingo_ui.o(.text);
+      BUILD_DIR/src/game/bingo_star_tracking.o(.text);
+      BUILD_DIR/src/game/bingo_board_setup.o(.text);
+      BUILD_DIR/src/game/bingo_const.o(.text);
+      BUILD_DIR/src/game/bingo_objective_func.o(.text);
+      BUILD_DIR/src/game/bingo_titles.o(.text);
+      BUILD_DIR/src/game/bingo_descriptions.o(.text);
+      BUILD_DIR/src/game/bingo_objective_init.o(.text);
+      BUILD_DIR/src/game/strcpy.o(.text);
       BUILD_DIR/src/game/interaction.o(.text);
       BUILD_DIR/src/game/mario.o(.text);
       BUILD_DIR/src/game/mario_step.o(.text);
@@ -268,6 +278,16 @@ SECTIONS
       BUILD_DIR/src/game/game.o(.data*);
       BUILD_DIR/src/game/sound_init.o(.data*);
       BUILD_DIR/src/game/level_update.o(.data*);
+      BUILD_DIR/src/game/bingo.o(.data*);
+      BUILD_DIR/src/game/bingo_ui.o(.data*);
+      BUILD_DIR/src/game/bingo_star_tracking.o(.data*);
+      BUILD_DIR/src/game/bingo_board_setup.o(.data*);
+      BUILD_DIR/src/game/bingo_const.o(.data*);
+      BUILD_DIR/src/game/bingo_objective_func.o(.data*);
+      BUILD_DIR/src/game/bingo_titles.o(.data*);
+      BUILD_DIR/src/game/bingo_descriptions.o(.data*);
+      BUILD_DIR/src/game/bingo_objective_init.o(.data*);
+      BUILD_DIR/src/game/strcpy.o(.data*);
       BUILD_DIR/src/game/interaction.o(.data*);
       BUILD_DIR/src/game/mario.o(.data*);
       BUILD_DIR/src/game/mario_step.o(.data*);
@@ -328,6 +348,16 @@ SECTIONS
       BUILD_DIR/src/game/game.o(.rodata*);
       BUILD_DIR/src/game/sound_init.o(.rodata*);
       BUILD_DIR/src/game/level_update.o(.rodata*);
+      BUILD_DIR/src/game/bingo.o(.rodata*);
+      BUILD_DIR/src/game/bingo_ui.o(.rodata*);
+      BUILD_DIR/src/game/bingo_star_tracking.o(.rodata*);
+      BUILD_DIR/src/game/bingo_board_setup.o(.rodata*);
+      BUILD_DIR/src/game/bingo_const.o(.rodata*);
+      BUILD_DIR/src/game/bingo_objective_func.o(.rodata*);
+      BUILD_DIR/src/game/bingo_titles.o(.rodata*);
+      BUILD_DIR/src/game/bingo_descriptions.o(.rodata*);
+      BUILD_DIR/src/game/bingo_objective_init.o(.rodata*);
+      BUILD_DIR/src/game/strcpy.o(.rodata*);
       BUILD_DIR/src/game/interaction.o(.rodata*);
       BUILD_DIR/src/game/mario.o(.rodata*);
       BUILD_DIR/src/game/mario_step.o(.rodata*);
@@ -339,6 +369,7 @@ SECTIONS
       BUILD_DIR/src/game/mario_actions_submerged.o(.rodata*);
       BUILD_DIR/src/game/mario_actions_object.o(.rodata*);
       BUILD_DIR/src/game/mario_misc.o(.rodata*);
+      BUILD_DIR/src/game/save_file.o(.rodata*);
       BUILD_DIR/src/game/area.o(.rodata*);
       BUILD_DIR/src/game/rendering_graph_node.o(.rodata*);
       BUILD_DIR/src/game/camera.o(.rodata*);
@@ -391,6 +422,16 @@ SECTIONS
       BUILD_DIR/src/game/game.o(.bss*);
       BUILD_DIR/src/game/sound_init.o(.bss*);
       BUILD_DIR/src/game/level_update.o(.bss*);
+      BUILD_DIR/src/game/bingo.o(.bss*);
+      BUILD_DIR/src/game/bingo_ui.o(.bss*);
+      BUILD_DIR/src/game/bingo_star_tracking.o(.bss*);
+      BUILD_DIR/src/game/bingo_board_setup.o(.bss*);
+      BUILD_DIR/src/game/bingo_const.o(.bss*);
+      BUILD_DIR/src/game/bingo_objective_func.o(.bss*);
+      BUILD_DIR/src/game/bingo_titles.o(.bss*);
+      BUILD_DIR/src/game/bingo_descriptions.o(.bss*);
+      BUILD_DIR/src/game/bingo_objective_init.o(.bss*);
+      BUILD_DIR/src/game/strcpy.o(.bss*);
       BUILD_DIR/src/game/interaction.o(.bss*);
       BUILD_DIR/src/game/mario.o(.bss*);
       BUILD_DIR/src/game/mario_actions_cutscene.o(.bss*);
@@ -451,6 +492,7 @@ SECTIONS
       BUILD_DIR/src/engine/surface_collision.o(.text);
       BUILD_DIR/src/engine/surface_load.o(.text);
       BUILD_DIR/src/engine/behavior_script.o(.text);
+      BUILD_DIR/src/engine/rand.o(.text);
       /* data */
       BUILD_DIR/src/engine/graph_node.o(.data*);
       BUILD_DIR/src/engine/graph_node_manager.o(.data*);
@@ -459,11 +501,13 @@ SECTIONS
       BUILD_DIR/src/engine/geo_layout.o(.data*);
       BUILD_DIR/src/engine/level_script.o(.data*);
       BUILD_DIR/src/engine/behavior_script.o(.data*);
+      BUILD_DIR/src/engine/rand.o(.data*);
       /* rodata */
       BUILD_DIR/src/engine/math_util.o(.rodata*);
       BUILD_DIR/src/engine/level_script.o(.rodata*);
       BUILD_DIR/src/engine/surface_collision.o(.rodata*);
       BUILD_DIR/src/engine/surface_load.o(.rodata*);
+      BUILD_DIR/src/engine/rand.o(.rodata*);
    }
    END_SEG(engine)
    BEGIN_NOLOAD(engine)
@@ -474,6 +518,7 @@ SECTIONS
       BUILD_DIR/src/engine/surface_collision.o(.bss*);
       BUILD_DIR/src/engine/surface_load.o(.bss*);
       BUILD_DIR/src/engine/behavior_script.o(.bss*);
+      BUILD_DIR/src/engine/rand.o(.bss*);
    }
    END_NOLOAD(engine)
 

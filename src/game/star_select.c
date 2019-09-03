@@ -16,6 +16,8 @@
 #include "star_select.h"
 #include "model_ids.h"
 #include "object_list_processor.h"
+#include "bingo.h"
+#include "bingo_star_tracking.h"
 
 static struct Object *sStarSelectIcons[8];
 static s8 sCurrentMission; // The mission the course is loaded as, affects whether some objects spawn.
@@ -72,18 +74,29 @@ void BehActSelectorInit(void) {
 
     sVisibleStars = 0;
     while (i != sObtainedStars) {
-        if (stars & (1 << sVisibleStars)) { // Star has been collected
-            selectorModelIDs[sVisibleStars] = MODEL_STAR;
-            i++;
-        } else { // Star has not been collected
-            selectorModelIDs[sVisibleStars] = MODEL_TRANSPARENT_STAR;
-            // If this is the first star that has not been collected, set
-            // the default selection to this star.
-            if (sDefaultSelectedAct == 0) {
-                sDefaultSelectedAct = sVisibleStars + 1;
-                sSelectedStarIndex = sVisibleStars;
+        if (stars & (1 << sVisibleStars)) // Star has been collected
+        {
+            // has it *actually* been collected tho?
+            if (bingo_get_course_flags(gCurrCourseNum - 1) & (1 << sVisibleStars)) {
+                // yes
+                selectorModelIDs[sVisibleStars] = MODEL_STAR;
+            } else {
+                // no
+                selectorModelIDs[sVisibleStars] = MODEL_TRANSPARENT_STAR;
             }
+            i++;
         }
+        // The shit below ain't gonna happen cuz we collected every star haha
+        // else // Star has not been collected
+        // {
+        //     selectorModelIDs[sVisibleStars] = MODEL_TRANSPARENT_STAR;
+        //     if (sDefaultSelectedAct == 0) // If this is the first star that has not been collected,
+        //     set the default selection to this star.
+        //     {
+        //         sDefaultSelectedAct = sVisibleStars + 1;
+        //         sSelectedStarIndex = sVisibleStars;
+        //     }
+        // }
         sVisibleStars++;
     }
 
@@ -113,7 +126,8 @@ void BehActSelectorInit(void) {
         sStarSelectIcons[i]->oStarSelectorSize = 1.0f;
     }
 
-    Show100CoinStar(stars);
+    // actually look up the 100 coin star's collection status :)
+    Show100CoinStar(bingo_get_course_flags(gCurrCourseNum - 1));
 }
 
 void BehActSelectorLoop(void) {
@@ -278,6 +292,9 @@ int LevelProc_80177610(UNUSED s32 a, UNUSED s32 b) {
                 sCurrentMission = sDefaultSelectedAct;
             }
             D_80330534 = sSelectedAct + 1;
+            // tell bingo to start the timer cuz it's too hard
+            // to tell when to start it
+            bingo_update(BINGO_UPDATE_RESET_TIMER);
         }
     }
     area_update_objects();

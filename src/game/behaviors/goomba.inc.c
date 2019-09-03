@@ -1,4 +1,4 @@
-
+#include "../bingo.h"
 /**
  * Behavior for bhvGoomba and bhvGoombaTripletSpawner,
  * Goombas can either be spawned individually, or spawned by a triplet spawner.
@@ -269,6 +269,7 @@ void bhv_goomba_update(void) {
     // PARTIAL_UPDATE
 
     f32 animSpeed;
+    s32 attack;
 
     if (obj_update_standard_actions(o->oGoombaScale)) {
         // If this goomba has a spawner and mario moved away from the spawner,
@@ -300,14 +301,15 @@ void bhv_goomba_update(void) {
                 break;
         }
 
-        //! @bug Weak attacks on huge goombas in a triplet mark them as dead even if they're not.
-        // obj_handle_attacks returns the type of the attack, which is non-zero
-        // even for Mario's weak attacks. Thus, if Mario weakly attacks a huge goomba
-        // without harming it (e.g. by punching it), the goomba will be marked as dead
-        // and will not respawn if Mario leaves and re-enters the spawner's radius
-        // even though the goomba isn't actually dead.
-        if (obj_handle_attacks(&sGoombaHitbox, GOOMBA_ACT_ATTACKED_MARIO,
-                               sGoombaAttackHandlers[o->oGoombaSize & 1])) {
+        if (attack = obj_handle_attacks(&sGoombaHitbox, GOOMBA_ACT_ATTACKED_MARIO,
+                                        sGoombaAttackHandlers[o->oGoombaSize & 1])) {
+            // Read the code of obj_handle_attacks to understand this
+            // if-statement:
+            if (sGoombaAttackHandlers[o->oGoombaSize & 1][attack - 1]
+                != ATTACK_HANDLER_SPECIAL_HUGE_GOOMBA_WEAKLY_ATTACKED) {
+                // Tell bingo we killed a goomba.
+                bingo_update(BINGO_UPDATE_KILLED_GOOMBA);
+            }
             mark_goomba_as_dead();
         }
 

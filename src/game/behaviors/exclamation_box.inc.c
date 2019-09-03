@@ -1,4 +1,5 @@
 // exclamation_box.c.inc
+#include "game/bingo.h"
 
 struct ObjectHitbox sExclamationBoxHitbox = {
     /* interactType: */ INTERACT_BREAKABLE,
@@ -12,23 +13,24 @@ struct ObjectHitbox sExclamationBoxHitbox = {
     /* hurtboxHeight: */ 30,
 };
 
-struct Struct802C0DF0 sExclamationBoxContents[] = { { 0, 0, 0, MODEL_MARIOS_WING_CAP, bhvWingCap },
-                                                    { 1, 0, 0, MODEL_MARIOS_METAL_CAP, bhvMetalCap },
-                                                    { 2, 0, 0, MODEL_MARIOS_CAP, bhvVanishCap },
-                                                    { 3, 0, 0, MODEL_KOOPA_SHELL, bhvKoopaShell },
-                                                    { 4, 0, 0, MODEL_YELLOW_COIN,
-                                                      bhvSingleCoinGetsSpawned },
-                                                    { 5, 0, 0, MODEL_NONE, bhvThreeCoinsSpawn },
-                                                    { 6, 0, 0, MODEL_NONE, bhvTenCoinsSpawn },
-                                                    { 7, 0, 0, MODEL_1UP, bhv1upWalking },
-                                                    { 8, 0, 0, MODEL_STAR, bhvSpawnedStar },
-                                                    { 9, 0, 0, MODEL_1UP, bhv1upRunningAway },
-                                                    { 10, 0, 1, MODEL_STAR, bhvSpawnedStar },
-                                                    { 11, 0, 2, MODEL_STAR, bhvSpawnedStar },
-                                                    { 12, 0, 3, MODEL_STAR, bhvSpawnedStar },
-                                                    { 13, 0, 4, MODEL_STAR, bhvSpawnedStar },
-                                                    { 14, 0, 5, MODEL_STAR, bhvSpawnedStar },
-                                                    { 99, 0, 0, 0, NULL } };
+struct Struct802C0DF0 sExclamationBoxContents[] = {
+    { 0, 0, 0, MODEL_MARIOS_WING_CAP, bhvWingCap },
+    { 1, 0, 0, MODEL_MARIOS_METAL_CAP, bhvMetalCap },
+    { 2, 0, 0, MODEL_MARIOS_CAP, bhvVanishCap },
+    { 3, 0, 0, MODEL_KOOPA_SHELL, bhvKoopaShell },
+    { 4, 0, 0, MODEL_YELLOW_COIN, bhvSingleCoinGetsSpawned },
+    { 5, 0, 0, MODEL_NONE, bhvThreeCoinsSpawn },
+    { 6, 0, 0, MODEL_NONE, bhvTenCoinsSpawn },
+    { 7, 0, 0, MODEL_1UP, bhv1upWalking },
+    { 8, 0, 0, MODEL_STAR, bhvSpawnedStar },
+    { 9, 0, 0, MODEL_1UP, bhv1upRunningAway },
+    { 10, 0, 1, MODEL_STAR, bhvSpawnedStar },
+    { 11, 0, 2, MODEL_STAR, bhvSpawnedStar },
+    { 12, 0, 3, MODEL_STAR, bhvSpawnedStar },
+    { 13, 0, 4, MODEL_STAR, bhvSpawnedStar },
+    { 14, 0, 5, MODEL_STAR, bhvSpawnedStar },
+    { 99, 0, 0, 0, NULL }
+};
 
 void bhv_rotatin_exclamation_box_loop(void) {
     if (o->parentObj->oAction != 1)
@@ -126,8 +128,10 @@ void ActionExclamationBox4(void) {
     if (o->oBehParams2ndByte < 3) {
         o->oAction = 5;
         obj_hide();
-    } else
+    } else {
         mark_object_for_deletion(o);
+        bingo_update(BINGO_UPDATE_EXCLAMATION_MARK_BOX);
+    }
 }
 
 void ActionExclamationBox5(void) {
