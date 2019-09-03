@@ -1,17 +1,18 @@
-# Super Mario 64
+# Bingo64
 
-This repo contains a full decompilation of Super Mario 64 (J) and (U).
-The source and data have been decompiled but complete naming and documentation
-all of the code and data is still a work in progress. Decompiling the (E) ROM
-is also an ongoing effort.
+This repo is a fork of the full decompilation of Super Mario 64
+that implements the popular speedrunning challenge known as bingo in
+the game itself.
 
-It builds the following ROMs:
-
-* sm64.jp.z64 `sha1: 8a20a5c83d6ceb0f0506cfc9fa20d8f438cafe51`
-* sm64.us.z64 `sha1: 9bef1128717f958171a4afac3ed78ee2bb4e86ce`
+To play the game, optionally enter a seed in the seeds menu during
+file selection, then proceed to any file. Press L to view the generated
+bingo board, and use the D-pad to get more information about a particular
+objective. You win if you complete 5 objectives in a row.
 
 This repo does not include all assets necessary for compiling the ROMs.
 A prior copy of the game is required to extract the required assets.
+The remainder of this README will reflect the decompiled source code's
+installation instructions, as they are quite involved.
 
 ## Installation
 
@@ -88,7 +89,8 @@ The recommended path is installing a Linux distribution under a VM.
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to
-discuss what you would like to change.
+discuss what you would like to change. Some instructions have been placed in 
+bingo_guide.txt, if you would like to add a new objective type.
 
 Run clang-format on your code to ensure it meets the project's coding standards.
 
