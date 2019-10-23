@@ -114,7 +114,7 @@ void draw_bingo_screen() {
     int i, j, length;
     int spacing = 35;
     char icon[2];
-    char desc_text[150];
+    char desc_text[300];
     char seed_print[20];
 
     // Title.

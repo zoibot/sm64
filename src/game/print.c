@@ -641,6 +641,12 @@ u8 tiny_text_convert_ascii(char c) {
     if (c == ':') {
         return 0xE6;
     }
+    if (c == '(') {
+        return 0xE1;
+    }
+    if (c == ')') {
+        return 0xE3;
+    }
 
     return c; // lol idk
 }

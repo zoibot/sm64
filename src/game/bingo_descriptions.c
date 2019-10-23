@@ -114,6 +114,7 @@ void get_star_objective_desc(struct BingoObjective *obj, char *desc) {
     char revEncLevelName[60];
     char revEncActName[60];
     char noTouchButtonText[60];
+    char hintOrCompleteSuffix[200];
     s32 shouldPutSpace = 1;
 
     get_level_name(revEncLevelName, obj->data.starObjective.course);
@@ -149,9 +150,16 @@ void get_star_objective_desc(struct BingoObjective *obj, char *desc) {
             break;
     }
 
+    if (obj->state == BINGO_STATE_COMPLETE) {
+        sprintf(hintOrCompleteSuffix, ": Complete!");
+    } else if (obj->type == BINGO_OBJECTIVE_STAR_A_BUTTON_CHALLENGE) {
+        sprintf(hintOrCompleteSuffix, "\n(Hint: ...)");
+    } else {
+        sprintf(hintOrCompleteSuffix, "");
+    }
+
     sprintf(desc, "Collect the star%s%s from %s%s%s", shouldPutSpace ? " " : "", revEncActName,
-            revEncLevelName + 3, noTouchButtonText,
-            obj->state == BINGO_STATE_COMPLETE ? ": Complete!" : "");
+            revEncLevelName + 3, noTouchButtonText, hintOrCompleteSuffix);
 }
 
 void get_star_timed_objective_desc(struct BingoObjective *obj, char *desc) {
@@ -260,8 +268,9 @@ void get_kill_enemy_objective_desc(struct BingoObjective *obj, char *desc) {
     if (obj->state == BINGO_STATE_COMPLETE) {
         strcpy(suffix, ": Complete!");
     } else {
-        sprintf(suffix, ". Remaining: %d", obj->data.killEnemyObjective.enemiesToKill
-                                               - obj->data.killEnemyObjective.enemiesKilled);
+        sprintf(suffix, ". Remaining: %d",
+                obj->data.killEnemyObjective.enemiesToKill
+                    - obj->data.killEnemyObjective.enemiesKilled);
     }
 
     switch (obj->data.killEnemyObjective.enemyType) {
