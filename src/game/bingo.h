@@ -98,7 +98,7 @@ static s32 update_is_enemy_killing(enum BingoObjectiveUpdate update)
 }
 
 static s32 update_type_matches_enemy_type(
-    enum BingoObjectiveUpdate update, 
+    enum BingoObjectiveUpdate update,
     enum EnemyType type
 ) {
     return (
@@ -112,6 +112,13 @@ struct StarObjectiveData
 {
     enum CourseNum course;
     s32 starIndex;
+};
+
+struct ABCStarObjectiveData
+{
+    enum CourseNum course;
+    s32 starIndex;
+    char *hint;
 };
 
 struct StarTimerObjectiveData
@@ -151,6 +158,7 @@ struct BingoObjective
     char title[30];
     union {
         struct StarObjectiveData starObjective;
+        struct ABCStarObjectiveData abcStarObjective;
         struct StarTimerObjectiveData starTimerObjective;
         struct CourseCollectableData courseCollectableData;
         struct KillEnemyObjectiveData killEnemyObjective;

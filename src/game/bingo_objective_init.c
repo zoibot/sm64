@@ -10,11 +10,12 @@
 #include "bingo_titles.h"
 #include "strcpy.h"
 
-void random_abc(enum CourseNum *course, s32 *star) {
+void random_abc(enum CourseNum *course, s32 *star, char **hint) {
     u32 num_stars = sizeof(possibleABC) / sizeof(possibleABC[0]);
     u32 the_star = RandomU16() % num_stars;
-    *course = possibleABC[the_star][0];
-    *star = possibleABC[the_star][1] - 1; // star is 0-indexed everywhere else :(
+    *course = possibleABC[the_star].course;
+    *star = possibleABC[the_star].star - 1; // star is 0-indexed everywhere else :(
+    *hint = possibleABC[the_star].hint;
 }
 
 enum EnemyType random_enemy_goomba_or_bobomb() {
@@ -173,18 +174,20 @@ void bingo_objective_star_a_button_challenge_init(struct BingoObjective *objecti
                                                   enum BingoObjectiveClass class) {
     enum CourseNum course;
     s32 star;
+    char *hint;
 
     switch (class) {
         case BINGO_CLASS_HARD:
-            random_abc(&course, &star);
+            random_abc(&course, &star, &hint);
             break;
         default:
             ahhh_ahhhhh_oh_no_not_implemented(objective);
             return;
     }
     strcpy(objective->icon, ICON_A_BUTTON);
-    objective->data.starObjective.course = course;
-    objective->data.starObjective.starIndex = star;
+    objective->data.abcStarObjective.course = course;
+    objective->data.abcStarObjective.starIndex = star;
+    objective->data.abcStarObjective.hint = hint;
     get_objective_title(objective);
 }
 

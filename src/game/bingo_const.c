@@ -1,5 +1,6 @@
 #include <ultra64.h>
 #include "area.h"
+#include "bingo_const.h"
 
 // TODO: This should be a hash-map or something
 char *courseAbbreviations[24] = { "BOB",   "WF",   "JRB", "CCM",   "BBH",   "HMC",   "LLL",   "SSL",
@@ -10,54 +11,55 @@ s32 course_1ups[15] = { 3, 4, 2,
                         5, // ignore the impossible 1up in CCM
                         2, 4, 8, 9, 1, 4, 4, 11, 10, 4, 9 };
 
-// https://docs.google.com/spreadsheets/d/1MDgm0yj5IJeqYMJlOdbKyIz66aX1Y3dYm79_wIePxY0/edit#gid=0
-// https://www.youtube.com/playlist?list=PLP0jCPw9IPWhdWX4Ae24hjdX2CH15GKTg
-s32 possibleABC[32][2] = {
-    { COURSE_BOB, 1 },
-    { COURSE_BOB, 2 },
-    // BOB6 is possible but 11 minutes long, requiring extensive cloning
-    { COURSE_WF, 3 },
-    { COURSE_WF, 4 },
-    { COURSE_WF, 6 },
-    // JRB1 is possible but 12 minutes long and very precise
-    { COURSE_JRB, 2 }, // pretty hard and quite boring...
-    { COURSE_CCM, 1 },
-    { COURSE_CCM, 2 },
-    { COURSE_CCM, 3 },
-    // CCM4 is possible but there is a hard bounce
-    { COURSE_CCM, 5 },
-    // BBH1 is possible but requires VSC
-    { COURSE_HMC, 1 },
-    { COURSE_LLL, 1 },
-    { COURSE_LLL, 2 },
-    { COURSE_LLL, 3 },
-    { COURSE_LLL, 4 },
-    { COURSE_SSL, 1 }, // is really precise... may wanna kill it
-    { COURSE_SSL, 2 },
-    // DDD5 is possible but super hard
-    { COURSE_SL, 2 },
-    { COURSE_SL, 3 },
-    { COURSE_SL, 4 },
-    { COURSE_SL, 5 },
-    // SL6 is possible but requires lots of Spindrift RNG
-    { COURSE_WDW, 1 },
-    // WDW3 is possible but totally RNG (for getting past Chuckya)
-    // TTM1 is possible but 11 mins long and requires a HOLP placement
-    { COURSE_TTM, 2 },
-    { COURSE_TTM, 3 },
-    { COURSE_TTM, 4 },
-    { COURSE_TTM, 5 },
-    { COURSE_TTM, 6 },
-    { COURSE_THI, 1 }, // should have a hint, as it requires some knowledge
-    { COURSE_THI, 2 },
-    { COURSE_THI, 3 },
-    // THI4 is possible but borderline too hard (need fly guy bounce to get in pipe)
-    { COURSE_THI, 6 } // requires some knowledge but isn't too hard either
-};
-
 s32 get_1ups_in_level(enum CourseNum course) {
     return course_1ups[course - 1];
 }
+
+// https://docs.google.com/spreadsheets/d/1MDgm0yj5IJeqYMJlOdbKyIz66aX1Y3dYm79_wIePxY0/edit#gid=0
+// https://www.youtube.com/playlist?list=PLP0jCPw9IPWhdWX4Ae24hjdX2CH15GKTg
+
+struct ABCData possibleABC[32] = {
+    { COURSE_BOB, 1, "placeholder hint" },
+    { COURSE_BOB, 2, "placeholder hint" },
+    // BOB6 is possible but 11 minutes long, requiring extensive cloning
+    { COURSE_WF, 3, "placeholder hint" },
+    { COURSE_WF, 4, "placeholder hint" },
+    { COURSE_WF, 6, "placeholder hint" },
+    // JRB1 is possible but 12 minutes long and very precise
+    { COURSE_JRB, 2, "placeholder hint" }, // pretty hard and quite boring...
+    { COURSE_CCM, 1, "placeholder hint" },
+    { COURSE_CCM, 2, "placeholder hint" },
+    { COURSE_CCM, 3, "placeholder hint" },
+    // CCM4 is possible but there is a hard bounce
+    { COURSE_CCM, 5, "placeholder hint" },
+    // BBH1 is possible but requires VSC
+    { COURSE_HMC, 1, "placeholder hint" },
+    { COURSE_LLL, 1, "placeholder hint" },
+    { COURSE_LLL, 2, "placeholder hint" },
+    { COURSE_LLL, 3, "placeholder hint" },
+    { COURSE_LLL, 4, "placeholder hint" },
+    { COURSE_SSL, 1, "placeholder hint" }, // is really precise... may wanna kill it
+    { COURSE_SSL, 2, "placeholder hint" },
+    // DDD5 is possible but super hard
+    { COURSE_SL, 2, "placeholder hint" },
+    { COURSE_SL, 3, "placeholder hint" },
+    { COURSE_SL, 4, "placeholder hint" },
+    { COURSE_SL, 5, "placeholder hint" },
+    // SL6 is possible but requires lots of Spindrift RNG
+    { COURSE_WDW, 1, "placeholder hint" },
+    // WDW3 is possible but totally RNG (for getting past Chuckya)
+    // TTM1 is possible but 11 mins long and requires a HOLP placement
+    { COURSE_TTM, 2, "placeholder hint" },
+    { COURSE_TTM, 3, "placeholder hint" },
+    { COURSE_TTM, 4, "placeholder hint" },
+    { COURSE_TTM, 5, "placeholder hint" },
+    { COURSE_TTM, 6, "placeholder hint" },
+    { COURSE_THI, 1, "placeholder hint" }, // should have a hint, as it requires some knowledge
+    { COURSE_THI, 2, "placeholder hint" },
+    { COURSE_THI, 3, "placeholder hint" },
+    // THI4 is possible but borderline too hard (need fly guy bounce to get in pipe)
+    { COURSE_THI, 6, "placeholder hint" } // requires some knowledge but isn't too hard either
+};
 
 s32 starTimes[90][3] = {
     { COURSE_BOB, 1, 66 }, { COURSE_BOB, 2, 127 }, { COURSE_BOB, 3, 29 }, { COURSE_BOB, 4, 69 },
