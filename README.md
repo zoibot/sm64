@@ -64,8 +64,8 @@ export QEMU_IRIX=/opt/qemu-irix/bin/qemu-irix
 
 #### 4. Build ROM
 
-Run `make` to build the ROM (defaults to `VERSION=us`). Make sure your path to the repo 
-is not too long or else this process will error, as the emulated IDO compiler cannot 
+Run `make` to build the ROM (defaults to `VERSION=us`). Make sure your path to the repo
+is not too long or else this process will error, as the emulated IDO compiler cannot
 handle paths longer than 255 characters.
 Examples:
 ```
@@ -89,7 +89,7 @@ The recommended path is installing a Linux distribution under a VM.
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to
-discuss what you would like to change. Some instructions have been placed in 
+discuss what you would like to change. Some instructions have been placed in
 bingo_guide.txt, if you would like to add a new objective type.
 
 Run clang-format on your code to ensure it meets the project's coding standards.
