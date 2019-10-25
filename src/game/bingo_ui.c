@@ -80,10 +80,11 @@ void draw_bingo_hud_timer() {
 }
 
 void bingo_print_description(char *str) {
-    int last_space;
-    int last_space_line_chars;
+    int last_space = 0;
+    int last_space_line_chars = 0;
     int line_chars = 0;
     s32 iter = 0;
+    s32 total_lines = 0;
     u8 finalDesc[150] = { 0x11, 0x28, 0x2F, 0x2F, 0xFF };
 
     while (str[iter] != '\0') {
@@ -93,6 +94,8 @@ void bingo_print_description(char *str) {
             if (line_chars >= 25) {
                 line_chars = iter - last_space_line_chars;
                 finalDesc[last_space] = 0xFE;
+                // update number of lines
+                total_lines++;
             }
             last_space = iter;
             last_space_line_chars = iter;
@@ -106,7 +109,7 @@ void bingo_print_description(char *str) {
     }
     finalDesc[iter] = 0xFF;
 
-    print_text_not_tiny(180, 120, finalDesc);
+    print_text_not_tiny(180, 100 + total_lines * 10, finalDesc);
 }
 
 void draw_bingo_screen() {
