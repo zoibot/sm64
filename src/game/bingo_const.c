@@ -19,46 +19,49 @@ s32 get_1ups_in_level(enum CourseNum course) {
 // https://www.youtube.com/playlist?list=PLP0jCPw9IPWhdWX4Ae24hjdX2CH15GKTg
 
 struct ABCData possibleABC[32] = {
-    { COURSE_BOB, 1, "placeholder hint" },
-    { COURSE_BOB, 2, "placeholder hint" },
+    { COURSE_BOB, 1, "" },
+    { COURSE_BOB, 2, "" },
     // BOB6 is possible but 11 minutes long, requiring extensive cloning
-    { COURSE_WF, 3, "placeholder hint" },
-    { COURSE_WF, 4, "placeholder hint" },
-    { COURSE_WF, 6, "placeholder hint" },
+    { COURSE_WF, 3, "Don't forget the warp." },
+    { COURSE_WF, 4, "Don't forget the warp." },
+    { COURSE_WF, 6, "Warp, then cannonless..." },
     // JRB1 is possible but 12 minutes long and very precise
-    { COURSE_JRB, 2, "placeholder hint" }, // pretty hard and quite boring...
-    { COURSE_CCM, 1, "placeholder hint" },
-    { COURSE_CCM, 2, "placeholder hint" },
-    { COURSE_CCM, 3, "placeholder hint" },
+    { COURSE_JRB, 2,
+      "Use the B button underwater to go slightly faster." }, // pretty hard and quite boring...
+    { COURSE_CCM, 1, "" },
+    { COURSE_CCM, 2, "" },
+    { COURSE_CCM, 3, "" },
     // CCM4 is possible but there is a hard bounce
-    { COURSE_CCM, 5, "placeholder hint" },
+    { COURSE_CCM, 5, "" },
     // BBH1 is possible but requires VSC
-    { COURSE_HMC, 1, "placeholder hint" },
-    { COURSE_LLL, 1, "placeholder hint" },
-    { COURSE_LLL, 2, "placeholder hint" },
-    { COURSE_LLL, 3, "placeholder hint" },
-    { COURSE_LLL, 4, "placeholder hint" },
-    { COURSE_SSL, 1, "placeholder hint" }, // is really precise... may wanna kill it
-    { COURSE_SSL, 2, "placeholder hint" },
+    { COURSE_HMC, 1, "Clip through a wall under an elevator with a zoomed-out camera." },
+    { COURSE_LLL, 1, "" },
+    { COURSE_LLL, 2, "" },
+    { COURSE_LLL, 3, "" },
+    { COURSE_LLL, 4, "" },
+    // SSL1 is really precise. Gonna kill it. Requires Tweester
+    { COURSE_SSL, 2, "" },
     // DDD5 is possible but super hard
-    { COURSE_SL, 2, "placeholder hint" },
-    { COURSE_SL, 3, "placeholder hint" },
-    { COURSE_SL, 4, "placeholder hint" },
-    { COURSE_SL, 5, "placeholder hint" },
+    { COURSE_SL, 2, "" },
+    // SL3 (In the Deep Freeze) is super hard actually, whoops
+    { COURSE_SL, 4, "" },
+    { COURSE_SL, 5, "" },
     // SL6 is possible but requires lots of Spindrift RNG
-    { COURSE_WDW, 1, "placeholder hint" },
+    { COURSE_WDW, 1, "Teleport to success." },
     // WDW3 is possible but totally RNG (for getting past Chuckya)
     // TTM1 is possible but 11 mins long and requires a HOLP placement
-    { COURSE_TTM, 2, "placeholder hint" },
-    { COURSE_TTM, 3, "placeholder hint" },
-    { COURSE_TTM, 4, "placeholder hint" },
-    { COURSE_TTM, 5, "placeholder hint" },
-    { COURSE_TTM, 6, "placeholder hint" },
-    { COURSE_THI, 1, "placeholder hint" }, // should have a hint, as it requires some knowledge
-    { COURSE_THI, 2, "placeholder hint" },
-    { COURSE_THI, 3, "placeholder hint" },
+    { COURSE_TTM, 2, "You may have to framewalk or pause-buffer to get past the rolling log." },
+    { COURSE_TTM, 3, "Use a Fly Guy to get past the rolling log." },
+    { COURSE_TTM, 4, "A precise dive can help you skip the slide." },
+    { COURSE_TTM, 5, "You may have to framewalk or pause-buffer to get past the rolling log." },
+    { COURSE_TTM, 6, "Use the Crazy Box to get to the mushroom." },
+    { COURSE_THI, 1, "Enter Huge Island and use the shell." },
+    { COURSE_THI, 2, "Enter Huge Island and use the shell." },
+    { COURSE_THI, 3, "Enter Huge Island and use the shell." },
     // THI4 is possible but borderline too hard (need fly guy bounce to get in pipe)
-    { COURSE_THI, 6, "placeholder hint" } // requires some knowledge but isn't too hard either
+    { COURSE_THI, 6,
+      "Enter Huge Island, use the shell, "
+      "and use Chuckya to clip into the mountain." }
 };
 
 s32 starTimes[90][3] = {
