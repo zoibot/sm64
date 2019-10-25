@@ -153,7 +153,11 @@ void get_star_objective_desc(struct BingoObjective *obj, char *desc) {
     if (obj->state == BINGO_STATE_COMPLETE) {
         sprintf(hintOrCompleteSuffix, ": Complete!");
     } else if (obj->type == BINGO_OBJECTIVE_STAR_A_BUTTON_CHALLENGE) {
-        sprintf(hintOrCompleteSuffix, "\n(Hint: %s)", obj->data.abcStarObjective.hint);
+        if (obj->data.abcStarObjective.hint[0] == '\0') {
+            sprintf(hintOrCompleteSuffix, "");
+        } else {
+            sprintf(hintOrCompleteSuffix, "\n(Hint: %s)", obj->data.abcStarObjective.hint);
+        }
     } else {
         sprintf(hintOrCompleteSuffix, "");
     }
