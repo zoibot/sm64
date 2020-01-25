@@ -238,9 +238,13 @@ void bhv_act_selector_loop(void) {
 
     // Bingo star selection handling
     if (gPlayer1Controller->buttonDown & R_TRIG) {
-        // sBingoStarSelected++;
-        obj_disable_rendering_func(sBingoStarSelectorModels[0]);
-        obj_enable_rendering_func(sBingoStarSelectorModels[1]);
+        obj_disable_rendering_func(sBingoStarSelectorModels[sBingoStarSelected]);
+        sBingoStarSelected = MIN(BINGO_STARS_TOTAL_AMOUNT - 1, sBingoStarSelected + 1);
+        obj_enable_rendering_func(sBingoStarSelectorModels[sBingoStarSelected]);
+    } else if (gPlayer1Controller->buttonDown & L_TRIG) {
+        obj_disable_rendering_func(sBingoStarSelectorModels[sBingoStarSelected]);
+        sBingoStarSelected = MAX(0, sBingoStarSelected - 1);
+        obj_enable_rendering_func(sBingoStarSelectorModels[sBingoStarSelected]);
     }
 
 }
