@@ -102,7 +102,7 @@ void render_100_coin_star(u8 stars) {
  * Renders the extra Bingo "modifier" star.
  */
 void render_bingo_modifier_star(void) {
-    sStarSelectorModels[7] = spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR,
+    sStarSelectorModels[7] = spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR_GREEN,
                                                        bhvActSelectorStarType, -450, -60, -300, 0, 0, 0);
     sStarSelectorModels[7]->oStarSelectorSize = 1.0;
     sStarSelectorModels[7]->oStarSelectorType = STAR_SELECTOR_100_COINS;

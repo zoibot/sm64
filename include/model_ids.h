@@ -486,11 +486,17 @@
 #define MODEL_BURN_SMOKE                  0x94        // burn_smoke_geo
 #define MODEL_SPARKLES                    0x95        // sparkles_geo
 #define MODEL_SMOKE                       0x96        // smoke_geo
+
+// Bingo custom star colors go below here.
+
+#define MODEL_STAR_GREEN                  0x97        // star_green_geo
 // find me
 // find me
 // find me
 // find me
-// find me
+
+// Bingo custom star colors go above here.
+
 #define MODEL_BURN_SMOKE_UNUSED           0x9C        // burn_smoke_geo - unused & duplicated
 // find me
 #define MODEL_WHITE_PARTICLE_DL           0x9E        // white_particle_dl
