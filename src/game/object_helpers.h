@@ -332,4 +332,8 @@ void func_802A2A38(void);
 void obj_spawn_particles(struct SpawnParticlesInfo *sp28);
 extern s16 obj_reflect_move_angle_off_wall(void);
 
+void obj_disable_rendering_func(struct Object *obj);
+void obj_enable_rendering_func(struct Object *obj);
+
+
 #endif /* OBJECT_HELPERS_H */

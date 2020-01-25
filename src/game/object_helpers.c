@@ -771,6 +771,10 @@ void obj_enable_rendering(void) {
     o->header.gfx.node.flags |= GRAPH_RENDER_ACTIVE;
 }
 
+void obj_enable_rendering_func(struct Object *obj) {
+    obj->header.gfx.node.flags |= GRAPH_RENDER_ACTIVE;
+}
+
 void obj_disable_rendering_and_become_intangible(struct Object *a0) {
     a0->header.gfx.node.flags &= ~GRAPH_RENDER_ACTIVE;
     a0->oIntangibleTimer = -1;
@@ -778,6 +782,10 @@ void obj_disable_rendering_and_become_intangible(struct Object *a0) {
 
 void obj_disable_rendering(void) {
     o->header.gfx.node.flags &= ~GRAPH_RENDER_ACTIVE;
+}
+
+void obj_disable_rendering_func(struct Object *obj) {
+    obj->header.gfx.node.flags &= ~GRAPH_RENDER_ACTIVE;
 }
 
 void obj_unhide(void) {

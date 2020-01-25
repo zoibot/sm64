@@ -31,7 +31,9 @@
 static struct Object *sStarSelectorModels[9];
 
 // Bingo star selection:
-static struct Object *sBingoStarSelectorModels[2];
+#define BINGO_STARS_TOTAL_AMOUNT 2
+static struct Object *sBingoStarSelectorModels[BINGO_STARS_TOTAL_AMOUNT];
+static s32 sBingoStarSelected = 0;
 
 // The act the course is loaded as, affects whether some objects spawn.
 static s8 sLoadedActNum;
@@ -105,10 +107,18 @@ void render_100_coin_star(u8 stars) {
  * Renders the extra Bingo "modifier" star.
  */
 void render_bingo_modifier_star(void) {
-    sBingoStarSelectorModels[0] = spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR_GREEN,
+    s32 i;
+    sBingoStarSelectorModels[0] = spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR,
                                                        bhvActSelectorStarType, -450, -60, -300, 0, 0, 0);
-    sBingoStarSelectorModels[0]->oStarSelectorSize = 1.0;
-    sBingoStarSelectorModels[0]->oStarSelectorType = STAR_SELECTOR_100_COINS;
+
+    sBingoStarSelectorModels[1] = spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR_GREEN,
+                                                       bhvActSelectorStarType, -450, -60, -300, 0, 0, 0);
+    for (i = 0; i < BINGO_STARS_TOTAL_AMOUNT; i++) {
+        sBingoStarSelectorModels[i]->oStarSelectorSize = 1.0;
+        sBingoStarSelectorModels[i]->oStarSelectorType = STAR_SELECTOR_100_COINS;
+        obj_disable_rendering_func(sBingoStarSelectorModels[i]);
+    }
+    obj_enable_rendering_func(sBingoStarSelectorModels[0]);
 }
 
 /**
@@ -227,6 +237,11 @@ void bhv_act_selector_loop(void) {
     }
 
     // Bingo star selection handling
+    if (gPlayer1Controller->buttonDown & R_TRIG) {
+        // sBingoStarSelected++;
+        obj_disable_rendering_func(sBingoStarSelectorModels[0]);
+        obj_enable_rendering_func(sBingoStarSelectorModels[1]);
+    }
 
 }
 
