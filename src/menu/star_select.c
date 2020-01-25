@@ -30,6 +30,9 @@
 // Star Selector count models printed in the act selector menu.
 static struct Object *sStarSelectorModels[9];
 
+// Bingo star selection:
+static struct Object *sBingoStarSelectorModels[2];
+
 // The act the course is loaded as, affects whether some objects spawn.
 static s8 sLoadedActNum;
 
@@ -102,10 +105,10 @@ void render_100_coin_star(u8 stars) {
  * Renders the extra Bingo "modifier" star.
  */
 void render_bingo_modifier_star(void) {
-    sStarSelectorModels[7] = spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR_GREEN,
+    sBingoStarSelectorModels[0] = spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR_GREEN,
                                                        bhvActSelectorStarType, -450, -60, -300, 0, 0, 0);
-    sStarSelectorModels[7]->oStarSelectorSize = 1.0;
-    sStarSelectorModels[7]->oStarSelectorType = STAR_SELECTOR_100_COINS;
+    sBingoStarSelectorModels[0]->oStarSelectorSize = 1.0;
+    sBingoStarSelectorModels[0]->oStarSelectorType = STAR_SELECTOR_100_COINS;
 }
 
 /**
@@ -222,6 +225,9 @@ void bhv_act_selector_loop(void) {
             sStarSelectorModels[i]->oStarSelectorType = STAR_SELECTOR_NOT_SELECTED;
         }
     }
+
+    // Bingo star selection handling
+
 }
 
 /**
