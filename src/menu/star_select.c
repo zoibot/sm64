@@ -31,9 +31,15 @@
 static struct Object *sStarSelectorModels[9];
 
 // Bingo star selection:
-#define BINGO_STARS_TOTAL_AMOUNT 2
+enum BingoModifier {
+    BINGO_MODIFIER_NONE = 0,
+    BINGO_MODIFIER_GREEN_DEMON = 1,
+    BINGO_MODIFIER_MAX = BINGO_MODIFIER_GREEN_DEMON,
+    BINGO_STARS_TOTAL_AMOUNT = BINGO_MODIFIER_MAX + 1
+};
+
 static struct Object *sBingoStarSelectorModels[BINGO_STARS_TOTAL_AMOUNT];
-static s32 sBingoStarSelected = 0;
+static enum BingoModifier sBingoStarSelected = BINGO_MODIFIER_NONE;
 
 // The act the course is loaded as, affects whether some objects spawn.
 static s8 sLoadedActNum;
@@ -239,7 +245,7 @@ void bhv_act_selector_loop(void) {
     // Bingo star selection handling
     if (gPlayer1Controller->buttonDown & R_TRIG) {
         obj_disable_rendering_func(sBingoStarSelectorModels[sBingoStarSelected]);
-        sBingoStarSelected = MIN(BINGO_STARS_TOTAL_AMOUNT - 1, sBingoStarSelected + 1);
+        sBingoStarSelected = MIN(BINGO_MODIFIER_MAX, sBingoStarSelected + 1);
         obj_enable_rendering_func(sBingoStarSelectorModels[sBingoStarSelected]);
         // TODO: Use oOpacity to fade in/out selections.
         // sBingoStarSelectorModels[sBingoStarSelected]->oOpacity /= 2;
@@ -343,10 +349,10 @@ static void print_act_selector_strings(void) {
         get_str_x_pos_from_center(62, bingoModifierText, 10.0f), 150, bingoModifierText);
 
     switch (sBingoStarSelected) {
-        case 0:
+        case BINGO_MODIFIER_NONE:
             bingoModifierName = gBingoTextPressLOrR;
             break;
-        case 1:
+        case BINGO_MODIFIER_GREEN_DEMON:
             bingoModifierName = gBingoTextGreenDemon;
             break;
     }
