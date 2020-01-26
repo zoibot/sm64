@@ -202,7 +202,10 @@
 #endif
 
 // Bingo course modifiers
-#define BINGO_PLACEHOLDER _("PLACEHOLDER")
+#define BINGO_MODIFIER _("BINGO MODIFIER")
+#define BINGO_PRESS_L_OR_R _(" PRESS L OR R...")  // space intentional for centering
+
+#define BINGO_GREEN_DEMON _("GREEN DEMON")
 
 // Camera Options
 #define TEXT_LAKITU_MARIO _("LAKITU + MARIO")

@@ -281,6 +281,9 @@ static void print_course_number(void) {
 #define ACT_NAME_X 163
 #endif
 
+u8 gBingoTextPressLOrR[] = { BINGO_PRESS_L_OR_R };
+u8 gBingoTextGreenDemon[] = { BINGO_GREEN_DEMON };
+
 /**
  * Print act selector strings, some with special checks.
  */
@@ -297,7 +300,8 @@ static void print_act_selector_strings(void) {
     s16 actNameX;
     s8 i;
 
-    u8 bingoModifierName[] = { BINGO_PLACEHOLDER };
+    u8 bingoModifierText[] = { BINGO_MODIFIER };
+    u8 *bingoModifierName;
 
     create_dl_ortho_matrix();
 
@@ -336,7 +340,19 @@ static void print_act_selector_strings(void) {
     }
 
     print_menu_generic_string(
-        get_str_x_pos_from_center(62, bingoModifierName, 10.0f), 150, bingoModifierName);
+        get_str_x_pos_from_center(62, bingoModifierText, 10.0f), 150, bingoModifierText);
+
+    switch (sBingoStarSelected) {
+        case 0:
+            bingoModifierName = gBingoTextPressLOrR;
+            break;
+        case 1:
+            bingoModifierName = gBingoTextGreenDemon;
+            break;
+    }
+
+    print_menu_generic_string(
+        get_str_x_pos_from_center(62, bingoModifierName, 10.0f), 165, bingoModifierName);
 
     gSPDisplayList(gDisplayListHead++, dl_menu_ia8_text_end);
 #endif // !VERSION_EU
