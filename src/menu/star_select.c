@@ -241,7 +241,8 @@ void bhv_act_selector_loop(void) {
         obj_disable_rendering_func(sBingoStarSelectorModels[sBingoStarSelected]);
         sBingoStarSelected = MIN(BINGO_STARS_TOTAL_AMOUNT - 1, sBingoStarSelected + 1);
         obj_enable_rendering_func(sBingoStarSelectorModels[sBingoStarSelected]);
-        sBingoStarSelectorModels[sBingoStarSelected]->oOpacity /= 2;
+        // TODO: Use oOpacity to fade in/out selections.
+        // sBingoStarSelectorModels[sBingoStarSelected]->oOpacity /= 2;
     } else if (gPlayer1Controller->buttonDown & L_TRIG) {
         obj_disable_rendering_func(sBingoStarSelectorModels[sBingoStarSelected]);
         sBingoStarSelected = MAX(0, sBingoStarSelected - 1);
@@ -296,6 +297,8 @@ static void print_act_selector_strings(void) {
     s16 actNameX;
     s8 i;
 
+    u8 bingoModifierName[] = { BINGO_PLACEHOLDER };
+
     create_dl_ortho_matrix();
 
     // Print the coin highscore.
@@ -331,6 +334,9 @@ static void print_act_selector_strings(void) {
         starNumbers[0] = i;
         print_menu_generic_string(i * 34 - sVisibleStars * 17 + 139, 38, starNumbers);
     }
+
+    print_menu_generic_string(
+        get_str_x_pos_from_center(62, bingoModifierName, 10.0f), 150, bingoModifierName);
 
     gSPDisplayList(gDisplayListHead++, dl_menu_ia8_text_end);
 #endif // !VERSION_EU

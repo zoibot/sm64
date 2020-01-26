@@ -201,6 +201,9 @@
 #define TEXT_CAMERA_ANGLE_R _("SET CAMERA ANGLE WITH R")
 #endif
 
+// Bingo course modifiers
+#define BINGO_PLACEHOLDER _("PLACEHOLDER")
+
 // Camera Options
 #define TEXT_LAKITU_MARIO _("LAKITU + MARIO")
 #define TEXT_LAKITU_STOP _("LAKITU + STOP")
