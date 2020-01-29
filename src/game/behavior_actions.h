@@ -394,6 +394,7 @@ void bhv_1up_loop(void);
 void bhv_1up_jump_on_approach_loop(void);
 void bhv_1up_hidden_loop(void);
 void bhv_1up_hidden_trigger_loop(void);
+void bhv_1up_green_demon_loop(void);
 void bhv_1up_hidden_in_pole_loop(void);
 void bhv_1up_hidden_in_pole_trigger_loop(void);
 void bhv_1up_hidden_in_pole_spawner_loop(void);

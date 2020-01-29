@@ -254,10 +254,19 @@ void bhv_1up_hidden_trigger_loop(void) {
     struct Object *sp1C;
     if (are_objects_collided(o, gMarioObject) == 1) {
         sp1C = obj_nearest_object_with_behavior(bhvHidden1up);
+        if (sp1C == NULL)
+            sp1C = obj_nearest_object_with_behavior(bhv1upGreenDemon);
         if (sp1C != NULL)
             sp1C->o1UpHiddenUnkF4++;
 
         o->activeFlags = 0;
+    }
+}
+
+#include "menu/star_select.h"
+void bhv_1up_green_demon_loop(void) {
+    if (gBingoStarSelected == BINGO_MODIFIER_GREEN_DEMON) { 
+        bhv_1up_hidden_in_pole_loop();
     }
 }
 
@@ -300,6 +309,9 @@ void bhv_1up_hidden_in_pole_trigger_loop(void) {
 
     if (are_objects_collided(o, gMarioObject) == 1) {
         sp1C = obj_nearest_object_with_behavior(bhvHidden1upInPole);
+        if (sp1C == NULL) {
+            sp1C = obj_nearest_object_with_behavior(bhv1upGreenDemon);
+        }
         if (sp1C != NULL) {
             sp1C->o1UpHiddenUnkF4++;
             ;
