@@ -28,18 +28,11 @@
  */
 
 // Star Selector count models printed in the act selector menu.
+enum BingoModifier gBingoStarSelected = BINGO_MODIFIER_NONE;
 static struct Object *sStarSelectorModels[9];
 
 // Bingo star selection:
-enum BingoModifier {
-    BINGO_MODIFIER_NONE = 0,
-    BINGO_MODIFIER_GREEN_DEMON = 1,
-    BINGO_MODIFIER_MAX = BINGO_MODIFIER_GREEN_DEMON,
-    BINGO_STARS_TOTAL_AMOUNT = BINGO_MODIFIER_MAX + 1
-};
-
 static struct Object *sBingoStarSelectorModels[BINGO_STARS_TOTAL_AMOUNT];
-static enum BingoModifier sBingoStarSelected = BINGO_MODIFIER_NONE;
 
 // The act the course is loaded as, affects whether some objects spawn.
 static s8 sLoadedActNum;
@@ -244,15 +237,15 @@ void bhv_act_selector_loop(void) {
 
     // Bingo star selection handling
     if (gPlayer1Controller->buttonDown & R_TRIG) {
-        obj_disable_rendering_func(sBingoStarSelectorModels[sBingoStarSelected]);
-        sBingoStarSelected = MIN(BINGO_MODIFIER_MAX, sBingoStarSelected + 1);
-        obj_enable_rendering_func(sBingoStarSelectorModels[sBingoStarSelected]);
+        obj_disable_rendering_func(sBingoStarSelectorModels[gBingoStarSelected]);
+        gBingoStarSelected = MIN(BINGO_MODIFIER_MAX, gBingoStarSelected + 1);
+        obj_enable_rendering_func(sBingoStarSelectorModels[gBingoStarSelected]);
         // TODO: Use oOpacity to fade in/out selections.
-        // sBingoStarSelectorModels[sBingoStarSelected]->oOpacity /= 2;
+        // sBingoStarSelectorModels[gBingoStarSelected]->oOpacity /= 2;
     } else if (gPlayer1Controller->buttonDown & L_TRIG) {
-        obj_disable_rendering_func(sBingoStarSelectorModels[sBingoStarSelected]);
-        sBingoStarSelected = MAX(0, sBingoStarSelected - 1);
-        obj_enable_rendering_func(sBingoStarSelectorModels[sBingoStarSelected]);
+        obj_disable_rendering_func(sBingoStarSelectorModels[gBingoStarSelected]);
+        gBingoStarSelected = MAX(0, gBingoStarSelected - 1);
+        obj_enable_rendering_func(sBingoStarSelectorModels[gBingoStarSelected]);
     }
 
 }
@@ -348,7 +341,7 @@ static void print_act_selector_strings(void) {
     print_menu_generic_string(
         get_str_x_pos_from_center(62, bingoModifierText, 10.0f), 150, bingoModifierText);
 
-    switch (sBingoStarSelected) {
+    switch (gBingoStarSelected) {
         case BINGO_MODIFIER_NONE:
             bingoModifierName = gBingoTextPressLOrR;
             break;
