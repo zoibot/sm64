@@ -42,7 +42,7 @@ static const LevelScript script_func_local_2[] = {
     OBJECT_WITH_ACTS(/*model*/ MODEL_NONE,                  /*pos*/  3304, 4242, -4603, /*angle*/ 0, 0, 0,   /*behParam*/ 0x00000000, /*beh*/ bhvKoopaRaceEndpoint,      /*acts*/ ACT_2),
     OBJECT_WITH_ACTS(/*model*/ MODEL_KOOPA_WITH_SHELL,      /*pos*/  3400,  770,  6500, /*angle*/ 0, 0, 0,   /*behParam*/ 0x00010000, /*beh*/ bhvKoopa,                  /*acts*/ ACT_3 | ACT_4 | ACT_5 | ACT_6),
     // Green demon:
-    OBJECT_WITH_ACTS(/*model*/ MODEL_1UP,                   /*pos*/ -6558, 1000,  6464, /*angle*/ 0, 0, 0,   /*behParam*/ 0x00000000, /*beh*/ bhv1upGreenDemon,        /*acts*/ ACT_1),
+    OBJECT(          /*model*/ MODEL_1UP,                   /*pos*/ -6558, 1000,  6464, /*angle*/ 0, 0, 0,   /*behParam*/ 0x00000000, /*beh*/ bhv1upGreenDemon),
     RETURN(),
 };
 
