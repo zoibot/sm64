@@ -27,8 +27,6 @@
  * strings, act values, and star selector model rendering if a star is collected or not.
  */
 
-// Star Selector count models printed in the act selector menu.
-enum BingoModifier gBingoStarSelected = BINGO_MODIFIER_NONE;
 static struct Object *sStarSelectorModels[9];
 
 // Bingo star selection:
@@ -107,6 +105,9 @@ void render_100_coin_star(u8 stars) {
  */
 void render_bingo_modifier_star(void) {
     s32 i;
+    // Zero this out every time we render the star select screen
+    gBingoStarSelected = BINGO_MODIFIER_NONE;
+
     sBingoStarSelectorModels[0] = spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR,
                                                        bhvActSelectorStarType, -450, -60, -300, 0, 0, 0);
 

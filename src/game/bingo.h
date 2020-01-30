@@ -29,6 +29,17 @@ extern s32 gbBingoShowTimer;
 extern s16 gbStarIndex;
 extern s32 gbCoinsJustGotten;
 
+
+enum BingoModifier {
+    BINGO_MODIFIER_NONE = 0,
+    BINGO_MODIFIER_GREEN_DEMON = 1,
+    BINGO_MODIFIER_MAX = BINGO_MODIFIER_GREEN_DEMON,
+    BINGO_STARS_TOTAL_AMOUNT = BINGO_MODIFIER_MAX + 1
+};
+
+extern enum BingoModifier gBingoStarSelected;
+
+
 // TODO: Kill this. It can be passed as a parameter
 extern enum BingoObjectiveUpdate sBingoCurrUpdate;
 

@@ -29,6 +29,9 @@ s16 gbStarIndex = 0;
 
 s32 gbCoinsJustGotten = 0;
 
+// Star Selector count models printed in the act selector menu.
+enum BingoModifier gBingoStarSelected = BINGO_MODIFIER_NONE;
+
 struct BingoObjective gBingoObjectives[25];
 enum BingoObjectiveUpdate sBingoCurrUpdate;
 

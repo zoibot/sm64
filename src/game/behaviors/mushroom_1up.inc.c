@@ -263,10 +263,12 @@ void bhv_1up_hidden_trigger_loop(void) {
     }
 }
 
-#include "menu/star_select.h"
+#include "game/bingo.h"
 void bhv_1up_green_demon_loop(void) {
     if (gBingoStarSelected == BINGO_MODIFIER_GREEN_DEMON) { 
         bhv_1up_hidden_in_pole_loop();
+    } else {
+        mark_object_for_deletion(o);
     }
 }
 
