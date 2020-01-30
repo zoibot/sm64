@@ -269,7 +269,7 @@ void bhv_1up_green_demon_loop(void) {
         // Here, we look at o->oAction to match bhv_1up_hidden_in_pole_loop().
         // We override its behavior in that case if the green demon hit us.
         if (o->oAction == 1 && are_objects_collided(o, gMarioObject) == 1) {
-            gMarioState->numLives--;
+            gMarioState->health = 0;
             o->activeFlags = 0;
         } else {
             bhv_1up_hidden_in_pole_loop();
