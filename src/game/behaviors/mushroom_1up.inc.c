@@ -263,7 +263,6 @@ void bhv_1up_hidden_trigger_loop(void) {
     }
 }
 
-#include "game/bingo.h"
 void bhv_1up_green_demon_loop(void) {
     if (gBingoStarSelected == BINGO_MODIFIER_GREEN_DEMON) { 
         // Here, we look at o->oAction to match bhv_1up_hidden_in_pole_loop().
