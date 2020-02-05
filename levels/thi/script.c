@@ -16,6 +16,7 @@
 #include "levels/thi/header.h"
 
 static const LevelScript script_func_local_1[] = {
+    OBJECT(/*model*/ MODEL_1UP, /*pos*/ -7372, -1969, 7373, /*angle*/ 0, 0, 0, /*behParam*/ 0x00000000, /*beh*/ bhv1upGreenDemon),
     RETURN(),
 };
 
