@@ -208,8 +208,13 @@ void read_controller_inputs(void) {
         // if we're receiving inputs, update the controller struct
         // with the new button info.
         if (controller->controllerData != NULL) {
-            controller->rawStickX = controller->controllerData->stick_x;
-            controller->rawStickY = controller->controllerData->stick_y;
+            if (1) {
+                controller->rawStickX = controller->controllerData->stick_x;
+                controller->rawStickY = controller->controllerData->stick_y;
+            } else {
+                controller->rawStickX = -controller->controllerData->stick_x;
+                controller->rawStickY = -controller->controllerData->stick_y;
+            }
             controller->buttonPressed = controller->controllerData->button
                                         & (controller->controllerData->button ^ controller->buttonDown);
             // 0.5x A presses are a good meme
