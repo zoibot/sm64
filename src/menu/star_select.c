@@ -54,6 +54,9 @@ static s8 sSelectableStarIndex = 0;
 // Act Selector menu timer that keeps counting until you choose an act.
 static s32 sActSelectorMenuTimer = 0;
 
+static s32 gBingoModifierScrollLockoutTimer = 0;
+s32 gStarSelectScreenActive = 0;
+
 /**
  * Act Selector Star Type Loop Action
  * Defines a select type for a star in the act selector.
@@ -111,8 +114,14 @@ void render_bingo_modifier_star(void) {
     sBingoStarSelectorModels[0] = spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR,
                                                        bhvActSelectorStarType, -450, -60, -300, 0, 0, 0);
 
-    sBingoStarSelectorModels[1] = spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR_GREEN,
-                                                       bhvActSelectorStarType, -450, -60, -300, 0, 0, 0);
+    sBingoStarSelectorModels[BINGO_MODIFIER_GREEN_DEMON] =
+        spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR_GREEN,
+                                  bhvActSelectorStarType, -450, -60, -300, 0, 0, 0);
+
+    sBingoStarSelectorModels[BINGO_MODIFIER_REVERSE_JOYSTICK] =
+        spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR,
+                                  bhvActSelectorStarType, -450, -60, -300, 0, 0, 0);
+
     for (i = 0; i < BINGO_STARS_TOTAL_AMOUNT; i++) {
         sBingoStarSelectorModels[i]->oStarSelectorSize = 1.0;
         sBingoStarSelectorModels[i]->oStarSelectorType = STAR_SELECTOR_100_COINS;
@@ -131,6 +140,8 @@ void bhv_act_selector_init(void) {
     s16 i = 0;
     s32 selectorModelIDs[10];
     u8 stars = save_file_get_star_flags(gCurrSaveFileNum - 1, gCurrCourseNum - 1);
+
+    gStarSelectScreenActive = 1;
 
     sVisibleStars = 0;
     while (i != sObtainedStars) {
@@ -237,18 +248,23 @@ void bhv_act_selector_loop(void) {
     }
 
     // Bingo star selection handling
-    if (gPlayer1Controller->buttonDown & R_TRIG) {
-        obj_disable_rendering_func(sBingoStarSelectorModels[gBingoStarSelected]);
-        gBingoStarSelected = MIN(BINGO_MODIFIER_MAX, gBingoStarSelected + 1);
-        obj_enable_rendering_func(sBingoStarSelectorModels[gBingoStarSelected]);
-        // TODO: Use oOpacity to fade in/out selections.
-        // sBingoStarSelectorModels[gBingoStarSelected]->oOpacity /= 2;
-    } else if (gPlayer1Controller->buttonDown & L_TRIG) {
-        obj_disable_rendering_func(sBingoStarSelectorModels[gBingoStarSelected]);
-        gBingoStarSelected = MAX(0, gBingoStarSelected - 1);
-        obj_enable_rendering_func(sBingoStarSelectorModels[gBingoStarSelected]);
+    if (gBingoModifierScrollLockoutTimer > 0) {
+        gBingoModifierScrollLockoutTimer--;
+    } else {
+        if (gPlayer1Controller->buttonDown & R_TRIG) {
+            gBingoModifierScrollLockoutTimer = 10;
+            obj_disable_rendering_func(sBingoStarSelectorModels[gBingoStarSelected]);
+            gBingoStarSelected = MIN(BINGO_MODIFIER_MAX, gBingoStarSelected + 1);
+            obj_enable_rendering_func(sBingoStarSelectorModels[gBingoStarSelected]);
+            // TODO: Use oOpacity to fade in/out selections.
+            // sBingoStarSelectorModels[gBingoStarSelected]->oOpacity /= 2;
+        } else if (gPlayer1Controller->buttonDown & L_TRIG) {
+            gBingoModifierScrollLockoutTimer = 10;
+            obj_disable_rendering_func(sBingoStarSelectorModels[gBingoStarSelected]);
+            gBingoStarSelected = MAX(0, gBingoStarSelected - 1);
+            obj_enable_rendering_func(sBingoStarSelectorModels[gBingoStarSelected]);
+        }
     }
-
 }
 
 /**
@@ -283,6 +299,7 @@ static void print_course_number(void) {
 
 u8 gBingoTextPressLOrR[] = { BINGO_PRESS_L_OR_R };
 u8 gBingoTextGreenDemon[] = { BINGO_GREEN_DEMON };
+u8 gBingoTextReverseJoystick[] = { BINGO_REVERSE_JOYSTICK };
 
 /**
  * Print act selector strings, some with special checks.
@@ -348,6 +365,9 @@ static void print_act_selector_strings(void) {
             break;
         case BINGO_MODIFIER_GREEN_DEMON:
             bingoModifierName = gBingoTextGreenDemon;
+            break;
+        case BINGO_MODIFIER_REVERSE_JOYSTICK:
+            bingoModifierName = gBingoTextReverseJoystick;
             break;
     }
 
@@ -421,6 +441,7 @@ s32 lvl_update_obj_and_load_act_button_actions(UNUSED s32 arg, UNUSED s32 unused
             // tell bingo to start the timer cuz it's too hard
             // to tell when to start it
             bingo_update(BINGO_UPDATE_RESET_TIMER);
+            gStarSelectScreenActive = 0;
         }
     }
 

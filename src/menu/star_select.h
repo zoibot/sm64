@@ -8,6 +8,8 @@ enum StarSelectorTypes
     STAR_SELECTOR_100_COINS
 };
 
+extern s32 gStarSelectScreenActive;
+
 #ifdef AVOID_UB
 extern Gfx *geo_act_selector_strings(s16 callContext, struct GraphNode *node, void *context);
 #else

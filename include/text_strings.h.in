@@ -206,6 +206,7 @@
 #define BINGO_PRESS_L_OR_R _(" PRESS L OR R...")  // space intentional for centering
 
 #define BINGO_GREEN_DEMON _("GREEN DEMON")
+#define BINGO_REVERSE_JOYSTICK _("REVERSE JOYSTICK")
 
 // Camera Options
 #define TEXT_LAKITU_MARIO _("LAKITU + MARIO")

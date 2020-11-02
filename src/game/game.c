@@ -18,6 +18,8 @@
 #include <prevent_bss_reordering.h>
 #include "game.h"
 #include "bingo_board_setup.h"
+#include "bingo.h"
+#include "menu/star_select.h"
 
 // FIXME: I'm not sure all of these variables belong in this file, but I don't
 // know of a good way to split them
@@ -208,12 +210,12 @@ void read_controller_inputs(void) {
         // if we're receiving inputs, update the controller struct
         // with the new button info.
         if (controller->controllerData != NULL) {
-            if (1) {
-                controller->rawStickX = controller->controllerData->stick_x;
-                controller->rawStickY = controller->controllerData->stick_y;
-            } else {
-                controller->rawStickX = -controller->controllerData->stick_x;
-                controller->rawStickY = -controller->controllerData->stick_y;
+            controller->rawStickX = controller->controllerData->stick_x;
+            controller->rawStickY = controller->controllerData->stick_y;
+
+            if (gBingoStarSelected == BINGO_MODIFIER_REVERSE_JOYSTICK && !gStarSelectScreenActive) {
+                controller->rawStickX *= -1;
+                controller->rawStickY *= -1;
             }
             controller->buttonPressed = controller->controllerData->button
                                         & (controller->controllerData->button ^ controller->buttonDown);
