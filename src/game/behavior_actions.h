@@ -256,6 +256,7 @@ void bhv_menu_button_loop(void);
 void bhv_menu_button_manager_init(void);
 void bhv_menu_button_manager_loop(void);
 void bhv_act_selector_star_type_loop(void);
+void bhv_act_selector_star_type_reversed_loop(void);
 void bhv_act_selector_init(void);
 void bhv_act_selector_loop(void);
 void bhv_moving_yellow_coin_init(void);

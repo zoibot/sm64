@@ -321,6 +321,7 @@ extern const BehaviorScript bhvYellowBackgroundInMenu[];
 extern const BehaviorScript bhvMenuButton[];
 extern const BehaviorScript bhvMenuButtonManager[];
 extern const BehaviorScript bhvActSelectorStarType[];
+extern const BehaviorScript bhvActSelectorStarTypeReversed[];
 extern const BehaviorScript bhvActSelector[];
 extern const BehaviorScript bhvMovingYellowCoin[];
 extern const BehaviorScript bhvMovingBlueCoin[];

@@ -490,7 +490,7 @@
 // Bingo custom star colors go below here.
 
 #define MODEL_STAR_GREEN                  0x97        // star_green_geo
-// find me
+#define MODEL_STAR_RED                    0x98        // star_red_geo
 // find me
 // find me
 // find me

@@ -3592,6 +3592,16 @@ const BehaviorScript bhvActSelectorStarType[] = {
     END_LOOP(),
 };
 
+const BehaviorScript bhvActSelectorStarTypeReversed[] = {
+    BEGIN(OBJ_LIST_DEFAULT),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    SET_HOME(),
+    SET_INT(oOpacity, 255),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_act_selector_star_type_reversed_loop),
+    END_LOOP(),
+};
+
 const BehaviorScript bhvActSelector[] = {
     BEGIN(OBJ_LIST_DEFAULT),
     OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),

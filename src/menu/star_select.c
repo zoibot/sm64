@@ -90,6 +90,35 @@ void bhv_act_selector_star_type_loop(void) {
     gCurrentObject->oStarSelectorTimer++;
 }
 
+void bhv_act_selector_star_type_reversed_loop(void) {
+    switch (gCurrentObject->oStarSelectorType) {
+        // If a star is not selected, don't rotate or change size
+        case STAR_SELECTOR_NOT_SELECTED:
+            gCurrentObject->oStarSelectorSize -= 0.1;
+            if (gCurrentObject->oStarSelectorSize < 1.0) {
+                gCurrentObject->oStarSelectorSize = 1.0;
+            }
+            gCurrentObject->oFaceAngleYaw = 0;
+            break;
+        // If a star is selected, rotate and slightly increase size
+        case STAR_SELECTOR_SELECTED:
+            gCurrentObject->oStarSelectorSize += 0.1;
+            if (gCurrentObject->oStarSelectorSize > 1.3) {
+                gCurrentObject->oStarSelectorSize = 1.3;
+            }
+            gCurrentObject->oFaceAngleYaw -= 0x800;
+            break;
+        // If the 100 coin star is selected, rotate
+        case STAR_SELECTOR_100_COINS:
+            gCurrentObject->oFaceAngleYaw -= 0x800;
+            break;
+    }
+    // Scale act selector stars depending of the type selected
+    obj_scale(gCurrentObject->oStarSelectorSize);
+    // Unused timer, only referenced here. Probably replaced by sActSelectorMenuTimer
+    gCurrentObject->oStarSelectorTimer++;
+}
+
 /**
  * Renders the 100 coin star with an special star selector type.
  */
@@ -119,8 +148,8 @@ void render_bingo_modifier_star(void) {
                                   bhvActSelectorStarType, -450, -60, -300, 0, 0, 0);
 
     sBingoStarSelectorModels[BINGO_MODIFIER_REVERSE_JOYSTICK] =
-        spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR,
-                                  bhvActSelectorStarType, -450, -60, -300, 0, 0, 0);
+        spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR_RED,
+                                  bhvActSelectorStarTypeReversed, -450, -60, -300, 0, 0, 0);
 
     for (i = 0; i < BINGO_STARS_TOTAL_AMOUNT; i++) {
         sBingoStarSelectorModels[i]->oStarSelectorSize = 1.0;
