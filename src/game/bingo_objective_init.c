@@ -265,7 +265,7 @@ void bingo_objective_star_reverse_joystick_init(struct BingoObjective *objective
 
     switch (class) {
         case BINGO_CLASS_HARD:
-            random_star_main_course(&course, &star);
+            random_star_main_course_except_100c(&course, &star);
             break;
         default:
             ahhh_ahhhhh_oh_no_not_implemented(objective);
