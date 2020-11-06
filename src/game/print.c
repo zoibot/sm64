@@ -459,6 +459,9 @@ s8 char_to_glyph_index(char a) {
         return 40;
     }
     // fill in this gap to add more icons
+    if (a == 92) {
+        return 43;
+    }
     if (a == '\x1F') {
         return 44;
     }

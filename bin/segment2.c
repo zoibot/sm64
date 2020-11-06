@@ -224,6 +224,10 @@ ALIGNED8 static const u8 seg2_texture_abutton[] = {
 #include "textures/segment2/custom/segment2.abutton.rgba16.inc.c"
 };
 
+ALIGNED8 static const u8 seg2_texture_joystick[] = {
+#include "textures/segment2/custom/segment2.joystick.rgba16.inc.c"
+};
+
 ALIGNED8 static const u8 seg2_texture_timer[] = {
 #include "textures/segment2/custom/segment2.timer.rgba16.inc.c"
 };
@@ -1897,7 +1901,7 @@ const u8 *const main_hud_lut[] = {
     texture_hud_char_S, texture_hud_char_T, texture_hud_char_U,               0x0,
     texture_hud_char_W,               0x0, texture_hud_char_Y,               0x0,
                   0x0,               0x0,               0x0,               0x0,
-                  0x0,               0x0,               0x0,               0x0,
+                  0x0,               0x0,               0x0,              seg2_texture_joystick,
     texture_hud_char_Lflip, seg2_texture_bobomb, seg2_texture_allstarslevel, seg2_texture_1up,
     seg2_texture_timer,  seg2_texture_abutton, texture_hud_char_multiply,  texture_hud_char_coin,
     texture_hud_char_mario_head, texture_hud_char_star, seg2_texture_hand, seg2_texture_goomba,

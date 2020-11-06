@@ -272,7 +272,7 @@ void bingo_objective_star_reverse_joystick_init(struct BingoObjective *objective
             return;
     }
 
-    strcpy(objective->icon, ICON_PURPLESTAR);
+    strcpy(objective->icon, ICON_JOYSTICK);
     objective->data.starObjective.course = course;
     objective->data.starObjective.starIndex = star;
     get_objective_title(objective);

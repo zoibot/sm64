@@ -13,6 +13,7 @@
 #define ICON_Z_BUTTON "_"
 #define ICON_MULTICOIN  "`"
 #define ICON_YELLOW_EXCLAMATION_MARK_BOX  "\x1E"
+#define ICON_JOYSTICK "\\"
 
 #define ICON_COMPLETE "O"
 #define ICON_FAILED ":"
