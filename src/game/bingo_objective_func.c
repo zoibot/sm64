@@ -81,6 +81,21 @@ void objective_obtain_star_timer(struct BingoObjective *objective) {
     }
 }
 
+void objective_obtain_star_reverse_joystick(struct BingoObjective *objective) {
+    s32 course;
+    s32 star;
+
+    if (sBingoCurrUpdate == BINGO_UPDATE_COURSE_CHANGED) {
+        gBingoReverseJoystickActive = 0;
+    } else if (sBingoCurrUpdate == BINGO_UPDATE_STAR && gBingoReverseJoystickActive) {
+        course = objective->data.starObjective.course;
+        star = objective->data.starObjective.starIndex;
+        if (gCurrCourseNum == course && gbStarIndex == star) {
+            set_objective_state(objective, BINGO_STATE_COMPLETE);
+        }
+    }
+}
+
 void objective_obtain_coins(struct BingoObjective *objective) {
     if (sBingoCurrUpdate == BINGO_UPDATE_COURSE_CHANGED) {
         objective->state = BINGO_STATE_NONE;
@@ -169,6 +184,9 @@ void update_objective(struct BingoObjective *objective) {
             break;
         case BINGO_OBJECTIVE_STAR_TIMED:
             objective_obtain_star_timer(objective);
+            break;
+        case BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK:
+            objective_obtain_star_reverse_joystick(objective);
             break;
         case BINGO_OBJECTIVE_COIN:
             objective_obtain_coins(objective);

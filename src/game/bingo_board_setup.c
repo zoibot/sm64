@@ -18,7 +18,7 @@ enum BingoObjectiveType get_random_objective_type(enum BingoObjectiveClass class
     switch (class) {
         case BINGO_CLASS_HARD:
         retry_hard:
-            switch (RandomU16() % 5) {
+            switch (RandomU16() % 6) {
                 case 0:
                     return BINGO_OBJECTIVE_STAR_TIMED;
                 case 1:
@@ -32,6 +32,8 @@ enum BingoObjectiveType get_random_objective_type(enum BingoObjectiveClass class
                         goto retry_hard;
                     }
                     return BINGO_OBJECTIVE_MULTICOIN;
+                case 5:
+                    return BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK;
             }
             break;
 

@@ -28,7 +28,8 @@ extern s32 gbBingoShowTimer;
 
 extern s16 gbStarIndex;
 extern s32 gbCoinsJustGotten;
-
+extern s32 gBingoReverseJoystickActive;
+extern s32 gStarSelectScreenActive;
 
 enum BingoModifier {
     BINGO_MODIFIER_NONE = 0,
@@ -70,6 +71,7 @@ enum BingoObjectiveType
     BINGO_OBJECTIVE_STAR_B_BUTTON_CHALLENGE,
     BINGO_OBJECTIVE_STAR_Z_BUTTON_CHALLENGE,
     BINGO_OBJECTIVE_STAR_TIMED, // TODO: this should maybe be a flag to stack objs!
+    BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK,
     BINGO_OBJECTIVE_COIN,
     BINGO_OBJECTIVE_MULTICOIN,
     BINGO_OBJECTIVE_1UPS_IN_LEVEL,

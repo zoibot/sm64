@@ -29,6 +29,9 @@ s16 gbStarIndex = 0;
 
 s32 gbCoinsJustGotten = 0;
 
+s32 gBingoReverseJoystickActive = 0;
+s32 gStarSelectScreenActive = 0;
+
 // Star Selector count models printed in the act selector menu.
 enum BingoModifier gBingoStarSelected = BINGO_MODIFIER_NONE;
 

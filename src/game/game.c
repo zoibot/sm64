@@ -213,7 +213,8 @@ void read_controller_inputs(void) {
             controller->rawStickX = controller->controllerData->stick_x;
             controller->rawStickY = controller->controllerData->stick_y;
 
-            if (gBingoStarSelected == BINGO_MODIFIER_REVERSE_JOYSTICK && !gStarSelectScreenActive) {
+            // if (gBingoStarSelected == BINGO_MODIFIER_REVERSE_JOYSTICK && !gStarSelectScreenActive) {
+            if (gBingoReverseJoystickActive && !gStarSelectScreenActive) {
                 controller->rawStickX *= -1;
                 controller->rawStickY *= -1;
             }

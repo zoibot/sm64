@@ -148,6 +148,9 @@ void get_star_objective_desc(struct BingoObjective *obj, char *desc) {
         case BINGO_OBJECTIVE_STAR_Z_BUTTON_CHALLENGE:
             strcpy(noTouchButtonText, " without touching the Z trigger");
             break;
+        case BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK:
+            strcpy(noTouchButtonText, " with the joystick reversed");
+            break;
     }
 
     if (obj->state == BINGO_STATE_COMPLETE) {
@@ -295,6 +298,7 @@ void describe_objective(struct BingoObjective *objective, char *desc) {
         case BINGO_OBJECTIVE_STAR_A_BUTTON_CHALLENGE:
         case BINGO_OBJECTIVE_STAR_B_BUTTON_CHALLENGE:
         case BINGO_OBJECTIVE_STAR_Z_BUTTON_CHALLENGE:
+        case BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK:
             get_star_objective_desc(objective, desc);
             break;
         case BINGO_OBJECTIVE_STAR_TIMED:

@@ -83,6 +83,7 @@ void get_objective_title(struct BingoObjective *objective) {
         case BINGO_OBJECTIVE_STAR_B_BUTTON_CHALLENGE:
         case BINGO_OBJECTIVE_STAR_Z_BUTTON_CHALLENGE:
         case BINGO_OBJECTIVE_STAR_TIMED:
+        case BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK:
             get_star_objective_title(objective);
             break;
         case BINGO_OBJECTIVE_COIN:

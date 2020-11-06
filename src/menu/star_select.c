@@ -55,7 +55,6 @@ static s8 sSelectableStarIndex = 0;
 static s32 sActSelectorMenuTimer = 0;
 
 static s32 gBingoModifierScrollLockoutTimer = 0;
-s32 gStarSelectScreenActive = 0;
 
 /**
  * Act Selector Star Type Loop Action
@@ -293,6 +292,12 @@ void bhv_act_selector_loop(void) {
             gBingoStarSelected = MAX(0, gBingoStarSelected - 1);
             obj_enable_rendering_func(sBingoStarSelectorModels[gBingoStarSelected]);
         }
+    }
+
+    if (gBingoStarSelected == BINGO_MODIFIER_REVERSE_JOYSTICK) {
+        gBingoReverseJoystickActive = 1;
+    } else {
+        gBingoReverseJoystickActive = 0;
     }
 }
 

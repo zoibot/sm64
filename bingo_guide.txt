@@ -1,6 +1,6 @@
 1. bingo.h: Add a new BingoObjectiveType.
 2. bingo.h: Add a new BingoObjectiveUpdate.
-3. bingo.c: Write a bingo_objective_*_init() function.
+3. bingo_objective_init.c: Write a bingo_objective_*_init() function.
     3.1. bingo.h: Define a new ICON_* character.
         3.1.1. textures/segment2: Add a new 16x16 PNG.
         3.1.2. bin/segment2.c: Add a new seg2_texture_* glabel and put it in
