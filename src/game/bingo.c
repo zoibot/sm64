@@ -103,6 +103,10 @@ void bingo_update(enum BingoObjectiveUpdate update) {
     if (update == BINGO_UPDATE_TIMER_FRAME && !gbBingoCompleted) {
         gbGlobalBingoTimer++;
     }
+    if (update == BINGO_UPDATE_COURSE_CHANGED) {
+        // This is crufty but I can't think of any place else to put this...
+        gBingoReverseJoystickActive = 0;
+    }
 
     // Timer updates can never result in bingo being won
     if (update != BINGO_UPDATE_TIMER_FRAME) {
