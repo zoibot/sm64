@@ -264,17 +264,72 @@ void bhv_1up_hidden_trigger_loop(void) {
 }
 
 void bhv_1up_green_demon_loop(void) {
-    if (gBingoStarSelected == BINGO_MODIFIER_GREEN_DEMON) { 
+    if (gBingoStarSelected == BINGO_MODIFIER_GREEN_DEMON) {
         // Here, we look at o->oAction to match bhv_1up_hidden_in_pole_loop().
         // We override its behavior in that case if the green demon hit us.
         if (o->oAction == 1 && are_objects_collided(o, gMarioObject) == 1) {
             gMarioState->health = 0;
             o->activeFlags = 0;
         } else {
-            bhv_1up_hidden_in_pole_loop();
+            bhv_1up_green_demon_chase_loop();
         }
     } else {
         mark_object_for_deletion(o);
+    }
+}
+
+void bhv_1up_green_demon_chase_loop(void) {
+    UNUSED s16 sp26;
+    switch (o->oAction) {
+        case 0:
+            o->header.gfx.node.flags |= 0x10;
+            if (o->o1UpHiddenUnkF4 == o->oBehParams2ndByte) {
+                o->oVelY = 40.0f;
+                o->oAction = 3;
+                o->header.gfx.node.flags &= ~0x10;
+                play_sound(SOUND_GENERAL2_1UP_APPEAR, gDefaultSoundArgs);
+            }
+            break;
+
+        case 1:
+            func_802F2E18();
+            switch (gCurrCourseNum) {
+                case COURSE_LLL:
+                    o->oForwardVel /= 1.2f;
+                    break;
+                case COURSE_JRB:
+                    o->oForwardVel /= 1.25f;
+                    break;
+                case COURSE_HMC:
+                case COURSE_WDW:
+                    o->oForwardVel /= 1.3f;
+                    break;
+                default:
+                    o->oForwardVel /= 1.4f;
+                    break;
+                case COURSE_TTC:
+                    o->oForwardVel /= 1.8f;
+                    break;
+                case COURSE_RR:
+                    o->oForwardVel /= 2.05f;
+                    break;
+            }
+            sp26 = object_step();
+            break;
+
+        case 3:
+            sp26 = object_step();
+            if (o->oTimer >= 18)
+                spawn_object(o, MODEL_NONE, bhvSparkleSpawn);
+
+            func_802F2D40();
+
+            if (o->oTimer == 37) {
+                obj_become_tangible();
+                o->oAction = 1;
+                o->oForwardVel = 10.0f;
+            }
+            break;
     }
 }
 
