@@ -88,6 +88,42 @@ enum BingoObjectiveType get_random_objective_type(enum BingoObjectiveClass class
     }
 }
 
+s32 switch_to(s32 exclude) {
+    s32 otherOne, otherTwo;
+    s32 switchTo;
+    switch (exclude) {
+        case 0:
+            otherOne = 1;
+            otherTwo = 2;
+            break;
+        case 1:
+            otherOne = 0;
+            otherTwo = 2;
+            break;
+        case 2:
+            otherOne = 1;
+            otherTwo = 2;
+            break;
+        case 3:
+            otherOne = 3;  // remain hard
+            otherTwo = 1;  // easy or harder
+    }
+    switch (RandomU16() % 5) {
+        case 0:
+        case 1:
+            switchTo = otherOne;
+            break;
+        case 2:
+        case 3:
+            switchTo = otherTwo;
+            break;
+        case 4:
+            switchTo = 3;
+            break;
+    }
+    return switchTo;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 // Bingo setup and update hooks
@@ -97,6 +133,8 @@ void setup_bingo_objectives(u32 seed) {
         { 1, 0, 0, 0, 2 }, { 0, 2, 0, 1, 0 }, { 0, 0, 3, 0, 0 }, { 0, 1, 0, 2, 0 }, { 2, 0, 0, 0, 1 }
     };
     s32 harderClass, easierClass, class;
+    s32 switchTo;
+    s32 i;
     enum BingoObjectiveType type;
     struct BingoObjective *objective;
 
@@ -108,6 +146,13 @@ void setup_bingo_objectives(u32 seed) {
 
     harderClass = (RandomU16() % 2) + 1; // either 1 or 2
     easierClass = (2 - harderClass) + 1; // either 2 or 1, opposite harderClass
+
+    // To shake it up a bit, mutate between 0 and 2 of the cells randomly.
+    for (i = 0; i < RandomU16() % 3; i++) {
+        row = RandomU16() % 5;
+        col = RandomU16() % 5;
+        objectiveClasses[row][col] = switch_to(objectiveClasses[row][col]);
+    }
 
     // NOTE!
     // If we start throwing in restrictions about maximum numbers of
