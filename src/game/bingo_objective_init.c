@@ -278,6 +278,26 @@ void bingo_objective_star_reverse_joystick_init(struct BingoObjective *objective
     get_objective_title(objective);
 }
 
+void bingo_objective_star_green_demon_init(struct BingoObjective *objective,
+                                           enum BingoObjectiveClass class) {
+    enum CourseNum course;
+    s32 star;
+
+    switch (class) {
+        case BINGO_CLASS_HARD:
+            random_star_main_course_except_100c(&course, &star);
+            break;
+        default:
+            ahhh_ahhhhh_oh_no_not_implemented(objective);
+            return;
+    }
+
+    strcpy(objective->icon, ICON_GREENDEMON);
+    objective->data.starObjective.course = course;
+    objective->data.starObjective.starIndex = star;
+    get_objective_title(objective);
+}
+
 void bingo_objective_coin_init(struct BingoObjective *objective, enum BingoObjectiveClass class) {
     enum CourseNum course;
     s32 coins;
@@ -443,6 +463,9 @@ void bingo_objective_init(struct BingoObjective *objective, enum BingoObjectiveC
             break;
         case BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK:
             bingo_objective_star_reverse_joystick_init(objective, class);
+            break;
+        case BINGO_OBJECTIVE_STAR_GREEN_DEMON:
+            bingo_objective_star_green_demon_init(objective, class);
             break;
         case BINGO_OBJECTIVE_COIN:
             bingo_objective_coin_init(objective, class);
