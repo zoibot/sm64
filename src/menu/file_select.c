@@ -135,6 +135,7 @@ static unsigned char text456[] = { TEXT_456 };
 static unsigned char text789[] = { TEXT_789 };
 static unsigned char text_0_[] = { TEXT__0_ };
 static unsigned char textRandom[] = { TEXT_RANDOM };
+static unsigned char textOption[] = { TEXT_OPTION };
 
 s32 gBingoSeedIsSet = 0;
 // We can support seeds up to 4,294,967,295, but since this is a weird number,
@@ -836,6 +837,10 @@ static void seed_menu_create_buttons(struct Object *seedButton) {
     sMainMenuButtons[MENU_BUTTON_SEED_RETURN] =
         spawn_object_rel_with_rot(seedButton, 6, bhvMenuButton, -711, -388, -100, 0, -0x8000, 0);
     sMainMenuButtons[MENU_BUTTON_SEED_RETURN]->oMenuButtonScale = 0.11111111f;
+
+    sMainMenuButtons[MENU_BUTTON_SEED_OPTION] =
+        spawn_object_rel_with_rot(seedButton, 12, bhvMenuButton, -711, 0, -100, 0, -0x8000, 0);
+    sMainMenuButtons[MENU_BUTTON_SEED_OPTION]->oMenuButtonScale = 0.11111111f;
 }
 
 static s32 seed_keypad_get_number(void) {
@@ -901,7 +906,7 @@ static void seed_menu_check_clicked_buttons(struct Object *seedButton) {
     if (seedButton->oMenuButtonState == MENU_BUTTON_STATE_FULLSCREEN) {
         // code that's half copy-pasted, half ad-hoc fixed makes you look like
         // a MANIAC tbh
-        for (buttonId = MENU_BUTTON_SEED_RESET; buttonId <= MENU_BUTTON_SEED_RETURN; buttonId++) {
+        for (buttonId = MENU_BUTTON_SEED_MIN; buttonId < MENU_BUTTON_SEED_MAX; buttonId++) {
             s16 buttonX = sMainMenuButtons[buttonId]->oPosX;
             s16 buttonY = sMainMenuButtons[buttonId]->oPosY;
 
@@ -914,8 +919,14 @@ static void seed_menu_check_clicked_buttons(struct Object *seedButton) {
                 if (buttonId == MENU_BUTTON_SEED_RETURN) {
                     sSelectedButtonID = buttonId;
                     sCurrentMenuLevel = MENU_LAYER_SUBMENU;
-                } else {
+                } else if (buttonId == MENU_BUTTON_SEED_RESET) {
                     seed_reset();
+                } else if (buttonId == MENU_BUTTON_SEED_OPTION) {
+                    sCurrentMenuLevel = MENU_LAYER_SUBMENU;
+                    // TODO: fix two sounds
+                    play_sound(SOUND_MENU_CAMERA_ZOOM_IN, gDefaultSoundArgs);
+                    sMainMenuButtons[buttonId]->oMenuButtonState = MENU_BUTTON_STATE_GROWING;
+                    sSelectedButtonID = buttonId;
                 }
                 break;
             }
@@ -1026,9 +1037,10 @@ static void return_to_main_menu(s16 prevMenuButtonID, struct Object *sourceButto
 //                mark_obj_for_deletion(sMainMenuButtons[buttonID]);
             mark_obj_for_deletion(sMainMenuButtons[MENU_BUTTON_SEED_RETURN]);
             mark_obj_for_deletion(sMainMenuButtons[MENU_BUTTON_SEED_RESET]);
-            }
+            mark_obj_for_deletion(sMainMenuButtons[MENU_BUTTON_SEED_OPTION]);
         }
     }
+}
 
 
 /**
@@ -1401,6 +1413,9 @@ void bhv_menu_button_manager_loop(void) {
         case MENU_BUTTON_SEED_RETURN:
             return_to_main_menu(MENU_BUTTON_SOUND_MODE, sMainMenuButtons[MENU_BUTTON_SEED_RETURN]);
             break;
+        case MENU_BUTTON_SEED_OPTION:
+            exit_score_file_to_score_menu(sMainMenuButtons[MENU_BUTTON_SEED_OPTION], MENU_BUTTON_SOUND_MODE);
+            break;
         case MENU_BUTTON_STEREO:
             return_to_main_menu(MENU_BUTTON_SOUND_MODE, sMainMenuButtons[MENU_BUTTON_STEREO]);
             break;
@@ -1424,7 +1439,8 @@ static void handle_cursor_button_input(void) {
     // If scoring a file, pressing A just changes the coin score mode.
     if (sSelectedButtonID == MENU_BUTTON_SCORE_FILE_A || sSelectedButtonID == MENU_BUTTON_SCORE_FILE_B
         || sSelectedButtonID == MENU_BUTTON_SCORE_FILE_C
-        || sSelectedButtonID == MENU_BUTTON_SCORE_FILE_D) {
+        || sSelectedButtonID == MENU_BUTTON_SCORE_FILE_D
+        || sSelectedButtonID == MENU_BUTTON_SEED_OPTION) {
         if (gPlayer3Controller->buttonPressed & (B_BUTTON | START_BUTTON)) {
             sClickPos[0] = sCursorPos[0];
             sClickPos[1] = sCursorPos[1];
@@ -2031,8 +2047,6 @@ static void draw_seed_mode_menu(void) {
     s32 xSeedPos;
     unsigned char textEnterSeed[] = { TEXT_ENTER_SEED };
     // Display "ENTER SEED" text
-    // gSPDisplayList(gDisplayListHead++, seg2_dl_0200ED00);
-    // gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sTextBaseAlpha);
     print_hud_lut_string_fade(2, 100, 35, textEnterSeed);
 
     gSPDisplayList(gDisplayListHead++, dl_rgba16_text_end);  // TODO: needed?
@@ -2042,6 +2056,7 @@ static void draw_seed_mode_menu(void) {
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sTextBaseAlpha);
     print_generic_string(47, 35, textReset);
     print_generic_string(240, 35, textReturn);
+    print_generic_string(240, 90, textOption);
 
     // Display keypad
     print_hud_lut_string_fade(2, 125, 100, text123);
@@ -2098,6 +2113,47 @@ static void print_sound_mode_menu_strings(void) {
     }
     gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
 }
+
+
+static void print_bingo_options(void) {
+    s32 i;
+    s32 selectedRow;
+    unsigned char *option;
+
+    gDPSetCombineMode(gDisplayListHead++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
+    gDPSetRenderMode(gDisplayListHead++, G_RM_XLU_SURF, G_RM_XLU_SURF);
+    gDPSetPrimColor(gDisplayListHead++, 0, 0, 38, 38, 38, 150);
+    #define LEFT_X     24
+    #define RIGHT_X    230
+    #define TOP_Y      14
+    #define ROW_HEIGHT 15
+    selectedRow = 1;
+    gDPFillRectangle(
+        gDisplayListHead++,
+        LEFT_X,
+        TOP_Y + ROW_HEIGHT * selectedRow,
+        RIGHT_X,
+        TOP_Y + ROW_HEIGHT * (selectedRow + 1)
+    );
+    #undef LEFT_X
+    #undef RIGHT_X
+    #undef TOP_Y
+    #undef ROW_HEIGHT
+
+
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sTextBaseAlpha);
+    for (i = 1; i < 12; i++) {
+        switch (i) {
+            default:
+                option = textReset;
+                break;
+        }
+        print_generic_string(23 + 3, 20 + 16 * (12 - i), option);
+    }
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
+}
+
 
 static unsigned char textStarX[] = { TEXT_STAR_X };
 
@@ -2325,6 +2381,9 @@ static void print_file_select_strings(void) {
         case MENU_BUTTON_SOUND_MODE:
             //print_sound_mode_menu_strings();
             draw_seed_mode_menu();
+            break;
+        case MENU_BUTTON_SEED_OPTION:
+            print_bingo_options();
             break;
     }
     // If all 4 save file exists, define true to sAllFilesExist to prevent more copies in copy menu

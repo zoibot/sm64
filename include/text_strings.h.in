@@ -142,6 +142,7 @@
 #define TEXT_789 _("7  8  9")
 #define TEXT__0_ _("   0   ")
 #define TEXT_RANDOM _("RANDOM")
+#define TEXT_OPTION _("OPTION")
 #define TEXT_FILE_MARIO_A _("MARIO A")
 #define TEXT_FILE_MARIO_B _("MARIO B")
 #define TEXT_FILE_MARIO_C _("MARIO C")
