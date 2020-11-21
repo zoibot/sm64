@@ -2170,7 +2170,7 @@ const Gfx dl_hud_img_begin[] = {
     gsDPSetCombineMode(G_CC_FADEA, G_CC_FADEA),
     gsDPSetTexturePersp(G_TP_NONE),
     gsDPSetTextureFilter(G_TF_POINT),
-    gsDPSetAlphaCompare(G_AC_THRESHOLD),
+    // gsDPSetAlphaCompare(G_AC_THRESHOLD),
     gsDPSetBlendColor(255, 255, 255, 255),
 #ifdef VERSION_EU
     gsDPSetRenderMode(G_RM_NOOP, G_RM_NOOP2),

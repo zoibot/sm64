@@ -434,7 +434,7 @@ void render_hud(void) {
         create_dl_identity_matrix();
         guOrtho(mtx, -16.0f, 336.0f, 0, 240.0f, -10.0f, 10.0f, 1.0f);
         gMoveWd(gDisplayListHead++, 0xE, 0, 0xFFFF);
-        gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(mtx), 
+        gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(mtx),
                 G_MTX_PROJECTION | G_MTX_MUL | G_MTX_NOPUSH);
 
 #else
@@ -457,6 +457,7 @@ void render_hud(void) {
             }
 
             if (hudDisplayFlags & HUD_DISPLAY_FLAG_LIVES) {
+                gOptionSelectIconOpacity = 255;
                 render_hud_mario_lives();
             }
 

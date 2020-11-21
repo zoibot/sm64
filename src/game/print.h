@@ -8,6 +8,7 @@
 #define TEXRECT_MIN_Y 5
 #define TEXRECT_MAX_Y 220
 
+extern u8 gOptionSelectIconOpacity;
 
 extern void print_text_large(int, int, const char *);
 extern void print_text_tiny(int, int, const char *);

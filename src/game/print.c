@@ -561,6 +561,7 @@ void clip_to_bounds(s32 *x, s32 *y) {
 /**
  * Renders the glyph that's set at the given position.
  */
+u8 gOptionSelectIconOpacity = 255;
 void render_textrect(s32 x, s32 y, s32 pos) {
     s32 rectBaseX = x + pos * 12;
     s32 rectBaseY = 224 - y;
@@ -570,6 +571,7 @@ void render_textrect(s32 x, s32 y, s32 pos) {
     clip_to_bounds(&rectBaseX, &rectBaseY);
     rectX = rectBaseX;
     rectY = rectBaseY;
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gOptionSelectIconOpacity);
     gSPTextureRectangle(gDisplayListHead++, rectX << 2, rectY << 2, (rectX + 16) << 2,
                         (rectY + 16) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
 }
