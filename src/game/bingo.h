@@ -72,7 +72,7 @@ enum BingoObjectiveType
     BINGO_OBJECTIVE_STAR_A_BUTTON_CHALLENGE,
     BINGO_OBJECTIVE_STAR_B_BUTTON_CHALLENGE,
     BINGO_OBJECTIVE_STAR_Z_BUTTON_CHALLENGE,
-    BINGO_OBJECTIVE_STAR_TIMED, // TODO: this should maybe be a flag to stack objs!
+    BINGO_OBJECTIVE_STAR_TIMED,
     BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK,
     BINGO_OBJECTIVE_STAR_GREEN_DEMON,
     BINGO_OBJECTIVE_COIN,
@@ -80,7 +80,7 @@ enum BingoObjectiveType
     BINGO_OBJECTIVE_1UPS_IN_LEVEL,
     BINGO_OBJECTIVE_STARS_IN_LEVEL,
     BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX,
-    BINGO_OBJECTIVE_KILL_ENEMIES,
+    BINGO_OBJECTIVE_KILL_ENEMIES,  // TODO: split by enemy
     // end
     BINGO_OBJECTIVE_TYPE_MAX = BINGO_OBJECTIVE_KILL_ENEMIES
 };
@@ -185,6 +185,7 @@ struct BingoObjective
 };
 
 extern struct BingoObjective gBingoObjectives[25];
+extern u8 gBingoObjectivesDisabled[BINGO_OBJECTIVE_TYPE_MAX];
 
 void set_objective_state(struct BingoObjective *objective, enum BingoObjectiveState state);
 void bingo_update(enum BingoObjectiveUpdate update);

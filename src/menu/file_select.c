@@ -136,6 +136,9 @@ static unsigned char text789[] = { TEXT_789 };
 static unsigned char text_0_[] = { TEXT__0_ };
 static unsigned char textRandom[] = { TEXT_RANDOM };
 static unsigned char textOption[] = { TEXT_OPTION };
+static unsigned char textOff[] = { TEXT_OFF };
+static unsigned char textOn[] = { TEXT_ON };
+
 
 s32 gBingoSeedIsSet = 0;
 // We can support seeds up to 4,294,967,295, but since this is a weird number,
@@ -143,6 +146,13 @@ s32 gBingoSeedIsSet = 0;
 // long, so:
 u8 gBingoSeedRandomText[] = { TEXT_RANDOM, 0xFF, 0xFF, 0xFF };
 u8 gBingoSeedText[] = { TEXT_RANDOM, 0xFF, 0xFF, 0xFF };
+
+s32 sBingoOptionSelection = 0;
+#define BINGO_OPTIONS_PER_PAGE 11
+s32 sBingoOptionSelectTimer = 0;
+#define BINGO_OPTION_TIMER_FRAMES 3
+s32 sToggleCurrentOption = 0;
+
 
 void seed_reset(void) {
     s32 i;
@@ -1439,8 +1449,7 @@ static void handle_cursor_button_input(void) {
     // If scoring a file, pressing A just changes the coin score mode.
     if (sSelectedButtonID == MENU_BUTTON_SCORE_FILE_A || sSelectedButtonID == MENU_BUTTON_SCORE_FILE_B
         || sSelectedButtonID == MENU_BUTTON_SCORE_FILE_C
-        || sSelectedButtonID == MENU_BUTTON_SCORE_FILE_D
-        || sSelectedButtonID == MENU_BUTTON_SEED_OPTION) {
+        || sSelectedButtonID == MENU_BUTTON_SCORE_FILE_D) {
         if (gPlayer3Controller->buttonPressed & (B_BUTTON | START_BUTTON)) {
             sClickPos[0] = sCursorPos[0];
             sClickPos[1] = sCursorPos[1];
@@ -1448,6 +1457,46 @@ static void handle_cursor_button_input(void) {
         } else if (gPlayer3Controller->buttonPressed & A_BUTTON) {
             sScoreFileCoinScoreMode = 1 - sScoreFileCoinScoreMode;
             play_sound(SOUND_MENU_CLICK_FILE_SELECT, gDefaultSoundArgs);
+        }
+    } else if (sSelectedButtonID == MENU_BUTTON_SEED_OPTION) {
+        if (gPlayer3Controller->buttonPressed & (B_BUTTON | START_BUTTON)) {
+            sClickPos[0] = sCursorPos[0];
+            sClickPos[1] = sCursorPos[1];
+            sCursorClickingTimer = 1;
+        } else {
+            if (sBingoOptionSelectTimer > 0) {
+                sBingoOptionSelectTimer--;
+            } else if (gPlayer3Controller->buttonPressed & D_JPAD) {
+                if (sBingoOptionSelection < BINGO_OPTIONS_PER_PAGE) {
+                    sBingoOptionSelection = (sBingoOptionSelection + 1) % BINGO_OPTIONS_PER_PAGE;
+                } else {
+                    sBingoOptionSelection =
+                        (sBingoOptionSelection - BINGO_OPTIONS_PER_PAGE + 1)
+                        % BINGO_OPTIONS_PER_PAGE
+                        + BINGO_OPTIONS_PER_PAGE;
+                }
+                sBingoOptionSelectTimer = BINGO_OPTION_TIMER_FRAMES;
+            } else if (gPlayer3Controller->buttonPressed & U_JPAD) {
+                if (sBingoOptionSelection < BINGO_OPTIONS_PER_PAGE) {
+                    sBingoOptionSelection =
+                        (sBingoOptionSelection + BINGO_OPTIONS_PER_PAGE - 1) % BINGO_OPTIONS_PER_PAGE;
+                } else {
+                    sBingoOptionSelection =
+                        (
+                            (sBingoOptionSelection - BINGO_OPTIONS_PER_PAGE)
+                            + (BINGO_OPTIONS_PER_PAGE - 1)
+                        ) % BINGO_OPTIONS_PER_PAGE
+                        + BINGO_OPTIONS_PER_PAGE;
+                }
+                sBingoOptionSelectTimer = BINGO_OPTION_TIMER_FRAMES;
+            } else if (gPlayer3Controller->buttonPressed & (L_JPAD | R_JPAD)) {
+                sBingoOptionSelection += BINGO_OPTIONS_PER_PAGE;
+                sBingoOptionSelection %= (BINGO_OPTIONS_PER_PAGE * 2);
+                sBingoOptionSelectTimer = BINGO_OPTION_TIMER_FRAMES;
+            }
+            if (gPlayer3Controller->buttonPressed & A_BUTTON) {
+                sToggleCurrentOption = 1;
+            }
         }
     } else { // If cursor is clicked
         if (gPlayer3Controller->buttonPressed & (A_BUTTON | B_BUTTON | START_BUTTON)) {
@@ -2114,43 +2163,156 @@ static void print_sound_mode_menu_strings(void) {
     gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
 }
 
+static unsigned char textSingleStar[] = { TEXT_SINGLE_STAR };
+static unsigned char textAButton[] = { TEXT_A_BUTTON };
+static unsigned char textBButton[] = { TEXT_B_BUTTON };
+static unsigned char textZButton[] = { TEXT_Z_BUTTON };
+static unsigned char textTimedStar[] = { TEXT_TIMED_STAR };
+static unsigned char textReverseJoystick[] = { TEXT_REVERSE_JOYSTICK };
+static unsigned char textGreenDemon[] = { TEXT_GREEN_DEMON };
+static unsigned char textCoinLevel[] = { TEXT_COIN_LEVEL };
+static unsigned char textTotalCoin[] = { TEXT_TOTAL_COIN };
+static unsigned char text1upLevel[] = { TEXT_1UP_LEVEL };
+static unsigned char textStarsLevel[] = { TEXT_STARS_LEVEL };
+static unsigned char textExclamBoxes[] = { TEXT_EXCLAM_BOXES };
+static unsigned char textKillEnemies[] = { TEXT_KILL_ENEMIES };
 
 static void print_bingo_options(void) {
     s32 i;
-    s32 selectedRow;
+    char obj_icon[2];
     unsigned char *option;
 
     gDPSetCombineMode(gDisplayListHead++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
     gDPSetRenderMode(gDisplayListHead++, G_RM_XLU_SURF, G_RM_XLU_SURF);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, 38, 38, 38, 150);
     #define LEFT_X     24
-    #define RIGHT_X    230
-    #define TOP_Y      14
-    #define ROW_HEIGHT 15
-    selectedRow = 1;
-    gDPFillRectangle(
-        gDisplayListHead++,
-        LEFT_X,
-        TOP_Y + ROW_HEIGHT * selectedRow,
-        RIGHT_X,
-        TOP_Y + ROW_HEIGHT * (selectedRow + 1)
-    );
+    #define RIGHT_X    160
+    #define TOP_Y      12
+    #define ROW_HEIGHT 16
+    if (sBingoOptionSelection < BINGO_OPTIONS_PER_PAGE) {
+        gDPFillRectangle(
+            gDisplayListHead++,
+            LEFT_X,
+            TOP_Y + ROW_HEIGHT * (sBingoOptionSelection + 1),
+            RIGHT_X,
+            TOP_Y + ROW_HEIGHT * (sBingoOptionSelection + 2)
+        );
+    } else {
+        gDPFillRectangle(
+            gDisplayListHead++,
+            RIGHT_X,
+            TOP_Y + ROW_HEIGHT * ((sBingoOptionSelection % BINGO_OPTIONS_PER_PAGE) + 1),
+            RIGHT_X + (RIGHT_X - LEFT_X),
+            TOP_Y + ROW_HEIGHT * ((sBingoOptionSelection % BINGO_OPTIONS_PER_PAGE) + 2)
+        );
+    }
+
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sTextBaseAlpha);
+    for (i = 0; i < BINGO_OBJECTIVE_TYPE_MAX; i++) {
+        if (i == sBingoOptionSelection && sToggleCurrentOption == 1) {
+            sToggleCurrentOption = 0;
+            gBingoObjectivesDisabled[i] ^= 1;
+        }
+
+        switch (i) {
+            case BINGO_OBJECTIVE_STAR:
+                strcpy(obj_icon, ICON_STAR);
+                option = textSingleStar;
+                break;
+            case BINGO_OBJECTIVE_STAR_A_BUTTON_CHALLENGE:
+                strcpy(obj_icon, ICON_A_BUTTON);
+                option = textAButton;
+                break;
+            case BINGO_OBJECTIVE_STAR_B_BUTTON_CHALLENGE:
+                strcpy(obj_icon, ICON_B_BUTTON);
+                option = textBButton;
+                break;
+            case BINGO_OBJECTIVE_STAR_Z_BUTTON_CHALLENGE:
+                strcpy(obj_icon, ICON_Z_BUTTON);
+                option = textZButton;
+                break;
+            case BINGO_OBJECTIVE_STAR_TIMED:
+                strcpy(obj_icon, ICON_TIMER);
+                option = textTimedStar;
+                break;
+            case BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK:
+                strcpy(obj_icon, ICON_JOYSTICK);
+                option = textReverseJoystick;
+                break;
+            case BINGO_OBJECTIVE_STAR_GREEN_DEMON:
+                strcpy(obj_icon, ICON_GREENDEMON);
+                option = textGreenDemon;
+                break;
+            case BINGO_OBJECTIVE_COIN:
+                strcpy(obj_icon, ICON_COIN);
+                option = textCoinLevel;
+                break;
+            case BINGO_OBJECTIVE_MULTICOIN:
+                strcpy(obj_icon, ICON_MULTICOIN);
+                option = textTotalCoin;
+                break;
+            case BINGO_OBJECTIVE_1UPS_IN_LEVEL:
+                strcpy(obj_icon, ICON_1UP);
+                option = text1upLevel;
+                break;
+            case BINGO_OBJECTIVE_STARS_IN_LEVEL:
+                strcpy(obj_icon, ICON_PURPLESTAR);
+                option = textStarsLevel;
+                break;
+            case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
+                strcpy(obj_icon, ICON_YELLOW_EXCLAMATION_MARK_BOX);
+                option = textExclamBoxes;
+                break;
+            // TODO: enemies.
+        }
+        if (i < BINGO_OPTIONS_PER_PAGE) {
+            print_text(
+                LEFT_X + 1, TOP_Y + 8 + ROW_HEIGHT * (BINGO_OPTIONS_PER_PAGE - i), obj_icon
+            );
+            print_generic_string(
+                LEFT_X + 1 + 16 + 3, TOP_Y + 8 + ROW_HEIGHT * (BINGO_OPTIONS_PER_PAGE - i), option
+            );
+            if (gBingoObjectivesDisabled[i]) {
+                gDPSetEnvColor(gDisplayListHead++, 255, 80, 80, sTextBaseAlpha);
+                print_generic_string(
+                    RIGHT_X - 19, TOP_Y + 8 + ROW_HEIGHT * (BINGO_OPTIONS_PER_PAGE - i), textOff
+                );
+                gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sTextBaseAlpha);
+            } else {
+                print_generic_string(
+                    RIGHT_X - 19, TOP_Y + 8 + ROW_HEIGHT * (BINGO_OPTIONS_PER_PAGE - i), textOn
+                );
+            }
+        } else {
+            print_text(
+                RIGHT_X + 1, TOP_Y + 8 + ROW_HEIGHT * (BINGO_OPTIONS_PER_PAGE - (i % BINGO_OPTIONS_PER_PAGE)), obj_icon
+            );
+            print_generic_string(
+                RIGHT_X + 1 + 16 + 3, TOP_Y + 8 + ROW_HEIGHT * (BINGO_OPTIONS_PER_PAGE - (i % BINGO_OPTIONS_PER_PAGE)), option
+            );
+            if (gBingoObjectivesDisabled[i]) {
+                gDPSetEnvColor(gDisplayListHead++, 255, 80, 80, sTextBaseAlpha);
+                print_generic_string(
+                    RIGHT_X + (RIGHT_X - LEFT_X) - 19, TOP_Y + 8 + ROW_HEIGHT * (BINGO_OPTIONS_PER_PAGE - (i % BINGO_OPTIONS_PER_PAGE)), textOff
+                );
+                gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sTextBaseAlpha);
+            } else {
+                print_generic_string(
+                    RIGHT_X + (RIGHT_X - LEFT_X) - 19, TOP_Y + 8 + ROW_HEIGHT * (BINGO_OPTIONS_PER_PAGE - (i % BINGO_OPTIONS_PER_PAGE)), textOn
+                );
+            }
+        }
+    }
     #undef LEFT_X
     #undef RIGHT_X
     #undef TOP_Y
     #undef ROW_HEIGHT
 
-
-    gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
-    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sTextBaseAlpha);
-    for (i = 1; i < 12; i++) {
-        switch (i) {
-            default:
-                option = textReset;
-                break;
-        }
-        print_generic_string(23 + 3, 20 + 16 * (12 - i), option);
+    if (sToggleCurrentOption) {
+        sToggleCurrentOption = 0;
     }
+
     gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
 }
 

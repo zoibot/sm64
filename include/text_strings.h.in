@@ -143,10 +143,28 @@
 #define TEXT__0_ _("   0   ")
 #define TEXT_RANDOM _("RANDOM")
 #define TEXT_OPTION _("OPTION")
+#define TEXT_OFF _("OFF")
+#define TEXT_ON _("ON")
 #define TEXT_FILE_MARIO_A _("MARIO A")
 #define TEXT_FILE_MARIO_B _("MARIO B")
 #define TEXT_FILE_MARIO_C _("MARIO C")
 #define TEXT_FILE_MARIO_D _("MARIO D")
+
+// Bingo Options
+#define TEXT_SINGLE_STAR _("Single Stars")
+#define TEXT_A_BUTTON _("A Button Challenge")
+#define TEXT_B_BUTTON _("B Button Challenge")
+#define TEXT_Z_BUTTON _("Z Button Challenge")
+#define TEXT_TIMED_STAR _("Timed Stars")
+#define TEXT_REVERSE_JOYSTICK _("Reverse Joystick")
+#define TEXT_GREEN_DEMON _("Green Demon")
+#define TEXT_COIN_LEVEL _("Coins in Level")
+#define TEXT_TOTAL_COIN _("Total Coins")
+#define TEXT_1UP_LEVEL _("All 1-ups in Level")
+#define TEXT_STARS_LEVEL _("All Stars in Level")
+#define TEXT_EXCLAM_BOXES _("Break ! Boxes")
+#define TEXT_KILL_ENEMIES _("Kill Enemies")
+
 
 // Menu Options
 #define TEXT_SCORE _("SCORE")
