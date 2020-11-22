@@ -120,8 +120,7 @@ enum BingoObjectiveType get_random_enabled_objective_type(enum BingoObjectiveCla
         }
     }
     if (enabledSum == 0) {
-        // All objectives are disabled. We should probably disallow this...
-        i = 1 / 0;
+        // All objectives are disabled. I guess just allow free play?
     }
     randomIndex = (RandomU16() % enabledSum) + 1;
     for (i = BINGO_OBJECTIVE_TYPE_MIN; i < BINGO_OBJECTIVE_TOTAL_AMOUNT; i++) {
@@ -133,7 +132,6 @@ enum BingoObjectiveType get_random_enabled_objective_type(enum BingoObjectiveCla
         }
     }
     // We shouldn't get here.
-    i = 1 / 0;
 }
 
 s32 switch_to(s32 exclude) {

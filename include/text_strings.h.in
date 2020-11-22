@@ -143,6 +143,8 @@
 #define TEXT__0_ _("   0   ")
 #define TEXT_RANDOM _("RANDOM")
 #define TEXT_OPTION _("OPTION")
+#define TEXT_START _("START")
+#define TEXT_BACKSPACE _("BACKSPACE")
 #define TEXT_OFF _("OFF")
 #define TEXT_ON _("ON")
 #define TEXT_FILE_MARIO_A _("MARIO A")

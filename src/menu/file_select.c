@@ -102,6 +102,8 @@ static unsigned char text789[] = { TEXT_789 };
 static unsigned char text_0_[] = { TEXT__0_ };
 static unsigned char textRandom[] = { TEXT_RANDOM };
 static unsigned char textOption[] = { TEXT_OPTION };
+static unsigned char textStart[] = { TEXT_START };
+static unsigned char textBackspace[] = { TEXT_BACKSPACE };
 static unsigned char textOff[] = { TEXT_OFF };
 static unsigned char textOn[] = { TEXT_ON };
 
@@ -119,14 +121,6 @@ s32 sBingoOptionSelectTimer = 0;
 #define BINGO_OPTION_TIMER_FRAMES 3
 s32 sToggleCurrentOption = 0;
 
-
-void seed_reset(void) {
-    s32 i;
-    gBingoSeedIsSet = 0;
-    for (i = 0; i < 10; i++) {
-        gBingoSeedText[i] = gBingoSeedRandomText[i];
-    }
-}
 
 /**
  * Yellow Background Menu Initial Action
@@ -278,10 +272,10 @@ static void bhv_menu_button_shrinking_to_submenu(struct Object *button) {
 static void bhv_menu_button_zoom_in_out(struct Object *button) {
     if (sCurrentMenuLevel == MENU_LAYER_MAIN) {
         if (button->oMenuButtonTimer < 4) {
-            button->oParentRelativePosZ -= 20.0f;
+            button->oParentRelativePosZ -= 40.0f;
         }
         if (button->oMenuButtonTimer >= 4) {
-            button->oParentRelativePosZ += 20.0f;
+            button->oParentRelativePosZ += 40.0f;
         }
     } else {
         if (button->oMenuButtonTimer < 4) {
@@ -458,34 +452,53 @@ static void seed_push_key(s32 key) {
     gBingoSeedText[8] = key;
 }
 
+static void seed_reset(void) {
+    s32 i;
+    gBingoSeedIsSet = 0;
+    for (i = 0; i < 10; i++) {
+        gBingoSeedText[i] = gBingoSeedRandomText[i];
+    }
+}
+
+static void seed_backspace(void) {
+    s32 i;
+    if (gBingoSeedIsSet) {
+        gBingoSeedText[0] = 0x00;
+        for (i = 8; i > 0; i--) {
+            gBingoSeedText[i] = gBingoSeedText[i-1];
+        }
+    }
+}
+
 static void seed_menu_check_clicked_buttons() {
     int buttonId;
     s32 keyEntered;
 
-    // if (seedButton->oMenuButtonState == MENU_BUTTON_STATE_FULLSCREEN) {
-        // code that's half copy-pasted, half ad-hoc fixed makes you look like
-        // a MANIAC tbh
-        for (buttonId = MENU_BUTTON_SEED_MIN; buttonId < MENU_BUTTON_SEED_MAX; buttonId++) {
-            s16 buttonX = sMainMenuButtons[buttonId]->oPosX;
-            s16 buttonY = sMainMenuButtons[buttonId]->oPosY;
+    for (buttonId = MENU_BUTTON_SEED_MIN; buttonId < MENU_BUTTON_SEED_MAX; buttonId++) {
+        s16 buttonX = sMainMenuButtons[buttonId]->oPosX;
+        s16 buttonY = sMainMenuButtons[buttonId]->oPosY;
 
-            if (check_clicked_button(buttonX, buttonY, 200.0f) == TRUE) {
-                if (buttonId == MENU_BUTTON_SEED_RESET) {
-                    seed_reset();
-                } else if (buttonId == MENU_BUTTON_SEED_OPTION) {
-                    // sCurrentMenuLevel = MENU_LAYER_SUBMENU;
-                    // TODO: fix two sounds
-                    play_sound(SOUND_MENU_CAMERA_ZOOM_IN, gDefaultSoundArgs);
-                    sMainMenuButtons[buttonId]->oMenuButtonState = MENU_BUTTON_STATE_GROWING;
-                    sSelectedButtonID = buttonId;
-                }
-                break;
+        if (check_clicked_button(buttonX, buttonY, 200.0f) == TRUE) {
+            if (buttonId == MENU_BUTTON_SEED_RESET) {
+                sMainMenuButtons[buttonId]->oMenuButtonState = MENU_BUTTON_STATE_ZOOM_IN_OUT;
+                seed_reset();
+            } else if (buttonId == MENU_BUTTON_SEED_BACKSPACE) {
+                sMainMenuButtons[buttonId]->oMenuButtonState = MENU_BUTTON_STATE_ZOOM_IN_OUT;
+                seed_backspace();
+            } else if (buttonId == MENU_BUTTON_SEED_OPTION) {
+                // sCurrentMenuLevel = MENU_LAYER_SUBMENU;
+                // TODO: fix two sounds
+                play_sound(SOUND_MENU_CAMERA_ZOOM_IN, gDefaultSoundArgs);
+                sMainMenuButtons[buttonId]->oMenuButtonState = MENU_BUTTON_STATE_GROWING;
+                sSelectedButtonID = buttonId;
             }
+            break;
         }
-        keyEntered = seed_keypad_get_number();
-        if (keyEntered != -1) {
-            seed_push_key(keyEntered);
-        }
+    }
+    keyEntered = seed_keypad_get_number();
+    if (keyEntered != -1) {
+        seed_push_key(keyEntered);
+    }
 }
 
 /**
@@ -503,7 +516,6 @@ static void load_main_menu_save_file(struct Object *fileButton, s32 fileNum) {
  * the return button (or sound mode) as source button.
  */
 static void return_to_main_menu(s16 prevMenuButtonID, struct Object *sourceButton) {
-    s32 buttonID;
     // If the source button is in default state and the previous menu in full screen,
     // play zoom out sound and shrink previous menu
     if (sourceButton->oMenuButtonState == MENU_BUTTON_STATE_DEFAULT
@@ -521,24 +533,24 @@ static void return_to_main_menu(s16 prevMenuButtonID, struct Object *sourceButto
  * Unlike buttons on submenus, these are never hidden or recreated.
  */
 void bhv_menu_button_manager_init(void) {
-    // File A
-    if (save_file_exists(SAVE_FILE_A) == TRUE) {
-        sMainMenuButtons[MENU_BUTTON_PLAY_FILE_A] =
-            spawn_object_rel_with_rot(gCurrentObject, MODEL_MAIN_MENU_MARIO_SAVE_BUTTON_FADE,
-                                      bhvMenuButton, -6400, 2800, 0, 0, 0, 0);
-    } else {
-        sMainMenuButtons[MENU_BUTTON_PLAY_FILE_A] =
-            spawn_object_rel_with_rot(gCurrentObject, MODEL_MAIN_MENU_MARIO_NEW_BUTTON_FADE,
-                                      bhvMenuButton, -6400, 2800, 0, 0, 0, 0);
-    }
-    sMainMenuButtons[MENU_BUTTON_PLAY_FILE_A]->oMenuButtonScale = 1.0f;
-
-    sMainMenuButtons[MENU_BUTTON_SEED_RESET] =
-        spawn_object_rel_with_rot(gCurrentObject, 12, bhvMenuButton, -6400, -3500, 0, 0, 0, 0);
+    sMainMenuButtons[MENU_BUTTON_SEED_RESET] = spawn_object_rel_with_rot(
+        gCurrentObject, MODEL_MAIN_MENU_RED_ERASE_BUTTON, bhvMenuButton, -6800, -3800, 0, 0, 0, 0
+    );
     sMainMenuButtons[MENU_BUTTON_SEED_RESET]->oMenuButtonScale = 1.0f;
 
-    sMainMenuButtons[MENU_BUTTON_SEED_OPTION] =
-        spawn_object_rel_with_rot(gCurrentObject, 12, bhvMenuButton, 6400, -3500, 0, 0, 0, 0);
+    sMainMenuButtons[MENU_BUTTON_SEED_BACKSPACE] = spawn_object_rel_with_rot(
+        gCurrentObject, MODEL_MAIN_MENU_PURPLE_SOUND_BUTTON, bhvMenuButton, -6800, 1000, 0, 0, 0, 0
+    );
+    sMainMenuButtons[MENU_BUTTON_SEED_BACKSPACE]->oMenuButtonScale = 1.0f;
+
+    sMainMenuButtons[MENU_BUTTON_PLAY_FILE_A] = spawn_object_rel_with_rot(
+        gCurrentObject, MODEL_MAIN_MENU_GREEN_SCORE_BUTTON, bhvMenuButton, 6800, 1000, 0, 0, 0, 0
+    );
+    sMainMenuButtons[MENU_BUTTON_PLAY_FILE_A]->oMenuButtonScale = 1.0f;
+
+    sMainMenuButtons[MENU_BUTTON_SEED_OPTION] = spawn_object_rel_with_rot(
+        gCurrentObject, MODEL_MAIN_MENU_BLUE_COPY_BUTTON, bhvMenuButton, 6800, -3800, 0, 0, 0, 0
+    );
     sMainMenuButtons[MENU_BUTTON_SEED_OPTION]->oMenuButtonScale = 1.0f;
 
 
@@ -594,9 +606,6 @@ void bhv_menu_button_manager_loop(void) {
             break;
         case MENU_BUTTON_PLAY_FILE_A:
             load_main_menu_save_file(sMainMenuButtons[MENU_BUTTON_PLAY_FILE_A], 1);
-            break;
-        case MENU_BUTTON_SEED_RESET:
-            seed_reset();
             break;
         case MENU_BUTTON_SEED_OPTION:
             exit_score_file_to_score_menu(sMainMenuButtons[MENU_BUTTON_SEED_OPTION], MENU_BUTTON_NONE);
@@ -756,9 +765,10 @@ static void draw_seed_mode_menu(void) {
 
     // Display return, reset
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sTextBaseAlpha);
-    print_generic_string(47, 35, textReset);
-    print_generic_string(240, 35, textReturn);
-    print_generic_string(240, 90, textOption);
+    print_generic_string(47, 34, textReset);
+    print_generic_string(241, 34, textOption);
+    print_generic_string(245, 104, textStart);
+    print_generic_string(35, 104, textBackspace);
 
     // Display keypad
     print_hud_lut_string_fade(2, 125, 100, text123);
