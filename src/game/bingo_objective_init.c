@@ -18,15 +18,6 @@ void random_abc(enum CourseNum *course, s32 *star, char **hint) {
     *hint = possibleABC[the_star].hint;
 }
 
-enum EnemyType random_enemy_goomba_or_bobomb() {
-    switch (RandomU16() % 2) {
-        case 0:
-            return ENEMY_TYPE_GOOMBA;
-        case 1:
-            return ENEMY_TYPE_BOBOMB;
-    }
-}
-
 enum CourseNum random_main_course() {
     return (RandomU16() % 15) + 1;
 }
@@ -404,18 +395,15 @@ void bingo_objective_exclamation_mark_box_init(struct BingoObjective *objective,
     get_objective_title(objective);
 }
 
-void bingo_objective_kill_enemies_init(struct BingoObjective *objective,
+void bingo_objective_kill_goombas_init(struct BingoObjective *objective,
                                        enum BingoObjectiveClass class) {
-    enum EnemyType enemyType;
     s32 enemiesToKill;
 
     switch (class) {
         case BINGO_CLASS_CENTER:
-            enemyType = random_enemy_goomba_or_bobomb();
             enemiesToKill = (RandomU16() % 5) + 15;
             break;
         case BINGO_CLASS_MEDIUM:
-            enemyType = random_enemy_goomba_or_bobomb();
             enemiesToKill = (RandomU16() % 10) + 5;
             break;
         default:
@@ -423,15 +411,29 @@ void bingo_objective_kill_enemies_init(struct BingoObjective *objective,
             return;
     }
 
-    switch (enemyType) {
-        case ENEMY_TYPE_GOOMBA:
-            strcpy(objective->icon, ICON_GOOMBA);
+    strcpy(objective->icon, ICON_GOOMBA);
+    objective->data.killEnemyObjective.enemiesToKill = enemiesToKill;
+    objective->data.killEnemyObjective.enemiesKilled = 0;
+    get_objective_title(objective);
+}
+
+void bingo_objective_kill_bobombs_init(struct BingoObjective *objective,
+                                       enum BingoObjectiveClass class) {
+    s32 enemiesToKill;
+
+    switch (class) {
+        case BINGO_CLASS_CENTER:
+            enemiesToKill = (RandomU16() % 5) + 15;
             break;
-        case ENEMY_TYPE_BOBOMB:
-            strcpy(objective->icon, ICON_BOBOMB);
+        case BINGO_CLASS_MEDIUM:
+            enemiesToKill = (RandomU16() % 10) + 5;
             break;
+        default:
+            ahhh_ahhhhh_oh_no_not_implemented(objective);
+            return;
     }
-    objective->data.killEnemyObjective.enemyType = enemyType;
+
+    strcpy(objective->icon, ICON_BOBOMB);
     objective->data.killEnemyObjective.enemiesToKill = enemiesToKill;
     objective->data.killEnemyObjective.enemiesKilled = 0;
     get_objective_title(objective);
@@ -482,8 +484,11 @@ void bingo_objective_init(struct BingoObjective *objective, enum BingoObjectiveC
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
             bingo_objective_exclamation_mark_box_init(objective, class);
             break;
-        case BINGO_OBJECTIVE_KILL_ENEMIES:
-            bingo_objective_kill_enemies_init(objective, class);
+        case BINGO_OBJECTIVE_KILL_GOOMBAS:
+            bingo_objective_kill_goombas_init(objective, class);
+            break;
+        case BINGO_OBJECTIVE_KILL_BOBOMBS:
+            bingo_objective_kill_bobombs_init(objective, class);
             break;
     }
 }

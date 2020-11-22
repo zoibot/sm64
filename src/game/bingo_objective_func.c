@@ -167,10 +167,19 @@ void objective_exclamation_mark_box(struct BingoObjective *objective) {
     }
 }
 
-void objective_kill_enemy(struct BingoObjective *objective) {
-    if (update_is_enemy_killing(sBingoCurrUpdate)
-        && update_type_matches_enemy_type(sBingoCurrUpdate,
-                                          objective->data.killEnemyObjective.enemyType)) {
+void objective_kill_goombas(struct BingoObjective *objective) {
+    if (sBingoCurrUpdate == BINGO_UPDATE_KILLED_GOOMBA) {
+        objective->data.killEnemyObjective.enemiesKilled++;
+        if (objective->data.killEnemyObjective.enemiesToKill
+                - objective->data.killEnemyObjective.enemiesKilled
+            <= 0) {
+            set_objective_state(objective, BINGO_STATE_COMPLETE);
+        }
+    }
+}
+
+void objective_kill_bobombs(struct BingoObjective *objective) {
+    if (sBingoCurrUpdate == BINGO_UPDATE_KILLED_BOBOMB) {
         objective->data.killEnemyObjective.enemiesKilled++;
         if (objective->data.killEnemyObjective.enemiesToKill
                 - objective->data.killEnemyObjective.enemiesKilled
@@ -222,8 +231,11 @@ void update_objective(struct BingoObjective *objective) {
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
             objective_exclamation_mark_box(objective);
             break;
-        case BINGO_OBJECTIVE_KILL_ENEMIES:
-            objective_kill_enemy(objective);
+        case BINGO_OBJECTIVE_KILL_GOOMBAS:
+            objective_kill_goombas(objective);
+            break;
+        case BINGO_OBJECTIVE_KILL_BOBOMBS:
+            objective_kill_bobombs(objective);
             break;
     }
 }

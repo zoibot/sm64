@@ -80,9 +80,12 @@ enum BingoObjectiveType
     BINGO_OBJECTIVE_1UPS_IN_LEVEL,
     BINGO_OBJECTIVE_STARS_IN_LEVEL,
     BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX,
-    BINGO_OBJECTIVE_KILL_ENEMIES,  // TODO: split by enemy
+    BINGO_OBJECTIVE_KILL_ENEMIES_MIN,
+    BINGO_OBJECTIVE_KILL_GOOMBAS = BINGO_OBJECTIVE_KILL_ENEMIES_MIN,
+    BINGO_OBJECTIVE_KILL_BOBOMBS,
+    BINGO_OBJECTIVE_KILL_ENEMIES_MAX = BINGO_OBJECTIVE_KILL_BOBOMBS,
     // end
-    BINGO_OBJECTIVE_TYPE_MAX = BINGO_OBJECTIVE_KILL_ENEMIES
+    BINGO_OBJECTIVE_TYPE_MAX = BINGO_OBJECTIVE_KILL_ENEMIES_MAX
 };
 
 enum BingoObjectiveUpdate
@@ -101,30 +104,6 @@ enum BingoObjectiveUpdate
     BINGO_UPDATE_RESET_TIMER
 };
 
-enum EnemyType
-{
-    ENEMY_TYPE_GOOMBA,
-    ENEMY_TYPE_BOBOMB
-};
-
-// TODO: Move this ito BingoObjectiveUpdate as a range within the enum.
-static s32 update_is_enemy_killing(enum BingoObjectiveUpdate update)
-{
-    return (
-        update == BINGO_UPDATE_KILLED_GOOMBA ||
-        update == BINGO_UPDATE_KILLED_BOBOMB
-    );
-}
-
-static s32 update_type_matches_enemy_type(
-    enum BingoObjectiveUpdate update,
-    enum EnemyType type
-) {
-    return (
-        (update == BINGO_UPDATE_KILLED_GOOMBA && type == ENEMY_TYPE_GOOMBA) ||
-        (update == BINGO_UPDATE_KILLED_BOBOMB && type == ENEMY_TYPE_BOBOMB)
-    );
-}
 
 struct StarObjectiveData
 {
@@ -149,7 +128,6 @@ struct StarTimerObjectiveData
 
 struct KillEnemyObjectiveData
 {
-    enum EnemyType enemyType;
     s32 enemiesToKill;
     s32 enemiesKilled;
 };

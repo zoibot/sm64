@@ -100,7 +100,8 @@ void get_objective_title(struct BingoObjective *objective) {
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
             get_exclamation_mark_box_title(objective);
             break;
-        case BINGO_OBJECTIVE_KILL_ENEMIES:
+        case BINGO_OBJECTIVE_KILL_GOOMBAS:
+        case BINGO_OBJECTIVE_KILL_BOBOMBS:
             get_kill_enemy_title(objective);
             break;
     }

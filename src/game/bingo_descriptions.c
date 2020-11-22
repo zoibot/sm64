@@ -283,11 +283,11 @@ void get_kill_enemy_objective_desc(struct BingoObjective *obj, char *desc) {
                     - obj->data.killEnemyObjective.enemiesKilled);
     }
 
-    switch (obj->data.killEnemyObjective.enemyType) {
-        case ENEMY_TYPE_GOOMBA:
+    switch (obj->type) {
+        case BINGO_OBJECTIVE_KILL_GOOMBAS:
             strcpy(enemyName, "Goombas");
             break;
-        case ENEMY_TYPE_BOBOMB:
+        case BINGO_OBJECTIVE_KILL_BOBOMBS:
             strcpy(enemyName, "Bob-ombs");
             break;
     }
@@ -323,7 +323,8 @@ void describe_objective(struct BingoObjective *objective, char *desc) {
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
             get_exclamation_mark_box_desc(objective, desc);
             break;
-        case BINGO_OBJECTIVE_KILL_ENEMIES:
+        case BINGO_OBJECTIVE_KILL_GOOMBAS:
+        case BINGO_OBJECTIVE_KILL_BOBOMBS:
             get_kill_enemy_objective_desc(objective, desc);
             break;
     }

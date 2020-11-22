@@ -53,7 +53,12 @@ enum BingoObjectiveType get_random_objective_type(enum BingoObjectiveClass class
                 case 0:
                     return BINGO_OBJECTIVE_COIN;
                 case 1:
-                    return BINGO_OBJECTIVE_KILL_ENEMIES;
+                    switch (RandomU16() % 2) {
+                        case 0:
+                            return BINGO_OBJECTIVE_KILL_GOOMBAS;
+                        case 1:
+                            return BINGO_OBJECTIVE_KILL_BOBOMBS;
+                    }
                 case 2:
                     return BINGO_OBJECTIVE_MULTICOIN;
             }
@@ -67,7 +72,12 @@ enum BingoObjectiveType get_random_objective_type(enum BingoObjectiveClass class
                 case 1:
                     return BINGO_OBJECTIVE_STAR;
                 case 2:
-                    return BINGO_OBJECTIVE_KILL_ENEMIES;
+                    switch (RandomU16() % 2) {
+                        case 0:
+                            return BINGO_OBJECTIVE_KILL_GOOMBAS;
+                        case 1:
+                            return BINGO_OBJECTIVE_KILL_BOBOMBS;
+                    }
                 case 3:
                     return BINGO_OBJECTIVE_STAR_TIMED;
                 case 4:

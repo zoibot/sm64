@@ -18,7 +18,7 @@ s32 get_1ups_in_level(enum CourseNum course) {
 // https://docs.google.com/spreadsheets/d/1MDgm0yj5IJeqYMJlOdbKyIz66aX1Y3dYm79_wIePxY0/edit#gid=0
 // https://www.youtube.com/playlist?list=PLP0jCPw9IPWhdWX4Ae24hjdX2CH15GKTg
 
-struct ABCData possibleABC[32] = {
+struct ABCData possibleABC[29] = {
     { COURSE_BOB, 1, "" },
     { COURSE_BOB, 2, "" },
     // BOB6 is possible but 11 minutes long, requiring extensive cloning
