@@ -402,20 +402,6 @@ static void exit_score_file_to_score_menu(struct Object *scoreFileButton, s8 sco
     }
 }
 
-static void seed_menu_create_buttons(struct Object *seedButton) {
-    // sMainMenuButtons[MENU_BUTTON_SEED_RESET] =
-    //     spawn_object_rel_with_rot(seedButton, 12, bhvMenuButton, 711, -388, -100, 0, -0x8000, 0);
-    // sMainMenuButtons[MENU_BUTTON_SEED_RESET]->oMenuButtonScale = 0.11111111f;
-
-    // sMainMenuButtons[MENU_BUTTON_SEED_RETURN] =
-    //     spawn_object_rel_with_rot(seedButton, 6, bhvMenuButton, -711, -388, -100, 0, -0x8000, 0);
-    // sMainMenuButtons[MENU_BUTTON_SEED_RETURN]->oMenuButtonScale = 0.11111111f;
-
-    // sMainMenuButtons[MENU_BUTTON_SEED_OPTION] =
-    //     spawn_object_rel_with_rot(seedButton, 12, bhvMenuButton, -711, 0, -100, 0, -0x8000, 0);
-    // sMainMenuButtons[MENU_BUTTON_SEED_OPTION]->oMenuButtonScale = 0.11111111f;
-}
-
 static s32 seed_keypad_get_number(void) {
     s32 x = sClickPos[0];
     s32 y = sClickPos[1];
@@ -484,15 +470,7 @@ static void seed_menu_check_clicked_buttons() {
             s16 buttonY = sMainMenuButtons[buttonId]->oPosY;
 
             if (check_clicked_button(buttonX, buttonY, 200.0f) == TRUE) {
-                // if (seedButton->oMenuButtonActionPhase == 0) {
-                //     play_sound(SOUND_MENU_CLICK_FILE_SELECT, gDefaultSoundArgs);
-                //     sMainMenuButtons[buttonId]->oMenuButtonState = MENU_BUTTON_STATE_ZOOM_IN_OUT;
-                //     // sSelectedButtonID = buttonId;
-                // }
-                /*if (buttonId == MENU_BUTTON_SEED_RETURN) {
-                    sSelectedButtonID = buttonId;
-                    sCurrentMenuLevel = MENU_LAYER_SUBMENU;
-                } else */if (buttonId == MENU_BUTTON_SEED_RESET) {
+                if (buttonId == MENU_BUTTON_SEED_RESET) {
                     seed_reset();
                 } else if (buttonId == MENU_BUTTON_SEED_OPTION) {
                     // sCurrentMenuLevel = MENU_LAYER_SUBMENU;
@@ -508,7 +486,6 @@ static void seed_menu_check_clicked_buttons() {
         if (keyEntered != -1) {
             seed_push_key(keyEntered);
         }
-    // }
 }
 
 /**
@@ -535,18 +512,6 @@ static void return_to_main_menu(s16 prevMenuButtonID, struct Object *sourceButto
         sMainMenuButtons[prevMenuButtonID]->oMenuButtonState = MENU_BUTTON_STATE_SHRINKING;
         sCurrentMenuLevel = MENU_LAYER_MAIN;
     }
-    // If the previous button is in default state, return back to the main menu
-//     if (sMainMenuButtons[prevMenuButtonID]->oMenuButtonState == MENU_BUTTON_STATE_DEFAULT) {
-//         sSelectedButtonID = MENU_BUTTON_NONE;
-//         // Hide buttons of corresponding button menu groups
-//         if (prevMenuButtonID == MENU_BUTTON_SOUND_MODE) {
-// //            for (buttonID = MENU_BUTTON_SOUND_MIN; buttonID < MENU_BUTTON_SOUND_MAX; buttonID++) {
-// //                mark_obj_for_deletion(sMainMenuButtons[buttonID]);
-//             // mark_obj_for_deletion(sMainMenuButtons[MENU_BUTTON_SEED_RETURN]);
-//             mark_obj_for_deletion(sMainMenuButtons[MENU_BUTTON_SEED_RESET]);
-//             mark_obj_for_deletion(sMainMenuButtons[MENU_BUTTON_SEED_OPTION]);
-//         }
-//     }
 }
 
 /**
@@ -567,11 +532,6 @@ void bhv_menu_button_manager_init(void) {
                                       bhvMenuButton, -6400, 2800, 0, 0, 0, 0);
     }
     sMainMenuButtons[MENU_BUTTON_PLAY_FILE_A]->oMenuButtonScale = 1.0f;
-
-    // Seed mode menu button
-    // sMainMenuButtons[MENU_BUTTON_SOUND_MODE] = spawn_object_rel_with_rot(
-    //     gCurrentObject, MODEL_MAIN_MENU_PURPLE_SOUND_BUTTON, bhvMenuButton, 6400, -3500, 0, 0, 0, 0);
-    // sMainMenuButtons[MENU_BUTTON_SOUND_MODE]->oMenuButtonScale = 1.0f;
 
     sMainMenuButtons[MENU_BUTTON_SEED_RESET] =
         spawn_object_rel_with_rot(gCurrentObject, 12, bhvMenuButton, -6400, -3500, 0, 0, 0, 0);
@@ -637,11 +597,7 @@ void bhv_menu_button_manager_loop(void) {
             break;
         case MENU_BUTTON_SEED_RESET:
             seed_reset();
-            // sSelectedButtonID = MENU_BUTTON_SOUND_MODE;
             break;
-        // case MENU_BUTTON_SOUND_MODE:
-        //     seed_menu_check_clicked_buttons(sMainMenuButtons[MENU_BUTTON_SOUND_MODE]);
-        //     break;
         case MENU_BUTTON_SEED_OPTION:
             exit_score_file_to_score_menu(sMainMenuButtons[MENU_BUTTON_SEED_OPTION], MENU_BUTTON_NONE);
             break;
@@ -999,9 +955,6 @@ static void print_file_select_strings(void) {
         case MENU_BUTTON_NONE:
             print_main_menu_strings();
             break;
-        // case MENU_BUTTON_SOUND_MODE:
-        //     draw_seed_mode_menu();
-        //     break;
         case MENU_BUTTON_SEED_OPTION:
             print_bingo_options();
             break;
