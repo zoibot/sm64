@@ -164,7 +164,7 @@ struct BingoObjective
 };
 
 extern struct BingoObjective gBingoObjectives[25];
-extern u8 gBingoObjectivesDisabled[BINGO_OBJECTIVE_TYPE_MAX];
+extern u8 gBingoObjectivesDisabled[BINGO_OBJECTIVE_TOTAL_AMOUNT];
 
 void set_objective_state(struct BingoObjective *objective, enum BingoObjectiveState state);
 void bingo_update(enum BingoObjectiveUpdate update);

@@ -138,22 +138,14 @@ retry:
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void ahhh_ahhhhh_oh_no_not_implemented(struct BingoObjective *objective) {
-    // TODO: fill this in somehow
-}
-
 void bingo_objective_star_init(struct BingoObjective *objective, enum BingoObjectiveClass class) {
     enum CourseNum course;
     s32 star;
 
     switch (class) {
-        case BINGO_CLASS_EASY:
-        case BINGO_CLASS_MEDIUM:
+        default:
             random_star_except_mips_toad(&course, &star);
             break;
-        default:
-            ahhh_ahhhhh_oh_no_not_implemented(objective);
-            return;
     }
     strcpy(objective->icon, ICON_STAR);
     objective->data.starObjective.course = course;
@@ -168,12 +160,9 @@ void bingo_objective_star_a_button_challenge_init(struct BingoObjective *objecti
     char *hint;
 
     switch (class) {
-        case BINGO_CLASS_HARD:
+        default:
             random_abc(&course, &star, &hint);
             break;
-        default:
-            ahhh_ahhhhh_oh_no_not_implemented(objective);
-            return;
     }
     strcpy(objective->icon, ICON_A_BUTTON);
     objective->data.abcStarObjective.course = course;
@@ -188,12 +177,9 @@ void bingo_objective_star_b_button_challenge_init(struct BingoObjective *objecti
     s32 star;
 
     switch (class) {
-        case BINGO_CLASS_MEDIUM:
+        default:
             random_bbc(&course, &star);
             break;
-        default:
-            ahhh_ahhhhh_oh_no_not_implemented(objective);
-            return;
     }
     strcpy(objective->icon, ICON_B_BUTTON);
     objective->data.starObjective.course = course;
@@ -207,12 +193,9 @@ void bingo_objective_star_z_button_challenge_init(struct BingoObjective *objecti
     s32 star;
 
     switch (class) {
-        case BINGO_CLASS_MEDIUM:
+        default:
             random_zbc(&course, &star);
             break;
-        default:
-            ahhh_ahhhhh_oh_no_not_implemented(objective);
-            return;
     }
 
     strcpy(objective->icon, ICON_Z_BUTTON);
@@ -227,18 +210,17 @@ void bingo_objective_star_timed_init(struct BingoObjective *objective, enum Bing
 
     switch (class) {
         case BINGO_CLASS_MEDIUM:
+        default:
             random_star_main_course_except_100c(&course, &star);
             maxTime = get_time_for_star(course, star) * 30 + (20 * 30) + // add 20 seconds to be nice
                       (RandomU16() % (15 * 30));                         // up to 15 extra seconds
             break;
         case BINGO_CLASS_HARD:
+        case BINGO_CLASS_CENTER:
             random_star_main_course_except_100c(&course, &star);
             maxTime = (get_time_for_star(course, star) * 30)
                       + (RandomU16() % (15 * 30)); // up to 15 extra seconds
             break;
-        default:
-            ahhh_ahhhhh_oh_no_not_implemented(objective);
-            return;
     }
 
     strcpy(objective->icon, ICON_TIMER);
@@ -255,12 +237,9 @@ void bingo_objective_star_reverse_joystick_init(struct BingoObjective *objective
     s32 star;
 
     switch (class) {
-        case BINGO_CLASS_HARD:
+        default:
             random_star_main_course_except_100c(&course, &star);
             break;
-        default:
-            ahhh_ahhhhh_oh_no_not_implemented(objective);
-            return;
     }
 
     strcpy(objective->icon, ICON_JOYSTICK);
@@ -275,12 +254,9 @@ void bingo_objective_star_green_demon_init(struct BingoObjective *objective,
     s32 star;
 
     switch (class) {
-        case BINGO_CLASS_HARD:
+        default:
             random_star_main_course_except_100c(&course, &star);
             break;
-        default:
-            ahhh_ahhhhh_oh_no_not_implemented(objective);
-            return;
     }
 
     strcpy(objective->icon, ICON_GREENDEMON);
@@ -294,21 +270,20 @@ void bingo_objective_coin_init(struct BingoObjective *objective, enum BingoObjec
     s32 coins;
 
     switch (class) {
+        default:
         case BINGO_CLASS_EASY:
             course = random_main_course();
             coins = ((RandomU16() % 30) + 30); // between 30 and 60
-            break;
-        case BINGO_CLASS_CENTER:
-            course = random_main_course();
-            coins = ((RandomU16() % 20) + 80); // between 80 and 100
             break;
         case BINGO_CLASS_MEDIUM:
             course = random_main_course();
             coins = ((RandomU16() % 90) + 10); // between 10 and 100
             break;
-        default:
-            ahhh_ahhhhh_oh_no_not_implemented(objective);
-            return;
+        case BINGO_CLASS_CENTER:
+        case BINGO_CLASS_HARD:
+            course = random_main_course();
+            coins = ((RandomU16() % 20) + 80); // between 80 and 100
+            break;
     }
     strcpy(objective->icon, ICON_COIN);
     objective->data.courseCollectableData.course = course;
@@ -321,14 +296,12 @@ void bingo_objective_multicoin_init(struct BingoObjective *objective, enum Bingo
     s32 numCoins;
     switch (class) {
         case BINGO_CLASS_HARD:
+        default:
             numCoins = 200 + ((RandomU16() % 15) * 10); // [200:350:10]
             break;
         case BINGO_CLASS_CENTER:
             numCoins = 300 + ((RandomU16() % 25) * 10); // [300:550:10]
             break;
-        default:
-            ahhh_ahhhhh_oh_no_not_implemented(objective);
-            return;
     }
     strcpy(objective->icon, ICON_MULTICOIN);
     objective->data.collectableData.toGet = numCoins;
@@ -341,13 +314,10 @@ void bingo_objective_1ups_in_level_init(struct BingoObjective *objective,
     enum CourseNum course;
     s32 _1ups;
     switch (class) {
-        case BINGO_CLASS_HARD:
+        default:
             course = random_main_course();
             _1ups = get_1ups_in_level(course);
             break;
-        default:
-            ahhh_ahhhhh_oh_no_not_implemented(objective);
-            return;
     }
 
     strcpy(objective->icon, ICON_1UP);
@@ -362,12 +332,9 @@ void bingo_objective_stars_in_level_init(struct BingoObjective *objective,
     enum CourseNum course;
 
     switch (class) {
-        case BINGO_CLASS_HARD:
+        default:
             course = random_main_course();
             break;
-        default:
-            ahhh_ahhhhh_oh_no_not_implemented(objective);
-            return;
     }
 
     strcpy(objective->icon, ICON_PURPLESTAR);
@@ -381,12 +348,9 @@ void bingo_objective_exclamation_mark_box_init(struct BingoObjective *objective,
                                                enum BingoObjectiveClass class) {
     s32 boxes;
     switch (class) {
-        case BINGO_CLASS_MEDIUM:
+        default:
             boxes = 6 + (RandomU16() % 8); // between 6 and 14
             break;
-        default:
-            ahhh_ahhhhh_oh_no_not_implemented(objective);
-            return;
     }
 
     strcpy(objective->icon, ICON_YELLOW_EXCLAMATION_MARK_BOX);
@@ -404,11 +368,9 @@ void bingo_objective_kill_goombas_init(struct BingoObjective *objective,
             enemiesToKill = (RandomU16() % 5) + 15;
             break;
         case BINGO_CLASS_MEDIUM:
+        default:
             enemiesToKill = (RandomU16() % 10) + 5;
             break;
-        default:
-            ahhh_ahhhhh_oh_no_not_implemented(objective);
-            return;
     }
 
     strcpy(objective->icon, ICON_GOOMBA);
@@ -426,11 +388,9 @@ void bingo_objective_kill_bobombs_init(struct BingoObjective *objective,
             enemiesToKill = (RandomU16() % 5) + 15;
             break;
         case BINGO_CLASS_MEDIUM:
+        default:
             enemiesToKill = (RandomU16() % 10) + 5;
             break;
-        default:
-            ahhh_ahhhhh_oh_no_not_implemented(objective);
-            return;
     }
 
     strcpy(objective->icon, ICON_BOBOMB);

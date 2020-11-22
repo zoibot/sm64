@@ -98,6 +98,44 @@ enum BingoObjectiveType get_random_objective_type(enum BingoObjectiveClass class
     }
 }
 
+enum BingoObjectiveType get_random_enabled_objective_type(enum BingoObjectiveClass class) {
+    u32 attempts = 7;
+    enum BingoObjectiveType candidate;
+    enum BingoObjectiveType i;
+    s32 enabledSum = 0;
+    u32 randomIndex;
+    u32 enabledCounter = 0;
+
+    while (attempts > 0) {
+        candidate = get_random_objective_type(class);
+        if (!gBingoObjectivesDisabled[candidate]) {
+            return candidate;
+        }
+        attempts--;
+    }
+    // Tried a few times; just give up and get a completely random objective
+    for (i = BINGO_OBJECTIVE_TYPE_MIN; i < BINGO_OBJECTIVE_TOTAL_AMOUNT; i++) {
+        if (!gBingoObjectivesDisabled[i]) {
+            enabledSum++;
+        }
+    }
+    if (enabledSum == 0) {
+        // All objectives are disabled. We should probably disallow this...
+        i = 1 / 0;
+    }
+    randomIndex = (RandomU16() % enabledSum) + 1;
+    for (i = BINGO_OBJECTIVE_TYPE_MIN; i < BINGO_OBJECTIVE_TOTAL_AMOUNT; i++) {
+        if (!gBingoObjectivesDisabled[i]) {
+            enabledCounter++;
+        }
+        if (enabledCounter == randomIndex) {
+            return i;
+        }
+    }
+    // We shouldn't get here.
+    i = 1 / 0;
+}
+
 s32 switch_to(s32 exclude) {
     s32 otherOne, otherTwo;
     s32 switchTo;
@@ -143,7 +181,6 @@ void setup_bingo_objectives(u32 seed) {
         { 1, 0, 0, 0, 2 }, { 0, 2, 0, 1, 0 }, { 0, 0, 3, 0, 0 }, { 0, 1, 0, 2, 0 }, { 2, 0, 0, 0, 1 }
     };
     s32 harderClass, easierClass, class;
-    s32 switchTo;
     s32 i;
     enum BingoObjectiveType type;
     struct BingoObjective *objective;
@@ -175,16 +212,16 @@ void setup_bingo_objectives(u32 seed) {
             objective = &gBingoObjectives[row * 5 + col];
 
             if (class == harderClass) {
-                type = get_random_objective_type(BINGO_CLASS_HARD);
+                type = get_random_enabled_objective_type(BINGO_CLASS_HARD);
                 bingo_objective_init(objective, BINGO_CLASS_HARD, type);
             } else if (class == easierClass) {
-                type = get_random_objective_type(BINGO_CLASS_EASY);
+                type = get_random_enabled_objective_type(BINGO_CLASS_EASY);
                 bingo_objective_init(objective, BINGO_CLASS_EASY, type);
             } else if (class == 3) {
-                type = get_random_objective_type(BINGO_CLASS_CENTER);
+                type = get_random_enabled_objective_type(BINGO_CLASS_CENTER);
                 bingo_objective_init(objective, BINGO_CLASS_CENTER, type);
             } else if (class == 0) {
-                type = get_random_objective_type(BINGO_CLASS_MEDIUM);
+                type = get_random_enabled_objective_type(BINGO_CLASS_MEDIUM);
                 bingo_objective_init(objective, BINGO_CLASS_MEDIUM, type);
             }
         }

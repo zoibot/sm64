@@ -37,7 +37,7 @@ enum BingoModifier gBingoStarSelected = BINGO_MODIFIER_NONE;
 
 struct BingoObjective gBingoObjectives[25];
 enum BingoObjectiveUpdate sBingoCurrUpdate;
-u8 gBingoObjectivesDisabled[BINGO_OBJECTIVE_TYPE_MAX] = { 0 };
+u8 gBingoObjectivesDisabled[BINGO_OBJECTIVE_TOTAL_AMOUNT] = { 0 };
 
 
 void set_objective_state(struct BingoObjective *objective, enum BingoObjectiveState state) {
