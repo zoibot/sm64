@@ -163,7 +163,8 @@
 #define TEXT_1UP_LEVEL _("All 1-ups in Level")
 #define TEXT_STARS_LEVEL _("All Stars in Level")
 #define TEXT_EXCLAM_BOXES _("Break ! Boxes")
-#define TEXT_KILL_ENEMIES _("Kill Enemies")
+#define TEXT_KILL_GOOMBAS _("Kill Goombas")
+#define TEXT_KILL_BOBOMBS _("Kill Bob-ombs")
 
 
 // Menu Options

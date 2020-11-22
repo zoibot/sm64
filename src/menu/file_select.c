@@ -797,7 +797,8 @@ static unsigned char textTotalCoin[] = { TEXT_TOTAL_COIN };
 static unsigned char text1upLevel[] = { TEXT_1UP_LEVEL };
 static unsigned char textStarsLevel[] = { TEXT_STARS_LEVEL };
 static unsigned char textExclamBoxes[] = { TEXT_EXCLAM_BOXES };
-static unsigned char textKillEnemies[] = { TEXT_KILL_ENEMIES };
+static unsigned char textKillGoombas[] = { TEXT_KILL_GOOMBAS };
+static unsigned char textKillBobOmbs[] = { TEXT_KILL_BOBOMBS };
 
 static void print_bingo_options(void) {
     s32 i;
@@ -835,7 +836,7 @@ static void print_bingo_options(void) {
 
     gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sTextBaseAlpha);
-    for (i = 0; i < BINGO_OBJECTIVE_TYPE_MAX; i++) {
+    for (i = 0; i < BINGO_OBJECTIVE_TOTAL_AMOUNT; i++) {
         if (i == sBingoOptionSelection && sToggleCurrentOption == 1) {
             sToggleCurrentOption = 0;
             gBingoObjectivesDisabled[i] ^= 1;
@@ -890,7 +891,14 @@ static void print_bingo_options(void) {
                 strcpy(obj_icon, ICON_YELLOW_EXCLAMATION_MARK_BOX);
                 option = textExclamBoxes;
                 break;
-            // TODO: enemies.
+            case BINGO_OBJECTIVE_KILL_GOOMBAS:
+                strcpy(obj_icon, ICON_GOOMBA);
+                option = textKillGoombas;
+                break;
+            case BINGO_OBJECTIVE_KILL_BOBOMBS:
+                strcpy(obj_icon, ICON_BOBOMB);
+                option = textKillBobOmbs;
+                break;
         }
         if (i < BINGO_OPTIONS_PER_PAGE) {
             print_text(
