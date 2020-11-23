@@ -11,8 +11,7 @@
 #include "strcpy.h"
 
 void random_abc(enum CourseNum *course, s32 *star, char **hint) {
-    u32 num_stars = sizeof(possibleABC) / sizeof(possibleABC[0]);
-    u32 the_star = RandomU16() % num_stars;
+    u32 the_star = RandomU16() % numPossibleABC;
     *course = possibleABC[the_star].course;
     *star = possibleABC[the_star].star - 1; // star is 0-indexed everywhere else :(
     *hint = possibleABC[the_star].hint;

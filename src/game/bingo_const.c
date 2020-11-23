@@ -18,7 +18,7 @@ s32 get_1ups_in_level(enum CourseNum course) {
 // https://docs.google.com/spreadsheets/d/1MDgm0yj5IJeqYMJlOdbKyIz66aX1Y3dYm79_wIePxY0/edit#gid=0
 // https://www.youtube.com/playlist?list=PLP0jCPw9IPWhdWX4Ae24hjdX2CH15GKTg
 
-struct ABCData possibleABC[29] = {
+struct ABCData possibleABC[] = {
     { COURSE_BOB, 1, "" },
     { COURSE_BOB, 2, "" },
     // BOB6 is possible but 11 minutes long, requiring extensive cloning
@@ -63,6 +63,8 @@ struct ABCData possibleABC[29] = {
       "Enter Huge Island, use the shell, "
       "and use Chuckya to clip into the mountain." }
 };
+
+s32 numPossibleABC = sizeof(possibleABC) / sizeof(possibleABC[0]);
 
 s32 starTimes[90][3] = {
     { COURSE_BOB, 1, 66 }, { COURSE_BOB, 2, 127 }, { COURSE_BOB, 3, 29 }, { COURSE_BOB, 4, 69 },

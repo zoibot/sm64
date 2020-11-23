@@ -12,7 +12,8 @@ struct ABCData {
 };
 
 extern char *courseAbbreviations[24];
-extern struct ABCData possibleABC[29];
+extern struct ABCData possibleABC[];
+extern s32 numPossibleABC;
 
 s32 get_1ups_in_level(enum CourseNum course);
 s32 get_time_for_star(enum CourseNum course, s32 star);
