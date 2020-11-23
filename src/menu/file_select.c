@@ -96,10 +96,6 @@ static unsigned char xIcon[] = { GLYPH_MULTIPLY, GLYPH_SPACE };
 static unsigned char textSelectFile[] = { TEXT_SELECT_FILE };
 static unsigned char textSeeds[] = { TEXT_SEEDS };
 static unsigned char textReset[] = { TEXT_RESET };
-static unsigned char text123[] = { TEXT_123 };
-static unsigned char text456[] = { TEXT_456 };
-static unsigned char text789[] = { TEXT_789 };
-static unsigned char text_0_[] = { TEXT__0_ };
 static unsigned char textRandom[] = { TEXT_RANDOM };
 static unsigned char textOption[] = { TEXT_OPTION };
 static unsigned char textStart[] = { TEXT_START };
@@ -363,7 +359,7 @@ void bhv_menu_button_loop(void) {
             break;
         case MENU_BUTTON_STATE_ZOOM_IN_OUT:
             bhv_menu_button_zoom_in_out(gCurrentObject);
-            sCursorClickingTimer = 4;
+            sCursorClickingTimer = 0;
             break;
         case MENU_BUTTON_STATE_ZOOM_IN:
             bhv_menu_button_zoom_in(gCurrentObject);
@@ -396,46 +392,6 @@ static void exit_score_file_to_score_menu(struct Object *scoreFileButton, s8 sco
     }
 }
 
-static s32 seed_keypad_get_number(void) {
-    s32 x = sClickPos[0];
-    s32 y = sClickPos[1];
-    s32 col = -1;
-    s32 row = -1;
-    s32 keypad[3][3] = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
-
-    if (x >= -33 && x <= -15) {
-        col = 0;
-    } else if (x >= -6 && x <= 12) {
-        col = 1;
-    } else if (x >= 21 && x <= 39) {
-        col = 2;
-    }
-
-    if (col == -1) {
-        return -1;
-    }
-
-    if (y <= 25 && y >= 7) {
-        row = 0;
-    } else if (y <= -2 && y >= -20) {
-        row = 1;
-    } else if (y <= -38 && y >= -47) {
-        row = 2;
-    } else if (y <= -68 && y >= -81) {
-        if (col == 1) {
-            return 0;
-        } else {
-            return -1;
-        }
-    }
-
-    if (row == -1) {
-        return -1;
-    }
-
-    return keypad[row][col];
-}
-
 static void seed_push_key(s32 key) {
     s32 i;
     if (!gBingoSeedIsSet) {
@@ -465,39 +421,52 @@ static void seed_backspace(void) {
     if (gBingoSeedIsSet) {
         gBingoSeedText[0] = 0x00;
         for (i = 8; i > 0; i--) {
-            gBingoSeedText[i] = gBingoSeedText[i-1];
+            gBingoSeedText[i] = gBingoSeedText[i - 1];
         }
     }
 }
 
 static void seed_menu_check_clicked_buttons() {
     int buttonId;
-    s32 keyEntered;
 
     for (buttonId = MENU_BUTTON_SEED_MIN; buttonId < MENU_BUTTON_SEED_MAX; buttonId++) {
         s16 buttonX = sMainMenuButtons[buttonId]->oPosX;
         s16 buttonY = sMainMenuButtons[buttonId]->oPosY;
 
         if (check_clicked_button(buttonX, buttonY, 200.0f) == TRUE) {
-            if (buttonId == MENU_BUTTON_SEED_RESET) {
-                sMainMenuButtons[buttonId]->oMenuButtonState = MENU_BUTTON_STATE_ZOOM_IN_OUT;
-                seed_reset();
-            } else if (buttonId == MENU_BUTTON_SEED_BACKSPACE) {
-                sMainMenuButtons[buttonId]->oMenuButtonState = MENU_BUTTON_STATE_ZOOM_IN_OUT;
-                seed_backspace();
-            } else if (buttonId == MENU_BUTTON_SEED_OPTION) {
-                // sCurrentMenuLevel = MENU_LAYER_SUBMENU;
-                // TODO: fix two sounds
-                play_sound(SOUND_MENU_CAMERA_ZOOM_IN, gDefaultSoundArgs);
-                sMainMenuButtons[buttonId]->oMenuButtonState = MENU_BUTTON_STATE_GROWING;
-                sSelectedButtonID = buttonId;
+            switch (buttonId) {
+                case MENU_BUTTON_SEED_RESET:
+                    sMainMenuButtons[buttonId]->oMenuButtonState = MENU_BUTTON_STATE_ZOOM_IN_OUT;
+                    seed_reset();
+                    break;
+                case MENU_BUTTON_SEED_BACKSPACE:
+                    sMainMenuButtons[buttonId]->oMenuButtonState = MENU_BUTTON_STATE_ZOOM_IN_OUT;
+                    seed_backspace();
+                    break;
+                case MENU_BUTTON_SEED_OPTION:
+                    play_sound(SOUND_MENU_CAMERA_ZOOM_IN, gDefaultSoundArgs);
+                    sMainMenuButtons[buttonId]->oMenuButtonState = MENU_BUTTON_STATE_GROWING;
+                    sSelectedButtonID = buttonId;
+                    break;
+                case MENU_BUTTON_SEED_NUM_1:
+                case MENU_BUTTON_SEED_NUM_2:
+                case MENU_BUTTON_SEED_NUM_3:
+                case MENU_BUTTON_SEED_NUM_4:
+                case MENU_BUTTON_SEED_NUM_5:
+                case MENU_BUTTON_SEED_NUM_6:
+                case MENU_BUTTON_SEED_NUM_7:
+                case MENU_BUTTON_SEED_NUM_8:
+                case MENU_BUTTON_SEED_NUM_9:
+                    // Sort of hacky.
+                    sMainMenuButtons[buttonId]->oMenuButtonState = MENU_BUTTON_STATE_ZOOM_IN_OUT;
+                    seed_push_key(buttonId - MENU_BUTTON_SEED_NUM_1 + 1);
+                    break;
+                case MENU_BUTTON_SEED_NUM_0:
+                    seed_push_key(0);
+                    break;
             }
             break;
         }
-    }
-    keyEntered = seed_keypad_get_number();
-    if (keyEntered != -1) {
-        seed_push_key(keyEntered);
     }
 }
 
@@ -533,6 +502,11 @@ static void return_to_main_menu(s16 prevMenuButtonID, struct Object *sourceButto
  * Unlike buttons on submenus, these are never hidden or recreated.
  */
 void bhv_menu_button_manager_init(void) {
+    enum MenuButtonTypes buttonID;
+    u8 buttonNum;
+    s16 buttonX;
+    s16 buttonY;
+
     sMainMenuButtons[MENU_BUTTON_SEED_RESET] = spawn_object_rel_with_rot(
         gCurrentObject, MODEL_MAIN_MENU_RED_ERASE_BUTTON, bhvMenuButton, -6800, -3800, 0, 0, 0, 0
     );
@@ -542,6 +516,43 @@ void bhv_menu_button_manager_init(void) {
         gCurrentObject, MODEL_MAIN_MENU_PURPLE_SOUND_BUTTON, bhvMenuButton, -6800, 1000, 0, 0, 0, 0
     );
     sMainMenuButtons[MENU_BUTTON_SEED_BACKSPACE]->oMenuButtonScale = 1.0f;
+
+    for (
+        buttonID = MENU_BUTTON_SEED_NUMPAD_MIN, buttonNum = 1;
+        buttonID <= MENU_BUTTON_SEED_NUMPAD_MAX;
+        buttonID++, buttonNum++
+    ) {
+        switch (buttonNum % 3) {
+            case 1:  // Leftmost
+                buttonX = -2400;
+                break;
+            case 2:  // Middle
+                buttonX = 0;
+                break;
+            case 0:  // Rightmost
+                buttonX = 2400;
+                break;
+        }
+        switch ((buttonNum - 1) / 3) {
+            case 0:  // Top
+                buttonY = -1300 + 2200;
+                break;
+            case 1:  // Middle
+                buttonY = -1300;
+                break;
+            case 2:  // Bottom
+                buttonY = -1300 - 2200;
+                break;
+        }
+        sMainMenuButtons[buttonID] = spawn_object_rel_with_rot(
+            gCurrentObject, MODEL_MAIN_MENU_NUMPAD_0 + buttonNum, bhvMenuButton, buttonX, buttonY, 0, 0, 0, 0
+        );
+        sMainMenuButtons[buttonID]->oMenuButtonScale = 0.75f;
+    }
+    sMainMenuButtons[MENU_BUTTON_SEED_NUM_0] = spawn_object_rel_with_rot(
+        gCurrentObject, MODEL_MAIN_MENU_NUMPAD_0, bhvMenuButton, 0, -1300 - 4200, 0, 0, 0, 0
+    );
+    sMainMenuButtons[buttonID]->oMenuButtonScale = 0.75f;
 
     sMainMenuButtons[MENU_BUTTON_PLAY_FILE_A] = spawn_object_rel_with_rot(
         gCurrentObject, MODEL_MAIN_MENU_GREEN_SCORE_BUTTON, bhvMenuButton, 6800, 1000, 0, 0, 0, 0
@@ -770,12 +781,6 @@ static void draw_seed_mode_menu(void) {
     print_generic_string(245, 104, textStart);
     print_generic_string(35, 104, textBackspace);
 
-    // Display keypad
-    print_hud_lut_string_fade(2, 125, 100, text123);
-    print_hud_lut_string_fade(2, 125, 100 + (30 * 1), text456);
-    print_hud_lut_string_fade(2, 125, 100 + (30 * 2), text789);
-    print_hud_lut_string_fade(2, 125 + 3, 100 + (30 * 3), text_0_); // move right slightly
-
     // Display seed
     if (gBingoSeedIsSet) {
         xSeedPos = 105;
@@ -845,7 +850,7 @@ static void print_bingo_options(void) {
     }
 
     gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
-    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sTextBaseAlpha);
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, MIN(sTextBaseAlpha, 200));
     for (i = 0; i < BINGO_OBJECTIVE_TOTAL_AMOUNT; i++) {
         if (i == sBingoOptionSelection && sToggleCurrentOption == 1) {
             sToggleCurrentOption = 0;

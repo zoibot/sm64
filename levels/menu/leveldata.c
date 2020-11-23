@@ -35,6 +35,47 @@ ALIGNED8 static const u8 texture_menu_mario_new[] = {
 #include "levels/menu/main_menu_seg7.02018.rgba16.inc.c"
 };
 
+ALIGNED8 static const u8 texture_menu_numpad_0[] = {
+#include "levels/menu/numpad_0.rgba16.inc.c"
+};
+
+ALIGNED8 static const u8 texture_menu_numpad_1[] = {
+#include "levels/menu/numpad_1.rgba16.inc.c"
+};
+
+ALIGNED8 static const u8 texture_menu_numpad_2[] = {
+#include "levels/menu/numpad_2.rgba16.inc.c"
+};
+
+ALIGNED8 static const u8 texture_menu_numpad_3[] = {
+#include "levels/menu/numpad_3.rgba16.inc.c"
+};
+
+ALIGNED8 static const u8 texture_menu_numpad_4[] = {
+#include "levels/menu/numpad_4.rgba16.inc.c"
+};
+
+ALIGNED8 static const u8 texture_menu_numpad_5[] = {
+#include "levels/menu/numpad_5.rgba16.inc.c"
+};
+
+ALIGNED8 static const u8 texture_menu_numpad_6[] = {
+#include "levels/menu/numpad_6.rgba16.inc.c"
+};
+
+ALIGNED8 static const u8 texture_menu_numpad_7[] = {
+#include "levels/menu/numpad_7.rgba16.inc.c"
+};
+
+ALIGNED8 static const u8 texture_menu_numpad_8[] = {
+#include "levels/menu/numpad_8.rgba16.inc.c"
+};
+
+ALIGNED8 static const u8 texture_menu_numpad_9[] = {
+#include "levels/menu/numpad_9.rgba16.inc.c"
+};
+
+
 // 0x07003018 - 0x07003118
 static const Vtx vertex_menu_save_button_borders[] = {
     {{{  -163,   -122,      0}, 0, {     0,    990}, {0x00, 0xb6, 0x66, 0xff}}},
@@ -158,6 +199,136 @@ const Gfx dl_menu_mario_new_button_base[] = {
     gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 32 * 32 - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES)),
     gsSPDisplayList(dl_vertex_menu_save_button_borders),
     gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture_menu_mario_new),
+    gsDPLoadSync(),
+    gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 64 * 32 - 1, CALC_DXT(64, G_IM_SIZ_16b_BYTES)),
+    gsSPDisplayList(dl_vertex_menu_save_button_front),
+    gsSPEndDisplayList(),
+};
+
+const Gfx dl_menu_numpad_0[] = {
+    gsSPDisplayList(dl_tex_block_menu_save_button_base),
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture_menu_stone),
+    gsDPLoadSync(),
+    gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 32 * 32 - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES)),
+    gsSPDisplayList(dl_vertex_menu_save_button_borders),
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture_menu_numpad_0),
+    gsDPLoadSync(),
+    gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 64 * 32 - 1, CALC_DXT(64, G_IM_SIZ_16b_BYTES)),
+    gsSPDisplayList(dl_vertex_menu_save_button_front),
+    gsSPEndDisplayList(),
+};
+
+const Gfx dl_menu_numpad_1[] = {
+    gsSPDisplayList(dl_tex_block_menu_save_button_base),
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture_menu_stone),
+    gsDPLoadSync(),
+    gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 32 * 32 - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES)),
+    gsSPDisplayList(dl_vertex_menu_save_button_borders),
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture_menu_numpad_1),
+    gsDPLoadSync(),
+    gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 64 * 32 - 1, CALC_DXT(64, G_IM_SIZ_16b_BYTES)),
+    gsSPDisplayList(dl_vertex_menu_save_button_front),
+    gsSPEndDisplayList(),
+};
+
+const Gfx dl_menu_numpad_2[] = {
+    gsSPDisplayList(dl_tex_block_menu_save_button_base),
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture_menu_stone),
+    gsDPLoadSync(),
+    gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 32 * 32 - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES)),
+    gsSPDisplayList(dl_vertex_menu_save_button_borders),
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture_menu_numpad_2),
+    gsDPLoadSync(),
+    gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 64 * 32 - 1, CALC_DXT(64, G_IM_SIZ_16b_BYTES)),
+    gsSPDisplayList(dl_vertex_menu_save_button_front),
+    gsSPEndDisplayList(),
+};
+
+const Gfx dl_menu_numpad_3[] = {
+    gsSPDisplayList(dl_tex_block_menu_save_button_base),
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture_menu_stone),
+    gsDPLoadSync(),
+    gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 32 * 32 - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES)),
+    gsSPDisplayList(dl_vertex_menu_save_button_borders),
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture_menu_numpad_3),
+    gsDPLoadSync(),
+    gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 64 * 32 - 1, CALC_DXT(64, G_IM_SIZ_16b_BYTES)),
+    gsSPDisplayList(dl_vertex_menu_save_button_front),
+    gsSPEndDisplayList(),
+};
+
+const Gfx dl_menu_numpad_4[] = {
+    gsSPDisplayList(dl_tex_block_menu_save_button_base),
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture_menu_stone),
+    gsDPLoadSync(),
+    gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 32 * 32 - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES)),
+    gsSPDisplayList(dl_vertex_menu_save_button_borders),
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture_menu_numpad_4),
+    gsDPLoadSync(),
+    gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 64 * 32 - 1, CALC_DXT(64, G_IM_SIZ_16b_BYTES)),
+    gsSPDisplayList(dl_vertex_menu_save_button_front),
+    gsSPEndDisplayList(),
+};
+
+const Gfx dl_menu_numpad_5[] = {
+    gsSPDisplayList(dl_tex_block_menu_save_button_base),
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture_menu_stone),
+    gsDPLoadSync(),
+    gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 32 * 32 - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES)),
+    gsSPDisplayList(dl_vertex_menu_save_button_borders),
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture_menu_numpad_5),
+    gsDPLoadSync(),
+    gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 64 * 32 - 1, CALC_DXT(64, G_IM_SIZ_16b_BYTES)),
+    gsSPDisplayList(dl_vertex_menu_save_button_front),
+    gsSPEndDisplayList(),
+};
+
+const Gfx dl_menu_numpad_6[] = {
+    gsSPDisplayList(dl_tex_block_menu_save_button_base),
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture_menu_stone),
+    gsDPLoadSync(),
+    gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 32 * 32 - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES)),
+    gsSPDisplayList(dl_vertex_menu_save_button_borders),
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture_menu_numpad_6),
+    gsDPLoadSync(),
+    gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 64 * 32 - 1, CALC_DXT(64, G_IM_SIZ_16b_BYTES)),
+    gsSPDisplayList(dl_vertex_menu_save_button_front),
+    gsSPEndDisplayList(),
+};
+
+const Gfx dl_menu_numpad_7[] = {
+    gsSPDisplayList(dl_tex_block_menu_save_button_base),
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture_menu_stone),
+    gsDPLoadSync(),
+    gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 32 * 32 - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES)),
+    gsSPDisplayList(dl_vertex_menu_save_button_borders),
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture_menu_numpad_7),
+    gsDPLoadSync(),
+    gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 64 * 32 - 1, CALC_DXT(64, G_IM_SIZ_16b_BYTES)),
+    gsSPDisplayList(dl_vertex_menu_save_button_front),
+    gsSPEndDisplayList(),
+};
+
+const Gfx dl_menu_numpad_8[] = {
+    gsSPDisplayList(dl_tex_block_menu_save_button_base),
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture_menu_stone),
+    gsDPLoadSync(),
+    gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 32 * 32 - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES)),
+    gsSPDisplayList(dl_vertex_menu_save_button_borders),
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture_menu_numpad_8),
+    gsDPLoadSync(),
+    gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 64 * 32 - 1, CALC_DXT(64, G_IM_SIZ_16b_BYTES)),
+    gsSPDisplayList(dl_vertex_menu_save_button_front),
+    gsSPEndDisplayList(),
+};
+
+const Gfx dl_menu_numpad_9[] = {
+    gsSPDisplayList(dl_tex_block_menu_save_button_base),
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture_menu_stone),
+    gsDPLoadSync(),
+    gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 32 * 32 - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES)),
+    gsSPDisplayList(dl_vertex_menu_save_button_borders),
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture_menu_numpad_9),
     gsDPLoadSync(),
     gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 64 * 32 - 1, CALC_DXT(64, G_IM_SIZ_16b_BYTES)),
     gsSPDisplayList(dl_vertex_menu_save_button_front),

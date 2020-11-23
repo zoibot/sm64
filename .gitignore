@@ -62,6 +62,7 @@ build/*
 /sound/**/*.m64
 /sound/**/*.aiff
 !/levels/**/*custom*.png
+!/levels/**/*numpad*.png
 !/levels/**/*custom*/**/*.png
 !/actors/**/*custom*.png
 !/actors/**/*custom*/**/*.png

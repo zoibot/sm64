@@ -580,6 +580,17 @@
 #define MODEL_MAIN_MENU_MARIO_NEW_BUTTON_FADE     MODEL_LEVEL_GEOMETRY_0A   // main_menu_geo_000260
 #define MODEL_MAIN_MENU_PURPLE_SOUND_BUTTON       MODEL_LEVEL_GEOMETRY_0B   // main_menu_geo_000330
 #define MODEL_MAIN_MENU_GENERIC_BUTTON            MODEL_LEVEL_GEOMETRY_0C   // main_menu_geo_000358
+#define MODEL_MAIN_MENU_NUMPAD_0            MODEL_LEVEL_GEOMETRY_0D
+#define MODEL_MAIN_MENU_NUMPAD_1            MODEL_LEVEL_GEOMETRY_0E
+#define MODEL_MAIN_MENU_NUMPAD_2            MODEL_LEVEL_GEOMETRY_0F
+#define MODEL_MAIN_MENU_NUMPAD_3            MODEL_LEVEL_GEOMETRY_10
+#define MODEL_MAIN_MENU_NUMPAD_4            MODEL_LEVEL_GEOMETRY_11
+#define MODEL_MAIN_MENU_NUMPAD_5            MODEL_LEVEL_GEOMETRY_12
+#define MODEL_MAIN_MENU_NUMPAD_6            MODEL_LEVEL_GEOMETRY_13
+#define MODEL_MAIN_MENU_NUMPAD_7            MODEL_LEVEL_GEOMETRY_14
+#define MODEL_MAIN_MENU_NUMPAD_8            MODEL_LEVEL_GEOMETRY_15
+#define MODEL_MAIN_MENU_NUMPAD_9            MODEL_LEVEL_GEOMETRY_16
+
 
 // level model aliases to level geometry IDs. Possibly a relic from an older level
 // format that used to rely on level geometry objects. (seen in WF, LLL, etc)
