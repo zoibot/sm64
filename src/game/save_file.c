@@ -55,7 +55,7 @@ static void no_op(void) {
     gSaveBuffer.files[0][0].capPos[2] = 0;
     gSaveBuffer.files[0][0].flags = 0x1F10FFCF;
     // TODO: Determine if we need the cannons open or not.
-    for (i = 0; i < 15; i++) {
+    for (i = 0; i <= 15; i++) {
         gSaveBuffer.files[0][0].courseStars[i] = 0xFF;
     }
     gSaveBuffer.files[0][0].courseStars[16] = 0x01;
