@@ -164,12 +164,16 @@
 #define TEXT_KILL_GOOMBAS _("Kill Goombas")
 #define TEXT_KILL_BOBOMBS _("Kill Bob-ombs")
 
+#define TEXT_DPAD _("Use D-Pad to select")
+#define TEXT_PRESS_A _("Press A to toggle")
+
 // Bingo Credits
 #define TEXT_BINGO64 _("Bingo64")
 #define TEXT_CREATED_BY _("by Quate and genteelman")
-#define TEXT_SPECIAL_THANKS _("Special Thanks:")
+#define TEXT_SPECIAL_THANKS _("Special Thanks")
 #define TEXT_ALO _("AloXado320")
 #define TEXT_GTM _("GTM")
+#define TEXT_NO_90 _("No. 90")
 
 // Menu Options
 #define TEXT_SCORE _("SCORE")
