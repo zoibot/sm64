@@ -19,6 +19,7 @@
 
 extern u16 gRandomSeed16;
 u16 RandomU16(void);
+u32 RandomU32(void);
 float RandomFloat(void);
 s32 RandomSign(void);
 

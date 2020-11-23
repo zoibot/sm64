@@ -23,6 +23,7 @@
 #include "game/bingo.h"
 #include "game/bingo_board_setup.h"
 #include "game/strcpy.h"
+#include "engine/rand.h"
 
 /**
  * @file file_select.c
@@ -1050,12 +1051,20 @@ s32 lvl_init_menu_values_and_cursor_pos(UNUSED s32 arg, UNUSED s32 unused) {
 
 u32 get_seed(void) {
     if (!gBingoSeedIsSet) {
-        return gGlobalTimer; // good enough as a seed
+        init_genrand(gGlobalTimer);
+        return RandomU32() % 999999999;
     }
-    // no pow() so i'm lazy
-    return (gBingoSeedText[0] * 100000000 + gBingoSeedText[1] * 10000000 + gBingoSeedText[2] * 1000000
-            + gBingoSeedText[3] * 100000 + gBingoSeedText[4] * 10000 + gBingoSeedText[5] * 1000
-            + gBingoSeedText[6] * 100 + gBingoSeedText[7] * 10 + gBingoSeedText[8] * 1);
+    return (
+        gBingoSeedText[0] * 100000000
+        + gBingoSeedText[1] * 10000000
+        + gBingoSeedText[2] * 1000000
+        + gBingoSeedText[3] * 100000
+        + gBingoSeedText[4] * 10000
+        + gBingoSeedText[5] * 1000
+        + gBingoSeedText[6] * 100
+        + gBingoSeedText[7] * 10
+        + gBingoSeedText[8] * 1
+    );
 }
 
 /**
