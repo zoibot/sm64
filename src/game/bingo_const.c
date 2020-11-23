@@ -75,7 +75,7 @@ s32 starTimes[90][3] = {
     { COURSE_CCM, 3, 69 }, { COURSE_CCM, 4, 56 },  { COURSE_CCM, 5, 55 }, { COURSE_CCM, 6, 13 },
     { COURSE_BBH, 1, 78 }, { COURSE_BBH, 2, 50 },  { COURSE_BBH, 3, 17 }, { COURSE_BBH, 4, 78 },
     { COURSE_BBH, 5, 39 }, { COURSE_BBH, 6, 40 },  { COURSE_HMC, 1, 23 }, { COURSE_HMC, 2, 68 },
-    { COURSE_HMC, 3, 37 }, { COURSE_HMC, 4, 38 },  { COURSE_HMC, 5, 17 }, { COURSE_HMC, 6, 23 },
+    { COURSE_HMC, 3, 37 }, { COURSE_HMC, 4, 50 },  { COURSE_HMC, 5, 17 }, { COURSE_HMC, 6, 23 },
     { COURSE_LLL, 1, 28 }, { COURSE_LLL, 2, 37 },  { COURSE_LLL, 3, 21 }, { COURSE_LLL, 4, 17 },
     { COURSE_LLL, 5, 26 }, { COURSE_LLL, 6, 28 },  { COURSE_SSL, 1, 25 }, { COURSE_SSL, 2, 10 },
     { COURSE_SSL, 3, 23 }, { COURSE_SSL, 4, 42 },  { COURSE_SSL, 5, 67 }, { COURSE_SSL, 6, 72 },
