@@ -458,9 +458,8 @@ static void seed_menu_check_clicked_buttons() {
                 case MENU_BUTTON_SEED_NUM_7:
                 case MENU_BUTTON_SEED_NUM_8:
                 case MENU_BUTTON_SEED_NUM_9:
-                    // Sort of hacky.
                     sMainMenuButtons[buttonId]->oMenuButtonState = MENU_BUTTON_STATE_ZOOM_IN_OUT;
-                    seed_push_key(buttonId - MENU_BUTTON_SEED_NUM_1 + 1);
+                    seed_push_key(buttonId - MENU_BUTTON_SEED_NUM_1 + 1);  // Sort of hacky.
                     break;
                 case MENU_BUTTON_SEED_NUM_0:
                     seed_push_key(0);
@@ -816,10 +815,23 @@ static unsigned char textExclamBoxes[] = { TEXT_EXCLAM_BOXES };
 static unsigned char textKillGoombas[] = { TEXT_KILL_GOOMBAS };
 static unsigned char textKillBobOmbs[] = { TEXT_KILL_BOBOMBS };
 
+static unsigned char textBingo64[] = { TEXT_BINGO64 };
+static unsigned char textCreatedBy[] = { TEXT_CREATED_BY };
+static unsigned char textSpecialThanks[] = { TEXT_SPECIAL_THANKS };
+static unsigned char textAlo[] = { TEXT_ALO };
+static unsigned char textGTM[] = { TEXT_GTM };
+
+
 static void print_bingo_options(void) {
     s32 i;
     char obj_icon[2];
     unsigned char *option;
+    unsigned char *creditString;
+    s32 optionLeftX;
+    s32 onOrOffLeftX;
+    s32 offsetY;
+    s32 whiteTextAlpha = MIN(sTextBaseAlpha, 200);
+    s32 creditsLeftX;
 
     if (gOptionSelectIconOpacity <= 10) {
         return;
@@ -851,7 +863,7 @@ static void print_bingo_options(void) {
     }
 
     gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
-    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, MIN(sTextBaseAlpha, 200));
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, whiteTextAlpha);
     for (i = 0; i < BINGO_OBJECTIVE_TOTAL_AMOUNT; i++) {
         if (i == sBingoOptionSelection && sToggleCurrentOption == 1) {
             sToggleCurrentOption = 0;
@@ -917,43 +929,57 @@ static void print_bingo_options(void) {
                 break;
         }
         if (i < BINGO_OPTIONS_PER_PAGE) {
-            print_text(
-                LEFT_X + 1, TOP_Y - 2 + ROW_HEIGHT * (BINGO_OPTIONS_PER_PAGE - i), obj_icon
-            );
-            print_generic_string(
-                LEFT_X + 1 + 16 + 3, TOP_Y - 2 + ROW_HEIGHT * (BINGO_OPTIONS_PER_PAGE - i), option
-            );
-            if (gBingoObjectivesDisabled[i]) {
-                gDPSetEnvColor(gDisplayListHead++, 255, 80, 80, sTextBaseAlpha);
-                print_generic_string(
-                    RIGHT_X - 19, TOP_Y - 2 + ROW_HEIGHT * (BINGO_OPTIONS_PER_PAGE - i), textOff
-                );
-                gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sTextBaseAlpha);
-            } else {
-                print_generic_string(
-                    RIGHT_X - 19, TOP_Y - 2 + ROW_HEIGHT * (BINGO_OPTIONS_PER_PAGE - i), textOn
-                );
-            }
+            optionLeftX = LEFT_X + 1;
+            onOrOffLeftX = RIGHT_X - 19;
         } else {
-            print_text(
-                RIGHT_X + 1, TOP_Y - 2 + ROW_HEIGHT * (BINGO_OPTIONS_PER_PAGE - (i % BINGO_OPTIONS_PER_PAGE)), obj_icon
-            );
-            print_generic_string(
-                RIGHT_X + 1 + 16 + 3, TOP_Y - 2 + ROW_HEIGHT * (BINGO_OPTIONS_PER_PAGE - (i % BINGO_OPTIONS_PER_PAGE)), option
-            );
-            if (gBingoObjectivesDisabled[i]) {
-                gDPSetEnvColor(gDisplayListHead++, 255, 80, 80, sTextBaseAlpha);
-                print_generic_string(
-                    RIGHT_X + (RIGHT_X - LEFT_X) - 19, TOP_Y - 2 + ROW_HEIGHT * (BINGO_OPTIONS_PER_PAGE - (i % BINGO_OPTIONS_PER_PAGE)), textOff
-                );
-                gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sTextBaseAlpha);
-            } else {
-                print_generic_string(
-                    RIGHT_X + (RIGHT_X - LEFT_X) - 19, TOP_Y - 2 + ROW_HEIGHT * (BINGO_OPTIONS_PER_PAGE - (i % BINGO_OPTIONS_PER_PAGE)), textOn
-                );
-            }
+            optionLeftX = RIGHT_X;
+            onOrOffLeftX = RIGHT_X + (RIGHT_X - LEFT_X) - 19;
+        }
+        offsetY = ROW_HEIGHT * (BINGO_OPTIONS_PER_PAGE - (i % BINGO_OPTIONS_PER_PAGE)) - 2;
+
+        print_text(optionLeftX, TOP_Y + offsetY, obj_icon);
+        print_generic_string(optionLeftX + 19, TOP_Y + offsetY, option);
+
+        if (gBingoObjectivesDisabled[i]) {
+            gDPSetEnvColor(gDisplayListHead++, 255, 80, 80, sTextBaseAlpha);
+            print_generic_string(onOrOffLeftX, TOP_Y + offsetY, textOff);
+            gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, whiteTextAlpha);
+        } else {
+            print_generic_string(onOrOffLeftX, TOP_Y + offsetY, textOn);
         }
     }
+
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, whiteTextAlpha * 0.7);
+    for (i = BINGO_OBJECTIVE_TOTAL_AMOUNT; i < BINGO_OPTIONS_PER_PAGE * 2; i++) {
+        offsetY = ROW_HEIGHT * (BINGO_OPTIONS_PER_PAGE - (i % BINGO_OPTIONS_PER_PAGE)) - 2;
+        creditString = NULL;
+        switch (i) {
+            case (BINGO_OPTIONS_PER_PAGE * 2) - 5:
+                creditString = textBingo64;
+                creditsLeftX = optionLeftX;
+                break;
+            case (BINGO_OPTIONS_PER_PAGE * 2) - 4:
+                creditString = textCreatedBy;
+                creditsLeftX = optionLeftX;
+                break;
+            case (BINGO_OPTIONS_PER_PAGE * 2) - 3:
+                creditString = textSpecialThanks;
+                creditsLeftX = optionLeftX;
+                break;
+            case (BINGO_OPTIONS_PER_PAGE * 2) - 2:
+                creditString = textAlo;
+                creditsLeftX = optionLeftX + 60;
+                break;
+            case (BINGO_OPTIONS_PER_PAGE * 2) - 1:
+                creditString = textGTM;
+                creditsLeftX = optionLeftX + 100;
+                break;
+        }
+        if (creditString != NULL) {
+            print_generic_string(creditsLeftX + 6, TOP_Y + offsetY, creditString);
+        }
+    }
+
     #undef LEFT_X
     #undef RIGHT_X
     #undef TOP_Y
