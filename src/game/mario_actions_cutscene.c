@@ -237,20 +237,7 @@ static void Unknown80256FF8(u16 *a0) {
  * if so, return the dialog ID. Otherwise, return 0
  */
 s32 get_star_collection_dialog(struct MarioState *m) {
-    s32 i;
-    s32 dialogID = 0;
-    s32 numStarsRequired;
-
-    for (i = 0; i < 6; i++) {
-        numStarsRequired = sStarsNeededForDialog[i];
-        if (m->unkB8 < numStarsRequired && m->numStars >= numStarsRequired) {
-            dialogID = i + DIALOG_141;
-            break;
-        }
-    }
-
-    m->unkB8 = m->numStars;
-    return dialogID;
+    return 0;
 }
 
 // save menu handler
