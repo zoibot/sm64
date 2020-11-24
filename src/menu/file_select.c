@@ -976,69 +976,67 @@ static void print_bingo_page_0(void) {
     gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
 }
 
+static void print_line(s32 startX, s32 length, s32 y, s32 alpha) {
+    gDPSetCombineMode(gDisplayListHead++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
+    gDPSetRenderMode(gDisplayListHead++, G_RM_XLU_SURF, G_RM_XLU_SURF);
+    gDPSetPrimColor(gDisplayListHead++, 0, 0, 255, 255, 255, alpha);
+    gDPFillRectangle(gDisplayListHead++, startX, y - 1, startX + length, y);
+}
+
 static void print_bingo_page_1(void) {
     s32 i;
     unsigned char *creditString;
-    s32 optionLeftX = RIGHT_X;
+    s32 optionLeftX = 90;
     s32 offsetY;
     s32 whiteTextAlpha = MIN(sTextBaseAlpha, 200);
     s32 creditsLeftX;
 
     gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, whiteTextAlpha * 0.7);
-    for (i = BINGO_OBJECTIVE_TOTAL_AMOUNT; i < BINGO_OPTIONS_PER_PAGE * 2; i++) {
-        offsetY = ROW_HEIGHT * (BINGO_OPTIONS_PER_PAGE - (i % BINGO_OPTIONS_PER_PAGE)) - 2;
+    for (i = 1; i < BINGO_OPTIONS_PER_PAGE * 2; i++) {
+        offsetY = ROW_HEIGHT * (BINGO_OPTIONS_PER_PAGE - i) - 2;
         creditString = NULL;
         switch (i) {
-            case (BINGO_OPTIONS_PER_PAGE * 2) - 6:
+            case 1:
                 creditString = textBingo64;
                 creditsLeftX = optionLeftX + 38;
-                // TODO: This really needs to be a function.
                 gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
-                gDPSetCombineMode(gDisplayListHead++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
-                gDPSetRenderMode(gDisplayListHead++, G_RM_XLU_SURF, G_RM_XLU_SURF);
-                gDPSetPrimColor(gDisplayListHead++, 0, 0, 255, 255, 255, whiteTextAlpha * 0.7);
-                gDPFillRectangle(
-                    gDisplayListHead++,
-                    RIGHT_X + 38 + 6,
-                    TOP_Y - 2 + ROW_HEIGHT * ((((BINGO_OPTIONS_PER_PAGE * 2) - 6) % BINGO_OPTIONS_PER_PAGE) + 2) - 2,
-                    RIGHT_X + 83,
-                    TOP_Y - 2 + ROW_HEIGHT * ((((BINGO_OPTIONS_PER_PAGE * 2) - 6) % BINGO_OPTIONS_PER_PAGE) + 2) - 1
+                print_line(
+                    creditsLeftX + 6,
+                    39,
+                    TOP_Y - 2 + ROW_HEIGHT * (i + 2) - 1,
+                    whiteTextAlpha * 0.7
                 );
                 gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
                 gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, whiteTextAlpha * 0.7);
 
                 break;
-            case (BINGO_OPTIONS_PER_PAGE * 2) - 5:
+            case 2:
                 creditString = textCreatedBy;
                 creditsLeftX = optionLeftX;
                 break;
-            case (BINGO_OPTIONS_PER_PAGE * 2) - 4:
+            case 4:
                 creditString = textSpecialThanks;
                 creditsLeftX = optionLeftX + 26;
                 gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
-                gDPSetCombineMode(gDisplayListHead++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
-                gDPSetRenderMode(gDisplayListHead++, G_RM_XLU_SURF, G_RM_XLU_SURF);
-                gDPSetPrimColor(gDisplayListHead++, 0, 0, 255, 255, 255, whiteTextAlpha * 0.7);
-                gDPFillRectangle(
-                    gDisplayListHead++,
-                    RIGHT_X + 26 + 6,
-                    TOP_Y - 2 + ROW_HEIGHT * ((((BINGO_OPTIONS_PER_PAGE * 2) - 4) % BINGO_OPTIONS_PER_PAGE) + 2) - 2,
-                    RIGHT_X + 26 + 75,
-                    TOP_Y - 2 + ROW_HEIGHT * ((((BINGO_OPTIONS_PER_PAGE * 2) - 4) % BINGO_OPTIONS_PER_PAGE) + 2) - 1
+                print_line(
+                    creditsLeftX + 6,
+                    69,
+                    TOP_Y - 2 + ROW_HEIGHT * (i + 2) - 1,
+                    whiteTextAlpha * 0.7
                 );
                 gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
                 gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, whiteTextAlpha * 0.7);
                 break;
-            case (BINGO_OPTIONS_PER_PAGE * 2) - 3:
+            case 5:
                 creditString = textAlo;
                 creditsLeftX = optionLeftX;
                 break;
-            case (BINGO_OPTIONS_PER_PAGE * 2) - 2:
+            case 6:
                 creditString = textGTM;
                 creditsLeftX = optionLeftX;
                 break;
-            case (BINGO_OPTIONS_PER_PAGE * 2) - 1:
+            case 7:
                 creditString = textNo90;
                 creditsLeftX = optionLeftX;
                 break;
