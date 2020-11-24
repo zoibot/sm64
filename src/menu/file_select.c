@@ -117,6 +117,7 @@ s32 sBingoOptionSelection = 0;
 s32 sBingoOptionSelectTimer = 0;
 #define BINGO_OPTION_TIMER_FRAMES 3
 s32 sToggleCurrentOption = 0;
+s32 sBingoOptionCurrentPage = 0;
 
 
 /**
@@ -667,6 +668,8 @@ static void handle_cursor_button_input(void) {
                 sBingoOptionSelection += BINGO_OPTIONS_PER_PAGE;
                 sBingoOptionSelection %= (BINGO_OPTIONS_PER_PAGE * 2);
                 sBingoOptionSelectTimer = BINGO_OPTION_TIMER_FRAMES;
+            } else if (gPlayer3Controller->buttonPressed & (L_TRIG | R_TRIG)) {
+                sBingoOptionCurrentPage ^= 1;
             }
             if (gPlayer3Controller->buttonPressed & A_BUTTON) {
                 sToggleCurrentOption = 1;
@@ -817,6 +820,7 @@ static unsigned char textKillBobOmbs[] = { TEXT_KILL_BOBOMBS };
 
 static unsigned char textDPad[] = { TEXT_DPAD };
 static unsigned char textPressA[] = { TEXT_PRESS_A };
+static unsigned char textPressRL[] = { TEXT_PRESS_RL };
 static unsigned char textBingo64[] = { TEXT_BINGO64 };
 static unsigned char textCreatedBy[] = { TEXT_CREATED_BY };
 static unsigned char textSpecialThanks[] = { TEXT_SPECIAL_THANKS };
@@ -824,29 +828,15 @@ static unsigned char textAlo[] = { TEXT_ALO };
 static unsigned char textGTM[] = { TEXT_GTM };
 static unsigned char textNo90[] = { TEXT_NO_90 };
 
+#define LEFT_X     24
+#define RIGHT_X    160
+#define TOP_Y      12
+#define ROW_HEIGHT 17
 
-static void print_bingo_options(void) {
-    s32 i;
-    char obj_icon[2];
-    unsigned char *option;
-    unsigned char *creditString;
-    s32 optionLeftX;
-    s32 onOrOffLeftX;
-    s32 offsetY;
-    s32 whiteTextAlpha = MIN(sTextBaseAlpha, 200);
-    s32 creditsLeftX;
-
-    if (gOptionSelectIconOpacity <= 10) {
-        return;
-    }
-
+static void print_bingo_selection_highlight(void) {
     gDPSetCombineMode(gDisplayListHead++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
     gDPSetRenderMode(gDisplayListHead++, G_RM_XLU_SURF, G_RM_XLU_SURF);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, 38, 38, 38, MIN(sTextBaseAlpha, 150));
-    #define LEFT_X     24
-    #define RIGHT_X    160
-    #define TOP_Y      12
-    #define ROW_HEIGHT 17
     if (sBingoOptionSelection < BINGO_OPTIONS_PER_PAGE) {
         gDPFillRectangle(
             gDisplayListHead++,
@@ -864,11 +854,21 @@ static void print_bingo_options(void) {
             TOP_Y - 2 + ROW_HEIGHT * ((sBingoOptionSelection % BINGO_OPTIONS_PER_PAGE) + 2) - 1
         );
     }
+}
+
+static void print_bingo_page_0(void) {
+    s32 i;
+    char obj_icon[2];
+    unsigned char *option;
+    s32 optionLeftX;
+    s32 onOrOffLeftX;
+    s32 offsetY;
+    s32 whiteTextAlpha = MIN(sTextBaseAlpha, 200);
 
     gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, whiteTextAlpha);
     for (i = 0; i < BINGO_OBJECTIVE_TOTAL_AMOUNT; i++) {
-        if (i == sBingoOptionSelection && sToggleCurrentOption == 1) {
+        if (i == sBingoOptionSelection && sToggleCurrentOption) {
             sToggleCurrentOption = 0;
             gBingoObjectivesDisabled[i] ^= 1;
         }
@@ -951,20 +951,45 @@ static void print_bingo_options(void) {
             print_generic_string(onOrOffLeftX, TOP_Y + offsetY, textOn);
         }
     }
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, whiteTextAlpha * 0.7);
+    for (i = BINGO_OBJECTIVE_TOTAL_AMOUNT; i < BINGO_OPTIONS_PER_PAGE * 2; i++) {
+        offsetY = ROW_HEIGHT * (BINGO_OPTIONS_PER_PAGE - (i % BINGO_OPTIONS_PER_PAGE)) - 2;
+        option = NULL;
+        switch (i) {
+            case (BINGO_OPTIONS_PER_PAGE * 2) - 3:
+                option = textDPad;
+                optionLeftX = RIGHT_X + 34;
+                break;
+            case (BINGO_OPTIONS_PER_PAGE * 2) - 2:
+                option = textPressA;
+                optionLeftX = RIGHT_X + 46;
+                break;
+            case (BINGO_OPTIONS_PER_PAGE * 2) - 1:
+                option = textPressRL;
+                optionLeftX = RIGHT_X + 10;
+                break;
+        }
+        if (option != NULL) {
+            print_generic_string(optionLeftX, TOP_Y + offsetY, option);
+        }
+    }
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
+}
 
+static void print_bingo_page_1(void) {
+    s32 i;
+    unsigned char *creditString;
+    s32 optionLeftX = RIGHT_X;
+    s32 offsetY;
+    s32 whiteTextAlpha = MIN(sTextBaseAlpha, 200);
+    s32 creditsLeftX;
+
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, whiteTextAlpha * 0.7);
     for (i = BINGO_OBJECTIVE_TOTAL_AMOUNT; i < BINGO_OPTIONS_PER_PAGE * 2; i++) {
         offsetY = ROW_HEIGHT * (BINGO_OPTIONS_PER_PAGE - (i % BINGO_OPTIONS_PER_PAGE)) - 2;
         creditString = NULL;
         switch (i) {
-            case (BINGO_OPTIONS_PER_PAGE * 2) - 8:
-                creditString = textDPad;
-                creditsLeftX = optionLeftX;
-                break;
-            case (BINGO_OPTIONS_PER_PAGE * 2) - 7:
-                creditString = textPressA;
-                creditsLeftX = optionLeftX;
-                break;
             case (BINGO_OPTIONS_PER_PAGE * 2) - 6:
                 creditString = textBingo64;
                 creditsLeftX = optionLeftX + 38;
@@ -1008,35 +1033,46 @@ static void print_bingo_options(void) {
             case (BINGO_OPTIONS_PER_PAGE * 2) - 3:
                 creditString = textAlo;
                 creditsLeftX = optionLeftX;
-                // creditsLeftX = optionLeftX + 60;
                 break;
             case (BINGO_OPTIONS_PER_PAGE * 2) - 2:
                 creditString = textGTM;
                 creditsLeftX = optionLeftX;
-                // creditsLeftX = optionLeftX + 100;
                 break;
             case (BINGO_OPTIONS_PER_PAGE * 2) - 1:
                 creditString = textNo90;
                 creditsLeftX = optionLeftX;
-                // creditsLeftX = optionLeftX + 83;
                 break;
         }
         if (creditString != NULL) {
             print_generic_string(creditsLeftX + 6, TOP_Y + offsetY, creditString);
         }
     }
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
+}
 
-    #undef LEFT_X
-    #undef RIGHT_X
-    #undef TOP_Y
-    #undef ROW_HEIGHT
 
+static void print_bingo_options(void) {
+    if (gOptionSelectIconOpacity <= 10) {
+        return;
+    }
+    switch (sBingoOptionCurrentPage) {
+        case 0:
+            print_bingo_selection_highlight();
+            print_bingo_page_0();
+            break;
+        case 1:
+            print_bingo_page_1();
+            break;
+    }
     if (sToggleCurrentOption) {
         sToggleCurrentOption = 0;
     }
-
-    gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
 }
+#undef LEFT_X
+#undef RIGHT_X
+#undef TOP_Y
+#undef ROW_HEIGHT
+
 
 /**
  * Prints file select strings depending on the menu selected.
