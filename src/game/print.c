@@ -719,11 +719,6 @@ void render_text_labels(void) {
     s8 glyphIndex;
     Mtx *mtx;
 
-    // TODO: add gbBingoCompleted check.
-    if (gPlayer1Controller->buttonDown & L_TRIG && gHudDisplay.flags != HUD_DISPLAY_NONE) {
-        shade_screen();
-    }
-
     if (sTextLabelsCount == 0) {
         return;
     }
@@ -757,9 +752,9 @@ void render_text_labels(void) {
     }
     gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
 
-    guOrtho(mtx, 0.0f, 320.0f, 0.0f, 240.0f, -10.0f, 10.0f, 1.0f);
-    gSPPerspNormalize((Gfx *) (gDisplayListHead++), 0x0000FFFF);
-    gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(mtx), G_MTX_PROJECTION | G_MTX_LOAD);
+    // guOrtho(mtx, 0.0f, 320.0f, 0.0f, 240.0f, -10.0f, 10.0f, 1.0f);
+    // gSPPerspNormalize((Gfx *) (gDisplayListHead++), 0x0000FFFF);
+    // gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(mtx), G_MTX_PROJECTION | G_MTX_LOAD);
     gSPDisplayList(gDisplayListHead++, dl_hud_img_begin);
 
     for (i = 0; i < sTextLabelsCount; i++) {
@@ -767,20 +762,6 @@ void render_text_labels(void) {
             glyphIndex = char_to_glyph_index(sTextLabels[i]->buffer[j]);
 
             if (glyphIndex != GLYPH_SPACE) {
-#ifdef VERSION_EU
-                // Beta Key was removed by EU, so glyph slot reused.
-                // This produces a colorful Ü.
-                if (glyphIndex == GLYPH_BETA_KEY) {
-                    add_glyph_texture(GLYPH_U);
-                    render_textrect(sTextLabels[i]->x, sTextLabels[i]->y, j);
-
-                    add_glyph_texture(GLYPH_UMLAUT);
-                    render_textrect(sTextLabels[i]->x, sTextLabels[i]->y + 3, j);
-                } else {
-                    add_glyph_texture(glyphIndex);
-                    render_textrect(sTextLabels[i]->x, sTextLabels[i]->y, j);
-                }
-#else
                 add_glyph_texture(glyphIndex);
                 if (sTextLabels[i]->size == -2) {
                     render_horizontal_line(sTextLabels[i]->x, sTextLabels[i]->y, j);
@@ -790,8 +771,6 @@ void render_text_labels(void) {
                     render_vertical_line(sTextLabels[i]->x, sTextLabels[i]->y, j);
                 } else if (sTextLabels[i]->size == 0) {
                     render_textrect(sTextLabels[i]->x, sTextLabels[i]->y, j);
-                    // func_802D605C
-#endif
                 }
             }
         }

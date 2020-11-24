@@ -146,7 +146,7 @@ void bingo_objective_star_init(struct BingoObjective *objective, enum BingoObjec
             random_star_except_mips_toad(&course, &star);
             break;
     }
-    strcpy(objective->icon, ICON_STAR);
+    objective->icon = BINGO_ICON_STAR;
     objective->data.starObjective.course = course;
     objective->data.starObjective.starIndex = star;
     get_objective_title(objective);
@@ -163,7 +163,7 @@ void bingo_objective_star_a_button_challenge_init(struct BingoObjective *objecti
             random_abc(&course, &star, &hint);
             break;
     }
-    strcpy(objective->icon, ICON_A_BUTTON);
+    objective->icon = BINGO_ICON_STAR_A_BUTTON_CHALLENGE;
     objective->data.abcStarObjective.course = course;
     objective->data.abcStarObjective.starIndex = star;
     objective->data.abcStarObjective.hint = hint;
@@ -180,7 +180,7 @@ void bingo_objective_star_b_button_challenge_init(struct BingoObjective *objecti
             random_bbc(&course, &star);
             break;
     }
-    strcpy(objective->icon, ICON_B_BUTTON);
+    objective->icon = BINGO_ICON_STAR_B_BUTTON_CHALLENGE;
     objective->data.starObjective.course = course;
     objective->data.starObjective.starIndex = star;
     get_objective_title(objective);
@@ -197,7 +197,7 @@ void bingo_objective_star_z_button_challenge_init(struct BingoObjective *objecti
             break;
     }
 
-    strcpy(objective->icon, ICON_Z_BUTTON);
+    objective->icon = BINGO_ICON_STAR_Z_BUTTON_CHALLENGE;
     objective->data.starObjective.course = course;
     objective->data.starObjective.starIndex = star;
     get_objective_title(objective);
@@ -222,7 +222,7 @@ void bingo_objective_star_timed_init(struct BingoObjective *objective, enum Bing
             break;
     }
 
-    strcpy(objective->icon, ICON_TIMER);
+    objective->icon = BINGO_ICON_STAR_TIMED;
     objective->data.starTimerObjective.course = course;
     objective->data.starTimerObjective.starIndex = star;
     objective->data.starTimerObjective.timer = 0;
@@ -241,7 +241,7 @@ void bingo_objective_star_reverse_joystick_init(struct BingoObjective *objective
             break;
     }
 
-    strcpy(objective->icon, ICON_JOYSTICK);
+    objective->icon = BINGO_ICON_STAR_REVERSE_JOYSTICK;
     objective->data.starObjective.course = course;
     objective->data.starObjective.starIndex = star;
     get_objective_title(objective);
@@ -258,7 +258,7 @@ void bingo_objective_star_green_demon_init(struct BingoObjective *objective,
             break;
     }
 
-    strcpy(objective->icon, ICON_GREENDEMON);
+    objective->icon = BINGO_ICON_STAR_GREEN_DEMON;
     objective->data.starObjective.course = course;
     objective->data.starObjective.starIndex = star;
     get_objective_title(objective);
@@ -284,7 +284,7 @@ void bingo_objective_coin_init(struct BingoObjective *objective, enum BingoObjec
             coins = ((RandomU16() % 20) + 80); // between 80 and 100
             break;
     }
-    strcpy(objective->icon, ICON_COIN);
+    objective->icon = BINGO_ICON_COIN;
     objective->data.courseCollectableData.course = course;
     objective->data.courseCollectableData.toGet = coins;
     objective->data.courseCollectableData.gotten = 0;
@@ -302,7 +302,7 @@ void bingo_objective_multicoin_init(struct BingoObjective *objective, enum Bingo
             numCoins = 300 + ((RandomU16() % 25) * 10); // [300:550:10]
             break;
     }
-    strcpy(objective->icon, ICON_MULTICOIN);
+    objective->icon = BINGO_ICON_MULTICOIN;
     objective->data.collectableData.toGet = numCoins;
     objective->data.collectableData.gotten = 0;
     get_objective_title(objective);
@@ -319,7 +319,7 @@ void bingo_objective_1ups_in_level_init(struct BingoObjective *objective,
             break;
     }
 
-    strcpy(objective->icon, ICON_1UP);
+    objective->icon = BINGO_ICON_1UPS_IN_LEVEL;
     objective->data.courseCollectableData.course = course;
     objective->data.courseCollectableData.toGet = _1ups;
     objective->data.courseCollectableData.gotten = 0;
@@ -336,7 +336,7 @@ void bingo_objective_stars_in_level_init(struct BingoObjective *objective,
             break;
     }
 
-    strcpy(objective->icon, ICON_PURPLESTAR);
+    objective->icon = BINGO_ICON_STARS_IN_LEVEL;
     objective->data.courseCollectableData.course = course;
     objective->data.courseCollectableData.toGet = 6;
     objective->data.courseCollectableData.gotten = 0;
@@ -352,7 +352,7 @@ void bingo_objective_exclamation_mark_box_init(struct BingoObjective *objective,
             break;
     }
 
-    strcpy(objective->icon, ICON_YELLOW_EXCLAMATION_MARK_BOX);
+    objective->icon = BINGO_ICON_EXCLAMATION_MARK_BOX;
     objective->data.collectableData.toGet = boxes;
     objective->data.collectableData.gotten = 0;
     get_objective_title(objective);
@@ -372,7 +372,7 @@ void bingo_objective_kill_goombas_init(struct BingoObjective *objective,
             break;
     }
 
-    strcpy(objective->icon, ICON_GOOMBA);
+    objective->icon = BINGO_ICON_KILL_GOOMBAS;
     objective->data.killEnemyObjective.enemiesToKill = enemiesToKill;
     objective->data.killEnemyObjective.enemiesKilled = 0;
     get_objective_title(objective);
@@ -392,7 +392,7 @@ void bingo_objective_kill_bobombs_init(struct BingoObjective *objective,
             break;
     }
 
-    strcpy(objective->icon, ICON_BOBOMB);
+    objective->icon = BINGO_ICON_KILL_BOBOMBS;
     objective->data.killEnemyObjective.enemiesToKill = enemiesToKill;
     objective->data.killEnemyObjective.enemiesKilled = 0;
     get_objective_title(objective);

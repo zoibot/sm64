@@ -90,6 +90,25 @@ enum BingoObjectiveType
     BINGO_OBJECTIVE_TOTAL_AMOUNT
 };
 
+enum BingoObjectiveIcon {
+    BINGO_ICON_FAILED,
+    BINGO_ICON_SUCCESS,
+    BINGO_ICON_STAR,
+    BINGO_ICON_STAR_A_BUTTON_CHALLENGE,
+    BINGO_ICON_STAR_B_BUTTON_CHALLENGE,
+    BINGO_ICON_STAR_Z_BUTTON_CHALLENGE,
+    BINGO_ICON_STAR_TIMED,
+    BINGO_ICON_STAR_REVERSE_JOYSTICK,
+    BINGO_ICON_STAR_GREEN_DEMON,
+    BINGO_ICON_COIN,
+    BINGO_ICON_MULTICOIN,
+    BINGO_ICON_1UPS_IN_LEVEL,
+    BINGO_ICON_STARS_IN_LEVEL,
+    BINGO_ICON_EXCLAMATION_MARK_BOX,
+    BINGO_ICON_KILL_GOOMBAS,
+    BINGO_ICON_KILL_BOBOMBS
+};
+
 enum BingoObjectiveUpdate
 {
     BINGO_UPDATE_STAR,
@@ -150,9 +169,8 @@ struct CollectableData
 struct BingoObjective
 {
     enum BingoObjectiveType type;
-    char *(*discrip_func)(struct BingoObjective *, char *);
     enum BingoObjectiveState state;
-    char icon[2];
+    enum BingoObjectiveIcon icon;
     char title[30];
     union {
         struct StarObjectiveData starObjective;

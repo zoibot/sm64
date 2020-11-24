@@ -1878,23 +1878,23 @@ ALIGNED8 static const u8 seg2_texture_yellowbox[] = {
 
 // Main HUD print table 0x02008250-0x02008337
 const u8 *const main_hud_lut[] = {
-#ifdef VERSION_EU
-    texture_hud_char_0, texture_hud_char_1, texture_hud_char_2, texture_hud_char_3,
-    texture_hud_char_4, texture_hud_char_5, texture_hud_char_6, texture_hud_char_7,
-    texture_hud_char_8, texture_hud_char_9, texture_hud_char_A, texture_hud_char_B,
-    texture_hud_char_C, texture_hud_char_D, texture_hud_char_E, texture_hud_char_F,
-    texture_hud_char_G, texture_hud_char_H, texture_hud_char_I,               0x0,
-    texture_hud_char_K, texture_hud_char_L, texture_hud_char_M, texture_hud_char_N,
-    texture_hud_char_O, texture_hud_char_P,               0x0, texture_hud_char_R,
-    texture_hud_char_S, texture_hud_char_T, texture_hud_char_U, texture_hud_char_V,
-    texture_hud_char_W,               0x0, texture_hud_char_Y, texture_hud_char_Z,
-                  0x0,               0x0,               0x0,               0x0,
-                  0x0,               0x0,               0x0,               0x0,
-                  0x0,               0x0,               0x0,               0x0,
-                  0x0,               0x0, texture_hud_char_multiply, texture_hud_char_coin,
-    texture_hud_char_mario_head, texture_hud_char_star,               0x0,               0x0,
-    texture_hud_char_apostrophe, texture_hud_char_double_quote, texture_hud_char_umlaut,
-#elif defined(VERSION_US)
+// #ifdef VERSION_EU
+//     texture_hud_char_0, texture_hud_char_1, texture_hud_char_2, texture_hud_char_3,
+//     texture_hud_char_4, texture_hud_char_5, texture_hud_char_6, texture_hud_char_7,
+//     texture_hud_char_8, texture_hud_char_9, texture_hud_char_A, texture_hud_char_B,
+//     texture_hud_char_C, texture_hud_char_D, texture_hud_char_E, texture_hud_char_F,
+//     texture_hud_char_G, texture_hud_char_H, texture_hud_char_I,               0x0,
+//     texture_hud_char_K, texture_hud_char_L, texture_hud_char_M, texture_hud_char_N,
+//     texture_hud_char_O, texture_hud_char_P,               0x0, texture_hud_char_R,
+//     texture_hud_char_S, texture_hud_char_T, texture_hud_char_U, texture_hud_char_V,
+//     texture_hud_char_W,               0x0, texture_hud_char_Y, texture_hud_char_Z,
+//                   0x0,               0x0,               0x0,               0x0,
+//                   0x0,               0x0,               0x0,               0x0,
+//                   0x0,               0x0,               0x0,               0x0,
+//                   0x0,               0x0, texture_hud_char_multiply, texture_hud_char_coin,
+//     texture_hud_char_mario_head, texture_hud_char_star,               0x0,               0x0,
+//     texture_hud_char_apostrophe, texture_hud_char_double_quote, texture_hud_char_umlaut,
+// #elif defined(VERSION_US)
     texture_hud_char_0, texture_hud_char_1, texture_hud_char_2, texture_hud_char_3,
     texture_hud_char_4, texture_hud_char_5, texture_hud_char_6, texture_hud_char_7,
     texture_hud_char_8, texture_hud_char_9, texture_hud_char_A, texture_hud_char_B,
@@ -1911,24 +1911,44 @@ const u8 *const main_hud_lut[] = {
     texture_hud_char_mario_head, texture_hud_char_star, seg2_texture_hand, seg2_texture_goomba,
     texture_hud_char_apostrophe, texture_hud_char_double_quote,  seg2_texture_bbutton,   seg2_texture_zbutton,
     seg2_texture_multicoin,  seg2_texture_failed, seg2_texture_yellowbox,
-#else
-    texture_hud_char_0, texture_hud_char_1, texture_hud_char_2, texture_hud_char_3,
-    texture_hud_char_4, texture_hud_char_5, texture_hud_char_6, texture_hud_char_7,
-    texture_hud_char_8, texture_hud_char_9, texture_hud_char_A, texture_hud_char_B,
-    texture_hud_char_C, texture_hud_char_D, texture_hud_char_E, texture_hud_char_F,
-    texture_hud_char_G, texture_hud_char_H, texture_hud_char_I, texture_hud_char_J,
-    texture_hud_char_K, texture_hud_char_L, texture_hud_char_M, texture_hud_char_N,
-    texture_hud_char_O, texture_hud_char_P, texture_hud_char_Q, texture_hud_char_R,
-    texture_hud_char_S, texture_hud_char_T, texture_hud_char_U, texture_hud_char_V,
-    texture_hud_char_W, texture_hud_char_X, texture_hud_char_Y, texture_hud_char_Z,
-    texture_hud_char_exclamation, texture_hud_char_double_exclamation, texture_hud_char_question, texture_hud_char_ampersand,
-    texture_hud_char_percent,                 0x0,                      0x0,                  0x0,
-                      0x0,                   0x0,                      0x0,                  0x0,
-                      0x0,                   0x0, texture_hud_char_multiply, texture_hud_char_coin,
-    texture_hud_char_mario_head, texture_hud_char_star, texture_hud_char_decimal_point, texture_hud_char_beta_key,
-    texture_hud_char_apostrophe, texture_hud_char_double_quote,
-#endif
+// #else
+//     texture_hud_char_0, texture_hud_char_1, texture_hud_char_2, texture_hud_char_3,
+//     texture_hud_char_4, texture_hud_char_5, texture_hud_char_6, texture_hud_char_7,
+//     texture_hud_char_8, texture_hud_char_9, texture_hud_char_A, texture_hud_char_B,
+//     texture_hud_char_C, texture_hud_char_D, texture_hud_char_E, texture_hud_char_F,
+//     texture_hud_char_G, texture_hud_char_H, texture_hud_char_I, texture_hud_char_J,
+//     texture_hud_char_K, texture_hud_char_L, texture_hud_char_M, texture_hud_char_N,
+//     texture_hud_char_O, texture_hud_char_P, texture_hud_char_Q, texture_hud_char_R,
+//     texture_hud_char_S, texture_hud_char_T, texture_hud_char_U, texture_hud_char_V,
+//     texture_hud_char_W, texture_hud_char_X, texture_hud_char_Y, texture_hud_char_Z,
+//     texture_hud_char_exclamation, texture_hud_char_double_exclamation, texture_hud_char_question, texture_hud_char_ampersand,
+//     texture_hud_char_percent,                 0x0,                      0x0,                  0x0,
+//                       0x0,                   0x0,                      0x0,                  0x0,
+//                       0x0,                   0x0, texture_hud_char_multiply, texture_hud_char_coin,
+//     texture_hud_char_mario_head, texture_hud_char_star, texture_hud_char_decimal_point, texture_hud_char_beta_key,
+//     texture_hud_char_apostrophe, texture_hud_char_double_quote,
+// #endif
 };
+
+const u8 *const bingo_lut[] = {
+    seg2_texture_failed,         // BINGO_ICON_FAILED
+    texture_hud_char_O,          // BINGO_ICON_SUCCESS
+    texture_hud_char_star,       // BINGO_ICON_STAR
+    seg2_texture_abutton,        // BINGO_ICON_STAR_A_BUTTON_CHALLENGE
+    seg2_texture_bbutton,        // BINGO_ICON_STAR_B_BUTTON_CHALLENGE
+    seg2_texture_zbutton,        // BINGO_ICON_STAR_Z_BUTTON_CHALLENGE
+    seg2_texture_timer,          // BINGO_ICON_STAR_TIMED
+    seg2_texture_joystick,       // BINGO_ICON_STAR_REVERSE_JOYSTICK
+    seg2_texture_greendemon,     // BINGO_ICON_STAR_GREEN_DEMON
+    texture_hud_char_coin,       // BINGO_ICON_COIN
+    seg2_texture_multicoin,      // BINGO_ICON_MULTICOIN
+    seg2_texture_1up,            // BINGO_ICON_1UPS_IN_LEVEL
+    seg2_texture_allstarslevel,  // BINGO_ICON_STARS_IN_LEVEL
+    seg2_texture_yellowbox,      // BINGO_ICON_EXCLAMATION_MARK_BOX
+    seg2_texture_goomba,         // BINGO_ICON_KILL_GOOMBAS
+    seg2_texture_bobomb,         // BINGO_ICON_KILL_BOBOMBS
+};
+s32 bingoLUTSize = sizeof(bingo_lut) / sizeof(bingo_lut[0]);
 
 // Main small font print table 0x02008338-0x02008737
 const u8 *const main_font_lut[] = {
