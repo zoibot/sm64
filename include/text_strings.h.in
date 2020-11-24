@@ -168,7 +168,7 @@
 #define TEXT_PRESS_A _("Press A to toggle")
 
 // Bingo Credits
-#define TEXT_BINGO64 _("Bingo64")
+#define TEXT_BINGO64 _("Bingo64 (v0.6a)")
 #define TEXT_CREATED_BY _("by Quate and genteelman")
 #define TEXT_SPECIAL_THANKS _("Special Thanks")
 #define TEXT_ALO _("AloXado320")
