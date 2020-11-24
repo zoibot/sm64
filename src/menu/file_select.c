@@ -22,6 +22,7 @@
 #include "dialog_ids.h"
 #include "game/bingo.h"
 #include "game/bingo_board_setup.h"
+#include "game/bingo_ui.h"
 #include "game/strcpy.h"
 #include "engine/rand.h"
 
@@ -447,6 +448,7 @@ static void seed_menu_check_clicked_buttons() {
                     break;
                 case MENU_BUTTON_SEED_OPTION:
                     play_sound(SOUND_MENU_CAMERA_ZOOM_IN, gDefaultSoundArgs);
+                    gOptionSelectIconOpacity = 0;
                     sMainMenuButtons[buttonId]->oMenuButtonState = MENU_BUTTON_STATE_GROWING;
                     sSelectedButtonID = buttonId;
                     break;
@@ -635,6 +637,9 @@ void bhv_menu_button_manager_loop(void) {
 static void handle_cursor_button_input(void) {
     if (sSelectedButtonID == MENU_BUTTON_SEED_OPTION) {
         if (gPlayer3Controller->buttonPressed & (B_BUTTON | START_BUTTON)) {
+            sTextBaseAlpha = 0;
+            gOptionSelectIconOpacity = 0;
+
             sClickPos[0] = sCursorPos[0];
             sClickPos[1] = sCursorPos[1];
             sCursorClickingTimer = 1;
@@ -858,7 +863,7 @@ static void print_bingo_selection_highlight(void) {
 
 static void print_bingo_page_0(void) {
     s32 i;
-    char obj_icon[2];
+    enum BingoObjectiveIcon obj_icon;
     unsigned char *option;
     s32 optionLeftX;
     s32 onOrOffLeftX;
@@ -875,59 +880,59 @@ static void print_bingo_page_0(void) {
 
         switch (i) {
             case BINGO_OBJECTIVE_STAR:
-                strcpy(obj_icon, ICON_STAR);
+                obj_icon = BINGO_ICON_STAR;;
                 option = textSingleStar;
                 break;
             case BINGO_OBJECTIVE_STAR_A_BUTTON_CHALLENGE:
-                strcpy(obj_icon, ICON_A_BUTTON);
+                obj_icon = BINGO_ICON_STAR_A_BUTTON_CHALLENGE;
                 option = textAButton;
                 break;
             case BINGO_OBJECTIVE_STAR_B_BUTTON_CHALLENGE:
-                strcpy(obj_icon, ICON_B_BUTTON);
+                obj_icon = BINGO_ICON_STAR_B_BUTTON_CHALLENGE;
                 option = textBButton;
                 break;
             case BINGO_OBJECTIVE_STAR_Z_BUTTON_CHALLENGE:
-                strcpy(obj_icon, ICON_Z_BUTTON);
+                obj_icon = BINGO_ICON_STAR_Z_BUTTON_CHALLENGE;
                 option = textZButton;
                 break;
             case BINGO_OBJECTIVE_STAR_TIMED:
-                strcpy(obj_icon, ICON_TIMER);
+                obj_icon = BINGO_ICON_STAR_TIMED;
                 option = textTimedStar;
                 break;
             case BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK:
-                strcpy(obj_icon, ICON_JOYSTICK);
+                obj_icon = BINGO_ICON_STAR_REVERSE_JOYSTICK;
                 option = textReverseJoystick;
                 break;
             case BINGO_OBJECTIVE_STAR_GREEN_DEMON:
-                strcpy(obj_icon, ICON_GREENDEMON);
+                obj_icon = BINGO_ICON_STAR_GREEN_DEMON;
                 option = textGreenDemon;
                 break;
             case BINGO_OBJECTIVE_COIN:
-                strcpy(obj_icon, ICON_COIN);
+                obj_icon = BINGO_ICON_COIN;;
                 option = textCoinLevel;
                 break;
             case BINGO_OBJECTIVE_MULTICOIN:
-                strcpy(obj_icon, ICON_MULTICOIN);
+                obj_icon = BINGO_ICON_MULTICOIN;;
                 option = textTotalCoin;
                 break;
             case BINGO_OBJECTIVE_1UPS_IN_LEVEL:
-                strcpy(obj_icon, ICON_1UP);
+                obj_icon = BINGO_ICON_1UPS_IN_LEVEL;
                 option = text1upLevel;
                 break;
             case BINGO_OBJECTIVE_STARS_IN_LEVEL:
-                strcpy(obj_icon, ICON_PURPLESTAR);
+                obj_icon = BINGO_ICON_STARS_IN_LEVEL;
                 option = textStarsLevel;
                 break;
             case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
-                strcpy(obj_icon, ICON_YELLOW_EXCLAMATION_MARK_BOX);
+                obj_icon = BINGO_ICON_EXCLAMATION_MARK_BOX;
                 option = textExclamBoxes;
                 break;
             case BINGO_OBJECTIVE_KILL_GOOMBAS:
-                strcpy(obj_icon, ICON_GOOMBA);
+                obj_icon = BINGO_ICON_KILL_GOOMBAS;
                 option = textKillGoombas;
                 break;
             case BINGO_OBJECTIVE_KILL_BOBOMBS:
-                strcpy(obj_icon, ICON_BOBOMB);
+                obj_icon = BINGO_ICON_KILL_BOBOMBS;
                 option = textKillBobOmbs;
                 break;
         }
@@ -940,7 +945,7 @@ static void print_bingo_page_0(void) {
         }
         offsetY = ROW_HEIGHT * (BINGO_OPTIONS_PER_PAGE - (i % BINGO_OPTIONS_PER_PAGE)) - 2;
 
-        print_text(optionLeftX, TOP_Y + offsetY, obj_icon);
+        print_bingo_icon(optionLeftX, TOP_Y + offsetY, obj_icon);
         print_generic_string(optionLeftX + 19, TOP_Y + offsetY, option);
 
         if (gBingoObjectivesDisabled[i]) {
