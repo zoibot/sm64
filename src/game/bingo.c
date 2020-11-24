@@ -37,7 +37,6 @@ s32 gStarSelectScreenActive = 0;
 enum BingoModifier gBingoStarSelected = BINGO_MODIFIER_NONE;
 
 struct BingoObjective gBingoObjectives[25];
-enum BingoObjectiveUpdate sBingoCurrUpdate;
 u8 gBingoObjectivesDisabled[BINGO_OBJECTIVE_TOTAL_AMOUNT] = { 0 };
 
 
@@ -90,8 +89,6 @@ u8 bingo_check_win() {
 
 void bingo_update(enum BingoObjectiveUpdate update) {
     s32 i;
-    sBingoCurrUpdate = update;
-
     // This is to avoid a bug where the call to bingo_update() from area.c
     // (the once-a-frame call) crashes before setup_bingo_objectives() has
     // been called.
@@ -100,7 +97,7 @@ void bingo_update(enum BingoObjectiveUpdate update) {
     }
 
     for (i = 0; i < 25; i++) {
-        update_objective(&gBingoObjectives[i]);
+        update_objective(&gBingoObjectives[i], update);
     }
 
     if (update == BINGO_UPDATE_TIMER_FRAME && !gbBingoCompleted) {

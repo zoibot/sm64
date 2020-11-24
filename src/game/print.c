@@ -443,6 +443,8 @@ s8 char_to_glyph_index(char a) {
     if (a == ' ') {
         return -1;
     }
+    // Most (not all) of the rest of this function can be
+    // deleted, as bingo icons have migrated elsewhere.
     if (a == '!') {
         return 36;
     }
@@ -458,7 +460,6 @@ s8 char_to_glyph_index(char a) {
     if (a == '%') {
         return 40;
     }
-    // fill in this gap to add more icons
     if (a == '<') {
         return 42;
     }
@@ -507,7 +508,6 @@ s8 char_to_glyph_index(char a) {
     if (a == ']') {
         return 57;
     }
-    // can also add icons here if you increase the size of seg2_hud_lut
     if (a == '^') {
         return 58;
     }

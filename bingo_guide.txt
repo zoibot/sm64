@@ -1,13 +1,14 @@
 1. bingo.h: Add a new BingoObjectiveType.
 2. bingo.h: Add or reuse a BingoObjectiveUpdate.
 3. bingo_objective_init.c: Write a bingo_objective_*_init() function.
-    3.1. bingo.h: Define a new BingoObjectiveIcon.
-        3.1.1. textures/segment2/custom: Add a new 16x16 PNG.
-        3.1.2. bin/segment2.c: Add a new seg2_texture_* glabel and put it at the position in bingo_lut corresponding to your BingoObjectiveIcon.
-    3.2. bingo.h: Write or choose a *ObjectiveData struct and add it to the BingoObjective struct.
+   3.1. bingo.h: Define a new BingoObjectiveIcon.
+      3.1.1. textures/segment2/custom: Add a new 16x16 PNG.
+      3.1.2. bin/segment2.c: Add a new seg2_texture_* glabel and put it at the position in bingo_lut corresponding to your BingoObjectiveIcon.
+   3.2. bingo.h: Write or choose a *ObjectiveData struct and add it to the BingoObjective struct.
 4. bingo_board_setup.c: Modify get_random_objective_type() to include your BingoObjectiveType.
 5. bingo_objective_func.c: Write an objective_*() function that uses your BingoObjectiveUpdate.
 6. bingo_descriptions.c: Add a description in describe_objective().
 7. bingo_titles.c: Add a title in get_objective_title().
 8. file_select.c and text_strings.h.in: Add an option and descriptor.
 9. elsewhere: Call bingo_update() with your BingoObjectiveUpdate. Modify global variables with the gb* prefix if need be.
+   9.1: bingo.h: If your objective is game-modifying, add a new BingoModifier.

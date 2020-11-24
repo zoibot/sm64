@@ -1,24 +1,6 @@
 #ifndef _BINGO_H
 #define _BINGO_H
 
-#define ICON_STAR "-"
-#define ICON_COIN "+"
-#define ICON_BOBOMB "\""
-#define ICON_PURPLESTAR "$"
-#define ICON_1UP "\'"
-#define ICON_A_BUTTON ")"
-#define ICON_TIMER "("
-#define ICON_GOOMBA "/"
-#define ICON_B_BUTTON "^"
-#define ICON_Z_BUTTON "_"
-#define ICON_MULTICOIN  "`"
-#define ICON_YELLOW_EXCLAMATION_MARK_BOX  "\x1E"
-#define ICON_JOYSTICK "\\"
-#define ICON_GREENDEMON "<"
-
-#define ICON_COMPLETE "O"
-#define ICON_FAILED ":"
-
 #include "course_table.h"
 
 // Global bingo state information
@@ -43,10 +25,6 @@ enum BingoModifier {
 };
 
 extern enum BingoModifier gBingoStarSelected;
-
-
-// TODO: Kill this. It can be passed as a parameter
-extern enum BingoObjectiveUpdate sBingoCurrUpdate;
 
 enum BingoObjectiveState
 {

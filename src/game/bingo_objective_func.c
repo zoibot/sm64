@@ -14,11 +14,11 @@
 
 s32 gDebugThing;
 
-void objective_obtain_star(struct BingoObjective *objective) {
+void objective_obtain_star(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
     s32 course;
     s32 star;
 
-    if (sBingoCurrUpdate == BINGO_UPDATE_STAR) {
+    if (update == BINGO_UPDATE_STAR) {
         course = objective->data.starObjective.course;
         star = objective->data.starObjective.starIndex;
         if (gCurrCourseNum == course && gbStarIndex == star) {
@@ -27,50 +27,50 @@ void objective_obtain_star(struct BingoObjective *objective) {
     }
 }
 
-void objective_obtain_star_a_button_challenge(struct BingoObjective *objective) {
-    if (sBingoCurrUpdate == BINGO_UPDATE_COURSE_CHANGED) {
+void objective_obtain_star_a_button_challenge(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
+    if (update == BINGO_UPDATE_COURSE_CHANGED) {
         objective->state = BINGO_STATE_NONE;
-    } else if (sBingoCurrUpdate == BINGO_UPDATE_A_PRESSED
+    } else if (update == BINGO_UPDATE_A_PRESSED
                && gCurrCourseNum == objective->data.courseCollectableData.course) {
         set_objective_state(objective, BINGO_STATE_FAILED_IN_THIS_COURSE);
     } else if (objective->state != BINGO_STATE_FAILED_IN_THIS_COURSE) {
         // Regular star-obtaining stuff
-        objective_obtain_star(objective);
+        objective_obtain_star(objective, update);
     }
 }
 
-void objective_obtain_star_b_button_challenge(struct BingoObjective *objective) {
-    if (sBingoCurrUpdate == BINGO_UPDATE_COURSE_CHANGED) {
+void objective_obtain_star_b_button_challenge(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
+    if (update == BINGO_UPDATE_COURSE_CHANGED) {
         objective->state = BINGO_STATE_NONE;
-    } else if (sBingoCurrUpdate == BINGO_UPDATE_B_PRESSED
+    } else if (update == BINGO_UPDATE_B_PRESSED
                && gCurrCourseNum == objective->data.courseCollectableData.course) {
         set_objective_state(objective, BINGO_STATE_FAILED_IN_THIS_COURSE);
     } else if (objective->state != BINGO_STATE_FAILED_IN_THIS_COURSE) {
         // Regular star-obtaining stuff
-        objective_obtain_star(objective);
+        objective_obtain_star(objective, update);
     }
 }
 
-void objective_obtain_star_z_button_challenge(struct BingoObjective *objective) {
-    if (sBingoCurrUpdate == BINGO_UPDATE_COURSE_CHANGED) {
+void objective_obtain_star_z_button_challenge(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
+    if (update == BINGO_UPDATE_COURSE_CHANGED) {
         objective->state = BINGO_STATE_NONE;
-    } else if (sBingoCurrUpdate == BINGO_UPDATE_Z_PRESSED
+    } else if (update == BINGO_UPDATE_Z_PRESSED
                && gCurrCourseNum == objective->data.courseCollectableData.course) {
         set_objective_state(objective, BINGO_STATE_FAILED_IN_THIS_COURSE);
     } else if (objective->state != BINGO_STATE_FAILED_IN_THIS_COURSE) {
         // Regular star-obtaining stuff
-        objective_obtain_star(objective);
+        objective_obtain_star(objective, update);
     }
 }
 
-void objective_obtain_star_timer(struct BingoObjective *objective) {
-    if (sBingoCurrUpdate == BINGO_UPDATE_COURSE_CHANGED
-        || sBingoCurrUpdate == BINGO_UPDATE_RESET_TIMER) {
+void objective_obtain_star_timer(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
+    if (update == BINGO_UPDATE_COURSE_CHANGED
+        || update == BINGO_UPDATE_RESET_TIMER) {
         objective->state = BINGO_STATE_NONE;
         objective->data.starTimerObjective.timer = 0;
     } else if (objective->state == BINGO_STATE_FAILED_IN_THIS_COURSE) {
         return;
-    } else if (sBingoCurrUpdate == BINGO_UPDATE_TIMER_FRAME
+    } else if (update == BINGO_UPDATE_TIMER_FRAME
                && gCurrCourseNum == objective->data.starTimerObjective.course
                && !gbBingoTimerDisabled) {
         objective->data.starTimerObjective.timer++;
@@ -78,17 +78,17 @@ void objective_obtain_star_timer(struct BingoObjective *objective) {
             set_objective_state(objective, BINGO_STATE_FAILED_IN_THIS_COURSE);
         }
     } else if (objective->state != BINGO_STATE_FAILED_IN_THIS_COURSE) {
-        objective_obtain_star(objective);
+        objective_obtain_star(objective, update);
     }
 }
 
-void objective_obtain_star_reverse_joystick(struct BingoObjective *objective) {
+void objective_obtain_star_reverse_joystick(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
     s32 course;
     s32 star;
 
-    if (sBingoCurrUpdate == BINGO_UPDATE_COURSE_CHANGED) {
+    if (update == BINGO_UPDATE_COURSE_CHANGED) {
         gBingoReverseJoystickActive = 0;
-    } else if (sBingoCurrUpdate == BINGO_UPDATE_STAR && gBingoReverseJoystickActive) {
+    } else if (update == BINGO_UPDATE_STAR && gBingoReverseJoystickActive) {
         course = objective->data.starObjective.course;
         star = objective->data.starObjective.starIndex;
         if (gCurrCourseNum == course && gbStarIndex == star) {
@@ -98,11 +98,11 @@ void objective_obtain_star_reverse_joystick(struct BingoObjective *objective) {
     }
 }
 
-void objective_obtain_star_greendemon(struct BingoObjective *objective) {
+void objective_obtain_star_greendemon(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
     s32 course;
     s32 star;
 
-    if (sBingoCurrUpdate == BINGO_UPDATE_STAR
+    if (update == BINGO_UPDATE_STAR
                && gBingoStarSelected == BINGO_MODIFIER_GREEN_DEMON) {
         course = objective->data.starObjective.course;
         star = objective->data.starObjective.starIndex;
@@ -113,11 +113,11 @@ void objective_obtain_star_greendemon(struct BingoObjective *objective) {
     }
 }
 
-void objective_obtain_coins(struct BingoObjective *objective) {
-    if (sBingoCurrUpdate == BINGO_UPDATE_COURSE_CHANGED) {
+void objective_obtain_coins(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
+    if (update == BINGO_UPDATE_COURSE_CHANGED) {
         objective->state = BINGO_STATE_NONE;
         objective->data.courseCollectableData.gotten = 0;
-    } else if (sBingoCurrUpdate == BINGO_UPDATE_COIN
+    } else if (update == BINGO_UPDATE_COIN
                && gCurrCourseNum == objective->data.courseCollectableData.course) {
         objective->data.courseCollectableData.gotten += gbCoinsJustGotten;
         if (objective->data.courseCollectableData.gotten
@@ -127,8 +127,8 @@ void objective_obtain_coins(struct BingoObjective *objective) {
     }
 }
 
-void objective_obtain_multicoin(struct BingoObjective *objective) {
-    if (sBingoCurrUpdate == BINGO_UPDATE_COIN) {
+void objective_obtain_multicoin(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
+    if (update == BINGO_UPDATE_COIN) {
         objective->data.collectableData.gotten += gbCoinsJustGotten;
         if (objective->data.collectableData.gotten >= objective->data.collectableData.toGet) {
             set_objective_state(objective, BINGO_STATE_COMPLETE);
@@ -136,11 +136,11 @@ void objective_obtain_multicoin(struct BingoObjective *objective) {
     }
 }
 
-void objective_obtain_1ups_in_level(struct BingoObjective *objective) {
-    if (sBingoCurrUpdate == BINGO_UPDATE_COURSE_CHANGED) {
+void objective_obtain_1ups_in_level(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
+    if (update == BINGO_UPDATE_COURSE_CHANGED) {
         objective->state = BINGO_STATE_NONE;
         objective->data.courseCollectableData.gotten = 0;
-    } else if (sBingoCurrUpdate == BINGO_UPDATE_GOT_1UP
+    } else if (update == BINGO_UPDATE_GOT_1UP
                && gCurrCourseNum == objective->data.courseCollectableData.course) {
         objective->data.courseCollectableData.gotten++;
         if (objective->data.courseCollectableData.gotten
@@ -150,17 +150,17 @@ void objective_obtain_1ups_in_level(struct BingoObjective *objective) {
     }
 }
 
-void objective_obtain_stars_in_level(struct BingoObjective *objective) {
+void objective_obtain_stars_in_level(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
     enum CourseNum course = objective->data.courseCollectableData.course;
-    if (sBingoCurrUpdate == BINGO_UPDATE_STAR && gCurrCourseNum == course) {
+    if (update == BINGO_UPDATE_STAR && gCurrCourseNum == course) {
         if (bingo_get_course_count(course) >= 7) {
             set_objective_state(objective, BINGO_STATE_COMPLETE);
         }
     }
 }
 
-void objective_exclamation_mark_box(struct BingoObjective *objective) {
-    if (sBingoCurrUpdate == BINGO_UPDATE_EXCLAMATION_MARK_BOX) {
+void objective_exclamation_mark_box(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
+    if (update == BINGO_UPDATE_EXCLAMATION_MARK_BOX) {
         objective->data.collectableData.gotten++;
         if (objective->data.collectableData.gotten >= objective->data.collectableData.toGet) {
             set_objective_state(objective, BINGO_STATE_COMPLETE);
@@ -168,8 +168,8 @@ void objective_exclamation_mark_box(struct BingoObjective *objective) {
     }
 }
 
-void objective_kill_goombas(struct BingoObjective *objective) {
-    if (sBingoCurrUpdate == BINGO_UPDATE_KILLED_GOOMBA) {
+void objective_kill_goombas(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
+    if (update == BINGO_UPDATE_KILLED_GOOMBA) {
         objective->data.killEnemyObjective.enemiesKilled++;
         if (objective->data.killEnemyObjective.enemiesToKill
                 - objective->data.killEnemyObjective.enemiesKilled
@@ -179,8 +179,8 @@ void objective_kill_goombas(struct BingoObjective *objective) {
     }
 }
 
-void objective_kill_bobombs(struct BingoObjective *objective) {
-    if (sBingoCurrUpdate == BINGO_UPDATE_KILLED_BOBOMB) {
+void objective_kill_bobombs(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
+    if (update == BINGO_UPDATE_KILLED_BOBOMB) {
         objective->data.killEnemyObjective.enemiesKilled++;
         if (objective->data.killEnemyObjective.enemiesToKill
                 - objective->data.killEnemyObjective.enemiesKilled
@@ -190,53 +190,53 @@ void objective_kill_bobombs(struct BingoObjective *objective) {
     }
 }
 
-void update_objective(struct BingoObjective *objective) {
+void update_objective(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
     if (objective->state == BINGO_STATE_COMPLETE) {
         return;
     }
 
     switch (objective->type) {
         case BINGO_OBJECTIVE_STAR:
-            objective_obtain_star(objective);
+            objective_obtain_star(objective, update);
             break;
         case BINGO_OBJECTIVE_STAR_A_BUTTON_CHALLENGE:
-            objective_obtain_star_a_button_challenge(objective);
+            objective_obtain_star_a_button_challenge(objective, update);
             break;
         case BINGO_OBJECTIVE_STAR_B_BUTTON_CHALLENGE:
-            objective_obtain_star_b_button_challenge(objective);
+            objective_obtain_star_b_button_challenge(objective, update);
             break;
         case BINGO_OBJECTIVE_STAR_Z_BUTTON_CHALLENGE:
-            objective_obtain_star_z_button_challenge(objective);
+            objective_obtain_star_z_button_challenge(objective, update);
             break;
         case BINGO_OBJECTIVE_STAR_TIMED:
-            objective_obtain_star_timer(objective);
+            objective_obtain_star_timer(objective, update);
             break;
         case BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK:
-            objective_obtain_star_reverse_joystick(objective);
+            objective_obtain_star_reverse_joystick(objective, update);
             break;
         case BINGO_OBJECTIVE_STAR_GREEN_DEMON:
-            objective_obtain_star_greendemon(objective);
+            objective_obtain_star_greendemon(objective, update);
             break;
         case BINGO_OBJECTIVE_COIN:
-            objective_obtain_coins(objective);
+            objective_obtain_coins(objective, update);
             break;
         case BINGO_OBJECTIVE_MULTICOIN:
-            objective_obtain_multicoin(objective);
+            objective_obtain_multicoin(objective, update);
             break;
         case BINGO_OBJECTIVE_1UPS_IN_LEVEL:
-            objective_obtain_1ups_in_level(objective);
+            objective_obtain_1ups_in_level(objective, update);
             break;
         case BINGO_OBJECTIVE_STARS_IN_LEVEL:
-            objective_obtain_stars_in_level(objective);
+            objective_obtain_stars_in_level(objective, update);
             break;
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
-            objective_exclamation_mark_box(objective);
+            objective_exclamation_mark_box(objective, update);
             break;
         case BINGO_OBJECTIVE_KILL_GOOMBAS:
-            objective_kill_goombas(objective);
+            objective_kill_goombas(objective, update);
             break;
         case BINGO_OBJECTIVE_KILL_BOBOMBS:
-            objective_kill_bobombs(objective);
+            objective_kill_bobombs(objective, update);
             break;
     }
 }
