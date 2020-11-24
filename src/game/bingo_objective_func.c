@@ -71,7 +71,8 @@ void objective_obtain_star_timer(struct BingoObjective *objective) {
     } else if (objective->state == BINGO_STATE_FAILED_IN_THIS_COURSE) {
         return;
     } else if (sBingoCurrUpdate == BINGO_UPDATE_TIMER_FRAME
-               && gCurrCourseNum == objective->data.starTimerObjective.course) {
+               && gCurrCourseNum == objective->data.starTimerObjective.course
+               && !gbBingoTimerDisabled) {
         objective->data.starTimerObjective.timer++;
         if (objective->data.starTimerObjective.timer > objective->data.starTimerObjective.maxTime) {
             set_objective_state(objective, BINGO_STATE_FAILED_IN_THIS_COURSE);

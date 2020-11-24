@@ -25,6 +25,7 @@
 extern s32 gBingoInitialized;
 extern u32 gBingoInitialSeed;
 extern s64 gbGlobalBingoTimer;
+extern s32 gbBingoTimerDisabled;
 extern s32 gbBingoCompleted;
 extern s32 gbBingoShowTimer;
 
