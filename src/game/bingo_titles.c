@@ -66,6 +66,10 @@ void get_in_level_objective_title(struct BingoObjective *objective) {
     sprintf(objective->title, "%s", abbrev);
 }
 
+void get_lose_mario_hat_objective_title(struct BingoObjective *objective) {
+    sprintf(objective->title, "x1");
+}
+
 void get_exclamation_mark_box_title(struct BingoObjective *objective) {
     sprintf(objective->title, "x%d", objective->data.collectableData.toGet);
 }
@@ -96,6 +100,9 @@ void get_objective_title(struct BingoObjective *objective) {
         case BINGO_OBJECTIVE_1UPS_IN_LEVEL:
         case BINGO_OBJECTIVE_STARS_IN_LEVEL:
             get_in_level_objective_title(objective);
+            break;
+        case BINGO_OBJECTIVE_LOSE_MARIO_HAT:
+            get_lose_mario_hat_objective_title(objective);
             break;
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
             get_exclamation_mark_box_title(objective);

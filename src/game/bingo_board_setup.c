@@ -40,11 +40,13 @@ enum BingoObjectiveType get_random_objective_type(enum BingoObjectiveClass class
             break;
 
         case BINGO_CLASS_EASY:
-            switch (RandomU16() % 2) {
+            switch (RandomU16() % 3) {
                 case 0:
                     return BINGO_OBJECTIVE_COIN;
                 case 1:
                     return BINGO_OBJECTIVE_STAR;
+                case 2:
+                    return BINGO_OBJECTIVE_LOSE_MARIO_HAT;
             }
             break;
 
@@ -99,7 +101,7 @@ enum BingoObjectiveType get_random_objective_type(enum BingoObjectiveClass class
 }
 
 enum BingoObjectiveType get_random_enabled_objective_type(enum BingoObjectiveClass class) {
-    u32 attempts = 7;
+    u32 attempts = 50;
     enum BingoObjectiveType candidate;
     enum BingoObjectiveType i;
     s32 enabledSum = 0;
@@ -121,6 +123,7 @@ enum BingoObjectiveType get_random_enabled_objective_type(enum BingoObjectiveCla
     }
     if (enabledSum == 0) {
         // All objectives are disabled. I guess just allow free play?
+        return;
     }
     randomIndex = (RandomU16() % enabledSum) + 1;
     for (i = BINGO_OBJECTIVE_TYPE_MIN; i < BINGO_OBJECTIVE_TOTAL_AMOUNT; i++) {
@@ -170,6 +173,17 @@ s32 switch_to(s32 exclude) {
     return switchTo;
 }
 
+void shuffle(s32 *array, s32 length) {
+    s32 i, j, choice;
+    for (i = 0; i < length - 1; i++)
+    {
+        j = i + RandomU16() / (65535 / (length - i) + 1);
+        choice = array[j];
+        array[j] = array[i];
+        array[i] = choice;
+    }
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 // Bingo setup and update hooks
@@ -178,10 +192,14 @@ void setup_bingo_objectives(u32 seed) {
     s32 objectiveClasses[5][5] = {
         { 1, 0, 0, 0, 2 }, { 0, 2, 0, 1, 0 }, { 0, 0, 3, 0, 0 }, { 0, 1, 0, 2, 0 }, { 2, 0, 0, 0, 1 }
     };
+    s32 indexOrder[25] = {
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24
+    };
     s32 harderClass, easierClass, class;
-    s32 i;
+    s32 i, index;
     enum BingoObjectiveType type;
     struct BingoObjective *objective;
+    s32 prevDisabledSettings[BINGO_OBJECTIVE_TOTAL_AMOUNT];
 
     // Initialize random number subsystem
     init_genrand(seed);
@@ -199,29 +217,47 @@ void setup_bingo_objectives(u32 seed) {
         objectiveClasses[row][col] = switch_to(objectiveClasses[row][col]);
     }
 
-    // NOTE!
-    // If we start throwing in restrictions about maximum numbers of
-    // a particular objective type on a given board, then we have to
-    // rotate it a random multiple of 90 degrees, otherwise the concentration
-    // in the upper left will be different from that in the lower right.
-    for (row = 0; row < 5; row++) {
-        for (col = 0; col < 5; col++) {
-            class = objectiveClasses[row][col];
-            objective = &gBingoObjectives[row * 5 + col];
+    // Save the options settings (see below for why).
+    for (i = 0; i < BINGO_OBJECTIVE_TOTAL_AMOUNT; i++) {
+        prevDisabledSettings[i] = gBingoObjectivesDisabled[i];
+    }
 
-            if (class == harderClass) {
-                type = get_random_enabled_objective_type(BINGO_CLASS_HARD);
-                bingo_objective_init(objective, BINGO_CLASS_HARD, type);
-            } else if (class == easierClass) {
-                type = get_random_enabled_objective_type(BINGO_CLASS_EASY);
-                bingo_objective_init(objective, BINGO_CLASS_EASY, type);
-            } else if (class == 3) {
-                type = get_random_enabled_objective_type(BINGO_CLASS_CENTER);
-                bingo_objective_init(objective, BINGO_CLASS_CENTER, type);
-            } else if (class == 0) {
-                type = get_random_enabled_objective_type(BINGO_CLASS_MEDIUM);
-                bingo_objective_init(objective, BINGO_CLASS_MEDIUM, type);
-            }
+    // NOTE!
+    // We populate the bingo grid in random order because of restrictions on
+    // amounts of duplicate objective types. If we were to populate the grid
+    // in a fixed order every time, while also restricting that an objective
+    // e.g. were to only appear once, then that objective would appear more
+    // often in particular parts of the grid. We want "as random as possible"
+    // hence this design choice.
+    shuffle(&indexOrder, 25);
+
+    for (i = 0; i < 25; i++) {
+        index = indexOrder[i];
+        class = objectiveClasses[index % 5][index / 5];
+        objective = &gBingoObjectives[index];
+
+        if (class == harderClass) {
+            type = get_random_enabled_objective_type(BINGO_CLASS_HARD);
+            bingo_objective_init(objective, BINGO_CLASS_HARD, type);
+        } else if (class == easierClass) {
+            type = get_random_enabled_objective_type(BINGO_CLASS_EASY);
+            bingo_objective_init(objective, BINGO_CLASS_EASY, type);
+        } else if (class == 3) {
+            type = get_random_enabled_objective_type(BINGO_CLASS_CENTER);
+            bingo_objective_init(objective, BINGO_CLASS_CENTER, type);
+        } else if (class == 0) {
+            type = get_random_enabled_objective_type(BINGO_CLASS_MEDIUM);
+            bingo_objective_init(objective, BINGO_CLASS_MEDIUM, type);
         }
+
+        if (type == BINGO_OBJECTIVE_LOSE_MARIO_HAT) {
+            gBingoObjectivesDisabled[BINGO_OBJECTIVE_LOSE_MARIO_HAT] = 1;
+            // Note - if a player Saves & Quits, and we didn't un-disable this
+            // objective, it would be disabled for future games. So, revert
+            // it below.
+        }
+    }
+    for (i = 0; i < BINGO_OBJECTIVE_TOTAL_AMOUNT; i++) {
+        gBingoObjectivesDisabled[i] = prevDisabledSettings[i];
     }
 }

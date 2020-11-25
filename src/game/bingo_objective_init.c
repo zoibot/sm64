@@ -343,6 +343,19 @@ void bingo_objective_stars_in_level_init(struct BingoObjective *objective,
     get_objective_title(objective);
 }
 
+void bingo_objective_lose_mario_hat_init(struct BingoObjective *objective,
+                                         enum BingoObjectiveClass class) {
+    enum CourseNum course;
+
+    switch (class) {
+        default:
+            break;
+    }
+
+    objective->icon = BINGO_ICON_MARIO_HAT;
+    get_objective_title(objective);
+}
+
 void bingo_objective_exclamation_mark_box_init(struct BingoObjective *objective,
                                                enum BingoObjectiveClass class) {
     s32 boxes;
@@ -439,6 +452,9 @@ void bingo_objective_init(struct BingoObjective *objective, enum BingoObjectiveC
             break;
         case BINGO_OBJECTIVE_STARS_IN_LEVEL:
             bingo_objective_stars_in_level_init(objective, class);
+            break;
+        case BINGO_OBJECTIVE_LOSE_MARIO_HAT:
+            bingo_objective_lose_mario_hat_init(objective, class);
             break;
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
             bingo_objective_exclamation_mark_box_init(objective, class);

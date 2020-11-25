@@ -323,6 +323,8 @@ void mario_blow_off_cap(struct MarioState *m, f32 capSpeed) {
     if (does_mario_have_hat(m)) {
         save_file_set_cap_pos(m->pos[0], m->pos[1], m->pos[2]);
 
+        bingo_update(BINGO_UPDATE_LOST_HAT);
+
         m->flags &= ~(MARIO_NORMAL_CAP | MARIO_CAP_ON_HEAD);
 
         capObject = spawn_object(m->marioObj, MODEL_MARIOS_CAP, bhvNormalCap);
@@ -341,6 +343,7 @@ u32 mario_lose_cap_to_enemy(u32 arg) {
     u32 wasWearingCap = FALSE;
 
     if (does_mario_have_hat(gMarioState)) {
+        bingo_update(BINGO_UPDATE_LOST_HAT);
         save_file_set_flags(arg == 1 ? SAVE_FLAG_CAP_ON_KLEPTO : SAVE_FLAG_CAP_ON_UKIKI);
         gMarioState->flags &= ~(MARIO_NORMAL_CAP | MARIO_CAP_ON_HEAD);
         wasWearingCap = TRUE;
