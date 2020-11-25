@@ -182,9 +182,9 @@ void objective_exclamation_mark_box(struct BingoObjective *objective, enum Bingo
 
 void objective_kill_goombas(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
     if (update == BINGO_UPDATE_KILLED_GOOMBA) {
-        objective->data.killEnemyObjective.enemiesKilled++;
-        if (objective->data.killEnemyObjective.enemiesToKill
-                - objective->data.killEnemyObjective.enemiesKilled
+        objective->data.collectableData.gotten++;
+        if (objective->data.collectableData.toGet
+                - objective->data.collectableData.gotten
             <= 0) {
             set_objective_state(objective, BINGO_STATE_COMPLETE);
         }
@@ -193,9 +193,9 @@ void objective_kill_goombas(struct BingoObjective *objective, enum BingoObjectiv
 
 void objective_kill_bobombs(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
     if (update == BINGO_UPDATE_KILLED_BOBOMB) {
-        objective->data.killEnemyObjective.enemiesKilled++;
-        if (objective->data.killEnemyObjective.enemiesToKill
-                - objective->data.killEnemyObjective.enemiesKilled
+        objective->data.collectableData.gotten++;
+        if (objective->data.collectableData.toGet
+                - objective->data.collectableData.gotten
             <= 0) {
             set_objective_state(objective, BINGO_STATE_COMPLETE);
         }

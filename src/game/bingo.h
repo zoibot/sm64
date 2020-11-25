@@ -131,12 +131,6 @@ struct StarTimerObjectiveData
     s32 timer;
 };
 
-struct KillEnemyObjectiveData
-{
-    s32 enemiesToKill;
-    s32 enemiesKilled;
-};
-
 struct CourseCollectableData
 {
     enum CourseNum course;
@@ -161,7 +155,6 @@ struct BingoObjective
         struct ABCStarObjectiveData abcStarObjective;
         struct StarTimerObjectiveData starTimerObjective;
         struct CourseCollectableData courseCollectableData;
-        struct KillEnemyObjectiveData killEnemyObjective;
         struct CollectableData collectableData;
     } data;
 };

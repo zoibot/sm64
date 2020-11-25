@@ -75,7 +75,7 @@ void get_exclamation_mark_box_title(struct BingoObjective *objective) {
 }
 
 void get_kill_enemy_title(struct BingoObjective *objective) {
-    sprintf(objective->title, "x%d", objective->data.killEnemyObjective.enemiesToKill);
+    sprintf(objective->title, "x%d", objective->data.collectableData.toGet);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

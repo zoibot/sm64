@@ -295,8 +295,8 @@ void get_kill_enemy_objective_desc(struct BingoObjective *obj, char *desc) {
         strcpy(suffix, ": Complete!");
     } else {
         sprintf(suffix, ". Remaining: %d",
-                obj->data.killEnemyObjective.enemiesToKill
-                    - obj->data.killEnemyObjective.enemiesKilled);
+                obj->data.collectableData.toGet
+                    - obj->data.collectableData.gotten);
     }
 
     switch (obj->type) {
@@ -308,7 +308,7 @@ void get_kill_enemy_objective_desc(struct BingoObjective *obj, char *desc) {
             break;
     }
 
-    sprintf(desc, "Kill %d %s%s", obj->data.killEnemyObjective.enemiesToKill, enemyName, suffix);
+    sprintf(desc, "Kill %d %s%s", obj->data.collectableData.toGet, enemyName, suffix);
 }
 
 void describe_objective(struct BingoObjective *objective, char *desc) {

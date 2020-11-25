@@ -399,8 +399,8 @@ void bingo_objective_kill_goombas_init(struct BingoObjective *objective,
     }
 
     objective->icon = BINGO_ICON_KILL_GOOMBAS;
-    objective->data.killEnemyObjective.enemiesToKill = enemiesToKill;
-    objective->data.killEnemyObjective.enemiesKilled = 0;
+    objective->data.collectableData.toGet = enemiesToKill;
+    objective->data.collectableData.gotten = 0;
     get_objective_title(objective);
 }
 
@@ -419,8 +419,8 @@ void bingo_objective_kill_bobombs_init(struct BingoObjective *objective,
     }
 
     objective->icon = BINGO_ICON_KILL_BOBOMBS;
-    objective->data.killEnemyObjective.enemiesToKill = enemiesToKill;
-    objective->data.killEnemyObjective.enemiesKilled = 0;
+    objective->data.collectableData.toGet = enemiesToKill;
+    objective->data.collectableData.gotten = 0;
     get_objective_title(objective);
 }
 
