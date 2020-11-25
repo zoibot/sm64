@@ -40,13 +40,15 @@ enum BingoObjectiveType get_random_objective_type(enum BingoObjectiveClass class
             break;
 
         case BINGO_CLASS_EASY:
-            switch (RandomU16() % 3) {
+            switch (RandomU16() % 4) {
                 case 0:
                     return BINGO_OBJECTIVE_COIN;
                 case 1:
                     return BINGO_OBJECTIVE_STAR;
                 case 2:
                     return BINGO_OBJECTIVE_LOSE_MARIO_HAT;
+                case 3:
+                    return BINGO_OBJECTIVE_BLJ;
             }
             break;
 
@@ -249,14 +251,18 @@ void setup_bingo_objectives(u32 seed) {
             type = get_random_enabled_objective_type(BINGO_CLASS_MEDIUM);
             bingo_objective_init(objective, BINGO_CLASS_MEDIUM, type);
         }
-
-        if (type == BINGO_OBJECTIVE_LOSE_MARIO_HAT) {
-            gBingoObjectivesDisabled[BINGO_OBJECTIVE_LOSE_MARIO_HAT] = 1;
-            // Note - if a player Saves & Quits, and we didn't un-disable this
-            // objective, it would be disabled for future games. So, revert
-            // it below.
+        // TODO: Make {class, type} a unique pair per board for certain
+        // objectives like coins, bob-ombs, etc.
+        if (
+            type == BINGO_OBJECTIVE_LOSE_MARIO_HAT
+            || type == BINGO_OBJECTIVE_BLJ
+        ) {
+            gBingoObjectivesDisabled[type] = 1;
         }
     }
+    // Note - if a player Saves & Quits, and we didn't un-disable these
+    // objectives, they would be disabled for future games. So, revert
+    // it below.
     for (i = 0; i < BINGO_OBJECTIVE_TOTAL_AMOUNT; i++) {
         gBingoObjectivesDisabled[i] = prevDisabledSettings[i];
     }

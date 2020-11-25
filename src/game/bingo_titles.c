@@ -102,6 +102,7 @@ void get_objective_title(struct BingoObjective *objective) {
             get_in_level_objective_title(objective);
             break;
         case BINGO_OBJECTIVE_LOSE_MARIO_HAT:
+        case BINGO_OBJECTIVE_BLJ:
             get_lose_mario_hat_objective_title(objective);
             break;
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:

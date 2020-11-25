@@ -267,6 +267,14 @@ void get_lose_hat_objective_desc(struct BingoObjective *obj, char *desc) {
     sprintf(desc, "Lose Mario's hat%s", suffix);
 }
 
+void get_blj_objective_desc(struct BingoObjective *obj, char *desc) {
+    char suffix[20];
+    if (obj->state == BINGO_STATE_COMPLETE) {
+        strcpy(suffix, ": Complete!");
+    }
+    sprintf(desc, "Perform a BLJ%s", suffix);
+}
+
 void get_exclamation_mark_box_desc(struct BingoObjective *obj, char *desc) {
     char suffix[30];
     if (obj->state == BINGO_STATE_COMPLETE) {
@@ -330,6 +338,9 @@ void describe_objective(struct BingoObjective *objective, char *desc) {
             break;
         case BINGO_OBJECTIVE_LOSE_MARIO_HAT:
             get_lose_hat_objective_desc(objective, desc);
+            break;
+        case BINGO_OBJECTIVE_BLJ:
+            get_blj_objective_desc(objective, desc);
             break;
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
             get_exclamation_mark_box_desc(objective, desc);

@@ -165,6 +165,12 @@ void objective_lose_mario_hat(struct BingoObjective *objective, enum BingoObject
     }
 }
 
+void objective_blj(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
+    if (update == BINGO_UPDATE_BLJ) {
+        set_objective_state(objective, BINGO_STATE_COMPLETE);
+    }
+}
+
 void objective_exclamation_mark_box(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
     if (update == BINGO_UPDATE_EXCLAMATION_MARK_BOX) {
         objective->data.collectableData.gotten++;
@@ -237,6 +243,9 @@ void update_objective(struct BingoObjective *objective, enum BingoObjectiveUpdat
             break;
         case BINGO_OBJECTIVE_LOSE_MARIO_HAT:
             objective_lose_mario_hat(objective, update);
+            break;
+        case BINGO_OBJECTIVE_BLJ:
+            objective_blj(objective, update);
             break;
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
             objective_exclamation_mark_box(objective, update);
