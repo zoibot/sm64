@@ -138,7 +138,7 @@ void objective_obtain_multicoin(struct BingoObjective *objective, enum BingoObje
 
 void objective_obtain_multistar(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
     if (update == BINGO_UPDATE_STAR) {
-        objective->data.collectableData.gotten++;  // just for description accuracy
+        objective->data.collectableData.gotten = bingo_get_star_count();
         if (bingo_get_star_count() == objective->data.collectableData.toGet) {
             set_objective_state(objective, BINGO_STATE_COMPLETE);
         }
@@ -180,32 +180,14 @@ void objective_blj(struct BingoObjective *objective, enum BingoObjectiveUpdate u
     }
 }
 
-void objective_exclamation_mark_box(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
-    if (update == BINGO_UPDATE_EXCLAMATION_MARK_BOX) {
+void objective_generic_collectable(
+    struct BingoObjective *objective,
+    enum BingoObjectiveUpdate update,
+    enum BingoObjectiveUpdate desiredUpdate
+) {
+    if (update == desiredUpdate) {
         objective->data.collectableData.gotten++;
         if (objective->data.collectableData.gotten >= objective->data.collectableData.toGet) {
-            set_objective_state(objective, BINGO_STATE_COMPLETE);
-        }
-    }
-}
-
-void objective_kill_goombas(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
-    if (update == BINGO_UPDATE_KILLED_GOOMBA) {
-        objective->data.collectableData.gotten++;
-        if (objective->data.collectableData.toGet
-                - objective->data.collectableData.gotten
-            <= 0) {
-            set_objective_state(objective, BINGO_STATE_COMPLETE);
-        }
-    }
-}
-
-void objective_kill_bobombs(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
-    if (update == BINGO_UPDATE_KILLED_BOBOMB) {
-        objective->data.collectableData.gotten++;
-        if (objective->data.collectableData.toGet
-                - objective->data.collectableData.gotten
-            <= 0) {
             set_objective_state(objective, BINGO_STATE_COMPLETE);
         }
     }
@@ -260,13 +242,13 @@ void update_objective(struct BingoObjective *objective, enum BingoObjectiveUpdat
             objective_blj(objective, update);
             break;
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
-            objective_exclamation_mark_box(objective, update);
+            objective_generic_collectable(objective, update, BINGO_UPDATE_EXCLAMATION_MARK_BOX);
             break;
         case BINGO_OBJECTIVE_KILL_GOOMBAS:
-            objective_kill_goombas(objective, update);
+            objective_generic_collectable(objective, update, BINGO_UPDATE_KILLED_GOOMBA);
             break;
         case BINGO_OBJECTIVE_KILL_BOBOMBS:
-            objective_kill_bobombs(objective, update);
+            objective_generic_collectable(objective, update, BINGO_UPDATE_KILLED_BOBOMB);
             break;
     }
 }
