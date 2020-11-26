@@ -197,6 +197,7 @@ void setup_bingo_objectives(u32 seed) {
     enum BingoObjectiveType type;
     struct BingoObjective *objective;
     s32 prevDisabledSettings[BINGO_OBJECTIVE_TOTAL_AMOUNT];
+    s32 objectiveCounts[BINGO_OBJECTIVE_TOTAL_AMOUNT] = { 0 };
 
     // Initialize random number subsystem
     init_genrand(seed);
@@ -246,11 +247,34 @@ void setup_bingo_objectives(u32 seed) {
             type = get_random_enabled_objective_type(BINGO_CLASS_MEDIUM);
             bingo_objective_init(objective, BINGO_CLASS_MEDIUM, type);
         }
+        objectiveCounts[type]++;
         // TODO: Make {class, type} a unique pair per board for certain
-        // objectives like coins, bob-ombs, etc.
+        // objectives like coins, bob-ombs, etc. Having these done individually
+        // is a little lame.
         if (
-            type == BINGO_OBJECTIVE_LOSE_MARIO_HAT
-            || type == BINGO_OBJECTIVE_BLJ
+            (
+                (objectiveCounts[type] == 1)
+                && (
+                    type == BINGO_OBJECTIVE_LOSE_MARIO_HAT
+                    || type == BINGO_OBJECTIVE_BLJ
+                )
+            )
+            || (
+                (objectiveCounts[type] == 2)
+                && (
+                    type == BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX
+                    || type == BINGO_ICON_STAR_A_BUTTON_CHALLENGE
+                )
+            )
+            || (
+                (objectiveCounts[type] == 3)
+                && (
+                    type == BINGO_OBJECTIVE_KILL_GOOMBAS
+                    || type == BINGO_OBJECTIVE_KILL_BOBOMBS
+                    || type == BINGO_ICON_STAR_B_BUTTON_CHALLENGE
+                    || type == BINGO_ICON_STAR_Z_BUTTON_CHALLENGE
+                )
+            )
         ) {
             gBingoObjectivesDisabled[type] = 1;
         }
