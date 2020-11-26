@@ -809,6 +809,7 @@ static void print_main_menu_strings(void) {
 
 
 static unsigned char textSingleStar[] = { TEXT_SINGLE_STAR };
+static unsigned char textMultiStar[] = { TEXT_MULTI_STAR };
 static unsigned char textAButton[] = { TEXT_A_BUTTON };
 static unsigned char textBButton[] = { TEXT_B_BUTTON };
 static unsigned char textZButton[] = { TEXT_Z_BUTTON };
@@ -882,8 +883,12 @@ static void print_bingo_page_0(void) {
 
         switch (i) {
             case BINGO_OBJECTIVE_STAR:
-                obj_icon = BINGO_ICON_STAR;;
+                obj_icon = BINGO_ICON_STAR;
                 option = textSingleStar;
+                break;
+            case BINGO_OBJECTIVE_MULTISTAR:
+                obj_icon = BINGO_ICON_MULTISTAR;
+                option = textMultiStar;
                 break;
             case BINGO_OBJECTIVE_STAR_A_BUTTON_CHALLENGE:
                 obj_icon = BINGO_ICON_STAR_A_BUTTON_CHALLENGE;

@@ -308,6 +308,29 @@ void bingo_objective_multicoin_init(struct BingoObjective *objective, enum Bingo
     get_objective_title(objective);
 }
 
+void bingo_objective_multistar_init(struct BingoObjective *objective, enum BingoObjectiveClass class) {
+    s32 numStars;
+    switch (class) {
+        case BINGO_CLASS_EASY:
+            numStars = 3 + (RandomU16() % 2);    // 3 to 4
+            break;
+        default:
+        case BINGO_CLASS_MEDIUM:
+            numStars = 5 + (RandomU16() % 4);    // 5 to 8
+            break;
+        case BINGO_CLASS_HARD:
+            numStars = 12 + (RandomU16() % 6);   // 12 to 17
+            break;
+        case BINGO_CLASS_CENTER:
+            numStars = 16 + (RandomU16() % 10);  // 16 to 25
+            break;
+    }
+    objective->icon = BINGO_ICON_MULTISTAR;
+    objective->data.collectableData.toGet = numStars;
+    objective->data.collectableData.gotten = 0;
+    get_objective_title(objective);
+}
+
 void bingo_objective_1ups_in_level_init(struct BingoObjective *objective,
                                         enum BingoObjectiveClass class) {
     enum CourseNum course;
@@ -459,6 +482,9 @@ void bingo_objective_init(struct BingoObjective *objective, enum BingoObjectiveC
             break;
         case BINGO_OBJECTIVE_MULTICOIN:
             bingo_objective_multicoin_init(objective, class);
+            break;
+        case BINGO_OBJECTIVE_MULTISTAR:
+            bingo_objective_multistar_init(objective, class);
             break;
         case BINGO_OBJECTIVE_1UPS_IN_LEVEL:
             bingo_objective_1ups_in_level_init(objective, class);

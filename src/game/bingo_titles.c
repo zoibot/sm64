@@ -70,11 +70,7 @@ void get_lose_mario_hat_objective_title(struct BingoObjective *objective) {
     sprintf(objective->title, "x1");
 }
 
-void get_exclamation_mark_box_title(struct BingoObjective *objective) {
-    sprintf(objective->title, "x%d", objective->data.collectableData.toGet);
-}
-
-void get_kill_enemy_title(struct BingoObjective *objective) {
+void get_collectable_objective_title(struct BingoObjective *objective) {
     sprintf(objective->title, "x%d", objective->data.collectableData.toGet);
 }
 
@@ -105,12 +101,11 @@ void get_objective_title(struct BingoObjective *objective) {
         case BINGO_OBJECTIVE_BLJ:
             get_lose_mario_hat_objective_title(objective);
             break;
+        case BINGO_OBJECTIVE_MULTISTAR:
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
-            get_exclamation_mark_box_title(objective);
-            break;
         case BINGO_OBJECTIVE_KILL_GOOMBAS:
         case BINGO_OBJECTIVE_KILL_BOBOMBS:
-            get_kill_enemy_title(objective);
+            get_collectable_objective_title(objective);
             break;
     }
 }

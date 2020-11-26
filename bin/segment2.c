@@ -1876,6 +1876,10 @@ ALIGNED8 static const u8 seg2_texture_multicoin[] = {
 #include "textures/segment2/custom/segment2.coins.rgba16.inc.c"
 };
 
+ALIGNED8 static const u8 seg2_texture_multistar[] = {
+#include "textures/segment2/custom/segment2.multistar.rgba16.inc.c"
+};
+
 ALIGNED8 static const u8 seg2_texture_failed[] = {
 #include "textures/segment2/custom/segment2.nope.rgba16.inc.c"
 };
@@ -1950,6 +1954,7 @@ const u8 *const bingo_lut[] = {
     seg2_texture_greendemon,     // BINGO_ICON_STAR_GREEN_DEMON
     texture_hud_char_coin,       // BINGO_ICON_COIN
     seg2_texture_multicoin,      // BINGO_ICON_MULTICOIN
+    seg2_texture_multistar,      // BINGO_ICON_MULTISTAR
     seg2_texture_1up,            // BINGO_ICON_1UPS_IN_LEVEL
     seg2_texture_allstarslevel,  // BINGO_ICON_STARS_IN_LEVEL
     seg2_texture_mario_hat,      // BINGO_ICON_MARIO_HAT

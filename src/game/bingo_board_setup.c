@@ -24,6 +24,7 @@ struct ObjectiveWeight sWeightsEasy[] = {
     { BINGO_OBJECTIVE_STAR, 12 },
     { BINGO_OBJECTIVE_LOSE_MARIO_HAT, 12 },
     { BINGO_OBJECTIVE_BLJ, 12 },
+    { BINGO_OBJECTIVE_MULTISTAR, 12 },
 };
 s32 sWeightsSizeEasy = sizeof(sWeightsEasy) / sizeof(struct ObjectiveWeight);
 
@@ -36,6 +37,7 @@ struct ObjectiveWeight sWeightsMedium[] = {
     { BINGO_OBJECTIVE_STAR_B_BUTTON_CHALLENGE, 3 },
     { BINGO_OBJECTIVE_STAR_Z_BUTTON_CHALLENGE, 3 },
     { BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX, 12 },
+    { BINGO_OBJECTIVE_MULTISTAR, 12 },
 };
 s32 sWeightsSizeMedium = sizeof(sWeightsMedium) / sizeof(struct ObjectiveWeight);
 
@@ -47,6 +49,7 @@ struct ObjectiveWeight sWeightsHard[] = {
     { BINGO_OBJECTIVE_MULTICOIN, 3 },
     { BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK, 12 },
     { BINGO_OBJECTIVE_STAR_GREEN_DEMON, 12 },
+    { BINGO_OBJECTIVE_MULTISTAR, 12 },
 };
 s32 sWeightsSizeHard = sizeof(sWeightsHard) / sizeof(struct ObjectiveWeight);
 
@@ -55,6 +58,7 @@ struct ObjectiveWeight sWeightsCenter[] = {
     { BINGO_OBJECTIVE_KILL_GOOMBAS, 6 },
     { BINGO_OBJECTIVE_KILL_BOBOMBS, 6 },
     { BINGO_OBJECTIVE_MULTICOIN, 12 },
+    { BINGO_OBJECTIVE_MULTISTAR, 12 },
 };
 s32 sWeightsSizeCenter = sizeof(sWeightsCenter) / sizeof(struct ObjectiveWeight);
 
@@ -193,6 +197,7 @@ void setup_bingo_objectives(u32 seed) {
         0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24
     };
     s32 harderClass, easierClass, class;
+    enum BingoObjectiveClass classType;
     s32 i, index;
     enum BingoObjectiveType type;
     struct BingoObjective *objective;
@@ -235,18 +240,18 @@ void setup_bingo_objectives(u32 seed) {
         objective = &gBingoObjectives[index];
 
         if (class == harderClass) {
-            type = get_random_enabled_objective_type(BINGO_CLASS_HARD);
-            bingo_objective_init(objective, BINGO_CLASS_HARD, type);
+            classType = BINGO_CLASS_HARD;
         } else if (class == easierClass) {
-            type = get_random_enabled_objective_type(BINGO_CLASS_EASY);
-            bingo_objective_init(objective, BINGO_CLASS_EASY, type);
+            classType = BINGO_CLASS_EASY;
         } else if (class == 3) {
-            type = get_random_enabled_objective_type(BINGO_CLASS_CENTER);
-            bingo_objective_init(objective, BINGO_CLASS_CENTER, type);
+            classType = BINGO_CLASS_CENTER;
         } else if (class == 0) {
-            type = get_random_enabled_objective_type(BINGO_CLASS_MEDIUM);
-            bingo_objective_init(objective, BINGO_CLASS_MEDIUM, type);
+            classType = BINGO_CLASS_MEDIUM;
         }
+        // TODO: avoid duplicate single stars, and having
+        // multiple multistars/multicoins in one row/col.
+        type = get_random_enabled_objective_type(classType);
+        bingo_objective_init(objective, classType, type);
         objectiveCounts[type]++;
         // TODO: Make {class, type} a unique pair per board for certain
         // objectives like coins, bob-ombs, etc. Having these done individually
@@ -263,7 +268,7 @@ void setup_bingo_objectives(u32 seed) {
                 (objectiveCounts[type] == 2)
                 && (
                     type == BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX
-                    || type == BINGO_ICON_STAR_A_BUTTON_CHALLENGE
+                    || type == BINGO_OBJECTIVE_STAR_A_BUTTON_CHALLENGE
                 )
             )
             || (
@@ -271,8 +276,9 @@ void setup_bingo_objectives(u32 seed) {
                 && (
                     type == BINGO_OBJECTIVE_KILL_GOOMBAS
                     || type == BINGO_OBJECTIVE_KILL_BOBOMBS
-                    || type == BINGO_ICON_STAR_B_BUTTON_CHALLENGE
-                    || type == BINGO_ICON_STAR_Z_BUTTON_CHALLENGE
+                    || type == BINGO_OBJECTIVE_STAR_B_BUTTON_CHALLENGE
+                    || type == BINGO_OBJECTIVE_STAR_Z_BUTTON_CHALLENGE
+                    || type == BINGO_OBJECTIVE_MULTISTAR
                 )
             )
         ) {

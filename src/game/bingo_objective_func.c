@@ -136,6 +136,15 @@ void objective_obtain_multicoin(struct BingoObjective *objective, enum BingoObje
     }
 }
 
+void objective_obtain_multistar(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
+    if (update == BINGO_UPDATE_STAR) {
+        objective->data.collectableData.gotten++;  // just for description accuracy
+        if (bingo_get_star_count() == objective->data.collectableData.toGet) {
+            set_objective_state(objective, BINGO_STATE_COMPLETE);
+        }
+    }
+}
+
 void objective_obtain_1ups_in_level(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
     if (update == BINGO_UPDATE_COURSE_CHANGED) {
         objective->state = BINGO_STATE_NONE;
@@ -234,6 +243,9 @@ void update_objective(struct BingoObjective *objective, enum BingoObjectiveUpdat
             break;
         case BINGO_OBJECTIVE_MULTICOIN:
             objective_obtain_multicoin(objective, update);
+            break;
+        case BINGO_OBJECTIVE_MULTISTAR:
+            objective_obtain_multistar(objective, update);
             break;
         case BINGO_OBJECTIVE_1UPS_IN_LEVEL:
             objective_obtain_1ups_in_level(objective, update);

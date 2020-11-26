@@ -231,6 +231,19 @@ void get_multicoin_objective_desc(struct BingoObjective *obj, char *desc) {
     sprintf(desc, "Collect %d coins total%s", obj->data.collectableData.toGet, suffix);
 }
 
+void get_multistar_objective_desc(struct BingoObjective *obj, char *desc) {
+    char suffix[30];
+
+    if (obj->state == BINGO_STATE_COMPLETE) {
+        strcpy(suffix, ": Complete!");
+    } else {
+        sprintf(suffix, ". Remaining: %d",
+                obj->data.collectableData.toGet - obj->data.collectableData.gotten);
+    }
+
+    sprintf(desc, "Collect %d stars total%s", obj->data.collectableData.toGet, suffix);
+}
+
 void get_1up_level_objective_desc(struct BingoObjective *obj, char *desc) {
     char revEncLevelName[60];
     char suffix[30];
@@ -329,6 +342,9 @@ void describe_objective(struct BingoObjective *objective, char *desc) {
             break;
         case BINGO_OBJECTIVE_MULTICOIN:
             get_multicoin_objective_desc(objective, desc);
+            break;
+        case BINGO_OBJECTIVE_MULTISTAR:
+            get_multistar_objective_desc(objective, desc);
             break;
         case BINGO_OBJECTIVE_1UPS_IN_LEVEL:
             get_1up_level_objective_desc(objective, desc);
