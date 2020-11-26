@@ -14,92 +14,87 @@
 #include "strcpy.h"
 #include "print.h"
 
+struct ObjectiveWeight {
+    enum BingoObjectiveType objective;
+    s32 weight;
+};
+
+struct ObjectiveWeight sWeightsEasy[] = {
+    { BINGO_OBJECTIVE_COIN, 12 },
+    { BINGO_OBJECTIVE_STAR, 12 },
+    { BINGO_OBJECTIVE_LOSE_MARIO_HAT, 12 },
+    { BINGO_OBJECTIVE_BLJ, 12 },
+};
+s32 sWeightsSizeEasy = sizeof(sWeightsEasy) / sizeof(struct ObjectiveWeight);
+
+struct ObjectiveWeight sWeightsMedium[] = {
+    { BINGO_OBJECTIVE_COIN, 12 },
+    { BINGO_OBJECTIVE_STAR, 12 },
+    { BINGO_OBJECTIVE_KILL_GOOMBAS, 6 },
+    { BINGO_OBJECTIVE_KILL_BOBOMBS, 6 },
+    { BINGO_OBJECTIVE_STAR_TIMED, 12 },
+    { BINGO_OBJECTIVE_STAR_B_BUTTON_CHALLENGE, 3 },
+    { BINGO_OBJECTIVE_STAR_Z_BUTTON_CHALLENGE, 3 },
+    { BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX, 12 },
+};
+s32 sWeightsSizeMedium = sizeof(sWeightsMedium) / sizeof(struct ObjectiveWeight);
+
+struct ObjectiveWeight sWeightsHard[] = {
+    { BINGO_OBJECTIVE_STAR_TIMED, 12 },
+    { BINGO_OBJECTIVE_STAR_A_BUTTON_CHALLENGE, 12 },
+    { BINGO_OBJECTIVE_1UPS_IN_LEVEL, 12 },
+    { BINGO_OBJECTIVE_STARS_IN_LEVEL, 12 },
+    { BINGO_OBJECTIVE_MULTICOIN, 3 },
+    { BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK, 12 },
+    { BINGO_OBJECTIVE_STAR_GREEN_DEMON, 12 },
+};
+s32 sWeightsSizeHard = sizeof(sWeightsHard) / sizeof(struct ObjectiveWeight);
+
+struct ObjectiveWeight sWeightsCenter[] = {
+    { BINGO_OBJECTIVE_COIN, 12 },
+    { BINGO_OBJECTIVE_KILL_GOOMBAS, 6 },
+    { BINGO_OBJECTIVE_KILL_BOBOMBS, 6 },
+    { BINGO_OBJECTIVE_MULTICOIN, 12 },
+};
+s32 sWeightsSizeCenter = sizeof(sWeightsCenter) / sizeof(struct ObjectiveWeight);
+
 enum BingoObjectiveType get_random_objective_type(enum BingoObjectiveClass class) {
+    struct ObjectiveWeight *weights;
+    s32 size;
+	s32 sum;
+	s32 want_sum;
+	s32 i;
+
     switch (class) {
-        case BINGO_CLASS_HARD:
-        retry_hard:
-            switch (RandomU16() % 7) {
-                case 0:
-                    return BINGO_OBJECTIVE_STAR_TIMED;
-                case 1:
-                    return BINGO_OBJECTIVE_STAR_A_BUTTON_CHALLENGE;
-                case 2:
-                    return BINGO_OBJECTIVE_1UPS_IN_LEVEL;
-                case 3:
-                    return BINGO_OBJECTIVE_STARS_IN_LEVEL;
-                case 4:
-                    if (RandomU16() % 4 != 0) {
-                        goto retry_hard;
-                    }
-                    return BINGO_OBJECTIVE_MULTICOIN;
-                case 5:
-                    return BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK;
-                case 6:
-                    return BINGO_OBJECTIVE_STAR_GREEN_DEMON;
-            }
-            break;
-
         case BINGO_CLASS_EASY:
-            switch (RandomU16() % 4) {
-                case 0:
-                    return BINGO_OBJECTIVE_COIN;
-                case 1:
-                    return BINGO_OBJECTIVE_STAR;
-                case 2:
-                    return BINGO_OBJECTIVE_LOSE_MARIO_HAT;
-                case 3:
-                    return BINGO_OBJECTIVE_BLJ;
-            }
+            weights = sWeightsEasy;
+            size = sWeightsSizeEasy;
             break;
-
-        case BINGO_CLASS_CENTER:
-            switch (RandomU16() % 3) {
-                case 0:
-                    return BINGO_OBJECTIVE_COIN;
-                case 1:
-                    switch (RandomU16() % 2) {
-                        case 0:
-                            return BINGO_OBJECTIVE_KILL_GOOMBAS;
-                        case 1:
-                            return BINGO_OBJECTIVE_KILL_BOBOMBS;
-                    }
-                case 2:
-                    return BINGO_OBJECTIVE_MULTICOIN;
-            }
-            break;
-
         case BINGO_CLASS_MEDIUM:
-        retry_medium:
-            switch (RandomU16() % 7) {
-                case 0:
-                    return BINGO_OBJECTIVE_COIN;
-                case 1:
-                    return BINGO_OBJECTIVE_STAR;
-                case 2:
-                    switch (RandomU16() % 2) {
-                        case 0:
-                            return BINGO_OBJECTIVE_KILL_GOOMBAS;
-                        case 1:
-                            return BINGO_OBJECTIVE_KILL_BOBOMBS;
-                    }
-                case 3:
-                    return BINGO_OBJECTIVE_STAR_TIMED;
-                case 4:
-                    if (RandomU16() % 4 != 0) {
-                        // If you ever wanted proof that I am lazy:
-                        goto retry_medium;
-                    }
-                    return BINGO_OBJECTIVE_STAR_B_BUTTON_CHALLENGE;
-                case 5:
-                    if (RandomU16() % 4 != 0) {
-                        goto retry_medium;
-                    }
-                    return BINGO_OBJECTIVE_STAR_Z_BUTTON_CHALLENGE;
-                case 6:
-                    return BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX;
-            }
+            weights = sWeightsMedium;
+            size = sWeightsSizeMedium;
+            break;
+        case BINGO_CLASS_HARD:
+            weights = sWeightsHard;
+            size = sWeightsSizeHard;
+            break;
+        case BINGO_CLASS_CENTER:
+            weights = sWeightsCenter;
+            size = sWeightsSizeCenter;
             break;
     }
+    sum = 0.0f;
+    for (i = 0; i < size; i++) {
+        sum += weights[i].weight;
+    }
+    want_sum = RandomU16() % sum;
+
+    i = 0;
+    sum = 0;
+    while ((sum += weights[i].weight) < want_sum) {
+        i++;
+    }
+    return weights[i].objective;
 }
 
 enum BingoObjectiveType get_random_enabled_objective_type(enum BingoObjectiveClass class) {
