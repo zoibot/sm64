@@ -107,7 +107,22 @@ void objective_obtain_star_greendemon(struct BingoObjective *objective, enum Bin
         course = objective->data.starObjective.course;
         star = objective->data.starObjective.starIndex;
         if (gCurrCourseNum == course && gbStarIndex == star) {
-            gBingoReverseJoystickActive = 0;
+            set_objective_state(objective, BINGO_STATE_COMPLETE);
+        }
+    }
+}
+
+void objective_obtain_star_daredevil(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
+    s32 course;
+    s32 star;
+
+    if (update == BINGO_UPDATE_COURSE_CHANGED) {
+        gBingoDaredevilActive = 0;
+    } else if (update == BINGO_UPDATE_STAR && gBingoDaredevilActive) {
+        course = objective->data.starObjective.course;
+        star = objective->data.starObjective.starIndex;
+        if (gCurrCourseNum == course && gbStarIndex == star) {
+            gBingoDaredevilActive = 0;
             set_objective_state(objective, BINGO_STATE_COMPLETE);
         }
     }
@@ -219,6 +234,9 @@ void update_objective(struct BingoObjective *objective, enum BingoObjectiveUpdat
             break;
         case BINGO_OBJECTIVE_STAR_GREEN_DEMON:
             objective_obtain_star_greendemon(objective, update);
+            break;
+        case BINGO_OBJECTIVE_STAR_DAREDEVIL:
+            objective_obtain_star_daredevil(objective, update);
             break;
         case BINGO_OBJECTIVE_COIN:
             objective_obtain_coins(objective, update);

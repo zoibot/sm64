@@ -487,11 +487,11 @@
 #define MODEL_SPARKLES                    0x95        // sparkles_geo
 #define MODEL_SMOKE                       0x96        // smoke_geo
 
-// Bingo custom star colors go below here.
+// Bingo custom star colors...
 
 #define MODEL_STAR_GREEN                  0x97        // star_green_geo
 #define MODEL_STAR_RED                    0x98        // star_red_geo
-// find me
+#define MODEL_STAR_BLUE                   0x99        // star_blue_geo
 // find me
 // find me
 

@@ -264,6 +264,63 @@ void bingo_objective_star_green_demon_init(struct BingoObjective *objective,
     get_objective_title(objective);
 }
 
+void bingo_objective_star_daredevil_init(struct BingoObjective *objective,
+                                           enum BingoObjectiveClass class) {
+    enum CourseNum course;
+    s32 star;
+
+    // Some thoughts on Daredevil:
+    //   - All stars are not much harder, except for...
+    //   - DDD: It might be possible to get to the sub area,
+    //          but I haven't managed to do it. Close, though.
+    //   - WDW: Getting to downtown seems impossible without
+    //          glitches. This forbids 8 red coins and Quick Race.
+    //          100 coins is possible (and fun).
+    //   - JRB: Using the metal cap it's actually possible,
+    //          though difficult, to get to the ocean cove.
+    //          However, I haven't managed to get from the
+    //          cove back to the surface (though close), which
+    //          means only Treasure of the Ocean Cove, Blast to
+    //          the Stone Pillar, and Through the Jet Stream seem
+    //          possible. Can the Eel Come Out to Play might be
+    //          possible - haven't tried yet - but I bet it'd be
+    //          hard. Same with 100 coins. To be determined.
+    switch (class) {
+        default:
+        case BINGO_CLASS_MEDIUM:
+            do {
+                random_star_main_course_except_100c(&course, &star);
+            } while (
+                (course == COURSE_JRB || course == COURSE_DDD || (
+                    course == COURSE_WDW && (star == 4 || star == 5)
+                ))
+            );
+            break;
+        case BINGO_CLASS_HARD:
+            do {
+                course = random_main_course();
+            } while (course == COURSE_DDD);
+            if (course == COURSE_JRB) {
+                switch (RandomU16() % 3) {
+                    case 0:
+                        star = 2;
+                    case 1:
+                        star = 4;
+                    case 2:
+                        star = 5;
+                }
+            } else {
+                star = 6;  // 100 coins
+            }
+            break;
+    }
+
+    objective->icon = BINGO_ICON_STAR_DAREDEVIL;
+    objective->data.starObjective.course = course;
+    objective->data.starObjective.starIndex = star;
+    get_objective_title(objective);
+}
+
 void bingo_objective_coin_init(struct BingoObjective *objective, enum BingoObjectiveClass class) {
     enum CourseNum course;
     s32 coins;
@@ -476,6 +533,9 @@ void bingo_objective_init(struct BingoObjective *objective, enum BingoObjectiveC
             break;
         case BINGO_OBJECTIVE_STAR_GREEN_DEMON:
             bingo_objective_star_green_demon_init(objective, class);
+            break;
+        case BINGO_OBJECTIVE_STAR_DAREDEVIL:
+            bingo_objective_star_daredevil_init(objective, class);
             break;
         case BINGO_OBJECTIVE_COIN:
             bingo_objective_coin_init(objective, class);

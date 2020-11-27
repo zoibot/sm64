@@ -31,6 +31,7 @@ s16 gbStarIndex = 0;
 s32 gbCoinsJustGotten = 0;
 
 s32 gBingoReverseJoystickActive = 0;
+s32 gBingoDaredevilActive = 0;
 s32 gStarSelectScreenActive = 0;
 
 // Star Selector count models printed in the act selector menu.
@@ -108,6 +109,7 @@ void bingo_update(enum BingoObjectiveUpdate update) {
     if (update == BINGO_UPDATE_COURSE_CHANGED) {
         // This is crufty but I can't think of any place else to put this...
         gBingoReverseJoystickActive = 0;
+        gBingoDaredevilActive = 0;
     }
 
     // Timer updates can never result in bingo being won

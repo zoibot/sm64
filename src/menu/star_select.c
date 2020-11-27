@@ -147,8 +147,12 @@ void render_bingo_modifier_star(void) {
                                   bhvActSelectorStarType, -450, -60, -300, 0, 0, 0);
 
     sBingoStarSelectorModels[BINGO_MODIFIER_REVERSE_JOYSTICK] =
-        spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR_RED,
+        spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR_BLUE,
                                   bhvActSelectorStarTypeReversed, -450, -60, -300, 0, 0, 0);
+
+    sBingoStarSelectorModels[BINGO_MODIFIER_DAREDEVIL] =
+        spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR_RED,
+                                  bhvActSelectorStarType, -450, -60, -300, 0, 0, 0);
 
     for (i = 0; i < BINGO_STARS_TOTAL_AMOUNT; i++) {
         sBingoStarSelectorModels[i]->oStarSelectorSize = 1.0;
@@ -299,6 +303,11 @@ void bhv_act_selector_loop(void) {
     } else {
         gBingoReverseJoystickActive = 0;
     }
+    if (gBingoStarSelected == BINGO_MODIFIER_DAREDEVIL) {
+        gBingoDaredevilActive = 1;
+    } else {
+        gBingoDaredevilActive = 0;
+    }
 }
 
 /**
@@ -334,6 +343,7 @@ static void print_course_number(void) {
 u8 gBingoTextPressLOrR[] = { BINGO_PRESS_L_OR_R };
 u8 gBingoTextGreenDemon[] = { BINGO_GREEN_DEMON };
 u8 gBingoTextReverseJoystick[] = { BINGO_REVERSE_JOYSTICK };
+u8 gBingoTextDaredevil[] = { BINGO_DAREDEVIL_1HP };
 
 /**
  * Print act selector strings, some with special checks.
@@ -402,6 +412,9 @@ static void print_act_selector_strings(void) {
             break;
         case BINGO_MODIFIER_REVERSE_JOYSTICK:
             bingoModifierName = gBingoTextReverseJoystick;
+            break;
+        case BINGO_MODIFIER_DAREDEVIL:
+            bingoModifierName = gBingoTextDaredevil;
             break;
     }
 

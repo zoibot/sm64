@@ -157,6 +157,7 @@
 #define TEXT_TIMED_STAR _("Timed Stars")
 #define TEXT_REVERSE_JOYSTICK _("Reverse Joystick")
 #define TEXT_GREEN_DEMON _("Green Demon")
+#define TEXT_DAREDEVIL _("Daredevil")
 #define TEXT_COIN_LEVEL _("Coins in Level")
 #define TEXT_TOTAL_COIN _("Total Coins")
 #define TEXT_1UP_LEVEL _("All 1-ups in Level")
@@ -239,6 +240,7 @@
 
 #define BINGO_GREEN_DEMON _("GREEN DEMON")
 #define BINGO_REVERSE_JOYSTICK _("REVERSE JOYSTICK")
+#define BINGO_DAREDEVIL_1HP _("DAREDEVIL - 1 HP")
 
 // Camera Options
 #define TEXT_LAKITU_MARIO _("LAKITU + MARIO")

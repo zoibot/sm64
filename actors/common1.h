@@ -208,8 +208,10 @@ extern const Gfx star_seg3_dl_0302BA18[];
 // bingo star stuff
 extern const GeoLayout star_green_geo[];
 extern const GeoLayout star_red_geo[];
+extern const GeoLayout star_blue_geo[];
 extern const Gfx star_seg3_dl_green[];
 extern const Gfx star_seg3_dl_red[];
+extern const Gfx star_seg3_dl_blue[];
 
 // transparent_star
 extern const GeoLayout transparent_star_geo[];

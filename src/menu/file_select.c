@@ -816,6 +816,7 @@ static unsigned char textZButton[] = { TEXT_Z_BUTTON };
 static unsigned char textTimedStar[] = { TEXT_TIMED_STAR };
 static unsigned char textReverseJoystick[] = { TEXT_REVERSE_JOYSTICK };
 static unsigned char textGreenDemon[] = { TEXT_GREEN_DEMON };
+static unsigned char textDaredevil[] = { TEXT_DAREDEVIL };
 static unsigned char textCoinLevel[] = { TEXT_COIN_LEVEL };
 static unsigned char textTotalCoin[] = { TEXT_TOTAL_COIN };
 static unsigned char text1upLevel[] = { TEXT_1UP_LEVEL };
@@ -913,6 +914,10 @@ static void print_bingo_page_0(void) {
             case BINGO_OBJECTIVE_STAR_GREEN_DEMON:
                 obj_icon = BINGO_ICON_STAR_GREEN_DEMON;
                 option = textGreenDemon;
+                break;
+            case BINGO_OBJECTIVE_STAR_DAREDEVIL:
+                obj_icon = BINGO_ICON_STAR_DAREDEVIL;
+                option = textDaredevil;
                 break;
             case BINGO_OBJECTIVE_COIN:
                 obj_icon = BINGO_ICON_COIN;;
