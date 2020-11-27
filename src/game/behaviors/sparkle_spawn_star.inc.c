@@ -1,5 +1,5 @@
 // sparkle_spawn_star.c.inc
-#include "../bingo_star_tracking.h"
+#include "../bingo_tracking_star.h"
 
 struct ObjectHitbox sSparkleSpawnStarHitbox = {
     /* interactType: */ INTERACT_STAR_OR_KEY,

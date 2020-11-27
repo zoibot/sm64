@@ -1,7 +1,7 @@
 // spawn_star.c.inc
 
 #include "game/bingo.h"
-#include "../bingo_star_tracking.h"
+#include "../bingo_tracking_star.h"
 
 static struct ObjectHitbox sCollectStarHitbox = {
     /* interactType:      */ INTERACT_STAR_OR_KEY,

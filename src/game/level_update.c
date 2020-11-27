@@ -21,7 +21,7 @@
 #include "display.h"
 #include "save_file.h"
 #include "bingo.h"
-#include "bingo_star_tracking.h"
+#include "bingo_tracking_star.h"
 #include "debug_course.h"
 #ifdef VERSION_EU
 #include "memory.h"

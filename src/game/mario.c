@@ -30,7 +30,7 @@
 #include "save_file.h"
 #include "sound_init.h"
 #include "bingo.h"
-#include "bingo_star_tracking.h"
+#include "bingo_tracking_star.h"
 #include "engine/surface_collision.h"
 #include "level_table.h"
 

@@ -1,5 +1,5 @@
-#ifndef _BINGO_STAR_TRACKING_H
-#define _BINGO_STAR_TRACKING_H
+#ifndef _BINGO_TRACKING_STAR_H
+#define _BINGO_TRACKING_STAR_H
 
 #include <ultra64.h>
 #include "area.h"
@@ -11,4 +11,4 @@ s32 bingo_get_course_count(enum CourseNum course);
 s32 bingo_get_star_count(void);
 u8 bingo_get_course_flags(s16 course);
 
-#endif /* _BINGO_STAR_TRACKING_H */
+#endif /* _BINGO_TRACKING_STAR_H */

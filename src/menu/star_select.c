@@ -18,7 +18,7 @@
 #include "text_strings.h"
 #include "star_select.h"
 #include "game/bingo.h"
-#include "game/bingo_star_tracking.h"
+#include "game/bingo_tracking_star.h"
 
 /**
  * @file star_select.c

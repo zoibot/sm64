@@ -18,7 +18,7 @@
 #include "audio/external.h"
 #include "behavior_data.h"
 #include "bingo.h"
-#include "bingo_star_tracking.h"
+#include "bingo_tracking_star.h"
 #include "dialog_ids.h"
 #include "course_table.h"
 

@@ -96,7 +96,7 @@ SECTIONS
       BUILD_DIR/src/game/level_update.o(.text);
       BUILD_DIR/src/game/bingo.o(.text);
       BUILD_DIR/src/game/bingo_ui.o(.text);
-      BUILD_DIR/src/game/bingo_star_tracking.o(.text);
+      BUILD_DIR/src/game/bingo_tracking_star.o(.text);
       BUILD_DIR/src/game/bingo_board_setup.o(.text);
       BUILD_DIR/src/game/bingo_const.o(.text);
       BUILD_DIR/src/game/bingo_objective_func.o(.text);
@@ -294,7 +294,7 @@ SECTIONS
       BUILD_DIR/src/game/level_update.o(.data*);
       BUILD_DIR/src/game/bingo.o(.data*);
       BUILD_DIR/src/game/bingo_ui.o(.data*);
-      BUILD_DIR/src/game/bingo_star_tracking.o(.data*);
+      BUILD_DIR/src/game/bingo_tracking_star.o(.data*);
       BUILD_DIR/src/game/bingo_board_setup.o(.data*);
       BUILD_DIR/src/game/bingo_const.o(.data*);
       BUILD_DIR/src/game/bingo_objective_func.o(.data*);
@@ -367,7 +367,7 @@ SECTIONS
       BUILD_DIR/src/game/level_update.o(.rodata*);
       BUILD_DIR/src/game/bingo.o(.rodata*);
       BUILD_DIR/src/game/bingo_ui.o(.rodata*);
-      BUILD_DIR/src/game/bingo_star_tracking.o(.rodata*);
+      BUILD_DIR/src/game/bingo_tracking_star.o(.rodata*);
       BUILD_DIR/src/game/bingo_board_setup.o(.rodata*);
       BUILD_DIR/src/game/bingo_const.o(.rodata*);
       BUILD_DIR/src/game/bingo_objective_func.o(.rodata*);
@@ -444,7 +444,7 @@ SECTIONS
       BUILD_DIR/src/game/level_update.o(.bss*);
       BUILD_DIR/src/game/bingo.o(.bss*);
       BUILD_DIR/src/game/bingo_ui.o(.bss*);
-      BUILD_DIR/src/game/bingo_star_tracking.o(.bss*);
+      BUILD_DIR/src/game/bingo_tracking_star.o(.bss*);
       BUILD_DIR/src/game/bingo_board_setup.o(.bss*);
       BUILD_DIR/src/game/bingo_const.o(.bss*);
       BUILD_DIR/src/game/bingo_objective_func.o(.bss*);

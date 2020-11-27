@@ -9,7 +9,7 @@
 #include "save_file.h"
 #include "sound_init.h"
 #include "bingo.h"
-#include "bingo_star_tracking.h"
+#include "bingo_tracking_star.h"
 #include "level_table.h"
 
 #define MENU_DATA_MAGIC 0x4849

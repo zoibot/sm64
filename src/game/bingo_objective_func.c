@@ -8,7 +8,7 @@
 #include "bingo_const.h"
 #include "bingo_objective_func.h"
 #include "bingo_objective_init.h"
-#include "bingo_star_tracking.h"
+#include "bingo_tracking_star.h"
 #include "segment2.h"
 #include "strcpy.h"
 
