@@ -152,4 +152,7 @@ extern void render_hud_cannon_reticle(void);
 extern void reset_red_coins_collected(void);
 extern s16 render_menus_and_dialogs(void);
 
+void shade_screen_opacity(s32 alpha);
+void shade_screen(void);
+
 #endif /* INGAME_MENU_H */

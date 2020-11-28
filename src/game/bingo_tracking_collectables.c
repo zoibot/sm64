@@ -23,9 +23,6 @@ struct GlobalPosition sIDTable[3][MAX_UIDS] = { { 0 } };
 u8 sKillTable[BINGO_COLLECTABLES_MAX - BINGO_COLLECTABLES_MIN + 1][MAX_UIDS] = { { 0 } };
 
 s32 get_index(enum BingoObjectiveUpdate update) {
-    // if (update != BINGO_UPDATE_KILLED_GOOMBA) {
-    //     return -1;  // for now, just goombas
-    // }
     return update - BINGO_COLLECTABLES_MIN;
 }
 

@@ -18,6 +18,7 @@
 #include "level_update.h"
 #include "strcpy.h"
 #include "segment2.h"
+#include "ingame_menu.h"
 
 // Cursor positions. -1 indicates that the cursor has not spawned yet.
 // 0-indexed with bottom-left as (0, 0)
@@ -140,7 +141,7 @@ void draw_bingo_screen() {
 
     // TODO: add gbBingoCompleted check.
     if (gPlayer1Controller->buttonDown & L_TRIG && gHudDisplay.flags != HUD_DISPLAY_NONE) {
-        shade_screen();
+        shade_screen_opacity(180);
     }
 
     // Title.

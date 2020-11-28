@@ -2234,12 +2234,16 @@ void change_dialog_camera_angle(void) {
     }
 }
 
-void shade_screen(void) {
+void shade_screen_opacity(s32 alpha) {
     create_dl_translation_matrix(MENU_MTX_PUSH, 0, 240.0f, 0);
     create_dl_scale_matrix(MENU_MTX_NOPUSH, 2.6f, 3.4f, 1.0f);
-    gDPSetEnvColor(gDisplayListHead++, 0, 0, 0, 110);
+    gDPSetEnvColor(gDisplayListHead++, 0, 0, 0, alpha);
     gSPDisplayList(gDisplayListHead++, dl_draw_text_bg_box);
     gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
+}
+
+void shade_screen(void) {
+    shade_screen_opacity(110);
 }
 
 void print_animated_red_coin(s16 x, s16 y) {
