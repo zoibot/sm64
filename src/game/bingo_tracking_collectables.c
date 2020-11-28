@@ -3,50 +3,91 @@
 #include "area.h"
 #include "bingo_tracking_collectables.h"
 
-struct GlobalPosition {
+struct UID {
     enum CourseNum course;
     Vec3f pos;
+    u8 killed;
 };
 
-// There are something like 57 Goombas and 51 ! boxes.
-// There are also 8 * 15 = 120 red coins. So I think
-// it's very safe to make this table this size.
-// The first dimension is what type of collectable it is.
-// The second is the (x, y, z) position. The index into
-// that second dimension is the globally unique ID of the
-// object.
-// I really hope nothing is actually at (0, 0, 0)....
-// Also, I'm worried this might get pretty big. Maybe pointers to
-// arrays that vary in size based on collectable?
-#define MAX_UIDS 120
-struct GlobalPosition sIDTable[3][MAX_UIDS] = { { 0 } };
-u8 sKillTable[BINGO_COLLECTABLES_MAX - BINGO_COLLECTABLES_MIN + 1][MAX_UIDS] = { { 0 } };
+// The bestiary is the best resource for enemy totals:
+// https://gamefaqs.gamespot.com/n64/198848-super-mario-64/faqs/54401
 
-s32 get_index(enum BingoObjectiveUpdate update) {
-    return update - BINGO_COLLECTABLES_MIN;
+// Meanwhile the item chart is the best resource for items:
+// http://www.sm64.com/itemchart.html
+
+// I think there are 77 Goombas or something like that.
+#define MAX_GOOMBAS 90
+// Should be 30 Bob-ombs.
+#define MAX_BOBOMBS 40
+// sm64.com says 65 ! boxes.
+#define MAX_EXCLAMATION_BOXES 70
+// 8 * (15 + 3 + 3 + 1 + 1) = 184 (Bowser, Cap Courses, SA, WMoTR)
+#define MAX_RED_COINS 200
+
+#define TOTAL_UIDS ( \
+    MAX_GOOMBAS \
+    + MAX_BOBOMBS \
+    + MAX_EXCLAMATION_BOXES \
+    + MAX_RED_COINS \
+    ) + 1
+
+// I really hope nothing is actually at (0, 0, 0)....
+struct UID sIDTable[TOTAL_UIDS] = { { 0 } };
+
+void get_index_range(enum BingoObjectiveUpdate update, s32 *start, s32 *length) {
+    enum BingoObjectiveUpdate i;
+    s32 rangeLength = 0;
+    s32 prevRangeLength = 0;
+
+    *start = 0;
+    for (i = BINGO_COLLECTABLES_MIN; i <= BINGO_COLLECTABLES_MAX; i++) {
+        prevRangeLength = rangeLength;
+        switch (i) {
+            case BINGO_UPDATE_KILLED_GOOMBA:
+                rangeLength = MAX_GOOMBAS;
+                break;
+            case BINGO_UPDATE_KILLED_BOBOMB:
+                rangeLength = MAX_BOBOMBS;
+                break;
+            case BINGO_UPDATE_EXCLAMATION_MARK_BOX:
+                rangeLength = MAX_EXCLAMATION_BOXES;
+                break;
+        }
+        *start += prevRangeLength;
+        if (i == update) {
+            *length = rangeLength;
+            return;
+        }
+    }
+    // Shouldn't reach here.
+    *length = 0;
 }
 
-u16 get_unique_id(enum BingoObjectiveUpdate type, f32 posX, f32 posY, f32 posZ) {
-    s32 index = get_index(type);
-    u16 j;
-    struct GlobalPosition *global;
-    if (index == -1) {
+u32 get_unique_id(enum BingoObjectiveUpdate type, f32 posX, f32 posY, f32 posZ) {
+    u32 j;
+    struct UID *uid;
+    s32 idxStart, idxLength = 0;
+    get_index_range(type, &idxStart, &idxLength);
+
+    if (idxLength == 0) {
         return -1;
     }
-    for (j = 0; j < MAX_UIDS; j++) {
-        global = &sIDTable[index][j];
+
+    for (j = idxStart; j < idxStart + idxLength; j++) {
+        uid = &sIDTable[j];
         if (
-            global->course == gCurrCourseNum
-            && global->pos[0] == posX && global->pos[1] == posY && global->pos[2] == posZ
+            uid->course == gCurrCourseNum
+            && uid->pos[0] == posX && uid->pos[1] == posY && uid->pos[2] == posZ
         ) {
             return j;
         }
 
-        if (global->pos[0] == 0 && global->pos[1] == 0 && global->pos[2] == 0) {
-            global->course = gCurrCourseNum;
-            global->pos[0] = posX;
-            global->pos[1] = posY;
-            global->pos[2] = posZ;
+        if (uid->pos[0] == 0 && uid->pos[1] == 0 && uid->pos[2] == 0) {
+            uid->course = gCurrCourseNum;
+            uid->pos[0] = posX;
+            uid->pos[1] = posY;
+            uid->pos[2] = posZ;
+            uid->killed = 0;
             return j;
         }
     }
@@ -54,18 +95,20 @@ u16 get_unique_id(enum BingoObjectiveUpdate type, f32 posX, f32 posY, f32 posZ) 
     return -1;
 }
 
-s32 is_new_kill(enum BingoObjectiveUpdate type, u16 uid) {
+s32 is_new_kill(enum BingoObjectiveUpdate type, u32 uid) {
     u8 killed;
-    s32 index = get_index(type);
+    s32 idxStart, idxLength = 0;
+    get_index_range(type, &idxStart, &idxLength);
 
-    if (uid == -1 || index == -1) {
+    if (idxLength == 0) {
         return 1;
     }
-    killed = sKillTable[index][uid];
+
+    killed = sIDTable[uid].killed;
     if (killed) {
         return 0;
     } else {
-        sKillTable[index][uid] = 1;
+        sIDTable[uid].killed = 1;
         return 1;
     }
 }
