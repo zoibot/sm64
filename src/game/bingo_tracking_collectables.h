@@ -1,0 +1,11 @@
+#ifndef _BINGO_TRACKING_COLLECTABLES
+#define _BINGO_TRACKING_COLLECTABLES
+
+#include <ultra64.h>
+#include "area.h"
+#include "bingo.h"
+
+u16 get_unique_id(enum BingoObjectiveUpdate, f32 posX, f32 posY, f32 posZ);
+s32 is_new_kill(enum BingoObjectiveUpdate type, u16 uid);
+
+#endif /* _BINGO_TRACKING_COLLECTABLES */

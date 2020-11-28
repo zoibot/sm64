@@ -317,7 +317,7 @@ void get_kill_enemy_objective_desc(struct BingoObjective *obj, char *desc) {
 
     switch (obj->type) {
         case BINGO_OBJECTIVE_KILL_GOOMBAS:
-            strcpy(enemyName, "Goombas");
+            strcpy(enemyName, "unique Goombas");
             break;
         case BINGO_OBJECTIVE_KILL_BOBOMBS:
             strcpy(enemyName, "Bob-ombs");

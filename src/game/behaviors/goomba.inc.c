@@ -1,4 +1,5 @@
 #include "../bingo.h"
+#include "../bingo_tracking_collectables.h"
 /**
  * Behavior for bhvGoomba and bhvGoombaTripletSpawner,
  * Goombas can either be spawned individually, or spawned by a triplet spawner.
@@ -122,6 +123,8 @@ void bhv_goomba_init(void) {
     o->oDamageOrCoinValue = sGoombaProperties[o->oGoombaSize].damage;
 
     o->oGravity = -8.0f / 3.0f * o->oGoombaScale;
+
+    o->oGoombaId = get_unique_id(BINGO_UPDATE_KILLED_GOOMBA, o->oPosX, o->oPosY, o->oPosZ);
 }
 
 /**
@@ -308,7 +311,9 @@ void bhv_goomba_update(void) {
             if (sGoombaAttackHandlers[o->oGoombaSize & 1][attack - 1]
                 != ATTACK_HANDLER_SPECIAL_HUGE_GOOMBA_WEAKLY_ATTACKED) {
                 // Tell bingo we killed a goomba.
-                bingo_update(BINGO_UPDATE_KILLED_GOOMBA);
+                if (is_new_kill(BINGO_UPDATE_KILLED_GOOMBA, o->oGoombaId)) {
+                    bingo_update(BINGO_UPDATE_KILLED_GOOMBA);
+                }
             }
             mark_goomba_as_dead();
         }
