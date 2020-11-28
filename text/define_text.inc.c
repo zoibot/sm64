@@ -94,6 +94,37 @@ const u8 *const seg2_course_name_table[] = {
 #undef SECRET_STAR
 #undef CASTLE_SECRET_STARS
 
+#define COURSE_ACTS(id, name, a,b,c,d,e,f) \
+    static const u8 lowercase_course_name_ ## id[] = { name };
+
+#define SECRET_STAR(id, name) \
+    static const u8 lowercase_course_name_ ## id[] = { name };
+
+#define CASTLE_SECRET_STARS(str) \
+    static const u8 lowercase_course_name_castle_secret_stars[] = { str };
+
+#define EXTRA_TEXT(id, str)
+
+#include "courses_lowercase.h"
+
+#undef COURSE_ACTS
+#undef SECRET_STAR
+#undef CASTLE_SECRET_STARS
+
+#define COURSE_ACTS(id, name, a,b,c,d,e,f) lowercase_course_name_ ## id,
+#define SECRET_STAR(id, name) lowercase_course_name_ ## id,
+#define CASTLE_SECRET_STARS(str) lowercase_course_name_castle_secret_stars,
+
+const u8 *const seg2_course_name_table_lowercase[] = {
+#include "courses_lowercase.h"
+    NULL
+};
+
+#undef COURSE_ACTS
+#undef SECRET_STAR
+#undef CASTLE_SECRET_STARS
+
+
 // == acts ==
 // (defines en_act_name_table etc.)
 
@@ -124,5 +155,37 @@ const u8 *const seg2_course_name_table[] = {
 
 const u8 *const seg2_act_name_table[] = {
 #include "courses.h"
+    NULL
+};
+
+#undef COURSE_ACTS
+
+#define COURSE_ACTS(id, name, a,b,c,d,e,f) \
+    static const u8 lowercase_act_name_ ## id ## _1[] = { a }; \
+    static const u8 lowercase_act_name_ ## id ## _2[] = { b }; \
+    static const u8 lowercase_act_name_ ## id ## _3[] = { c }; \
+    static const u8 lowercase_act_name_ ## id ## _4[] = { d }; \
+    static const u8 lowercase_act_name_ ## id ## _5[] = { e }; \
+    static const u8 lowercase_act_name_ ## id ## _6[] = { f };
+
+#define SECRET_STAR(id, name)
+#define CASTLE_SECRET_STARS(str)
+
+#undef EXTRA_TEXT
+#define EXTRA_TEXT(id, str) \
+    static const u8 lowercase_extra_text_ ## id[] = { str };
+
+#include "courses_lowercase.h"
+
+#undef COURSE_ACTS
+#undef EXTRA_TEXT
+
+#define COURSE_ACTS(id, name, a,b,c,d,e,f) \
+    lowercase_act_name_ ## id ## _1, lowercase_act_name_ ## id ## _2, lowercase_act_name_ ## id ## _3, \
+    lowercase_act_name_ ## id ## _4, lowercase_act_name_ ## id ## _5, lowercase_act_name_ ## id ## _6,
+#define EXTRA_TEXT(id, str) extra_text_ ## id,
+
+const u8 *const seg2_act_name_table_lowercase[] = {
+#include "courses_lowercase.h"
     NULL
 };

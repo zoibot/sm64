@@ -322,7 +322,7 @@ TEXT_DIRS := text/$(VERSION)
 $(BUILD_DIR)/bin/segment2.o: $(BUILD_DIR)/text/$(VERSION)/define_text.inc.c
 endif
 
-$(BUILD_DIR)/text/%/define_text.inc.c: text/define_text.inc.c text/%/courses.h text/%/dialogs.h
+$(BUILD_DIR)/text/%/define_text.inc.c: text/define_text.inc.c text/%/courses.h text/%/dialogs.h text/%/courses_lowercase.h
 	$(CPP) $(VERSION_CFLAGS) $< -o $@ -I text/$*/
 	$(TEXTCONV) charmap.txt $@ $@
 

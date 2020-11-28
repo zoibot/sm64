@@ -62,7 +62,7 @@ void reverse_encode_str(u8 *str, char *buf) {
 }
 
 void get_act_name(char *buf, enum CourseNum course, s32 star) {
-    void **actNameTbl = segmented_to_virtual(seg2_act_name_table);
+    void **actNameTbl = segmented_to_virtual(seg2_act_name_table_lowercase);
     u8 *actName = segmented_to_virtual(actNameTbl[(course - 1) * 6 + star]);
     if (star == 6) {
         strcpy(buf, "100 Coins");
@@ -72,7 +72,7 @@ void get_act_name(char *buf, enum CourseNum course, s32 star) {
 }
 
 void get_level_name(char *buf, enum CourseNum course) {
-    void **levelNameTbl = segmented_to_virtual(seg2_course_name_table);
+    void **levelNameTbl = segmented_to_virtual(seg2_course_name_table_lowercase);
     u8 *levelName = segmented_to_virtual(levelNameTbl[course - 1]);
     reverse_encode_str(levelName, buf);
 }
