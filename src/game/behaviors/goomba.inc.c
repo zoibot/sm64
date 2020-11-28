@@ -124,7 +124,7 @@ void bhv_goomba_init(void) {
 
     o->oGravity = -8.0f / 3.0f * o->oGoombaScale;
 
-    o->oGoombaId = get_unique_id(BINGO_UPDATE_KILLED_GOOMBA, o->oPosX, o->oPosY, o->oPosZ);
+    o->oBingoId = get_unique_id(BINGO_UPDATE_KILLED_GOOMBA, o->oPosX, o->oPosY, o->oPosZ);
 }
 
 /**
@@ -311,7 +311,7 @@ void bhv_goomba_update(void) {
             if (sGoombaAttackHandlers[o->oGoombaSize & 1][attack - 1]
                 != ATTACK_HANDLER_SPECIAL_HUGE_GOOMBA_WEAKLY_ATTACKED) {
                 // Tell bingo we killed a goomba.
-                if (is_new_kill(BINGO_UPDATE_KILLED_GOOMBA, o->oGoombaId)) {
+                if (is_new_kill(BINGO_UPDATE_KILLED_GOOMBA, o->oBingoId)) {
                     bingo_update(BINGO_UPDATE_KILLED_GOOMBA);
                 }
             }

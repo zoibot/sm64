@@ -1,5 +1,6 @@
 // exclamation_box.c.inc
 #include "game/bingo.h"
+#include "game/bingo_tracking_collectables.h"
 
 struct ObjectHitbox sExclamationBoxHitbox = {
     /* interactType: */ INTERACT_BREAKABLE,
@@ -38,6 +39,8 @@ void bhv_rotatin_exclamation_box_loop(void) {
 }
 
 void ActionExclamationBox0(void) {
+    o->oBingoId = get_unique_id(BINGO_UPDATE_EXCLAMATION_MARK_BOX, o->oPosX, o->oPosY, o->oPosZ);
+
     if (o->oBehParams2ndByte < 3) {
         o->oAnimState = o->oBehParams2ndByte;
         if ((save_file_get_flags() & D_8032F0C0[o->oBehParams2ndByte])
@@ -130,7 +133,9 @@ void ActionExclamationBox4(void) {
         obj_hide();
     } else {
         mark_object_for_deletion(o);
-        bingo_update(BINGO_UPDATE_EXCLAMATION_MARK_BOX);
+        if (is_new_kill(BINGO_UPDATE_EXCLAMATION_MARK_BOX, o->oBingoId)) {
+            bingo_update(BINGO_UPDATE_EXCLAMATION_MARK_BOX);
+        }
     }
 }
 

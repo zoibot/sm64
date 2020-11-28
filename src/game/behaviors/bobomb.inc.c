@@ -1,6 +1,7 @@
 // bobomb.c.inc
 
 #include "game/bingo.h"
+#include "game/bingo_tracking_collectables.h"
 
 static struct ObjectHitbox sBobombHitbox = {
     /* interactType:      */ INTERACT_GRABBABLE,
@@ -19,6 +20,7 @@ void bhv_bobomb_init(void) {
     o->oFriction = 0.8;
     o->oBuoyancy = 1.3;
     o->oInteractionSubtype = INT_SUBTYPE_KICKABLE;
+    o->oBingoId = get_unique_id(BINGO_UPDATE_KILLED_BOBOMB, o->oPosX, o->oPosY, o->oPosZ);
 }
 
 void func_802E5B7C(void) {
@@ -26,7 +28,9 @@ void func_802E5B7C(void) {
         obj_spawn_yellow_coins(o, 1);
         o->oBehParams = 0x100;
         set_object_respawn_info_bits(o, 1);
-        bingo_update(BINGO_UPDATE_KILLED_BOBOMB);
+        if (is_new_kill(BINGO_UPDATE_KILLED_BOBOMB, o->oBingoId)) {
+            bingo_update(BINGO_UPDATE_KILLED_BOBOMB);
+        }
     }
 }
 
@@ -310,7 +314,7 @@ void BobombBuddyIdleLoop(void) {
 
 /**
  * Function for the Bob-omb Buddy cannon guy.
- * dialogFirstText is the first dialogID called when Bob-omb Buddy 
+ * dialogFirstText is the first dialogID called when Bob-omb Buddy
  * starts to talk to Mario to prepare the cannon(s) for him.
  * Then the camera goes to the nearest cannon, to play the "prepare cannon" cutscene
  * dialogSecondText is called after Bob-omb Buddy has the cannon(s) ready and

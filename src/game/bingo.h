@@ -107,13 +107,15 @@ enum BingoObjectiveUpdate
 {
     BINGO_UPDATE_STAR,
     BINGO_UPDATE_COIN,
-    // Collectables (used by bingo_tracking_collectables)
+    // Unique collectables (used by bingo_tracking_collectables)
     BINGO_COLLECTABLES_MIN,
+
     BINGO_UPDATE_KILLED_GOOMBA = BINGO_COLLECTABLES_MIN,
     BINGO_UPDATE_KILLED_BOBOMB,
     BINGO_UPDATE_EXCLAMATION_MARK_BOX,
+
     BINGO_COLLECTABLES_MAX = BINGO_UPDATE_EXCLAMATION_MARK_BOX,
-    // End collectables
+    // End collectables (TODO: migrate away from Update enum?)
     BINGO_UPDATE_COURSE_CHANGED,
     BINGO_UPDATE_A_PRESSED,
     BINGO_UPDATE_B_PRESSED,

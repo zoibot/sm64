@@ -262,6 +262,7 @@ void get_1up_level_objective_desc(struct BingoObjective *obj, char *desc) {
 
     sprintf(desc, "Collect all the 1up mushrooms in %s%s", revEncLevelName + 3, suffix);
 }
+
 void get_stars_in_level_objective_desc(struct BingoObjective *obj, char *desc) {
     char revEncLevelName[60];
     char suffix[30];
@@ -291,40 +292,45 @@ void get_blj_objective_desc(struct BingoObjective *obj, char *desc) {
     sprintf(desc, "Perform a BLJ%s", suffix);
 }
 
-void get_exclamation_mark_box_desc(struct BingoObjective *obj, char *desc) {
-    char suffix[30];
-    if (obj->state == BINGO_STATE_COMPLETE) {
-        strcpy(suffix, ": Complete!");
-    } else {
-        sprintf(suffix, ". Remaining: %d",
-                obj->data.collectableData.toGet - obj->data.collectableData.gotten);
-    }
-
-    sprintf(desc, "Break %d yellow ! boxes%s", obj->data.collectableData.toGet, suffix);
-}
-
 void get_kill_enemy_objective_desc(struct BingoObjective *obj, char *desc) {
+    char verb[15];
+    char collectName[20];
     char suffix[30];
-    char enemyName[15];
 
-    if (obj->state == BINGO_STATE_COMPLETE) {
-        strcpy(suffix, ": Complete!");
-    } else {
-        sprintf(suffix, ". Remaining: %d",
-                obj->data.collectableData.toGet
-                    - obj->data.collectableData.gotten);
+
+    switch (obj->type) {
+        case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
+            strcpy(verb, "Break");
+            break;  // hah!
+        default:
+            strcpy(verb, "Kill");
+            break;
     }
 
     switch (obj->type) {
+        case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
+            strcpy(collectName, "Yellow ! Boxes");
+            break;
         case BINGO_OBJECTIVE_KILL_GOOMBAS:
-            strcpy(enemyName, "unique Goombas");
+            strcpy(collectName, "Goombas");
             break;
         case BINGO_OBJECTIVE_KILL_BOBOMBS:
-            strcpy(enemyName, "Bob-ombs");
+            strcpy(collectName, "Bob-ombs");
             break;
     }
 
-    sprintf(desc, "Kill %d %s%s", obj->data.collectableData.toGet, enemyName, suffix);
+    if (obj->state == BINGO_STATE_COMPLETE) {
+        strcpy(suffix, ": Complete!");
+    } else {
+        // TODO: Level-by-level breakdown of what's been gotten so far.
+        sprintf(
+            suffix,
+            ". Remaining: %d",
+            obj->data.collectableData.toGet - obj->data.collectableData.gotten
+        );
+    }
+
+    sprintf(desc, "%s %d unique %s%s", verb, obj->data.collectableData.toGet, collectName, suffix);
 }
 
 void describe_objective(struct BingoObjective *objective, char *desc) {
@@ -363,8 +369,6 @@ void describe_objective(struct BingoObjective *objective, char *desc) {
             get_blj_objective_desc(objective, desc);
             break;
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
-            get_exclamation_mark_box_desc(objective, desc);
-            break;
         case BINGO_OBJECTIVE_KILL_GOOMBAS:
         case BINGO_OBJECTIVE_KILL_BOBOMBS:
             get_kill_enemy_objective_desc(objective, desc);
