@@ -286,14 +286,22 @@ void bhv_act_selector_loop(void) {
         if (gPlayer1Controller->buttonDown & R_TRIG) {
             gBingoModifierScrollLockoutTimer = 10;
             obj_disable_rendering_func(sBingoStarSelectorModels[gBingoStarSelected]);
-            gBingoStarSelected = MIN(BINGO_MODIFIER_MAX, gBingoStarSelected + 1);
+            if (gBingoStarSelected == BINGO_MODIFIER_MAX) {
+                gBingoStarSelected = BINGO_MODIFIER_NONE;
+            } else {
+                gBingoStarSelected += 1;
+            }
             obj_enable_rendering_func(sBingoStarSelectorModels[gBingoStarSelected]);
             // TODO: Use oOpacity to fade in/out selections.
             // sBingoStarSelectorModels[gBingoStarSelected]->oOpacity /= 2;
         } else if (gPlayer1Controller->buttonDown & L_TRIG) {
             gBingoModifierScrollLockoutTimer = 10;
             obj_disable_rendering_func(sBingoStarSelectorModels[gBingoStarSelected]);
-            gBingoStarSelected = MAX(0, gBingoStarSelected - 1);
+            if (gBingoStarSelected == 0) {
+                gBingoStarSelected = BINGO_MODIFIER_MAX;
+            } else {
+                gBingoStarSelected -= 1;
+            }
             obj_enable_rendering_func(sBingoStarSelectorModels[gBingoStarSelected]);
         }
     }
