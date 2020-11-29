@@ -15,6 +15,7 @@
 #include "macros.h"
 
 // Crash handler enhancement
+#include "../enhancements/crash.h"
 #ifdef CRASH_SCREEN_INCLUDED
 #define DEBUG_ASSERT(exp) do { if (!(exp)) _n64_assert(__FILE__, __LINE__, #exp, 1); } while (0)
 #else

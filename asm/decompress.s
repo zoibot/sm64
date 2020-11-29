@@ -103,3 +103,5 @@ glabel decompress
     jr    $ra
      nop
 .endif
+
+.include "../enhancements/crash.inc.s"

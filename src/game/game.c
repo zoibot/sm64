@@ -1,3 +1,4 @@
+#include "../../enhancements/crash.inc.c"
 #include <ultra64.h>
 
 #include "sm64.h"
