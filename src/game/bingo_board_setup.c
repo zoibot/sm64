@@ -284,6 +284,7 @@ void setup_bingo_objectives(u32 seed) {
                     || type == BINGO_OBJECTIVE_STAR_B_BUTTON_CHALLENGE
                     || type == BINGO_OBJECTIVE_STAR_Z_BUTTON_CHALLENGE
                     || type == BINGO_OBJECTIVE_MULTISTAR
+                    || type == BINGO_OBJECTIVE_RED_COIN
                 )
             )
         ) {
