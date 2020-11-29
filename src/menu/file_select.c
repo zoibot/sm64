@@ -824,6 +824,7 @@ static unsigned char textStarsLevel[] = { TEXT_STARS_LEVEL };
 static unsigned char textMarioHat[] = { TEXT_MARIO_HAT };
 static unsigned char textBLJ[] = { TEXT_BLJ };
 static unsigned char textExclamBoxes[] = { TEXT_EXCLAM_BOXES };
+static unsigned char textRedCoins[] = { TEXT_RED_COINS };
 static unsigned char textKillGoombas[] = { TEXT_KILL_GOOMBAS };
 static unsigned char textKillBobOmbs[] = { TEXT_KILL_BOBOMBS };
 
@@ -946,6 +947,10 @@ static void print_bingo_page_0(void) {
             case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
                 obj_icon = BINGO_ICON_EXCLAMATION_MARK_BOX;
                 option = textExclamBoxes;
+                break;
+            case BINGO_OBJECTIVE_RED_COIN:
+                obj_icon = BINGO_ICON_RED_COIN;
+                option = textRedCoins;
                 break;
             case BINGO_OBJECTIVE_KILL_GOOMBAS:
                 obj_icon = BINGO_ICON_KILL_GOOMBAS;

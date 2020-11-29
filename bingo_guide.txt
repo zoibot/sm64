@@ -11,5 +11,10 @@
 7. bingo_titles.c: Add a title in get_objective_title().
 8. file_select.c and text_strings.h.in: Add an option and descriptor.
 9. elsewhere: Call bingo_update() with your BingoObjectiveUpdate. Modify global variables with the gb* prefix if need be.
-   9.1: bingo.h: If your objective is game-modifying, add a new BingoModifier.
-   9.2: star_select.c: Also if your objective is game-modifying, add a new star model and selector.
+
+10. If your objective is game-modifying:
+   10.1. bingo.h: Add a new BingoModifier.
+   10.2. star_select.c and others: Use your new BingoModifier, and add a new star model.
+
+11. If your objective is to collect/kill unique instances of items/enemies:
+   11.1. bingo_tracking_collectables.c: Add a new MAX_ amount and modify get_index_range().

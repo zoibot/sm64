@@ -464,6 +464,25 @@ void bingo_objective_exclamation_mark_box_init(struct BingoObjective *objective,
     get_objective_title(objective);
 }
 
+void bingo_objective_red_coin_init(struct BingoObjective *objective,
+                                               enum BingoObjectiveClass class) {
+    s32 coins;
+    switch (class) {
+        default:
+        case BINGO_CLASS_MEDIUM:
+            coins = 12 + (RandomU16() % 7);   // 12 to 18
+            break;
+        case BINGO_CLASS_HARD:
+            coins = 20 + (RandomU16() % 10);  // 20 to 29
+            break;
+    }
+
+    objective->icon = BINGO_ICON_RED_COIN;
+    objective->data.collectableData.toGet = coins;
+    objective->data.collectableData.gotten = 0;
+    get_objective_title(objective);
+}
+
 void bingo_objective_kill_goombas_init(struct BingoObjective *objective,
                                        enum BingoObjectiveClass class) {
     s32 enemiesToKill;
@@ -560,6 +579,9 @@ void bingo_objective_init(struct BingoObjective *objective, enum BingoObjectiveC
             break;
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
             bingo_objective_exclamation_mark_box_init(objective, class);
+            break;
+        case BINGO_OBJECTIVE_RED_COIN:
+            bingo_objective_red_coin_init(objective, class);
             break;
         case BINGO_OBJECTIVE_KILL_GOOMBAS:
             bingo_objective_kill_goombas_init(objective, class);

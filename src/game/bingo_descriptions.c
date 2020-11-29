@@ -292,7 +292,7 @@ void get_blj_objective_desc(struct BingoObjective *obj, char *desc) {
     sprintf(desc, "Perform a BLJ%s", suffix);
 }
 
-void get_kill_enemy_objective_desc(struct BingoObjective *obj, char *desc) {
+void get_collectable_objective_desc(struct BingoObjective *obj, char *desc) {
     char verb[15];
     char collectName[20];
     char suffix[30];
@@ -302,6 +302,9 @@ void get_kill_enemy_objective_desc(struct BingoObjective *obj, char *desc) {
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
             strcpy(verb, "Break");
             break;  // hah!
+        case BINGO_OBJECTIVE_RED_COIN:
+            strcpy(verb, "Collect");
+            break;
         default:
             strcpy(verb, "Kill");
             break;
@@ -310,6 +313,9 @@ void get_kill_enemy_objective_desc(struct BingoObjective *obj, char *desc) {
     switch (obj->type) {
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
             strcpy(collectName, "Yellow ! Boxes");
+            break;
+        case BINGO_OBJECTIVE_RED_COIN:
+            strcpy(collectName, "Red Coins");
             break;
         case BINGO_OBJECTIVE_KILL_GOOMBAS:
             strcpy(collectName, "Goombas");
@@ -368,10 +374,11 @@ void describe_objective(struct BingoObjective *objective, char *desc) {
         case BINGO_OBJECTIVE_BLJ:
             get_blj_objective_desc(objective, desc);
             break;
+        case BINGO_OBJECTIVE_RED_COIN:
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
         case BINGO_OBJECTIVE_KILL_GOOMBAS:
         case BINGO_OBJECTIVE_KILL_BOBOMBS:
-            get_kill_enemy_objective_desc(objective, desc);
+            get_collectable_objective_desc(objective, desc);
             break;
     }
 }

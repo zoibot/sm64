@@ -17,6 +17,7 @@
 struct ObjectiveWeight {
     enum BingoObjectiveType objective;
     s32 weight;
+    // Idea: also hold "maxUses" here.
 };
 
 struct ObjectiveWeight sWeightsEasy[] = {
@@ -37,6 +38,7 @@ struct ObjectiveWeight sWeightsMedium[] = {
     { BINGO_OBJECTIVE_STAR_B_BUTTON_CHALLENGE, 3 },
     { BINGO_OBJECTIVE_STAR_Z_BUTTON_CHALLENGE, 3 },
     { BINGO_OBJECTIVE_STAR_DAREDEVIL, 12 },
+    { BINGO_OBJECTIVE_RED_COIN, 12 },
     { BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX, 12 },
     { BINGO_OBJECTIVE_MULTISTAR, 6 },
 };
@@ -51,6 +53,7 @@ struct ObjectiveWeight sWeightsHard[] = {
     { BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK, 12 },
     { BINGO_OBJECTIVE_STAR_GREEN_DEMON, 12 },
     { BINGO_OBJECTIVE_STAR_DAREDEVIL, 12 },
+    { BINGO_OBJECTIVE_RED_COIN, 12 },
     { BINGO_OBJECTIVE_MULTISTAR, 6 },
 };
 s32 sWeightsSizeHard = sizeof(sWeightsHard) / sizeof(struct ObjectiveWeight);

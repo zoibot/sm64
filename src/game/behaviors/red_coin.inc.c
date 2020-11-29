@@ -3,6 +3,8 @@
  * Behavior controls audio and the orange number spawned, as well as interacting with
  * the course's red coin star.
  */
+#include "game/bingo.h"
+#include "game/bingo_tracking_collectables.h"
 
 /**
  * Red coin's hitbox details.
@@ -43,6 +45,7 @@ void bhv_red_coin_init(void) {
     }
 
     set_object_hitbox(o, &sRedCoinHitbox);
+    o->oBingoId = get_unique_id(BINGO_UPDATE_RED_COIN, o->oPosX, o->oPosY, o->oPosZ);
 }
 
 /**
@@ -77,5 +80,9 @@ void bhv_red_coin_loop(void) {
         CoinCollected();
         // Despawn the coin.
         o->oInteractStatus = 0;
+        // Tell Bingo
+        if (is_new_kill(BINGO_UPDATE_RED_COIN, o->oBingoId)) {
+            bingo_update(BINGO_UPDATE_RED_COIN);
+        }
     }
 }

@@ -25,10 +25,10 @@ struct UID {
 #define MAX_RED_COINS 200
 
 #define TOTAL_UIDS ( \
-    MAX_GOOMBAS \
-    + MAX_BOBOMBS \
-    + MAX_EXCLAMATION_BOXES \
-    + MAX_RED_COINS \
+        MAX_GOOMBAS \
+        + MAX_BOBOMBS \
+        + MAX_EXCLAMATION_BOXES \
+        + MAX_RED_COINS \
     ) + 1
 
 // I really hope nothing is actually at (0, 0, 0)....
@@ -51,6 +51,9 @@ void get_index_range(enum BingoObjectiveUpdate update, s32 *start, s32 *length) 
                 break;
             case BINGO_UPDATE_EXCLAMATION_MARK_BOX:
                 rangeLength = MAX_EXCLAMATION_BOXES;
+                break;
+            case BINGO_UPDATE_RED_COIN:
+                rangeLength = MAX_RED_COINS;
                 break;
         }
         *start += prevRangeLength;

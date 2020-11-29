@@ -259,6 +259,9 @@ void update_objective(struct BingoObjective *objective, enum BingoObjectiveUpdat
         case BINGO_OBJECTIVE_BLJ:
             objective_blj(objective, update);
             break;
+        case BINGO_OBJECTIVE_RED_COIN:
+            objective_generic_collectable(objective, update, BINGO_UPDATE_RED_COIN);
+            break;
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
             objective_generic_collectable(objective, update, BINGO_UPDATE_EXCLAMATION_MARK_BOX);
             break;

@@ -165,6 +165,7 @@
 #define TEXT_MARIO_HAT _("Lose Mario's hat")
 #define TEXT_BLJ _("Perform a BLJ")
 #define TEXT_EXCLAM_BOXES _("Break ! Boxes")
+#define TEXT_RED_COINS _("Collect Red Coins")
 #define TEXT_KILL_GOOMBAS _("Kill Goombas")
 #define TEXT_KILL_BOBOMBS _("Kill Bob-ombs")
 
