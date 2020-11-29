@@ -17,57 +17,58 @@
 struct ObjectiveWeight {
     enum BingoObjectiveType objective;
     s32 weight;
-    // Idea: also hold "maxUses" here.
+    s32 usesRemaining;  // -1 if infinite
 };
 
+#define NO_LIMIT -1
 struct ObjectiveWeight sWeightsEasy[] = {
-    { BINGO_OBJECTIVE_COIN, 12 },
-    { BINGO_OBJECTIVE_STAR, 12 },
-    { BINGO_OBJECTIVE_LOSE_MARIO_HAT, 12 },
-    { BINGO_OBJECTIVE_BLJ, 12 },
-    { BINGO_OBJECTIVE_MULTISTAR, 6 },
+    { BINGO_OBJECTIVE_COIN, 12, NO_LIMIT },
+    { BINGO_OBJECTIVE_STAR, 12, NO_LIMIT },
+    { BINGO_OBJECTIVE_LOSE_MARIO_HAT, 12, 1 },
+    { BINGO_OBJECTIVE_BLJ, 12, 1 },
+    { BINGO_OBJECTIVE_MULTISTAR, 6, 1 },
 };
 s32 sWeightsSizeEasy = sizeof(sWeightsEasy) / sizeof(struct ObjectiveWeight);
 
 struct ObjectiveWeight sWeightsMedium[] = {
-    { BINGO_OBJECTIVE_COIN, 12 },
-    { BINGO_OBJECTIVE_STAR, 12 },
-    { BINGO_OBJECTIVE_KILL_GOOMBAS, 6 },
-    { BINGO_OBJECTIVE_KILL_BOBOMBS, 6 },
-    { BINGO_OBJECTIVE_STAR_TIMED, 12 },
-    { BINGO_OBJECTIVE_STAR_B_BUTTON_CHALLENGE, 3 },
-    { BINGO_OBJECTIVE_STAR_Z_BUTTON_CHALLENGE, 3 },
-    { BINGO_OBJECTIVE_STAR_DAREDEVIL, 12 },
-    { BINGO_OBJECTIVE_RED_COIN, 12 },
-    { BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX, 12 },
-    { BINGO_OBJECTIVE_MULTISTAR, 6 },
+    { BINGO_OBJECTIVE_COIN, 12, NO_LIMIT },
+    { BINGO_OBJECTIVE_STAR, 12, NO_LIMIT },
+    { BINGO_OBJECTIVE_KILL_GOOMBAS, 6, 2 },
+    { BINGO_OBJECTIVE_KILL_BOBOMBS, 6, 2 },
+    { BINGO_OBJECTIVE_STAR_TIMED, 12, NO_LIMIT },
+    { BINGO_OBJECTIVE_STAR_B_BUTTON_CHALLENGE, 3, 3 },
+    { BINGO_OBJECTIVE_STAR_Z_BUTTON_CHALLENGE, 3, 3 },
+    { BINGO_OBJECTIVE_STAR_DAREDEVIL, 12, NO_LIMIT },
+    { BINGO_OBJECTIVE_RED_COIN, 12, 2 },
+    { BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX, 12, 2 },
+    { BINGO_OBJECTIVE_MULTISTAR, 6, NO_LIMIT },
 };
 s32 sWeightsSizeMedium = sizeof(sWeightsMedium) / sizeof(struct ObjectiveWeight);
 
 struct ObjectiveWeight sWeightsHard[] = {
-    { BINGO_OBJECTIVE_STAR_TIMED, 12 },
-    { BINGO_OBJECTIVE_STAR_A_BUTTON_CHALLENGE, 12 },
-    { BINGO_OBJECTIVE_1UPS_IN_LEVEL, 12 },
-    { BINGO_OBJECTIVE_STARS_IN_LEVEL, 12 },
-    { BINGO_OBJECTIVE_MULTICOIN, 3 },
-    { BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK, 12 },
-    { BINGO_OBJECTIVE_STAR_GREEN_DEMON, 12 },
-    { BINGO_OBJECTIVE_STAR_DAREDEVIL, 12 },
-    { BINGO_OBJECTIVE_RED_COIN, 12 },
-    { BINGO_OBJECTIVE_MULTISTAR, 6 },
+    { BINGO_OBJECTIVE_STAR_TIMED, 12, NO_LIMIT },
+    { BINGO_OBJECTIVE_STAR_A_BUTTON_CHALLENGE, 12, 2 },
+    { BINGO_OBJECTIVE_1UPS_IN_LEVEL, 12, NO_LIMIT },
+    { BINGO_OBJECTIVE_STARS_IN_LEVEL, 12, NO_LIMIT },
+    { BINGO_OBJECTIVE_MULTICOIN, 3, NO_LIMIT },
+    { BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK, 12, NO_LIMIT },
+    { BINGO_OBJECTIVE_STAR_GREEN_DEMON, 12, NO_LIMIT },
+    { BINGO_OBJECTIVE_STAR_DAREDEVIL, 12, NO_LIMIT },
+    { BINGO_OBJECTIVE_RED_COIN, 12, 1 },
+    { BINGO_OBJECTIVE_MULTISTAR, 6, 1 },
 };
 s32 sWeightsSizeHard = sizeof(sWeightsHard) / sizeof(struct ObjectiveWeight);
 
 struct ObjectiveWeight sWeightsCenter[] = {
-    { BINGO_OBJECTIVE_COIN, 12 },
-    { BINGO_OBJECTIVE_KILL_GOOMBAS, 6 },
-    { BINGO_OBJECTIVE_KILL_BOBOMBS, 6 },
-    { BINGO_OBJECTIVE_MULTICOIN, 12 },
-    { BINGO_OBJECTIVE_MULTISTAR, 6 },
+    { BINGO_OBJECTIVE_COIN, 12, NO_LIMIT },
+    { BINGO_OBJECTIVE_KILL_GOOMBAS, 6, 1 },
+    { BINGO_OBJECTIVE_KILL_BOBOMBS, 6, 1 },
+    { BINGO_OBJECTIVE_MULTICOIN, 12, NO_LIMIT },
+    { BINGO_OBJECTIVE_MULTISTAR, 6, 1 },
 };
 s32 sWeightsSizeCenter = sizeof(sWeightsCenter) / sizeof(struct ObjectiveWeight);
 
-enum BingoObjectiveType get_random_objective_type(enum BingoObjectiveClass class) {
+struct ObjectiveWeight *get_random_objective_type(enum BingoObjectiveClass class) {
     struct ObjectiveWeight *weights;
     s32 size;
 	s32 sum;
@@ -94,21 +95,28 @@ enum BingoObjectiveType get_random_objective_type(enum BingoObjectiveClass class
     }
     sum = 0.0f;
     for (i = 0; i < size; i++) {
-        sum += weights[i].weight;
+        if (weights[i].usesRemaining != 0) {
+            sum += weights[i].weight;
+        }
     }
+    // TODO: if sum is 0, choose completely randomly
     want_sum = RandomU16() % sum;
 
-    i = 0;
+    i = -1;
     sum = 0;
-    while ((sum += weights[i].weight) < want_sum) {
+    do {
         i++;
-    }
-    return weights[i].objective;
+        if (weights[i].usesRemaining != 0) {
+            sum += weights[i].weight;
+        }
+    } while (sum < want_sum);
+
+    return &weights[i];
 }
 
 enum BingoObjectiveType get_random_enabled_objective_type(enum BingoObjectiveClass class) {
     u32 attempts = 50;
-    enum BingoObjectiveType candidate;
+    struct ObjectiveWeight *candidate;
     enum BingoObjectiveType i;
     s32 enabledSum = 0;
     u32 randomIndex;
@@ -116,8 +124,11 @@ enum BingoObjectiveType get_random_enabled_objective_type(enum BingoObjectiveCla
 
     while (attempts > 0) {
         candidate = get_random_objective_type(class);
-        if (!gBingoObjectivesDisabled[candidate]) {
-            return candidate;
+        if (!gBingoObjectivesDisabled[candidate->objective]) {
+            if (candidate->usesRemaining != NO_LIMIT) {
+                candidate->usesRemaining--;
+            }
+            return candidate->objective;
         }
         attempts--;
     }
@@ -142,6 +153,8 @@ enum BingoObjectiveType get_random_enabled_objective_type(enum BingoObjectiveCla
     }
     // We shouldn't get here.
 }
+
+#undef NO_LIMIT
 
 s32 switch_to(s32 exclude) {
     s32 otherOne, otherTwo;
@@ -206,8 +219,6 @@ void setup_bingo_objectives(u32 seed) {
     s32 i, index;
     enum BingoObjectiveType type;
     struct BingoObjective *objective;
-    s32 prevDisabledSettings[BINGO_OBJECTIVE_TOTAL_AMOUNT];
-    s32 objectiveCounts[BINGO_OBJECTIVE_TOTAL_AMOUNT] = { 0 };
 
     // Initialize random number subsystem
     init_genrand(seed);
@@ -223,11 +234,6 @@ void setup_bingo_objectives(u32 seed) {
         row = RandomU16() % 5;
         col = RandomU16() % 5;
         objectiveClasses[row][col] = switch_to(objectiveClasses[row][col]);
-    }
-
-    // Save the options settings (see below for why).
-    for (i = 0; i < BINGO_OBJECTIVE_TOTAL_AMOUNT; i++) {
-        prevDisabledSettings[i] = gBingoObjectivesDisabled[i];
     }
 
     // NOTE!
@@ -257,44 +263,5 @@ void setup_bingo_objectives(u32 seed) {
         // multiple multistars/multicoins in one row/col.
         type = get_random_enabled_objective_type(classType);
         bingo_objective_init(objective, classType, type);
-        objectiveCounts[type]++;
-        // TODO: Make {class, type} a unique pair per board for certain
-        // objectives like coins, bob-ombs, etc. Having these done individually
-        // is a little lame.
-        if (
-            (
-                (objectiveCounts[type] == 1)
-                && (
-                    type == BINGO_OBJECTIVE_LOSE_MARIO_HAT
-                    || type == BINGO_OBJECTIVE_BLJ
-                )
-            )
-            || (
-                (objectiveCounts[type] == 2)
-                && (
-                    type == BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX
-                    || type == BINGO_OBJECTIVE_STAR_A_BUTTON_CHALLENGE
-                )
-            )
-            || (
-                (objectiveCounts[type] == 3)
-                && (
-                    type == BINGO_OBJECTIVE_KILL_GOOMBAS
-                    || type == BINGO_OBJECTIVE_KILL_BOBOMBS
-                    || type == BINGO_OBJECTIVE_STAR_B_BUTTON_CHALLENGE
-                    || type == BINGO_OBJECTIVE_STAR_Z_BUTTON_CHALLENGE
-                    || type == BINGO_OBJECTIVE_MULTISTAR
-                    || type == BINGO_OBJECTIVE_RED_COIN
-                )
-            )
-        ) {
-            gBingoObjectivesDisabled[type] = 1;
-        }
-    }
-    // Note - if a player Saves & Quits, and we didn't un-disable these
-    // objectives, they would be disabled for future games. So, revert
-    // it below.
-    for (i = 0; i < BINGO_OBJECTIVE_TOTAL_AMOUNT; i++) {
-        gBingoObjectivesDisabled[i] = prevDisabledSettings[i];
     }
 }
