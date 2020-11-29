@@ -5,9 +5,10 @@
 #include "area.h"
 #include "bingo.h"
 
-void bingo_objective_init(
+s32 bingo_objective_init(
     struct BingoObjective *objective,
     enum BingoObjectiveClass class,
-    enum BingoObjectiveType type);
+    enum BingoObjectiveType type
+);
 
 #endif /* _BINGO_OBJECTIVE_INIT_H */

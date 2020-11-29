@@ -10,7 +10,7 @@
 #include "bingo_titles.h"
 #include "strcpy.h"
 
-void random_abc(enum CourseNum *course, s32 *star, char **hint) {
+s32 random_abc(enum CourseNum *course, s32 *star, char **hint) {
     u32 the_star = RandomU16() % numPossibleABC;
     *course = possibleABC[the_star].course;
     *star = possibleABC[the_star].star - 1; // star is 0-indexed everywhere else :(
@@ -21,17 +21,17 @@ enum CourseNum random_main_course() {
     return (RandomU16() % 15) + 1;
 }
 
-void random_star_main_course(enum CourseNum *course, s32 *star) {
+s32 random_star_main_course(enum CourseNum *course, s32 *star) {
     *course = random_main_course();
     *star = (RandomU16() % 7); // zero-indexed
 }
 
-void random_star_main_course_except_100c(enum CourseNum *course, s32 *star) {
+s32 random_star_main_course_except_100c(enum CourseNum *course, s32 *star) {
     *course = random_main_course();
     *star = (RandomU16() % 6); // zero-indexed
 }
 
-void random_star_except_mips_toad(enum CourseNum *course, s32 *star) {
+s32 random_star_except_mips_toad(enum CourseNum *course, s32 *star) {
     // This is gonna be a bit janky since I want every star to have equal prob.
     s32 starIndex = (RandomU16() % 115); // 120 - (mips * 2) - (toad * 3)
     if (starIndex < (15 * 7)) {
@@ -86,7 +86,7 @@ void random_star_except_mips_toad(enum CourseNum *course, s32 *star) {
     return;
 }
 
-void random_bbc(enum CourseNum *course, s32 *star) {
+s32 random_bbc(enum CourseNum *course, s32 *star) {
 retry:
     random_star_except_mips_toad(course, star);
     if (*course == COURSE_BOB && *star == 0) {
@@ -107,7 +107,7 @@ retry:
     }
 }
 
-void random_zbc(enum CourseNum *course, s32 *star) {
+s32 random_zbc(enum CourseNum *course, s32 *star) {
 retry:
     random_star_except_mips_toad(course, star);
     if (*course == COURSE_WF && *star == 0) {
@@ -137,7 +137,20 @@ retry:
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void bingo_objective_star_init(struct BingoObjective *objective, enum BingoObjectiveClass class) {
+s32 bingo_objective_collectable_init(
+    struct BingoObjective *obj, enum BingoObjectiveIcon icon, s32 toGet
+) {
+    obj->icon = icon;
+    obj->data.collectableData.toGet = toGet;
+    obj->data.collectableData.gotten = 0;
+    get_objective_title(obj);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+s32 bingo_objective_star_init(
+    struct BingoObjective *objective, enum BingoObjectiveClass class
+) {
     enum CourseNum course;
     s32 star;
 
@@ -152,8 +165,9 @@ void bingo_objective_star_init(struct BingoObjective *objective, enum BingoObjec
     get_objective_title(objective);
 }
 
-void bingo_objective_star_a_button_challenge_init(struct BingoObjective *objective,
-                                                  enum BingoObjectiveClass class) {
+s32 bingo_objective_star_a_button_challenge_init(
+    struct BingoObjective *objective, enum BingoObjectiveClass class
+) {
     enum CourseNum course;
     s32 star;
     char *hint;
@@ -170,8 +184,9 @@ void bingo_objective_star_a_button_challenge_init(struct BingoObjective *objecti
     get_objective_title(objective);
 }
 
-void bingo_objective_star_b_button_challenge_init(struct BingoObjective *objective,
-                                                  enum BingoObjectiveClass class) {
+s32 bingo_objective_star_b_button_challenge_init(
+    struct BingoObjective *objective, enum BingoObjectiveClass class
+) {
     enum CourseNum course;
     s32 star;
 
@@ -186,8 +201,9 @@ void bingo_objective_star_b_button_challenge_init(struct BingoObjective *objecti
     get_objective_title(objective);
 }
 
-void bingo_objective_star_z_button_challenge_init(struct BingoObjective *objective,
-                                                  enum BingoObjectiveClass class) {
+s32 bingo_objective_star_z_button_challenge_init(
+    struct BingoObjective *objective, enum BingoObjectiveClass class
+) {
     enum CourseNum course;
     s32 star;
 
@@ -203,7 +219,9 @@ void bingo_objective_star_z_button_challenge_init(struct BingoObjective *objecti
     get_objective_title(objective);
 }
 
-void bingo_objective_star_timed_init(struct BingoObjective *objective, enum BingoObjectiveClass class) {
+s32 bingo_objective_star_timed_init(
+    struct BingoObjective *objective, enum BingoObjectiveClass class
+) {
     enum CourseNum course;
     s32 star, maxTime;
 
@@ -230,8 +248,9 @@ void bingo_objective_star_timed_init(struct BingoObjective *objective, enum Bing
     get_objective_title(objective);
 }
 
-void bingo_objective_star_reverse_joystick_init(struct BingoObjective *objective,
-                                                enum BingoObjectiveClass class) {
+s32 bingo_objective_star_reverse_joystick_init(
+    struct BingoObjective *objective, enum BingoObjectiveClass class
+) {
     enum CourseNum course;
     s32 star;
 
@@ -247,8 +266,9 @@ void bingo_objective_star_reverse_joystick_init(struct BingoObjective *objective
     get_objective_title(objective);
 }
 
-void bingo_objective_star_green_demon_init(struct BingoObjective *objective,
-                                           enum BingoObjectiveClass class) {
+s32 bingo_objective_star_green_demon_init(
+    struct BingoObjective *objective, enum BingoObjectiveClass class
+) {
     enum CourseNum course;
     s32 star;
 
@@ -264,8 +284,9 @@ void bingo_objective_star_green_demon_init(struct BingoObjective *objective,
     get_objective_title(objective);
 }
 
-void bingo_objective_star_daredevil_init(struct BingoObjective *objective,
-                                           enum BingoObjectiveClass class) {
+s32 bingo_objective_star_daredevil_init(
+    struct BingoObjective *objective, enum BingoObjectiveClass class
+) {
     enum CourseNum course;
     s32 star;
 
@@ -321,7 +342,9 @@ void bingo_objective_star_daredevil_init(struct BingoObjective *objective,
     get_objective_title(objective);
 }
 
-void bingo_objective_coin_init(struct BingoObjective *objective, enum BingoObjectiveClass class) {
+s32 bingo_objective_coin_init(
+    struct BingoObjective *objective, enum BingoObjectiveClass class
+) {
     enum CourseNum course;
     s32 coins;
 
@@ -348,7 +371,9 @@ void bingo_objective_coin_init(struct BingoObjective *objective, enum BingoObjec
     get_objective_title(objective);
 }
 
-void bingo_objective_multicoin_init(struct BingoObjective *objective, enum BingoObjectiveClass class) {
+s32 bingo_objective_multicoin_init(
+    struct BingoObjective *objective, enum BingoObjectiveClass class
+) {
     s32 numCoins;
     switch (class) {
         case BINGO_CLASS_HARD:
@@ -359,14 +384,12 @@ void bingo_objective_multicoin_init(struct BingoObjective *objective, enum Bingo
             numCoins = 300 + ((RandomU16() % 25) * 10); // [300:550:10]
             break;
     }
-    objective->icon = BINGO_ICON_MULTICOIN;
-    objective->data.collectableData.toGet = numCoins;
-    objective->data.collectableData.gotten = 0;
-    get_objective_title(objective);
+    bingo_objective_collectable_init(objective, BINGO_ICON_MULTICOIN, numCoins);
 }
 
-void bingo_objective_multistar_init(struct BingoObjective *objective, enum BingoObjectiveClass class) {
-    s32 numStars;
+s32 bingo_objective_multistar_init(
+    struct BingoObjective *objective, enum BingoObjectiveClass class
+) { s32 numStars;
     switch (class) {
         case BINGO_CLASS_EASY:
             numStars = 3 + (RandomU16() % 2);    // 3 to 4
@@ -382,14 +405,12 @@ void bingo_objective_multistar_init(struct BingoObjective *objective, enum Bingo
             numStars = 16 + (RandomU16() % 10);  // 16 to 25
             break;
     }
-    objective->icon = BINGO_ICON_MULTISTAR;
-    objective->data.collectableData.toGet = numStars;
-    objective->data.collectableData.gotten = 0;
-    get_objective_title(objective);
+    bingo_objective_collectable_init(objective, BINGO_ICON_MULTISTAR, numStars);
 }
 
-void bingo_objective_1ups_in_level_init(struct BingoObjective *objective,
-                                        enum BingoObjectiveClass class) {
+s32 bingo_objective_1ups_in_level_init(
+    struct BingoObjective *objective, enum BingoObjectiveClass class
+) {
     enum CourseNum course;
     s32 _1ups;
     switch (class) {
@@ -406,8 +427,9 @@ void bingo_objective_1ups_in_level_init(struct BingoObjective *objective,
     get_objective_title(objective);
 }
 
-void bingo_objective_stars_in_level_init(struct BingoObjective *objective,
-                                         enum BingoObjectiveClass class) {
+s32 bingo_objective_stars_in_level_init(
+    struct BingoObjective *objective, enum BingoObjectiveClass class
+) {
     enum CourseNum course;
 
     switch (class) {
@@ -423,8 +445,9 @@ void bingo_objective_stars_in_level_init(struct BingoObjective *objective,
     get_objective_title(objective);
 }
 
-void bingo_objective_lose_mario_hat_init(struct BingoObjective *objective,
-                                         enum BingoObjectiveClass class) {
+s32 bingo_objective_lose_mario_hat_init(
+    struct BingoObjective *objective, enum BingoObjectiveClass class
+) {
     enum CourseNum course;
 
     switch (class) {
@@ -436,8 +459,9 @@ void bingo_objective_lose_mario_hat_init(struct BingoObjective *objective,
     get_objective_title(objective);
 }
 
-void bingo_objective_blj_init(struct BingoObjective *objective,
-                                         enum BingoObjectiveClass class) {
+s32 bingo_objective_blj_init(
+    struct BingoObjective *objective, enum BingoObjectiveClass class
+) {
     enum CourseNum course;
 
     switch (class) {
@@ -449,8 +473,9 @@ void bingo_objective_blj_init(struct BingoObjective *objective,
     get_objective_title(objective);
 }
 
-void bingo_objective_exclamation_mark_box_init(struct BingoObjective *objective,
-                                               enum BingoObjectiveClass class) {
+s32 bingo_objective_exclamation_mark_box_init(
+    struct BingoObjective *objective, enum BingoObjectiveClass class
+) {
     s32 boxes;
     switch (class) {
         default:
@@ -458,14 +483,12 @@ void bingo_objective_exclamation_mark_box_init(struct BingoObjective *objective,
             break;
     }
 
-    objective->icon = BINGO_ICON_EXCLAMATION_MARK_BOX;
-    objective->data.collectableData.toGet = boxes;
-    objective->data.collectableData.gotten = 0;
-    get_objective_title(objective);
+    bingo_objective_collectable_init(objective, BINGO_ICON_EXCLAMATION_MARK_BOX, boxes);
 }
 
-void bingo_objective_red_coin_init(struct BingoObjective *objective,
-                                               enum BingoObjectiveClass class) {
+s32 bingo_objective_red_coin_init(
+    struct BingoObjective *objective, enum BingoObjectiveClass class
+) {
     s32 coins;
     switch (class) {
         default:
@@ -477,14 +500,12 @@ void bingo_objective_red_coin_init(struct BingoObjective *objective,
             break;
     }
 
-    objective->icon = BINGO_ICON_RED_COIN;
-    objective->data.collectableData.toGet = coins;
-    objective->data.collectableData.gotten = 0;
-    get_objective_title(objective);
+    bingo_objective_collectable_init(objective, BINGO_ICON_RED_COIN, coins);
 }
 
-void bingo_objective_kill_goombas_init(struct BingoObjective *objective,
-                                       enum BingoObjectiveClass class) {
+s32 bingo_objective_kill_goombas_init(
+    struct BingoObjective *objective, enum BingoObjectiveClass class
+) {
     s32 enemiesToKill;
 
     switch (class) {
@@ -497,14 +518,12 @@ void bingo_objective_kill_goombas_init(struct BingoObjective *objective,
             break;
     }
 
-    objective->icon = BINGO_ICON_KILL_GOOMBAS;
-    objective->data.collectableData.toGet = enemiesToKill;
-    objective->data.collectableData.gotten = 0;
-    get_objective_title(objective);
+    bingo_objective_collectable_init(objective, BINGO_ICON_KILL_GOOMBAS, enemiesToKill);
 }
 
-void bingo_objective_kill_bobombs_init(struct BingoObjective *objective,
-                                       enum BingoObjectiveClass class) {
+s32 bingo_objective_kill_bobombs_init(
+    struct BingoObjective *objective, enum BingoObjectiveClass class
+) {
     s32 enemiesToKill;
 
     switch (class) {
@@ -517,77 +536,55 @@ void bingo_objective_kill_bobombs_init(struct BingoObjective *objective,
             break;
     }
 
-    objective->icon = BINGO_ICON_KILL_BOBOMBS;
-    objective->data.collectableData.toGet = enemiesToKill;
-    objective->data.collectableData.gotten = 0;
-    get_objective_title(objective);
+    bingo_objective_collectable_init(objective, BINGO_ICON_KILL_BOBOMBS, enemiesToKill);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void bingo_objective_init(struct BingoObjective *objective, enum BingoObjectiveClass class,
-                          enum BingoObjectiveType type) {
-    // Write down the type. We use it a lot now.
+s32 bingo_objective_init(
+    struct BingoObjective *objective,
+    enum BingoObjectiveClass class,
+    enum BingoObjectiveType type
+) {
     objective->type = type;
-
-    // Figure out everything else about it.
     switch (type) {
         case BINGO_OBJECTIVE_STAR:
-            bingo_objective_star_init(objective, class);
-            break;
+            return bingo_objective_star_init(objective, class);
         case BINGO_OBJECTIVE_STAR_A_BUTTON_CHALLENGE:
-            bingo_objective_star_a_button_challenge_init(objective, class);
-            break;
+            return bingo_objective_star_a_button_challenge_init(objective, class);
         case BINGO_OBJECTIVE_STAR_B_BUTTON_CHALLENGE:
-            bingo_objective_star_b_button_challenge_init(objective, class);
-            break;
+            return bingo_objective_star_b_button_challenge_init(objective, class);
         case BINGO_OBJECTIVE_STAR_Z_BUTTON_CHALLENGE:
-            bingo_objective_star_z_button_challenge_init(objective, class);
-            break;
+            return bingo_objective_star_z_button_challenge_init(objective, class);
         case BINGO_OBJECTIVE_STAR_TIMED:
-            bingo_objective_star_timed_init(objective, class);
-            break;
+            return bingo_objective_star_timed_init(objective, class);
         case BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK:
-            bingo_objective_star_reverse_joystick_init(objective, class);
-            break;
+            return bingo_objective_star_reverse_joystick_init(objective, class);
         case BINGO_OBJECTIVE_STAR_GREEN_DEMON:
-            bingo_objective_star_green_demon_init(objective, class);
-            break;
+            return bingo_objective_star_green_demon_init(objective, class);
         case BINGO_OBJECTIVE_STAR_DAREDEVIL:
-            bingo_objective_star_daredevil_init(objective, class);
-            break;
+            return bingo_objective_star_daredevil_init(objective, class);
         case BINGO_OBJECTIVE_COIN:
-            bingo_objective_coin_init(objective, class);
-            break;
+            return bingo_objective_coin_init(objective, class);
         case BINGO_OBJECTIVE_MULTICOIN:
-            bingo_objective_multicoin_init(objective, class);
-            break;
+            return bingo_objective_multicoin_init(objective, class);
         case BINGO_OBJECTIVE_MULTISTAR:
-            bingo_objective_multistar_init(objective, class);
-            break;
+            return bingo_objective_multistar_init(objective, class);
         case BINGO_OBJECTIVE_1UPS_IN_LEVEL:
-            bingo_objective_1ups_in_level_init(objective, class);
-            break;
+            return bingo_objective_1ups_in_level_init(objective, class);
         case BINGO_OBJECTIVE_STARS_IN_LEVEL:
-            bingo_objective_stars_in_level_init(objective, class);
-            break;
+            return bingo_objective_stars_in_level_init(objective, class);
         case BINGO_OBJECTIVE_LOSE_MARIO_HAT:
-            bingo_objective_lose_mario_hat_init(objective, class);
-            break;
+            return bingo_objective_lose_mario_hat_init(objective, class);
         case BINGO_OBJECTIVE_BLJ:
-            bingo_objective_blj_init(objective, class);
-            break;
+            return bingo_objective_blj_init(objective, class);
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
-            bingo_objective_exclamation_mark_box_init(objective, class);
-            break;
+            return bingo_objective_exclamation_mark_box_init(objective, class);
         case BINGO_OBJECTIVE_RED_COIN:
-            bingo_objective_red_coin_init(objective, class);
-            break;
+            return bingo_objective_red_coin_init(objective, class);
         case BINGO_OBJECTIVE_KILL_GOOMBAS:
-            bingo_objective_kill_goombas_init(objective, class);
-            break;
+            return bingo_objective_kill_goombas_init(objective, class);
         case BINGO_OBJECTIVE_KILL_BOBOMBS:
-            bingo_objective_kill_bobombs_init(objective, class);
-            break;
+            return bingo_objective_kill_bobombs_init(objective, class);
     }
 }
