@@ -441,10 +441,17 @@ void render_hud(void) {
         create_dl_ortho_matrix();
 #endif
 
+        if (gPlayer1Controller->buttonPressed & L_TRIG
+            && gbBingosCompleted != 0
+            && gbBingoShowCongratsCounter < gbBingoShowCongratsLimit
+        ) {
+            // If you press L twice, the congrats message goes away.
+            gbBingoShowCongratsCounter++;
+        }
         if (gPlayer1Controller->buttonDown & L_TRIG) {
             draw_bingo_screen();
         } else {
-            if (gbBingoCompleted) {
+            if ((gbBingosCompleted != 0) && gbBingoShowCongratsCounter < gbBingoShowCongratsLimit) {
                 draw_bingo_win_screen();
             }
 

@@ -45,10 +45,16 @@ void draw_bingo_win_screen() {
     char timestamp[10];
     char msg[40];
 
-    print_text(30, 40, "YOU ARE A SUPER PLAYER");
     getTimeFmt(timestamp, gbGlobalBingoTimer);
     sprintf(msg, "YOUR TIME WAS %s", timestamp);
     print_text(40, 60, msg);
+
+    if (gbBingoShowCongratsCounter == (gbBingoShowCongratsLimit - 1)) {
+        print_text(60, 40, "PRESS L AGAIN TO");
+        print_text(110, 20, "DISMISS");
+    } else {
+        print_text(30, 40, "YOU ARE A SUPER PLAYER");
+    }
 }
 
 void draw_bingo_hud_timer() {
@@ -139,7 +145,7 @@ void draw_bingo_screen() {
     char seed_print[20];
     char *bingo[5] = { "B", "I", "N", "G", "O" };
 
-    // TODO: add gbBingoCompleted check.
+    // TODO: add gbBingosCompleted check.
     if (gPlayer1Controller->buttonDown & L_TRIG && gHudDisplay.flags != HUD_DISPLAY_NONE) {
         shade_screen_opacity(180);
     }
