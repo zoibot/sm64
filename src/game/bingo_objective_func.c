@@ -92,7 +92,6 @@ void objective_obtain_star_reverse_joystick(struct BingoObjective *objective, en
         course = objective->data.starObjective.course;
         star = objective->data.starObjective.starIndex;
         if (gCurrCourseNum == course && gbStarIndex == star) {
-            gBingoReverseJoystickActive = 0;
             set_objective_state(objective, BINGO_STATE_COMPLETE);
         }
     }
