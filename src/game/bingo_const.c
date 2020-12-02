@@ -79,7 +79,7 @@ s32 starTimes[90][3] = {
     { COURSE_LLL, 1, 28 }, { COURSE_LLL, 2, 37 },  { COURSE_LLL, 3, 21 }, { COURSE_LLL, 4, 17 },
     { COURSE_LLL, 5, 26 }, { COURSE_LLL, 6, 28 },  { COURSE_SSL, 1, 25 }, { COURSE_SSL, 2, 10 },
     { COURSE_SSL, 3, 23 }, { COURSE_SSL, 4, 42 },  { COURSE_SSL, 5, 67 }, { COURSE_SSL, 6, 72 },
-    { COURSE_DDD, 1, 49 }, { COURSE_DDD, 2, 45 },  { COURSE_DDD, 3, 96 }, { COURSE_DDD, 4, 53 },
+    { COURSE_DDD, 1, 49 }, { COURSE_DDD, 2, 45 },  { COURSE_DDD, 3, 150 }, { COURSE_DDD, 4, 53 },
     { COURSE_DDD, 5, 21 }, { COURSE_DDD, 6, 63 },  { COURSE_SL, 1, 14 },  { COURSE_SL, 2, 19 },
     { COURSE_SL, 3, 8 },   { COURSE_SL, 4, 20 },   { COURSE_SL, 5, 46 },  { COURSE_SL, 6, 25 },
     { COURSE_WDW, 1, 20 }, { COURSE_WDW, 2, 22 },  { COURSE_WDW, 3, 49 }, { COURSE_WDW, 4, 28 },
@@ -89,7 +89,7 @@ s32 starTimes[90][3] = {
     { COURSE_THI, 5, 41 }, { COURSE_THI, 6, 63 },  { COURSE_TTC, 1, 16 }, { COURSE_TTC, 2, 19 },
     { COURSE_TTC, 3, 13 }, { COURSE_TTC, 4, 35 },  { COURSE_TTC, 5, 23 }, { COURSE_TTC, 6, 22 },
     { COURSE_RR, 1, 28 },  { COURSE_RR, 2, 170 },  { COURSE_RR, 3, 33 },  { COURSE_RR, 4, 20 },
-    { COURSE_RR, 5, 19 },  { COURSE_RR, 6, 47 }
+    { COURSE_RR, 5, 19 },  { COURSE_RR, 6, 70 }
 };
 
 s32 get_time_for_star(enum CourseNum course, s32 star) {

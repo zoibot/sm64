@@ -294,6 +294,8 @@ s32 bingo_objective_star_daredevil_init(
     //   - All stars are not much harder, except for...
     //   - DDD: It might be possible to get to the sub area,
     //          but I haven't managed to do it. Close, though.
+    //          The Manta Ray heals you, so it's possible.
+    //          Coins make Chests in the Current possible.
     //   - WDW: Getting to downtown seems impossible without
     //          glitches. This forbids 8 red coins and Quick Race.
     //          100 coins is possible (and fun).
@@ -312,9 +314,11 @@ s32 bingo_objective_star_daredevil_init(
             do {
                 random_star_main_course_except_100c(&course, &star);
             } while (
-                (course == COURSE_JRB || course == COURSE_DDD || (
-                    course == COURSE_WDW && (star == 4 || star == 5)
-                ))
+                (
+                    course == COURSE_JRB
+                    || (course == COURSE_DDD && (star != 1 || star != 4))
+                    || (course == COURSE_WDW && (star == 4 || star == 5))
+                )
             );
             break;
         case BINGO_CLASS_HARD:
