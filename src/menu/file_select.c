@@ -1052,10 +1052,15 @@ static void print_objective(enum BingoObjectiveType type, s32 pageNo) {
             BINGO_OPTIONS_TOTAL_ENTRIES_PER_PAGE - (type % BINGO_OPTIONS_IN_FIRST_PAGE) - BINGO_CONFIGS_IN_LEFT_COL
         ) - 2;
     }
-
-    print_bingo_icon(optionLeftX, TOP_Y + offsetY, obj_icon);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, whiteTextAlpha);
     print_generic_string(optionLeftX + 19, TOP_Y + offsetY, option);
+
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
+    gSPDisplayList(gDisplayListHead++, dl_hud_img_begin);
+    print_bingo_icon(optionLeftX, TOP_Y + offsetY, obj_icon);
+    gSPDisplayList(gDisplayListHead++, dl_hud_img_end);
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, whiteTextAlpha);
 
     if (gBingoObjectivesDisabled[type]) {
         gDPSetEnvColor(gDisplayListHead++, 255, 80, 80, sTextBaseAlpha);
