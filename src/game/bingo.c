@@ -22,6 +22,7 @@ s32 gBingoInitialized = 0;
 u32 gBingoInitialSeed = 0;
 
 s64 gbGlobalBingoTimer = 0;
+s32 gbBingoTarget = 1;
 s32 gbBingosCompleted = 0;
 s32 gbBingoShowCongratsCounter = 0;
 s32 gbBingoShowCongratsLimit = 2;
@@ -106,7 +107,7 @@ void bingo_update(enum BingoObjectiveUpdate update) {
         update_objective(&gBingoObjectives[i], update);
     }
 
-    if (update == BINGO_UPDATE_TIMER_FRAME && gbBingosCompleted == 0 /* desired, soon */) {
+    if (update == BINGO_UPDATE_TIMER_FRAME && gbBingosCompleted < gbBingoTarget) {
         // Should we not increment if game is paused?
         // We probably should. Just a thought.
         gbGlobalBingoTimer++;

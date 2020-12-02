@@ -825,6 +825,11 @@ static void print_main_menu_strings(void) {
     draw_seed_mode_menu();
 }
 
+static unsigned char textGameMode[] = { TEXT_GAME_MODE };
+static unsigned char text1Bingo[] = { TEXT_TARGET_1 };
+static unsigned char text2Bingos[] = { TEXT_TARGET_2 };
+static unsigned char text3Bingos[] = { TEXT_TARGET_3 };
+static unsigned char textBlackout[] = { TEXT_TARGET_BLACKOUT };
 
 static unsigned char textSingleStar[] = { TEXT_SINGLE_STAR };
 static unsigned char textMultiStar[] = { TEXT_MULTI_STAR };
@@ -1049,6 +1054,7 @@ static void print_objective(enum BingoObjectiveType type, s32 pageNo) {
     }
 
     print_bingo_icon(optionLeftX, TOP_Y + offsetY, obj_icon);
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, whiteTextAlpha);
     print_generic_string(optionLeftX + 19, TOP_Y + offsetY, option);
 
     if (gBingoObjectivesDisabled[type]) {
@@ -1057,6 +1063,64 @@ static void print_objective(enum BingoObjectiveType type, s32 pageNo) {
         gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, whiteTextAlpha);
     } else {
         print_generic_string(onOrOffLeftX, TOP_Y + offsetY, textOn);
+    }
+}
+
+static void print_bingo_configs() {
+    s32 i;
+    s32 offsetX;
+    u8 *target;
+
+    for (i = 0; i < BINGO_CONFIGS_IN_LEFT_COL; i++) {
+        switch (i) {
+            case 0:
+                print_generic_string(
+                    LEFT_X,
+                    TOP_Y + ROW_HEIGHT * BINGO_ENTRIES_PER_COL - 2,
+                    textGameMode
+                );
+                if (sToggleCurrentOption && sBingoOptionSelection == 0) {
+                    sToggleCurrentOption = 0;
+                    switch (gbBingoTarget) {
+                        case 1:
+                            gbBingoTarget = 2;
+                            break;
+                        case 2:
+                            gbBingoTarget = 3;
+                            break;
+                        case 3:
+                            gbBingoTarget = 12;
+                            break;
+                        case 12:
+                            gbBingoTarget = 1;
+                            break;
+                    }
+                }
+                switch (gbBingoTarget) {
+                    case 1:
+                        offsetX = 94;
+                        target = text1Bingo;
+                        break;
+                    case 2:
+                        offsetX = 89;
+                        target = text2Bingos;
+                        break;
+                    case 3:
+                        offsetX = 89;
+                        target = text3Bingos;
+                        break;
+                    case 12:
+                        offsetX = 92;
+                        target = textBlackout;
+                        break;
+                }
+                print_generic_string(
+                    LEFT_X + offsetX,
+                    TOP_Y + ROW_HEIGHT * BINGO_ENTRIES_PER_COL - 2,
+                    target
+                );
+                break;
+        }
     }
 }
 
@@ -1069,9 +1133,8 @@ static void print_bingo_page_0() {
     gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, whiteTextAlpha);
 
-    // Print configs here (TODO)
+    print_bingo_configs();
 
-    // Print objectives
     for (i = 0; i < MIN(BINGO_OBJECTIVE_TOTAL_AMOUNT, BINGO_OPTIONS_IN_FIRST_PAGE); i++) {
         print_objective(i, 0);
     }

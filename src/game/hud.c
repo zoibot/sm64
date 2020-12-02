@@ -442,7 +442,7 @@ void render_hud(void) {
 #endif
 
         if (gPlayer1Controller->buttonPressed & L_TRIG
-            && gbBingosCompleted != 0
+            && gbBingosCompleted >= gbBingoTarget
             && gbBingoShowCongratsCounter < gbBingoShowCongratsLimit
         ) {
             // If you press L twice, the congrats message goes away.
@@ -451,7 +451,7 @@ void render_hud(void) {
         if (gPlayer1Controller->buttonDown & L_TRIG) {
             draw_bingo_screen();
         } else {
-            if ((gbBingosCompleted != 0) && gbBingoShowCongratsCounter < gbBingoShowCongratsLimit) {
+            if ((gbBingosCompleted >= gbBingoTarget) && gbBingoShowCongratsCounter < gbBingoShowCongratsLimit) {
                 draw_bingo_win_screen();
             }
 

@@ -149,6 +149,12 @@
 #define TEXT_FILE_MARIO_D _("MARIO D")
 
 // Bingo Options
+#define TEXT_GAME_MODE _("Bingo target:")
+#define TEXT_TARGET_1 _("1 Bingo")
+#define TEXT_TARGET_2 _("2 Bingos")
+#define TEXT_TARGET_3 _("3 Bingos")
+#define TEXT_TARGET_BLACKOUT _("Blackout")
+
 #define TEXT_SINGLE_STAR _("Single Star")
 #define TEXT_MULTI_STAR _("Multiple Stars")
 #define TEXT_A_BUTTON _("A Button Challenge")

@@ -8,6 +8,7 @@ extern s32 gBingoInitialized;
 extern u32 gBingoInitialSeed;
 extern s64 gbGlobalBingoTimer;
 extern s32 gbBingoTimerDisabled;
+extern s32 gbBingoTarget;
 extern s32 gbBingosCompleted;
 extern s32 gbBingoShowCongratsCounter;
 extern s32 gbBingoShowCongratsLimit;
