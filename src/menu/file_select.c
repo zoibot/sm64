@@ -114,11 +114,19 @@ u8 gBingoSeedRandomText[] = { TEXT_RANDOM, 0xFF, 0xFF, 0xFF };
 u8 gBingoSeedText[] = { TEXT_RANDOM, 0xFF, 0xFF, 0xFF };
 
 s32 sBingoOptionSelection = 0;
-#define BINGO_OPTIONS_PER_PAGE 11
+#define BINGO_ENTRIES_PER_COL 11
+#define BINGO_CONFIGS_IN_LEFT_COL 1 // not more than 10, hopefully
+#define BINGO_OPTIONS_IN_LEFT_COL_FIRST_PAGE (BINGO_ENTRIES_PER_COL - BINGO_CONFIGS_IN_LEFT_COL)
+#define BINGO_INSTRUCTIONS_IN_RIGHT_COL 3
+#define BINGO_OPTIONS_IN_RIGHT_COL (BINGO_ENTRIES_PER_COL - BINGO_INSTRUCTIONS_IN_RIGHT_COL)
+#define BINGO_OPTIONS_IN_FIRST_PAGE (BINGO_OPTIONS_IN_LEFT_COL_FIRST_PAGE + BINGO_OPTIONS_IN_RIGHT_COL)
+#define BINGO_OPTIONS_IN_SECONDARY_PAGES (BINGO_ENTRIES_PER_COL + BINGO_OPTIONS_IN_RIGHT_COL)
+#define BINGO_OPTIONS_TOTAL_ENTRIES_PER_PAGE (BINGO_ENTRIES_PER_COL * 2)
 s32 sBingoOptionSelectTimer = 0;
 #define BINGO_OPTION_TIMER_FRAMES 3
 s32 sToggleCurrentOption = 0;
 s32 sBingoOptionCurrentPage = 0;
+#define BINGO_MAX_PAGE_INDEX 2
 
 
 /**
@@ -647,34 +655,44 @@ static void handle_cursor_button_input(void) {
             if (sBingoOptionSelectTimer > 0) {
                 sBingoOptionSelectTimer--;
             } else if (gPlayer3Controller->buttonPressed & D_JPAD) {
-                if (sBingoOptionSelection < BINGO_OPTIONS_PER_PAGE) {
-                    sBingoOptionSelection = (sBingoOptionSelection + 1) % BINGO_OPTIONS_PER_PAGE;
+                if (sBingoOptionSelection < BINGO_ENTRIES_PER_COL) {
+                    sBingoOptionSelection = (sBingoOptionSelection + 1) % BINGO_ENTRIES_PER_COL;
                 } else {
                     sBingoOptionSelection =
-                        (sBingoOptionSelection - BINGO_OPTIONS_PER_PAGE + 1)
-                        % BINGO_OPTIONS_PER_PAGE
-                        + BINGO_OPTIONS_PER_PAGE;
+                        (sBingoOptionSelection - BINGO_ENTRIES_PER_COL + 1)
+                        % BINGO_ENTRIES_PER_COL
+                        + BINGO_ENTRIES_PER_COL;
                 }
                 sBingoOptionSelectTimer = BINGO_OPTION_TIMER_FRAMES;
             } else if (gPlayer3Controller->buttonPressed & U_JPAD) {
-                if (sBingoOptionSelection < BINGO_OPTIONS_PER_PAGE) {
+                if (sBingoOptionSelection < BINGO_ENTRIES_PER_COL) {
                     sBingoOptionSelection =
-                        (sBingoOptionSelection + BINGO_OPTIONS_PER_PAGE - 1) % BINGO_OPTIONS_PER_PAGE;
+                        (sBingoOptionSelection + BINGO_ENTRIES_PER_COL - 1) % BINGO_ENTRIES_PER_COL;
                 } else {
                     sBingoOptionSelection =
                         (
-                            (sBingoOptionSelection - BINGO_OPTIONS_PER_PAGE)
-                            + (BINGO_OPTIONS_PER_PAGE - 1)
-                        ) % BINGO_OPTIONS_PER_PAGE
-                        + BINGO_OPTIONS_PER_PAGE;
+                            (sBingoOptionSelection - BINGO_ENTRIES_PER_COL)
+                            + (BINGO_ENTRIES_PER_COL - 1)
+                        ) % BINGO_ENTRIES_PER_COL
+                        + BINGO_ENTRIES_PER_COL;
                 }
                 sBingoOptionSelectTimer = BINGO_OPTION_TIMER_FRAMES;
             } else if (gPlayer3Controller->buttonPressed & (L_JPAD | R_JPAD)) {
-                sBingoOptionSelection += BINGO_OPTIONS_PER_PAGE;
-                sBingoOptionSelection %= (BINGO_OPTIONS_PER_PAGE * 2);
+                sBingoOptionSelection += BINGO_ENTRIES_PER_COL;
+                sBingoOptionSelection %= (BINGO_OPTIONS_TOTAL_ENTRIES_PER_PAGE);
                 sBingoOptionSelectTimer = BINGO_OPTION_TIMER_FRAMES;
-            } else if (gPlayer3Controller->buttonPressed & (L_TRIG | R_TRIG)) {
-                sBingoOptionCurrentPage ^= 1;
+            } else if (gPlayer3Controller->buttonPressed & L_TRIG) {
+                if (sBingoOptionCurrentPage == 0) {
+                    sBingoOptionCurrentPage = BINGO_MAX_PAGE_INDEX;
+                } else {
+                    sBingoOptionCurrentPage--;
+                }
+            } else if (gPlayer3Controller->buttonPressed & R_TRIG) {
+                if (sBingoOptionCurrentPage == BINGO_MAX_PAGE_INDEX) {
+                    sBingoOptionCurrentPage = 0;
+                } else {
+                    sBingoOptionCurrentPage++;
+                }
             }
             if (gPlayer3Controller->buttonPressed & A_BUTTON) {
                 sToggleCurrentOption = 1;
@@ -830,13 +848,17 @@ static unsigned char textKillBobOmbs[] = { TEXT_KILL_BOBOMBS };
 
 static unsigned char textDPad[] = { TEXT_DPAD };
 static unsigned char textPressA[] = { TEXT_PRESS_A };
-static unsigned char textPressRL[] = { TEXT_PRESS_RL };
+static unsigned char textPressRL_1[] = { TEXT_PRESS_RL_1 };
+static unsigned char textPressRL_2[] = { TEXT_PRESS_RL_2 };
+static unsigned char textPressRL_3[] = { TEXT_PRESS_RL_3 };
+
 static unsigned char textBingo64[] = { TEXT_BINGO64 };
 static unsigned char textCreatedBy[] = { TEXT_CREATED_BY };
 static unsigned char textSpecialThanks[] = { TEXT_SPECIAL_THANKS };
 static unsigned char textAlo[] = { TEXT_ALO };
 static unsigned char textGTM[] = { TEXT_GTM };
 static unsigned char textNo90[] = { TEXT_NO_90 };
+
 
 #define LEFT_X     24
 #define RIGHT_X    160
@@ -847,7 +869,7 @@ static void print_bingo_selection_highlight(void) {
     gDPSetCombineMode(gDisplayListHead++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
     gDPSetRenderMode(gDisplayListHead++, G_RM_XLU_SURF, G_RM_XLU_SURF);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, 38, 38, 38, MIN(sTextBaseAlpha, 150));
-    if (sBingoOptionSelection < BINGO_OPTIONS_PER_PAGE) {
+    if (sBingoOptionSelection < BINGO_ENTRIES_PER_COL) {
         gDPFillRectangle(
             gDisplayListHead++,
             LEFT_X,
@@ -859,150 +881,227 @@ static void print_bingo_selection_highlight(void) {
         gDPFillRectangle(
             gDisplayListHead++,
             RIGHT_X,
-            TOP_Y - 2 + ROW_HEIGHT * ((sBingoOptionSelection % BINGO_OPTIONS_PER_PAGE) + 1),
+            TOP_Y - 2 + ROW_HEIGHT * ((sBingoOptionSelection % BINGO_ENTRIES_PER_COL) + 1),
             RIGHT_X + (RIGHT_X - LEFT_X),
-            TOP_Y - 2 + ROW_HEIGHT * ((sBingoOptionSelection % BINGO_OPTIONS_PER_PAGE) + 2) - 1
+            TOP_Y - 2 + ROW_HEIGHT * ((sBingoOptionSelection % BINGO_ENTRIES_PER_COL) + 2) - 1
         );
     }
 }
 
-static void print_bingo_page_0(void) {
+void print_option_nav_instructions(s32 pageNo) {
     s32 i;
-    enum BingoObjectiveIcon obj_icon;
     unsigned char *option;
     s32 optionLeftX;
-    s32 onOrOffLeftX;
     s32 offsetY;
-    s32 whiteTextAlpha = MIN(sTextBaseAlpha, 200);
-
-    gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
-    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, whiteTextAlpha);
-    for (i = 0; i < BINGO_OBJECTIVE_TOTAL_AMOUNT; i++) {
-        if (i == sBingoOptionSelection && sToggleCurrentOption) {
-            sToggleCurrentOption = 0;
-            gBingoObjectivesDisabled[i] ^= 1;
-        }
-
-        switch (i) {
-            case BINGO_OBJECTIVE_STAR:
-                obj_icon = BINGO_ICON_STAR;
-                option = textSingleStar;
-                break;
-            case BINGO_OBJECTIVE_MULTISTAR:
-                obj_icon = BINGO_ICON_MULTISTAR;
-                option = textMultiStar;
-                break;
-            case BINGO_OBJECTIVE_STAR_A_BUTTON_CHALLENGE:
-                obj_icon = BINGO_ICON_STAR_A_BUTTON_CHALLENGE;
-                option = textAButton;
-                break;
-            case BINGO_OBJECTIVE_STAR_B_BUTTON_CHALLENGE:
-                obj_icon = BINGO_ICON_STAR_B_BUTTON_CHALLENGE;
-                option = textBButton;
-                break;
-            case BINGO_OBJECTIVE_STAR_Z_BUTTON_CHALLENGE:
-                obj_icon = BINGO_ICON_STAR_Z_BUTTON_CHALLENGE;
-                option = textZButton;
-                break;
-            case BINGO_OBJECTIVE_STAR_TIMED:
-                obj_icon = BINGO_ICON_STAR_TIMED;
-                option = textTimedStar;
-                break;
-            case BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK:
-                obj_icon = BINGO_ICON_STAR_REVERSE_JOYSTICK;
-                option = textReverseJoystick;
-                break;
-            case BINGO_OBJECTIVE_STAR_GREEN_DEMON:
-                obj_icon = BINGO_ICON_STAR_GREEN_DEMON;
-                option = textGreenDemon;
-                break;
-            case BINGO_OBJECTIVE_STAR_DAREDEVIL:
-                obj_icon = BINGO_ICON_STAR_DAREDEVIL;
-                option = textDaredevil;
-                break;
-            case BINGO_OBJECTIVE_COIN:
-                obj_icon = BINGO_ICON_COIN;;
-                option = textCoinLevel;
-                break;
-            case BINGO_OBJECTIVE_MULTICOIN:
-                obj_icon = BINGO_ICON_MULTICOIN;;
-                option = textTotalCoin;
-                break;
-            case BINGO_OBJECTIVE_1UPS_IN_LEVEL:
-                obj_icon = BINGO_ICON_1UPS_IN_LEVEL;
-                option = text1upLevel;
-                break;
-            case BINGO_OBJECTIVE_STARS_IN_LEVEL:
-                obj_icon = BINGO_ICON_STARS_IN_LEVEL;
-                option = textStarsLevel;
-                break;
-            case BINGO_OBJECTIVE_LOSE_MARIO_HAT:
-                obj_icon = BINGO_ICON_MARIO_HAT;
-                option = textMarioHat;
-                break;
-            case BINGO_OBJECTIVE_BLJ:
-                obj_icon = BINGO_ICON_BLJ;
-                option = textBLJ;
-                break;
-            case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
-                obj_icon = BINGO_ICON_EXCLAMATION_MARK_BOX;
-                option = textExclamBoxes;
-                break;
-            case BINGO_OBJECTIVE_RED_COIN:
-                obj_icon = BINGO_ICON_RED_COIN;
-                option = textRedCoins;
-                break;
-            case BINGO_OBJECTIVE_KILL_GOOMBAS:
-                obj_icon = BINGO_ICON_KILL_GOOMBAS;
-                option = textKillGoombas;
-                break;
-            case BINGO_OBJECTIVE_KILL_BOBOMBS:
-                obj_icon = BINGO_ICON_KILL_BOBOMBS;
-                option = textKillBobOmbs;
-                break;
-        }
-        if (i < BINGO_OPTIONS_PER_PAGE) {
-            optionLeftX = LEFT_X + 1;
-            onOrOffLeftX = RIGHT_X - 19;
-        } else {
-            optionLeftX = RIGHT_X;
-            onOrOffLeftX = RIGHT_X + (RIGHT_X - LEFT_X) - 19;
-        }
-        offsetY = ROW_HEIGHT * (BINGO_OPTIONS_PER_PAGE - (i % BINGO_OPTIONS_PER_PAGE)) - 2;
-
-        print_bingo_icon(optionLeftX, TOP_Y + offsetY, obj_icon);
-        print_generic_string(optionLeftX + 19, TOP_Y + offsetY, option);
-
-        if (gBingoObjectivesDisabled[i]) {
-            gDPSetEnvColor(gDisplayListHead++, 255, 80, 80, sTextBaseAlpha);
-            print_generic_string(onOrOffLeftX, TOP_Y + offsetY, textOff);
-            gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, whiteTextAlpha);
-        } else {
-            print_generic_string(onOrOffLeftX, TOP_Y + offsetY, textOn);
-        }
-    }
-    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, whiteTextAlpha * 0.7);
-    for (i = BINGO_OBJECTIVE_TOTAL_AMOUNT; i < BINGO_OPTIONS_PER_PAGE * 2; i++) {
-        offsetY = ROW_HEIGHT * (BINGO_OPTIONS_PER_PAGE - (i % BINGO_OPTIONS_PER_PAGE)) - 2;
+    for (i = BINGO_OPTIONS_TOTAL_ENTRIES_PER_PAGE - 3; i < BINGO_OPTIONS_TOTAL_ENTRIES_PER_PAGE; i++) {
+        offsetY = ROW_HEIGHT * (BINGO_ENTRIES_PER_COL - (i % BINGO_ENTRIES_PER_COL)) - 2;
         option = NULL;
         switch (i) {
-            case (BINGO_OPTIONS_PER_PAGE * 2) - 3:
+            case BINGO_OPTIONS_TOTAL_ENTRIES_PER_PAGE - 3:
                 option = textDPad;
                 optionLeftX = RIGHT_X + 34;
                 break;
-            case (BINGO_OPTIONS_PER_PAGE * 2) - 2:
+            case BINGO_OPTIONS_TOTAL_ENTRIES_PER_PAGE - 2:
                 option = textPressA;
                 optionLeftX = RIGHT_X + 46;
                 break;
-            case (BINGO_OPTIONS_PER_PAGE * 2) - 1:
-                option = textPressRL;
-                optionLeftX = RIGHT_X + 10;
+            case BINGO_OPTIONS_TOTAL_ENTRIES_PER_PAGE - 1:
+                switch (pageNo) {
+                    case 0:
+                        option = textPressRL_1;
+                        break;
+                    case 1:
+                        option = textPressRL_2;
+                        break;
+                    case 2:
+                        option = textPressRL_3;
+                        break;
+                }
+                optionLeftX = RIGHT_X + 15;
                 break;
         }
         if (option != NULL) {
             print_generic_string(optionLeftX, TOP_Y + offsetY, option);
         }
     }
+}
+
+static void print_objective(enum BingoObjectiveType type, s32 pageNo) {
+    enum BingoObjectiveIcon obj_icon;
+    unsigned char *option;
+    s32 optionLeftX;
+    s32 onOrOffLeftX;
+    s32 offsetY;
+    s32 leftColAmount;
+    s32 whiteTextAlpha = MIN(sTextBaseAlpha, 200);
+
+    if (
+        (
+            (pageNo == 0 && type == (sBingoOptionSelection - BINGO_CONFIGS_IN_LEFT_COL))
+            || (
+                pageNo != 0
+                && sBingoOptionSelection == (
+                    (type - BINGO_OPTIONS_IN_FIRST_PAGE) % BINGO_OPTIONS_TOTAL_ENTRIES_PER_PAGE
+                )
+            )
+        )
+        && sToggleCurrentOption
+    ) {
+        sToggleCurrentOption = 0;
+        gBingoObjectivesDisabled[type] ^= 1;
+    }
+
+    switch (type) {
+        case BINGO_OBJECTIVE_STAR:
+            obj_icon = BINGO_ICON_STAR;
+            option = textSingleStar;
+            break;
+        case BINGO_OBJECTIVE_MULTISTAR:
+            obj_icon = BINGO_ICON_MULTISTAR;
+            option = textMultiStar;
+            break;
+        case BINGO_OBJECTIVE_STAR_A_BUTTON_CHALLENGE:
+            obj_icon = BINGO_ICON_STAR_A_BUTTON_CHALLENGE;
+            option = textAButton;
+            break;
+        case BINGO_OBJECTIVE_STAR_B_BUTTON_CHALLENGE:
+            obj_icon = BINGO_ICON_STAR_B_BUTTON_CHALLENGE;
+            option = textBButton;
+            break;
+        case BINGO_OBJECTIVE_STAR_Z_BUTTON_CHALLENGE:
+            obj_icon = BINGO_ICON_STAR_Z_BUTTON_CHALLENGE;
+            option = textZButton;
+            break;
+        case BINGO_OBJECTIVE_STAR_TIMED:
+            obj_icon = BINGO_ICON_STAR_TIMED;
+            option = textTimedStar;
+            break;
+        case BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK:
+            obj_icon = BINGO_ICON_STAR_REVERSE_JOYSTICK;
+            option = textReverseJoystick;
+            break;
+        case BINGO_OBJECTIVE_STAR_GREEN_DEMON:
+            obj_icon = BINGO_ICON_STAR_GREEN_DEMON;
+            option = textGreenDemon;
+            break;
+        case BINGO_OBJECTIVE_STAR_DAREDEVIL:
+            obj_icon = BINGO_ICON_STAR_DAREDEVIL;
+            option = textDaredevil;
+            break;
+        case BINGO_OBJECTIVE_COIN:
+            obj_icon = BINGO_ICON_COIN;;
+            option = textCoinLevel;
+            break;
+        case BINGO_OBJECTIVE_MULTICOIN:
+            obj_icon = BINGO_ICON_MULTICOIN;;
+            option = textTotalCoin;
+            break;
+        case BINGO_OBJECTIVE_1UPS_IN_LEVEL:
+            obj_icon = BINGO_ICON_1UPS_IN_LEVEL;
+            option = text1upLevel;
+            break;
+        case BINGO_OBJECTIVE_STARS_IN_LEVEL:
+            obj_icon = BINGO_ICON_STARS_IN_LEVEL;
+            option = textStarsLevel;
+            break;
+        case BINGO_OBJECTIVE_LOSE_MARIO_HAT:
+            obj_icon = BINGO_ICON_MARIO_HAT;
+            option = textMarioHat;
+            break;
+        case BINGO_OBJECTIVE_BLJ:
+            obj_icon = BINGO_ICON_BLJ;
+            option = textBLJ;
+            break;
+        case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
+            obj_icon = BINGO_ICON_EXCLAMATION_MARK_BOX;
+            option = textExclamBoxes;
+            break;
+        case BINGO_OBJECTIVE_RED_COIN:
+            obj_icon = BINGO_ICON_RED_COIN;
+            option = textRedCoins;
+            break;
+        case BINGO_OBJECTIVE_KILL_GOOMBAS:
+            obj_icon = BINGO_ICON_KILL_GOOMBAS;
+            option = textKillGoombas;
+            break;
+        case BINGO_OBJECTIVE_KILL_BOBOMBS:
+            obj_icon = BINGO_ICON_KILL_BOBOMBS;
+            option = textKillBobOmbs;
+            break;
+    }
+    if (pageNo == 0) {
+        leftColAmount = BINGO_OPTIONS_IN_LEFT_COL_FIRST_PAGE;
+    } else {
+        leftColAmount = BINGO_ENTRIES_PER_COL;
+    }
+    if ((type % BINGO_OPTIONS_IN_FIRST_PAGE) < leftColAmount) {
+        optionLeftX = LEFT_X + 1;
+        onOrOffLeftX = RIGHT_X - 19;
+        offsetY = ROW_HEIGHT * (
+            leftColAmount - (type % BINGO_OPTIONS_IN_FIRST_PAGE)
+        ) - 2;
+    } else {
+        optionLeftX = RIGHT_X;
+        onOrOffLeftX = RIGHT_X + (RIGHT_X - LEFT_X) - 19;
+        offsetY = ROW_HEIGHT * (
+            BINGO_OPTIONS_TOTAL_ENTRIES_PER_PAGE - (type % BINGO_OPTIONS_IN_FIRST_PAGE) - BINGO_CONFIGS_IN_LEFT_COL
+        ) - 2;
+    }
+
+    print_bingo_icon(optionLeftX, TOP_Y + offsetY, obj_icon);
+    print_generic_string(optionLeftX + 19, TOP_Y + offsetY, option);
+
+    if (gBingoObjectivesDisabled[type]) {
+        gDPSetEnvColor(gDisplayListHead++, 255, 80, 80, sTextBaseAlpha);
+        print_generic_string(onOrOffLeftX, TOP_Y + offsetY, textOff);
+        gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, whiteTextAlpha);
+    } else {
+        print_generic_string(onOrOffLeftX, TOP_Y + offsetY, textOn);
+    }
+}
+
+static void print_bingo_page_0() {
+    s32 i;
+    s32 whiteTextAlpha = MIN(sTextBaseAlpha, 200);
+
+    print_bingo_selection_highlight();
+
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, whiteTextAlpha);
+
+    // Print configs here (TODO)
+
+    // Print objectives
+    for (i = 0; i < MIN(BINGO_OBJECTIVE_TOTAL_AMOUNT, BINGO_OPTIONS_IN_FIRST_PAGE); i++) {
+        print_objective(i, 0);
+    }
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, whiteTextAlpha * 0.7);
+    print_option_nav_instructions(0);
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
+}
+
+
+static void print_bingo_middle_page(s32 pageNo) {
+    s32 i;
+    s32 whiteTextAlpha = MIN(sTextBaseAlpha, 200);
+
+    print_bingo_selection_highlight();
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, whiteTextAlpha);
+
+    // Print configs here (TODO)
+
+    // Print objectives
+
+    for (
+        i = BINGO_OPTIONS_IN_FIRST_PAGE + (pageNo - 1) * BINGO_OPTIONS_IN_SECONDARY_PAGES;
+        i < MIN(BINGO_OBJECTIVE_TOTAL_AMOUNT, BINGO_OPTIONS_IN_FIRST_PAGE + pageNo * BINGO_OPTIONS_IN_SECONDARY_PAGES);
+        i++
+    ) {
+        print_objective(i, pageNo);
+    }
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, whiteTextAlpha * 0.7);
+    print_option_nav_instructions(pageNo);
     gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
 }
 
@@ -1013,7 +1112,7 @@ static void print_line(s32 startX, s32 length, s32 y, s32 alpha) {
     gDPFillRectangle(gDisplayListHead++, startX, y - 1, startX + length, y);
 }
 
-static void print_bingo_page_1(void) {
+static void print_bingo_page_2(void) {
     s32 i;
     unsigned char *creditString;
     s32 optionLeftX = 90;
@@ -1023,8 +1122,8 @@ static void print_bingo_page_1(void) {
 
     gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, whiteTextAlpha * 0.7);
-    for (i = 1; i < BINGO_OPTIONS_PER_PAGE * 2; i++) {
-        offsetY = ROW_HEIGHT * (BINGO_OPTIONS_PER_PAGE - i) - 2;
+    for (i = 1; i < 8; i++) {
+        offsetY = ROW_HEIGHT * (BINGO_ENTRIES_PER_COL - i) - 2;
         creditString = NULL;
         switch (i) {
             case 1:
@@ -1085,11 +1184,13 @@ static void print_bingo_options(void) {
     }
     switch (sBingoOptionCurrentPage) {
         case 0:
-            print_bingo_selection_highlight();
             print_bingo_page_0();
             break;
         case 1:
-            print_bingo_page_1();
+            print_bingo_middle_page(1);
+            break;
+        case 2:
+            print_bingo_page_2();
             break;
     }
     if (sToggleCurrentOption) {
