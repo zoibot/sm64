@@ -20,6 +20,11 @@
 #include "segment2.h"
 #include "ingame_menu.h"
 
+#define BINGO_MIN_X 21
+#define BINGO_MAX_X 230
+#define BINGO_MIN_Y 10
+#define BINGO_MAX_Y 209
+
 // Cursor positions. -1 indicates that the cursor has not spawned yet.
 // 0-indexed with bottom-left as (0, 0)
 static s32 sBingoCursorX = -1;
@@ -95,11 +100,16 @@ void bingo_print_description(char *str) {
     s32 total_lines = 0;
     u8 finalDesc[150] = { 0x11, 0x28, 0x2F, 0x2F, 0xFF };
 
+    // #define MAX_LINE_CHARS 25
+    #define MAX_LINE_CHARS 22
+    // TODO: This really really needs to be based on line widths
+    // of each character.
+
     while (str[iter] != '\0') {
         line_chars++;
         // Chop the line if it's getting too long
         if (str[iter] == ' ') {
-            if (line_chars >= 25) {
+            if (line_chars >= MAX_LINE_CHARS) {
                 line_chars = iter - last_space_line_chars;
                 finalDesc[last_space] = 0xFE;
                 // update number of lines
@@ -112,12 +122,13 @@ void bingo_print_description(char *str) {
         iter++;
     }
     // sue me
-    if (line_chars >= 25) {
+    if (line_chars >= MAX_LINE_CHARS) {
         finalDesc[last_space] = 0xFE;
     }
     finalDesc[iter] = 0xFF;
 
-    print_text_not_tiny(180, 100 + total_lines * 10, finalDesc);
+    // print_text_not_tiny(180, 100 + total_lines * 10, finalDesc);
+    print_text_not_tiny(190, 100 + total_lines * 10, finalDesc);
 }
 
 void print_bingo_icon(s32 x, s32 y, s32 iconIndex) {
@@ -145,14 +156,15 @@ void draw_bingo_screen() {
     char seed_print[20];
     char *bingo[5] = { "B", "I", "N", "G", "O" };
 
-    // TODO: add gbBingosCompleted check.
+    // Shade the screen.
     if (gPlayer1Controller->buttonDown & L_TRIG && gHudDisplay.flags != HUD_DISPLAY_NONE) {
         shade_screen_opacity(180);
     }
 
     // Title.
     for (i = 0; i < 5; i++) {
-        print_text_large(6 + spacing * i, HUD_TOP_Y + 5, bingo[i]);
+        // print_text_large(6 + spacing * i, HUD_TOP_Y + 5, bingo[i]);
+        print_text_large(BINGO_MIN_X + spacing * i, BINGO_MAX_Y, bingo[i]);
     }
 
     // Seed.
@@ -161,10 +173,12 @@ void draw_bingo_screen() {
 
     // Lines.
     for (i = 0; i < 4; i++) {
-        print_vertical_line(25 + spacing * i, HUD_TOP_Y - 36);
+        // print_vertical_line(25 + spacing * i, HUD_TOP_Y - 36);
+        print_vertical_line(35 + spacing * i, HUD_TOP_Y - 35);
     }
     for (i = 0; i < 4; i++) {
-        print_horizontal_line(37 + spacing * i);
+        // print_horizontal_line(37 + spacing * i);
+        print_horizontal_line(38 + spacing * i);
     }
 
     // Icons.
@@ -186,7 +200,8 @@ void draw_bingo_screen() {
                     icon = objective->icon;
                     break;
             }
-            print_bingo_icon(11 + spacing * j, 28 + spacing * i, icon);
+            // print_bingo_icon(11 + spacing * j, 28 + spacing * i, icon);
+            print_bingo_icon(BINGO_MIN_X + spacing * j, 27 + spacing * i, icon);
         }
     }
     gSPDisplayList(gDisplayListHead++, dl_hud_img_end);
@@ -197,8 +212,10 @@ void draw_bingo_screen() {
             objective = &gBingoObjectives[5 * i + j];
             length = strlen_tiny(objective->title);
             print_text_tiny(
-                11 + spacing * j + 8 - (length) / 2 + 1,
-                75 + spacing * (4 - i),
+                // 11 + spacing * j + 8 - (length) / 2 + 1,
+                BINGO_MIN_X + spacing * j + 8 - (length) / 2 + 1,
+                // 75 + spacing * (4 - i),
+                74 + spacing * (4 - i),
                 objective->title
             );
         }
@@ -227,7 +244,8 @@ void draw_bingo_screen() {
 
     // Print cursor and details.
     if (sBingoCursorX != -1) {
-        print_hand(14 + spacing * sBingoCursorX, 18 + spacing * sBingoCursorY);
+        // print_hand(14 + spacing * sBingoCursorX, 18 + spacing * sBingoCursorY);
+        print_hand(24 + spacing * sBingoCursorX, 17 + spacing * sBingoCursorY);
 
         objective = &gBingoObjectives[5 * sBingoCursorY + sBingoCursorX];
         describe_objective(objective, desc_text);

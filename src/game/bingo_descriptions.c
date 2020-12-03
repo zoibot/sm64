@@ -165,7 +165,7 @@ void get_star_objective_desc(struct BingoObjective *obj, char *desc) {
         if (obj->data.abcStarObjective.hint[0] == '\0') {
             sprintf(hintOrCompleteSuffix, "");
         } else {
-            sprintf(hintOrCompleteSuffix, "\n(Hint: %s)", obj->data.abcStarObjective.hint);
+            sprintf(hintOrCompleteSuffix, " (Hint: %s)", obj->data.abcStarObjective.hint);
         }
     } else {
         sprintf(hintOrCompleteSuffix, "");
@@ -271,9 +271,10 @@ void get_stars_in_level_objective_desc(struct BingoObjective *obj, char *desc) {
     if (obj->state == BINGO_STATE_COMPLETE) {
         strcpy(suffix, ": Complete!");
     } else {
-        sprintf(suffix, ".");
+        sprintf(suffix, ". Remaining: %d",
+                obj->data.courseCollectableData.toGet - obj->data.courseCollectableData.gotten);
     }
-    sprintf(desc, "Collect all the stars in %s%s", revEncLevelName + 3, suffix);
+    sprintf(desc, "Collect all the (non-100 Coin) stars in %s%s", revEncLevelName + 3, suffix);
 }
 
 void get_lose_hat_objective_desc(struct BingoObjective *obj, char *desc) {

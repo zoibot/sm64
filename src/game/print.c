@@ -384,7 +384,8 @@ void print_horizontal_line(int y) {
         return;
     }
 
-    sTextLabels[sTextLabelsCount]->x = 0;
+    // sTextLabels[sTextLabelsCount]->x = 0;
+    sTextLabels[sTextLabelsCount]->x = 17;
     sTextLabels[sTextLabelsCount]->y = y;
 
     // sTextLabels[sTextLabelsCount]->buffer[len] = 'L';
