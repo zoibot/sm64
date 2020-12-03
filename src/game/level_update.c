@@ -28,6 +28,8 @@
 #include "eu_translation.h"
 #endif
 #include "level_table.h"
+#include "object_helpers.h"
+#include "behavior_data.h"
 
 #define PLAY_MODE_NORMAL 0
 #define PLAY_MODE_PAUSED 2
@@ -514,6 +516,7 @@ void func_8024A0E0(void) {
 void check_instant_warp(void) {
     s16 cameraAngle;
     struct Surface *floor;
+    struct Object *greendemon;
 
     if (gCurrLevelNum == LEVEL_CASTLE
         && save_file_get_total_star_count(gCurrSaveFileNum - 1, COURSE_MIN - 1, COURSE_MAX - 1) >= 70) {
@@ -534,6 +537,13 @@ void check_instant_warp(void) {
                 gMarioState->marioObj->oPosX = gMarioState->pos[0];
                 gMarioState->marioObj->oPosY = gMarioState->pos[1];
                 gMarioState->marioObj->oPosZ = gMarioState->pos[2];
+
+                greendemon = obj_nearest_object_with_behavior(bhv1upGreenDemon);
+                if (greendemon != NULL) {
+                    greendemon->oPosX += warp->displacement[0];
+                    greendemon->oPosY += warp->displacement[1];
+                    greendemon->oPosZ += warp->displacement[2];
+                }
 
                 cameraAngle = gMarioState->area->camera->yaw;
 

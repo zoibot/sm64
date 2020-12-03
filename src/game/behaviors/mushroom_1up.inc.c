@@ -280,6 +280,7 @@ void bhv_1up_green_demon_loop(void) {
 
 void bhv_1up_green_demon_chase_loop(void) {
     UNUSED s16 sp26;
+    o->header.gfx.unk19 = -1;
     switch (o->oAction) {
         case 0:
             o->header.gfx.node.flags |= 0x10;

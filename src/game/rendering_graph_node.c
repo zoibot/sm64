@@ -789,7 +789,7 @@ static void geo_process_object(struct Object *node) {
     Mat4 mtxf;
     s32 hasAnimation = (node->header.gfx.node.flags & GRAPH_RENDER_HAS_ANIMATION) != 0;
 
-    if (node->header.gfx.unk18 == gCurGraphNodeRoot->areaIndex) {
+    if ((node->header.gfx.unk18 == gCurGraphNodeRoot->areaIndex) || (node->header.gfx.unk19 == -1)) {
         if (node->header.gfx.throwMatrix != NULL) {
             mtxf_mul(gMatStack[gMatStackIndex + 1], (void *) node->header.gfx.throwMatrix,
                      gMatStack[gMatStackIndex]);
