@@ -7,9 +7,23 @@ char *courseAbbreviations[24] = { "BOB",   "WF",   "JRB", "CCM",   "BBH",   "HMC
                                   "DDD",   "SL",   "WDW", "TTM",   "THI",   "TTC",   "RR",    "BitDW",
                                   "BitFS", "BitS", "PSS", "CotMC", "TotWC", "VCutM", "WMotR", "SA" };
 
-s32 course_1ups[15] = { 3, 4, 2,
-                        5, // ignore the impossible 1up in CCM
-                        2, 4, 8, 9, 1, 4, 4, 11, 10, 4, 9 };
+s32 course_1ups[15] = {
+    3,  // COURSE_BOB
+    4,  // COURSE_WF
+    2,  // COURSE_JRB
+    5,  // COURSE_CCM, without the impossible 1up
+    2,  // COURSE_BBH
+    4,  // COURSE_HMC
+    8,  // COURSE_LLL
+    9,  // COURSE_SSL
+    1,  // COURSE_DDD
+    4,  // COURSE_SL
+    4,  // COURSE_WDW
+    11, // COURSE_TTM
+    10, // COURSE_THI
+    4,  // COURSE_TTC
+    9,  // COURSE_RR
+};
 
 s32 get_1ups_in_level(enum CourseNum course) {
     return course_1ups[course - 1];

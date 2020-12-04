@@ -21,6 +21,7 @@ struct ObjectiveWeight {
 };
 
 #define NO_LIMIT -1
+
 struct ObjectiveWeight sWeightsEasy[] = {
     { BINGO_OBJECTIVE_COIN, 12, NO_LIMIT },
     { BINGO_OBJECTIVE_STAR, 12, NO_LIMIT },
@@ -68,6 +69,39 @@ struct ObjectiveWeight sWeightsCenter[] = {
 };
 s32 sWeightsSizeCenter = sizeof(sWeightsCenter) / sizeof(struct ObjectiveWeight);
 
+struct ObjectiveWeight *find_weight(
+    enum BingoObjectiveClass class,
+    enum BingoObjectiveType objective
+) {
+    struct ObjectiveWeight *weights;
+    s32 size;
+    s32 i;
+    switch (class) {
+        case BINGO_CLASS_EASY:
+            weights = sWeightsEasy;
+            size = sWeightsSizeEasy;
+            break;
+        case BINGO_CLASS_MEDIUM:
+            weights = sWeightsMedium;
+            size = sWeightsSizeMedium;
+            break;
+        case BINGO_CLASS_HARD:
+            weights = sWeightsHard;
+            size = sWeightsSizeHard;
+            break;
+        case BINGO_CLASS_CENTER:
+            weights = sWeightsCenter;
+            size = sWeightsSizeCenter;
+            break;
+    }
+    for (i = 0; i < size; i++) {
+        if (weights[i].objective == objective) {
+            return &weights[i];
+        }
+    }
+    return NULL;
+}
+
 struct ObjectiveWeight *get_random_objective_type(enum BingoObjectiveClass class) {
     struct ObjectiveWeight *weights;
     s32 size;
@@ -100,6 +134,7 @@ struct ObjectiveWeight *get_random_objective_type(enum BingoObjectiveClass class
         }
     }
     // TODO: if sum is 0, choose completely randomly
+    // (while initializing usesRemaining given disabled objs)
     want_sum = RandomU16() % sum;
 
     i = -1;
@@ -115,7 +150,7 @@ struct ObjectiveWeight *get_random_objective_type(enum BingoObjectiveClass class
 }
 
 enum BingoObjectiveType get_random_enabled_objective_type(enum BingoObjectiveClass class) {
-    u32 attempts = 50;
+    u32 attempts = 10;
     struct ObjectiveWeight *candidate;
     enum BingoObjectiveType i;
     s32 enabledSum = 0;
@@ -153,8 +188,6 @@ enum BingoObjectiveType get_random_enabled_objective_type(enum BingoObjectiveCla
     }
     // We shouldn't get here.
 }
-
-#undef NO_LIMIT
 
 s32 switch_to(s32 exclude) {
     s32 otherOne, otherTwo;
@@ -203,7 +236,150 @@ void shuffle(s32 *array, s32 length) {
     }
 }
 
-////////////////////////////////////////////////////////////////////////////////
+s32 are_duplicates(struct BingoObjective *obj1, struct BingoObjective *obj2) {
+    enum BingoObjectiveType type1, type2;
+
+    type1 = obj1->type;
+    type2 = obj2->type;
+    if (type1 == type2) {
+        if (
+            type1 == BINGO_OBJECTIVE_RED_COIN
+            || type1 == BINGO_OBJECTIVE_KILL_GOOMBAS
+            || type1 == BINGO_OBJECTIVE_KILL_BOBOMBS
+            || type1 == BINGO_OBJECTIVE_MULTICOIN
+            || type1 == BINGO_OBJECTIVE_MULTISTAR
+            || type1 == BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX
+            || type1 == BINGO_OBJECTIVE_LOSE_MARIO_HAT
+            || type1 == BINGO_OBJECTIVE_BLJ
+        ) {
+            return 1;
+        }
+        // There are several "course collectible" objectives that shouldn't be
+        // duplicated at all
+        if (
+            (
+                type1 == BINGO_OBJECTIVE_COIN
+                || type1 == BINGO_OBJECTIVE_1UPS_IN_LEVEL
+                || type1 == BINGO_OBJECTIVE_STARS_IN_LEVEL
+            )
+            && (
+                obj1->data.courseCollectableData.course
+                == obj2->data.courseCollectableData.course
+            )
+        ) {
+            return 1;
+        }
+    }
+    // (This union stuff is scary, but safe, because the unions are aligned in
+    // their member positions...)
+    if (type1 == BINGO_OBJECTIVE_STAR || type2 == BINGO_OBJECTIVE_STAR) {
+        // If one is a "plain star" objective, and the other is any type of
+        // star objective, and the objectives match, they're duplicates:
+        if (
+            BINGO_OBJECTIVE_STAR_MIN < type1 && type1 <= BINGO_OBJECTIVE_STAR_MAX
+            && BINGO_OBJECTIVE_STAR_MIN < type2 && type2 <= BINGO_OBJECTIVE_STAR_MAX
+            && obj1->data.starObjective.course == obj2->data.starObjective.course
+            && obj1->data.starObjective.starIndex == obj2->data.starObjective.starIndex
+        ) {
+            return 1;
+        }
+        // If one is a "plain star" objective and the other is "get all the
+        // stars in this course" and the courses match, they're duplicates:
+        if (
+            (type1 == BINGO_OBJECTIVE_STARS_IN_LEVEL || type2 == BINGO_OBJECTIVE_STARS_IN_LEVEL)
+            && obj1->data.starObjective.course == obj2->data.starObjective.course
+        ) {
+            return 1;
+        }
+    }
+    // The "multistar" objective, when less than or equal to the "stars in level"
+    // objective, is duplicative.
+    if (
+        (
+            type1 == BINGO_OBJECTIVE_STARS_IN_LEVEL && type2 == BINGO_OBJECTIVE_MULTISTAR
+            && (obj2->data.collectableData.toGet <= obj1->data.courseCollectableData.toGet)
+        )
+        || (
+            type2 == BINGO_OBJECTIVE_STARS_IN_LEVEL && type1 == BINGO_OBJECTIVE_MULTISTAR
+            && (obj1->data.collectableData.toGet <= obj2->data.courseCollectableData.toGet)
+        )
+    ) {
+        return 1;
+    }
+    return 0;
+}
+
+void replace_objective(struct BingoObjective *obj) {
+    struct ObjectiveWeight *weight = find_weight(obj->class, obj->type);
+    if (weight != NULL && weight->usesRemaining != NO_LIMIT) {
+        weight->usesRemaining++;
+    }
+    bingo_objective_init(obj, obj->class, get_random_enabled_objective_type(obj->class));
+}
+
+s32 replace_one_if_duplicated(
+    struct BingoObjective *obj1,
+    struct BingoObjective *obj2
+) {
+    if (obj1->initialized && obj2->initialized && are_duplicates(obj1, obj2)) {
+        if (RandomU16() % 2 == 0) {
+            replace_objective(obj1);
+        } else {
+            replace_objective(obj2);
+        }
+        return 1;
+    }
+    return 0;
+}
+
+s32 deduplicate_pass_single_bingo() {
+    s32 row, col, row1, row2, col1, col2, diag1, diag2;
+    struct BingoObjective *obj1;
+    struct BingoObjective *obj2;
+    enum BingoObjectiveType newtype;
+    s32 anyReplaced = 0;
+
+    for (row = 0; row < 5; row++) {
+        for (col1 = 0; col1 < 5 - 1; col1++) {
+            for (col2 = col1 + 1; col2 < 5; col2++) {
+                obj1 = &gBingoObjectives[row * 5 + col1];
+                obj2 = &gBingoObjectives[row * 5 + col2];
+                anyReplaced |= replace_one_if_duplicated(obj1, obj2);
+            }
+        }
+    }
+    for (col = 0; col < 5; col++) {
+        for (row1 = 0; row1 < 5 - 1; row1++) {
+            for (row2 = row1 + 1; row2 < 5; row2++) {
+                obj1 = &gBingoObjectives[row1 * 5 + col];
+                obj2 = &gBingoObjectives[row2 * 5 + col];
+                anyReplaced |= replace_one_if_duplicated(obj1, obj2);
+            }
+        }
+    }
+    for (diag1 = 0; diag1 < 5 - 1; diag1++) {
+        for (diag2 = diag1 + 1; diag2 < 5; diag2++) {
+            obj1 = &gBingoObjectives[diag1 * 5 + diag1];
+            obj2 = &gBingoObjectives[diag2 * 5 + diag2];
+            anyReplaced |= replace_one_if_duplicated(obj1, obj2);
+            obj1 = &gBingoObjectives[diag1 * 5 + (4 - diag1)];
+            obj2 = &gBingoObjectives[diag2 * 5 + (4 - diag2)];
+            anyReplaced |= replace_one_if_duplicated(obj1, obj2);
+        }
+    }
+    return anyReplaced;
+}
+
+void deduplicate() {
+    s32 attempts = 10;
+    while (attempts > 0) {
+        if (!deduplicate_pass_single_bingo()) {
+            break;
+        }
+        attempts--;
+    }
+    // Give up or success, whatever
+}
 
 // Bingo setup and update hooks
 void setup_bingo_objectives(u32 seed) {
@@ -259,9 +435,15 @@ void setup_bingo_objectives(u32 seed) {
         } else if (class == 0) {
             classType = BINGO_CLASS_MEDIUM;
         }
-        // TODO: avoid duplicate single stars, and having
-        // multiple multistars/multicoins in one row/col.
         type = get_random_enabled_objective_type(classType);
         bingo_objective_init(objective, classType, type);
     }
+
+    // Not done yet: need to deduplicate rows/columns/diagonals.
+    // For example if one objective is "kill 10 Goombas" and
+    // another is "kill 11 Goombas", we want to remove one of them
+    // and replace with another "non duplicate".
+    deduplicate();
 }
+
+#undef NO_LIMIT

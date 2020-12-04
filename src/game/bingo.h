@@ -52,8 +52,10 @@ enum BingoObjectiveType
 {
     BINGO_OBJECTIVE_TYPE_MIN,
     // Begin
+
     // Single stars:
-    BINGO_OBJECTIVE_STAR = BINGO_OBJECTIVE_TYPE_MIN,
+    BINGO_OBJECTIVE_STAR_MIN = BINGO_OBJECTIVE_TYPE_MIN,
+    BINGO_OBJECTIVE_STAR = BINGO_OBJECTIVE_STAR_MIN,
     BINGO_OBJECTIVE_STAR_A_BUTTON_CHALLENGE,
     BINGO_OBJECTIVE_STAR_B_BUTTON_CHALLENGE,
     BINGO_OBJECTIVE_STAR_Z_BUTTON_CHALLENGE,
@@ -62,6 +64,7 @@ enum BingoObjectiveType
     BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK,
     BINGO_OBJECTIVE_STAR_GREEN_DEMON,
     BINGO_OBJECTIVE_STAR_DAREDEVIL,
+    BINGO_OBJECTIVE_STAR_MAX = BINGO_OBJECTIVE_STAR_DAREDEVIL,
     // Per level:
     BINGO_OBJECTIVE_COIN,
     BINGO_OBJECTIVE_1UPS_IN_LEVEL,
@@ -170,9 +173,11 @@ struct CollectableData
 
 struct BingoObjective
 {
+    u8 initialized;  // marker for if this objective is all zeros
     enum BingoObjectiveType type;
     enum BingoObjectiveState state;
     enum BingoObjectiveIcon icon;
+    enum BingoObjectiveClass class;  // useful during board setup only
     char title[30];
     union {
         struct StarObjectiveData starObjective;

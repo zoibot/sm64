@@ -444,7 +444,7 @@ s32 bingo_objective_stars_in_level_init(
 
     objective->icon = BINGO_ICON_STARS_IN_LEVEL;
     objective->data.courseCollectableData.course = course;
-    objective->data.courseCollectableData.toGet = 6;
+    objective->data.courseCollectableData.toGet = 7;
     objective->data.courseCollectableData.gotten = 0;
     get_objective_title(objective);
 }
@@ -550,7 +550,9 @@ s32 bingo_objective_init(
     enum BingoObjectiveClass class,
     enum BingoObjectiveType type
 ) {
+    objective->initialized = 1;
     objective->type = type;
+    objective->class = class;
     switch (type) {
         case BINGO_OBJECTIVE_STAR:
             return bingo_objective_star_init(objective, class);
