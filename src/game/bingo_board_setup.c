@@ -370,11 +370,34 @@ s32 deduplicate_pass_single_bingo() {
     return anyReplaced;
 }
 
+s32 deduplicate_pass_multi_bingo() {
+    s32 idx1, idx2;
+    struct BingoObjective *obj1;
+    struct BingoObjective *obj2;
+    enum BingoObjectiveType newtype;
+    s32 anyReplaced = 0;
+
+    for (idx1 = 0; idx1 < 25 - 1; idx1++) {
+        for (idx2 = idx1 + 1; idx2 < 25; idx2++) {
+            obj1 = &gBingoObjectives[idx1];
+            obj2 = &gBingoObjectives[idx2];
+            anyReplaced |= replace_one_if_duplicated(obj1, obj2);
+        }
+    }
+    return anyReplaced;
+}
+
 void deduplicate() {
     s32 attempts = 10;
     while (attempts > 0) {
-        if (!deduplicate_pass_single_bingo()) {
-            break;
+        if (gbBingoTarget == 1) {
+            if (!deduplicate_pass_single_bingo()) {
+                break;
+            }
+        } else {
+            if (!deduplicate_pass_multi_bingo()) {
+                break;
+            }
         }
         attempts--;
     }
