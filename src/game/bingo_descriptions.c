@@ -272,9 +272,9 @@ void get_stars_in_level_objective_desc(struct BingoObjective *obj, char *desc) {
         strcpy(suffix, ": Complete!");
     } else {
         sprintf(suffix, ". Remaining: %d",
-                obj->data.courseCollectableData.toGet - obj->data.courseCollectableData.gotten);
+                7 - bingo_get_course_count(obj->data.starObjective.course));
     }
-    sprintf(desc, "Collect all the (non-100 Coin) stars in %s%s", revEncLevelName + 3, suffix);
+    sprintf(desc, "Collect all the stars in %s%s", revEncLevelName + 3, suffix);
 }
 
 void get_lose_hat_objective_desc(struct BingoObjective *obj, char *desc) {
