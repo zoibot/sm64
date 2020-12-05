@@ -120,6 +120,7 @@ void bingo_update(enum BingoObjectiveUpdate update) {
         // This is crufty but I can't think of any place else to put this...
         gBingoReverseJoystickActive = 0;
         gBingoDaredevilActive = 0;
+        gBingoClickGameActive = 0;
         gBingoClickCounter = -1;
     }
 
