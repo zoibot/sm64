@@ -154,6 +154,13 @@ void get_star_objective_desc(struct BingoObjective *obj, char *desc) {
         case BINGO_OBJECTIVE_STAR_GREEN_DEMON:
             strcpy(noTouchButtonText, " before the Green Demon catches you");
             break;
+        case BINGO_OBJECTIVE_STAR_CLICK_GAME:
+            sprintf(
+                noTouchButtonText,
+                " with only %d R button clicks",
+                obj->data.starClicksObjective.maxClicks
+            );
+            break;
         case BINGO_OBJECTIVE_STAR_DAREDEVIL:
             strcpy(noTouchButtonText, " with only 1 HP");
             break;
@@ -161,12 +168,23 @@ void get_star_objective_desc(struct BingoObjective *obj, char *desc) {
 
     if (obj->state == BINGO_STATE_COMPLETE) {
         sprintf(hintOrCompleteSuffix, ": Complete!");
+    } else if (obj->state == BINGO_STATE_FAILED_IN_THIS_COURSE) {
+        sprintf(hintOrCompleteSuffix, ": Failed!");
     } else if (obj->type == BINGO_OBJECTIVE_STAR_A_BUTTON_CHALLENGE) {
         if (obj->data.abcStarObjective.hint[0] == '\0') {
             sprintf(hintOrCompleteSuffix, "");
         } else {
             sprintf(hintOrCompleteSuffix, " (Hint: %s)", obj->data.abcStarObjective.hint);
         }
+    } else if (
+        obj->type == BINGO_OBJECTIVE_STAR_CLICK_GAME
+        && gCurrCourseNum == obj->data.starClicksObjective.course
+    ) {
+        sprintf(
+            hintOrCompleteSuffix,
+            ". Remaining: %d",
+            obj->data.starClicksObjective.maxClicks - obj->data.starClicksObjective.clicks
+        );
     } else {
         sprintf(hintOrCompleteSuffix, "");
     }
@@ -348,6 +366,7 @@ void describe_objective(struct BingoObjective *objective, char *desc) {
         case BINGO_OBJECTIVE_STAR_Z_BUTTON_CHALLENGE:
         case BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK:
         case BINGO_OBJECTIVE_STAR_GREEN_DEMON:
+        case BINGO_OBJECTIVE_STAR_CLICK_GAME:
         case BINGO_OBJECTIVE_STAR_DAREDEVIL:
             get_star_objective_desc(objective, desc);
             break;

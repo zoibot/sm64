@@ -17,6 +17,10 @@ extern s32 gbBingoShowTimer;
 extern s16 gbStarIndex;
 extern s32 gbCoinsJustGotten;
 extern s32 gBingoReverseJoystickActive;
+extern s32 gBingoClickGameActive;
+extern s32 gBingoClickCounter;
+extern s16 gBingoClickGamePrevCameraSettings;
+extern s32 gBingoClickGamePrevCameraIndex;
 extern s32 gBingoDaredevilActive;
 extern s32 gStarSelectScreenActive;
 
@@ -24,6 +28,7 @@ enum BingoModifier {
     BINGO_MODIFIER_NONE = 0,
     BINGO_MODIFIER_GREEN_DEMON,
     BINGO_MODIFIER_REVERSE_JOYSTICK,
+    BINGO_MODIFIER_CLICK_GAME,
     BINGO_MODIFIER_DAREDEVIL,
     BINGO_MODIFIER_MAX = BINGO_MODIFIER_DAREDEVIL,
     BINGO_STARS_TOTAL_AMOUNT = BINGO_MODIFIER_MAX + 1
@@ -63,6 +68,7 @@ enum BingoObjectiveType
     // Single stars, game-modifying:
     BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK,
     BINGO_OBJECTIVE_STAR_GREEN_DEMON,
+    BINGO_OBJECTIVE_STAR_CLICK_GAME,
     BINGO_OBJECTIVE_STAR_DAREDEVIL,
     BINGO_OBJECTIVE_STAR_MAX = BINGO_OBJECTIVE_STAR_DAREDEVIL,
     // Per level:
@@ -97,6 +103,7 @@ enum BingoObjectiveIcon {
     BINGO_ICON_STAR_TIMED,
     BINGO_ICON_STAR_REVERSE_JOYSTICK,
     BINGO_ICON_STAR_GREEN_DEMON,
+    BINGO_ICON_STAR_CLICK_GAME,
     BINGO_ICON_STAR_DAREDEVIL,
     BINGO_ICON_COIN,
     BINGO_ICON_MULTICOIN,
@@ -129,6 +136,7 @@ enum BingoObjectiveUpdate
     BINGO_UPDATE_A_PRESSED,
     BINGO_UPDATE_B_PRESSED,
     BINGO_UPDATE_Z_PRESSED,
+    BINGO_UPDATE_CAMERA_CLICK,
     BINGO_UPDATE_TIMER_FRAME,
     BINGO_UPDATE_GOT_1UP,
     BINGO_UPDATE_LOST_HAT,
@@ -158,6 +166,14 @@ struct StarTimerObjectiveData
     s32 timer;
 };
 
+struct StarClickCounterData // TODO: merge with timer objective
+{
+    enum CourseNum course;
+    s32 starIndex;
+    s32 maxClicks;
+    s32 clicks;
+};
+
 struct CourseCollectableData
 {
     enum CourseNum course;
@@ -183,6 +199,7 @@ struct BingoObjective
         struct StarObjectiveData starObjective;
         struct ABCStarObjectiveData abcStarObjective;
         struct StarTimerObjectiveData starTimerObjective;
+        struct StarClickCounterData starClicksObjective;
         struct CourseCollectableData courseCollectableData;
         struct CollectableData collectableData;
     } data;

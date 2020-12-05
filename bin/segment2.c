@@ -228,6 +228,10 @@ ALIGNED8 static const u8 seg2_texture_greendemon[] = {
 #include "textures/segment2/custom/segment2.greendemon.rgba16.inc.c"
 };
 
+ALIGNED8 static const u8 seg2_texture_rbutton[] = {
+#include "textures/segment2/custom/segment2.rbutton.rgba16.inc.c"
+};
+
 ALIGNED8 static const u8 seg2_texture_daredevil[] = {
 #include "textures/segment2/custom/segment2.daredevil.rgba16.inc.c"
 };
@@ -1960,6 +1964,7 @@ const u8 *const bingo_lut[] = {
     seg2_texture_timer,          // BINGO_ICON_STAR_TIMED
     seg2_texture_joystick,       // BINGO_ICON_STAR_REVERSE_JOYSTICK
     seg2_texture_greendemon,     // BINGO_ICON_STAR_GREEN_DEMON
+    seg2_texture_rbutton,        // BINGO_ICON_STAR_CLICK_GAME
     seg2_texture_daredevil,      // BINGO_ICON_STAR_DAREDEVIL
     texture_hud_char_coin,       // BINGO_ICON_COIN
     seg2_texture_multicoin,      // BINGO_ICON_MULTICOIN

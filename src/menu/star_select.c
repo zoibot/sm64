@@ -19,6 +19,7 @@
 #include "star_select.h"
 #include "game/bingo.h"
 #include "game/bingo_tracking_star.h"
+#include "game/camera.h"
 
 /**
  * @file star_select.c
@@ -149,6 +150,10 @@ void render_bingo_modifier_star(void) {
     sBingoStarSelectorModels[BINGO_MODIFIER_REVERSE_JOYSTICK] =
         spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR_BLUE,
                                   bhvActSelectorStarTypeReversed, -450, -60, -300, 0, 0, 0);
+
+    sBingoStarSelectorModels[BINGO_MODIFIER_CLICK_GAME] =
+        spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR_RED,
+                                  bhvActSelectorStarType, -450, -60, -300, 0, 0, 0);
 
     sBingoStarSelectorModels[BINGO_MODIFIER_DAREDEVIL] =
         spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR_RED,
@@ -311,6 +316,11 @@ void bhv_act_selector_loop(void) {
     } else {
         gBingoReverseJoystickActive = 0;
     }
+    if (gBingoStarSelected == BINGO_MODIFIER_CLICK_GAME) {
+        gBingoClickGameActive = 1;
+    } else {
+        gBingoClickGameActive = 0;
+    }
     if (gBingoStarSelected == BINGO_MODIFIER_DAREDEVIL) {
         gBingoDaredevilActive = 1;
     } else {
@@ -351,6 +361,7 @@ static void print_course_number(void) {
 u8 gBingoTextPressLOrR[] = { BINGO_PRESS_L_OR_R };
 u8 gBingoTextGreenDemon[] = { BINGO_GREEN_DEMON };
 u8 gBingoTextReverseJoystick[] = { BINGO_REVERSE_JOYSTICK };
+u8 gBingoTextClickGame[] = { BINGO_CLICK_GAME };
 u8 gBingoTextDaredevil[] = { BINGO_DAREDEVIL_1HP };
 
 /**
@@ -420,6 +431,9 @@ static void print_act_selector_strings(void) {
             break;
         case BINGO_MODIFIER_REVERSE_JOYSTICK:
             bingoModifierName = gBingoTextReverseJoystick;
+            break;
+        case BINGO_MODIFIER_CLICK_GAME:
+            bingoModifierName = gBingoTextClickGame;
             break;
         case BINGO_MODIFIER_DAREDEVIL:
             bingoModifierName = gBingoTextDaredevil;
@@ -493,6 +507,12 @@ s32 lvl_update_obj_and_load_act_button_actions(UNUSED s32 arg, UNUSED s32 unused
                 sLoadedActNum = sInitSelectedActNum;
             }
             gDialogCourseActNum = sSelectedActIndex + 1;
+            if (gBingoClickGameActive) {
+                gBingoClickGamePrevCameraSettings = sSelectionFlags;
+                gBingoClickGamePrevCameraIndex = gDialogCameraAngleIndex;
+                gDialogCameraAngleIndex = CAM_SELECTION_FIXED;
+                sSelectionFlags &= ~CAM_MODE_MARIO_SELECTED;
+            }
             // tell bingo to start the timer cuz it's too hard
             // to tell when to start it
             bingo_update(BINGO_UPDATE_RESET_TIMER);

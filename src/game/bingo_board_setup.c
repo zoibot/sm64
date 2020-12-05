@@ -40,6 +40,8 @@ struct ObjectiveWeight sWeightsMedium[] = {
     { BINGO_OBJECTIVE_STAR_B_BUTTON_CHALLENGE, 3, 3 },
     { BINGO_OBJECTIVE_STAR_Z_BUTTON_CHALLENGE, 3, 3 },
     { BINGO_OBJECTIVE_STAR_DAREDEVIL, 12, NO_LIMIT },
+    // TODO: add reverse joystick
+    { BINGO_OBJECTIVE_STAR_CLICK_GAME, 4, 2 },
     { BINGO_OBJECTIVE_RED_COIN, 12, 2 },
     { BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX, 12, 2 },
     { BINGO_OBJECTIVE_MULTISTAR, 6, NO_LIMIT },
@@ -53,8 +55,9 @@ struct ObjectiveWeight sWeightsHard[] = {
     { BINGO_OBJECTIVE_STARS_IN_LEVEL, 12, NO_LIMIT },
     { BINGO_OBJECTIVE_MULTICOIN, 3, NO_LIMIT },
     { BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK, 16, NO_LIMIT },
+    { BINGO_OBJECTIVE_STAR_CLICK_GAME, 16, NO_LIMIT },
     { BINGO_OBJECTIVE_STAR_GREEN_DEMON, 12, NO_LIMIT },
-    { BINGO_OBJECTIVE_STAR_DAREDEVIL, 12, 4 },
+    { BINGO_OBJECTIVE_STAR_DAREDEVIL, 8, 4 },
     { BINGO_OBJECTIVE_RED_COIN, 12, 1 },
     { BINGO_OBJECTIVE_MULTISTAR, 6, 1 },
 };
@@ -408,7 +411,11 @@ void deduplicate() {
 void setup_bingo_objectives(u32 seed) {
     int row, col;
     s32 objectiveClasses[5][5] = {
-        { 1, 0, 0, 0, 2 }, { 0, 2, 0, 1, 0 }, { 0, 0, 3, 0, 0 }, { 0, 1, 0, 2, 0 }, { 2, 0, 0, 0, 1 }
+        { 1, 0, 0, 0, 2 },
+        { 0, 2, 0, 1, 0 },
+        { 0, 0, 3, 0, 0 },
+        { 0, 1, 0, 2, 0 },
+        { 2, 0, 0, 0, 1 }
     };
     s32 indexOrder[25] = {
         0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24

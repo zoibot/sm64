@@ -284,6 +284,28 @@ s32 bingo_objective_star_green_demon_init(
     get_objective_title(objective);
 }
 
+s32 bingo_objective_star_click_game_init(
+    struct BingoObjective *objective, enum BingoObjectiveClass class
+) {
+    enum CourseNum course;
+    s32 star;
+
+    switch (class) {
+        // Obviously will need clicks per star...
+        default:
+            random_star_main_course_except_100c(&course, &star);
+            break;
+    }
+
+    objective->icon = BINGO_ICON_STAR_CLICK_GAME;
+    objective->data.starClicksObjective.course = course;
+    objective->data.starClicksObjective.starIndex = star;
+    objective->data.starClicksObjective.maxClicks = 5;
+    // not 0 due to bug where level entry counts as a click:
+    objective->data.starClicksObjective.clicks = -1;
+    get_objective_title(objective);
+}
+
 s32 bingo_objective_star_daredevil_init(
     struct BingoObjective *objective, enum BingoObjectiveClass class
 ) {
@@ -568,6 +590,8 @@ s32 bingo_objective_init(
             return bingo_objective_star_reverse_joystick_init(objective, class);
         case BINGO_OBJECTIVE_STAR_GREEN_DEMON:
             return bingo_objective_star_green_demon_init(objective, class);
+        case BINGO_OBJECTIVE_STAR_CLICK_GAME:
+            return bingo_objective_star_click_game_init(objective, class);
         case BINGO_OBJECTIVE_STAR_DAREDEVIL:
             return bingo_objective_star_daredevil_init(objective, class);
         case BINGO_OBJECTIVE_COIN:

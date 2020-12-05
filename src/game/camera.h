@@ -674,6 +674,7 @@ extern s32 gObjCutsceneDone;
 extern struct Camera *gCamera;
 #endif
 
+extern s16 sSelectionFlags; // bingo camera hack!
 extern struct Object *gCutsceneFocus;
 extern struct Object *gSecondCameraFocus;
 

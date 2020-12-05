@@ -196,6 +196,8 @@ void run_demo_inputs(void) {
 // update the controller struct with available inputs if present.
 void read_controller_inputs(void) {
     s32 i;
+    s8 unPressR = 0;
+    s8 pressR = 0;
 
     // if any controllers are plugged in, update the
     // controller information.
@@ -218,10 +220,47 @@ void read_controller_inputs(void) {
                 controller->rawStickX *= -1;
                 controller->rawStickY *= -1;
             }
+            if (gBingoClickGameActive && !gStarSelectScreenActive) {
+                // If you press/hold R while doing NOTHING else,
+                // we can unpress R for you:
+                if (
+                    (controller->controllerData->button & R_TRIG)
+                    && !(controller->controllerData->button & ~R_TRIG)
+                    && controller->rawStickX == 0
+                    && controller->rawStickY == 0
+                ) {
+                    unPressR = 1;
+                } else {
+                    pressR = 1;
+                    if (!(controller->buttonDown & R_TRIG)) {
+                        // Either end of previous click, or start of level (assuming they
+                        // didn't come in holding R).
+                        bingo_update(BINGO_UPDATE_CAMERA_CLICK);
+                        gBingoClickCounter++;
+                    }
+                }
+            }
+
             controller->buttonPressed = controller->controllerData->button
                                         & (controller->controllerData->button ^ controller->buttonDown);
             // 0.5x A presses are a good meme
             controller->buttonDown = controller->controllerData->button;
+
+            if (unPressR) {
+                controller->buttonPressed &= ~R_TRIG;
+                controller->buttonDown &= ~R_TRIG;
+            } else if (pressR) {
+                controller->buttonPressed |= R_TRIG;
+                controller->buttonDown |= R_TRIG;
+            }
+
+            // if (gBingoClickGameActive && !gStarSelectScreenActive) {
+            //     if (!(controller->buttonDown & R_TRIG)) {
+            //         controller->buttonDown |= R_TRIG;
+            //     }
+            //     if (!(controller->buttonPressed))
+            // }
+
             adjust_analog_stick(controller);
         } else // otherwise, if the controllerData is NULL, 0 out all of the inputs.
         {

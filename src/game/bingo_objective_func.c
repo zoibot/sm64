@@ -11,8 +11,10 @@
 #include "bingo_tracking_star.h"
 #include "segment2.h"
 #include "strcpy.h"
+#include "camera.h"
+#include "ingame_menu.h"
+#include "print.h"
 
-s32 gDebugThing;
 
 void objective_obtain_star(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
     s32 course;
@@ -111,6 +113,37 @@ void objective_obtain_star_greendemon(struct BingoObjective *objective, enum Bin
     }
 }
 
+void objective_obtain_star_click_game(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
+    s32 course;
+    s32 star;
+
+    if (update == BINGO_UPDATE_COURSE_CHANGED) {
+        if (gBingoClickGameActive) {
+            sSelectionFlags = gBingoClickGamePrevCameraSettings;
+            gDialogCameraAngleIndex = gBingoClickGamePrevCameraIndex;
+        }
+        gBingoClickGameActive = 0;
+        objective->data.starClicksObjective.clicks = -1;  // to avoid bug where entering a level is a click
+    } else if (objective->state == BINGO_STATE_FAILED_IN_THIS_COURSE) {
+        return;
+    } else if (
+        update == BINGO_UPDATE_CAMERA_CLICK
+        && gCurrCourseNum == objective->data.starClicksObjective.course
+    ) {
+        objective->data.starClicksObjective.clicks++;
+        // gBingoClickCounter = objective->data.starClicksObjective.clicks;
+        if (objective->data.starClicksObjective.clicks > objective->data.starClicksObjective.maxClicks) {
+            // objective->state = BINGO_STATE_FAILED_IN_THIS_COURSE;
+        }
+    } else if (update == BINGO_UPDATE_STAR && gBingoClickGameActive) {
+        course = objective->data.starObjective.course;
+        star = objective->data.starObjective.starIndex;
+        if (gCurrCourseNum == course && gbStarIndex == star) {
+            set_objective_state(objective, BINGO_STATE_COMPLETE);
+        }
+    }
+}
+
 void objective_obtain_star_daredevil(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
     s32 course;
     s32 star;
@@ -121,7 +154,7 @@ void objective_obtain_star_daredevil(struct BingoObjective *objective, enum Bing
         course = objective->data.starObjective.course;
         star = objective->data.starObjective.starIndex;
         if (gCurrCourseNum == course && gbStarIndex == star) {
-            gBingoDaredevilActive = 0;
+            // gBingoDaredevilActive = 0;
             set_objective_state(objective, BINGO_STATE_COMPLETE);
         }
     }
@@ -233,6 +266,9 @@ void update_objective(struct BingoObjective *objective, enum BingoObjectiveUpdat
             break;
         case BINGO_OBJECTIVE_STAR_GREEN_DEMON:
             objective_obtain_star_greendemon(objective, update);
+            break;
+        case BINGO_OBJECTIVE_STAR_CLICK_GAME:
+            objective_obtain_star_click_game(objective, update);
             break;
         case BINGO_OBJECTIVE_STAR_DAREDEVIL:
             objective_obtain_star_daredevil(objective, update);

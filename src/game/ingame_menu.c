@@ -18,6 +18,7 @@
 #include "print.h"
 #include "engine/math_util.h"
 #include "print.h"
+#include "bingo.h"
 
 extern Gfx *gDisplayListHead;
 extern s32 gGlobalTimer;
@@ -2511,8 +2512,14 @@ void render_pause_course_options(s16 x, s16 y, s8 *index, s16 yIndex) {
     print_generic_string(x + 10, y - 2, textContinue);
     print_generic_string(x + 10, y - 17, textExitCourse);
 
+    if (index[0] == 3 && gBingoClickGameActive) {
+        index[0] = 2;  // idfk what is happening but it works...
+    }
+
     if (index[0] != 3) {
-        print_generic_string(x + 10, y - 33, textCameraAngleR);
+        if (!gBingoClickGameActive) {
+            print_generic_string(x + 10, y - 33, textCameraAngleR);
+        }
         gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
 
         create_dl_translation_matrix(MENU_MTX_PUSH, x - X_VAL8, (y - ((index[0] - 1) * yIndex)) - Y_VAL8, 0);
@@ -2522,7 +2529,7 @@ void render_pause_course_options(s16 x, s16 y, s8 *index, s16 yIndex) {
         gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
     }
 
-    if (index[0] == 3) {
+    if (index[0] == 3) {  // this shouldn't even be possible for gBingoClickGameActive
         render_pause_camera_options(x - 42, y - 42, &gDialogCameraAngleIndex, 110);
     }
 }

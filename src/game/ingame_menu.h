@@ -112,7 +112,7 @@ extern s32 gDialogVariable;
 extern u16 gDialogTextAlpha;
 extern s16 gCutsceneMsgXOffset;
 extern s16 gCutsceneMsgYOffset;
-
+extern s8 gDialogCameraAngleIndex;
 extern s8 gRedCoinsCollected;
 
 extern void create_dl_identity_matrix(void);

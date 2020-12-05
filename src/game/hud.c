@@ -266,6 +266,12 @@ void render_hud_mario_lives(void) {
     print_text_fmt_int(54, HUD_TOP_Y, "%d", gHudDisplay.lives);
 }
 
+void render_hud_click_game(void) {
+    print_text(22, 20, "C"); // 'Mario Head' glyph
+    print_text(38, 20, "*"); // 'X' glyph
+    print_text_fmt_int(54, 20, "%d", gBingoClickCounter);
+}
+
 /**
  * Renders the amount of coins collected.
  */
@@ -466,6 +472,10 @@ void render_hud(void) {
             if (hudDisplayFlags & HUD_DISPLAY_FLAG_LIVES) {
                 gOptionSelectIconOpacity = 255;
                 render_hud_mario_lives();
+            }
+
+            if (gBingoClickGameActive) {
+                render_hud_click_game();
             }
 
             if (hudDisplayFlags & HUD_DISPLAY_FLAG_COIN_COUNT) {

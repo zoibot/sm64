@@ -3,7 +3,6 @@
 
 #include "bingo.h"
 
-extern s32 gDebugThing;
 
 void update_objective(struct BingoObjective *objective, enum BingoObjectiveUpdate update);
 
