@@ -163,6 +163,7 @@
 #define TEXT_TIMED_STAR _("Timed Stars")
 #define TEXT_REVERSE_JOYSTICK _("Reverse Joystick")
 #define TEXT_GREEN_DEMON _("Green Demon")
+#define TEXT_CLICK_GAME _("The N-Click Game")
 #define TEXT_DAREDEVIL _("Daredevil")
 #define TEXT_COIN_LEVEL _("Coins in Level")
 #define TEXT_TOTAL_COIN _("Total Coins")

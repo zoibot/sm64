@@ -839,6 +839,7 @@ static unsigned char textZButton[] = { TEXT_Z_BUTTON };
 static unsigned char textTimedStar[] = { TEXT_TIMED_STAR };
 static unsigned char textReverseJoystick[] = { TEXT_REVERSE_JOYSTICK };
 static unsigned char textGreenDemon[] = { TEXT_GREEN_DEMON };
+static unsigned char textClickGame[] = { TEXT_CLICK_GAME };
 static unsigned char textDaredevil[] = { TEXT_DAREDEVIL };
 static unsigned char textCoinLevel[] = { TEXT_COIN_LEVEL };
 static unsigned char textTotalCoin[] = { TEXT_TOTAL_COIN };
@@ -988,6 +989,10 @@ static void print_objective(enum BingoObjectiveType type, s32 pageNo) {
         case BINGO_OBJECTIVE_STAR_GREEN_DEMON:
             obj_icon = BINGO_ICON_STAR_GREEN_DEMON;
             option = textGreenDemon;
+            break;
+        case BINGO_OBJECTIVE_STAR_CLICK_GAME:
+            obj_icon = BINGO_ICON_STAR_CLICK_GAME;
+            option = textClickGame;
             break;
         case BINGO_OBJECTIVE_STAR_DAREDEVIL:
             obj_icon = BINGO_ICON_STAR_DAREDEVIL;
