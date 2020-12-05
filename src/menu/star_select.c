@@ -289,7 +289,7 @@ void bhv_act_selector_loop(void) {
         gBingoModifierScrollLockoutTimer--;
     } else {
         if (gPlayer1Controller->buttonDown & R_TRIG) {
-            gBingoModifierScrollLockoutTimer = 10;
+            gBingoModifierScrollLockoutTimer = 5;
             obj_disable_rendering_func(sBingoStarSelectorModels[gBingoStarSelected]);
             if (gBingoStarSelected == BINGO_MODIFIER_MAX) {
                 gBingoStarSelected = BINGO_MODIFIER_NONE;
@@ -300,7 +300,7 @@ void bhv_act_selector_loop(void) {
             // TODO: Use oOpacity to fade in/out selections.
             // sBingoStarSelectorModels[gBingoStarSelected]->oOpacity /= 2;
         } else if (gPlayer1Controller->buttonDown & L_TRIG) {
-            gBingoModifierScrollLockoutTimer = 10;
+            gBingoModifierScrollLockoutTimer = 5;
             obj_disable_rendering_func(sBingoStarSelectorModels[gBingoStarSelected]);
             if (gBingoStarSelected == 0) {
                 gBingoStarSelected = BINGO_MODIFIER_MAX;
