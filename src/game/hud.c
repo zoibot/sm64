@@ -14,6 +14,7 @@
 #include "bingo.h"
 #include "save_file.h"
 #include "print.h"
+#include "bingo_ui.h"
 
 /* @file hud.c
  * This file implements HUD rendering and power meter animations.
@@ -267,7 +268,9 @@ void render_hud_mario_lives(void) {
 }
 
 void render_hud_click_game(void) {
-    print_text(22, 20, "C"); // 'Mario Head' glyph
+    gSPDisplayList(gDisplayListHead++, dl_hud_img_begin);
+    print_bingo_icon(20, 20, BINGO_ICON_STAR_CLICK_GAME);
+    gSPDisplayList(gDisplayListHead++, dl_hud_img_end);
     print_text(38, 20, "*"); // 'X' glyph
     print_text_fmt_int(54, 20, "%d", gBingoClickCounter);
 }
