@@ -152,7 +152,7 @@ void render_bingo_modifier_star(void) {
                                   bhvActSelectorStarTypeReversed, -450, -60, -300, 0, 0, 0);
 
     sBingoStarSelectorModels[BINGO_MODIFIER_CLICK_GAME] =
-        spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR_RED,
+        spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR_GRAY,
                                   bhvActSelectorStarType, -450, -60, -300, 0, 0, 0);
 
     sBingoStarSelectorModels[BINGO_MODIFIER_DAREDEVIL] =
