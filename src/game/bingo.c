@@ -17,6 +17,7 @@
 #include "audio_defines.h"
 #include "audio/external.h"
 #include "bingo_objective_func.h"
+#include "camera.h"
 
 s32 gBingoInitialized = 0;
 u32 gBingoInitialSeed = 0;
@@ -120,7 +121,12 @@ void bingo_update(enum BingoObjectiveUpdate update) {
         // This is crufty but I can't think of any place else to put this...
         gBingoReverseJoystickActive = 0;
         gBingoDaredevilActive = 0;
-        gBingoClickGameActive = 0;
+        if (gBingoClickGameActive) {
+            sSelectionFlags = gBingoClickGamePrevCameraSettings;
+            gDialogCameraAngleIndex = gBingoClickGamePrevCameraIndex;
+            gBingoClickGameActive = 0;
+        }
+
         gBingoClickCounter = -1;
     }
 
