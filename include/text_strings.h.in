@@ -178,7 +178,8 @@
 #define TEXT_KILL_SPINDRIFTS _("Kill Spindrifts")
 #define TEXT_KILL_MR_IS _("Kill Mr. Is")
 
-#define TEXT_DPAD _("Use D-Pad to select")
+// #define TEXT_DPAD _("Use D-Pad to select")
+#define TEXT_DPAD _("Use C or D-Pad to select")
 #define TEXT_PRESS_A _("Press A to toggle")
 #define TEXT_PRESS_RL_1 _("Page 1. Press R or L...")
 #define TEXT_PRESS_RL_2 _("Page 2. Press R or L...")

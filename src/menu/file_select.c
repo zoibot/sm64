@@ -654,7 +654,7 @@ static void handle_cursor_button_input(void) {
         } else {
             if (sBingoOptionSelectTimer > 0) {
                 sBingoOptionSelectTimer--;
-            } else if (gPlayer3Controller->buttonPressed & D_JPAD) {
+            } else if (gPlayer3Controller->buttonPressed & (D_JPAD | D_CBUTTONS)) {
                 if (sBingoOptionSelection < BINGO_ENTRIES_PER_COL) {
                     sBingoOptionSelection = (sBingoOptionSelection + 1) % BINGO_ENTRIES_PER_COL;
                 } else {
@@ -664,7 +664,7 @@ static void handle_cursor_button_input(void) {
                         + BINGO_ENTRIES_PER_COL;
                 }
                 sBingoOptionSelectTimer = BINGO_OPTION_TIMER_FRAMES;
-            } else if (gPlayer3Controller->buttonPressed & U_JPAD) {
+            } else if (gPlayer3Controller->buttonPressed & (U_JPAD | U_CBUTTONS)) {
                 if (sBingoOptionSelection < BINGO_ENTRIES_PER_COL) {
                     sBingoOptionSelection =
                         (sBingoOptionSelection + BINGO_ENTRIES_PER_COL - 1) % BINGO_ENTRIES_PER_COL;
@@ -677,7 +677,7 @@ static void handle_cursor_button_input(void) {
                         + BINGO_ENTRIES_PER_COL;
                 }
                 sBingoOptionSelectTimer = BINGO_OPTION_TIMER_FRAMES;
-            } else if (gPlayer3Controller->buttonPressed & (L_JPAD | R_JPAD)) {
+            } else if (gPlayer3Controller->buttonPressed & (L_JPAD | R_JPAD | L_CBUTTONS | R_CBUTTONS)) {
                 sBingoOptionSelection += BINGO_ENTRIES_PER_COL;
                 sBingoOptionSelection %= (BINGO_OPTIONS_TOTAL_ENTRIES_PER_PAGE);
                 sBingoOptionSelectTimer = BINGO_OPTION_TIMER_FRAMES;
@@ -907,7 +907,7 @@ void print_option_nav_instructions(s32 pageNo) {
         switch (i) {
             case BINGO_OPTIONS_TOTAL_ENTRIES_PER_PAGE - 3:
                 option = textDPad;
-                optionLeftX = RIGHT_X + 34;
+                optionLeftX = RIGHT_X + 8;
                 break;
             case BINGO_OPTIONS_TOTAL_ENTRIES_PER_PAGE - 2:
                 option = textPressA;
