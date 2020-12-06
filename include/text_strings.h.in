@@ -175,6 +175,7 @@
 #define TEXT_RED_COINS _("Collect Red Coins")
 #define TEXT_KILL_GOOMBAS _("Kill Goombas")
 #define TEXT_KILL_BOBOMBS _("Kill Bob-ombs")
+#define TEXT_KILL_MR_IS _("Kill Mr. Is")
 
 #define TEXT_DPAD _("Use D-Pad to select")
 #define TEXT_PRESS_A _("Press A to toggle")

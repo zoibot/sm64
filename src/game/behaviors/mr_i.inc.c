@@ -1,4 +1,6 @@
 // mr_i.c.inc
+#include "game/bingo.h"
+#include "game/bingo_tracking_collectables.h"
 
 // this is actually the MrI particle loop function. piranha
 // plant code later on reuses this function.
@@ -107,6 +109,9 @@ void ActionMrI3(void) {
             obj_become_intangible();
             func_802A3004();
             o->oMrISize = sp1C * 0.6;
+            if (is_new_kill(BINGO_UPDATE_KILLED_MR_I, o->oBingoId)) {
+                bingo_update(BINGO_UPDATE_KILLED_MR_I);
+            }
             if (o->oBehParams2ndByte) {
                 o->oPosY += 100.0f;
                 create_star(1370, 2000.0f, -320.0f);
@@ -228,6 +233,7 @@ void ActionMrI0(void) {
         obj_set_pos_to_home();
     if (o->oDistanceToMario < 1500.0f)
         o->oAction = 1;
+    o->oBingoId = get_unique_id(BINGO_UPDATE_KILLED_MR_I, o->oHomeX, o->oHomeY, o->oHomeZ);
 }
 
 void (*sMrIActions[])(void) = { ActionMrI0, ActionMrI1, ActionMrI2, ActionMrI3 };

@@ -565,6 +565,21 @@ s32 bingo_objective_kill_bobombs_init(
     bingo_objective_collectable_init(objective, BINGO_ICON_KILL_BOBOMBS, enemiesToKill);
 }
 
+s32 bingo_objective_kill_mr_is_init(
+    struct BingoObjective *objective, enum BingoObjectiveClass class
+) {
+    s32 enemiesToKill;
+
+    switch (class) {
+        case BINGO_CLASS_MEDIUM:
+        default:
+            enemiesToKill = (RandomU16() % 4) + 3;  // between 3 and 6
+            break;
+    }
+
+    bingo_objective_collectable_init(objective, BINGO_ICON_KILL_MR_IS, enemiesToKill);
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 s32 bingo_objective_init(
@@ -616,5 +631,7 @@ s32 bingo_objective_init(
             return bingo_objective_kill_goombas_init(objective, class);
         case BINGO_OBJECTIVE_KILL_BOBOMBS:
             return bingo_objective_kill_bobombs_init(objective, class);
+        case BINGO_OBJECTIVE_KILL_MR_IS:
+            return bingo_objective_kill_mr_is_init(objective, class);
     }
 }

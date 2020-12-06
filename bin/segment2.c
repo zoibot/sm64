@@ -268,6 +268,10 @@ ALIGNED8 static const u8 seg2_texture_bobomb[] = {
 #include "textures/segment2/custom/segment2.bobomb.rgba16.inc.c"
 };
 
+ALIGNED8 static const u8 seg2_texture_mr_i[] = {
+#include "textures/segment2/custom/segment2.mr_i.rgba16.inc.c"
+};
+
 ALIGNED8 static const u8 texture_hud_char_star[] = {
 #include "textures/segment2/segment2.05C00.rgba16.inc.c"
 };
@@ -1977,6 +1981,7 @@ const u8 *const bingo_lut[] = {
     seg2_texture_yellowbox,      // BINGO_ICON_EXCLAMATION_MARK_BOX
     seg2_texture_goomba,         // BINGO_ICON_KILL_GOOMBAS
     seg2_texture_bobomb,         // BINGO_ICON_KILL_BOBOMBS
+    seg2_texture_mr_i,           // BINGO_ICON_KILL_MR_IS
 };
 s32 bingoLUTSize = sizeof(bingo_lut) / sizeof(bingo_lut[0]);
 
