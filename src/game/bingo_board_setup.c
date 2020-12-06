@@ -279,8 +279,8 @@ s32 are_duplicates(struct BingoObjective *obj1, struct BingoObjective *obj2) {
         // If one is a "plain star" objective, and the other is any type of
         // star objective, and the objectives match, they're duplicates:
         if (
-            BINGO_OBJECTIVE_STAR_MIN < type1 && type1 <= BINGO_OBJECTIVE_STAR_MAX
-            && BINGO_OBJECTIVE_STAR_MIN < type2 && type2 <= BINGO_OBJECTIVE_STAR_MAX
+            BINGO_OBJECTIVE_STAR_MIN <= type1 && type1 <= BINGO_OBJECTIVE_STAR_MAX
+            && BINGO_OBJECTIVE_STAR_MIN <= type2 && type2 <= BINGO_OBJECTIVE_STAR_MAX
             && obj1->data.starObjective.course == obj2->data.starObjective.course
             && obj1->data.starObjective.starIndex == obj2->data.starObjective.starIndex
         ) {
