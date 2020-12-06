@@ -1147,11 +1147,26 @@ static void print_bingo_configs() {
                 target = textEmpty;
                 offsetX = 0;
         }
+
+        gDPSetEnvColor(gDisplayListHead++, 120, 120, 90, MIN(sTextBaseAlpha, 170));
         print_generic_string(
-            LEFT_X,
+            LEFT_X + 2,
             TOP_Y + ROW_HEIGHT * (BINGO_ENTRIES_PER_COL - i) - 2,
             label
         );
+        gDPSetEnvColor(gDisplayListHead++, 255, 255, 140, MIN(sTextBaseAlpha, 200));
+        print_generic_string(
+            LEFT_X + 1,
+            TOP_Y + ROW_HEIGHT * (BINGO_ENTRIES_PER_COL - i) - 2,
+            label
+        );
+        gDPSetEnvColor(gDisplayListHead++, 120, 120, 90, MIN(sTextBaseAlpha, 170));
+        print_generic_string(
+            LEFT_X + offsetX + 1,
+            TOP_Y + ROW_HEIGHT * (BINGO_ENTRIES_PER_COL - i) - 2,
+            target
+        );
+        gDPSetEnvColor(gDisplayListHead++, 255, 255, 140, MIN(sTextBaseAlpha, 200));
         print_generic_string(
             LEFT_X + offsetX,
             TOP_Y + ROW_HEIGHT * (BINGO_ENTRIES_PER_COL - i) - 2,
