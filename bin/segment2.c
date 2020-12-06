@@ -1966,13 +1966,13 @@ const u8 *const bingo_lut[] = {
     seg2_texture_failed,         // BINGO_ICON_FAILED
     texture_hud_char_O,          // BINGO_ICON_SUCCESS
     texture_hud_char_star,       // BINGO_ICON_STAR
+    seg2_texture_timer,          // BINGO_ICON_STAR_TIMED
     seg2_texture_abutton,        // BINGO_ICON_STAR_A_BUTTON_CHALLENGE
     seg2_texture_bbutton,        // BINGO_ICON_STAR_B_BUTTON_CHALLENGE
     seg2_texture_zbutton,        // BINGO_ICON_STAR_Z_BUTTON_CHALLENGE
-    seg2_texture_timer,          // BINGO_ICON_STAR_TIMED
+    seg2_texture_rbutton,        // BINGO_ICON_STAR_CLICK_GAME
     seg2_texture_joystick,       // BINGO_ICON_STAR_REVERSE_JOYSTICK
     seg2_texture_greendemon,     // BINGO_ICON_STAR_GREEN_DEMON
-    seg2_texture_rbutton,        // BINGO_ICON_STAR_CLICK_GAME
     seg2_texture_daredevil,      // BINGO_ICON_STAR_DAREDEVIL
     texture_hud_char_coin,       // BINGO_ICON_COIN
     seg2_texture_multicoin,      // BINGO_ICON_MULTICOIN
