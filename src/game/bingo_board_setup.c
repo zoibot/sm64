@@ -248,12 +248,7 @@ s32 are_duplicates(struct BingoObjective *obj1, struct BingoObjective *obj2) {
     type2 = obj2->type;
     if (type1 == type2) {
         if (
-            type1 == BINGO_OBJECTIVE_RED_COIN
-            || type1 == BINGO_OBJECTIVE_KILL_GOOMBAS
-            || type1 == BINGO_OBJECTIVE_KILL_BOBOMBS
-            || type1 == BINGO_OBJECTIVE_MULTICOIN
-            || type1 == BINGO_OBJECTIVE_MULTISTAR
-            || type1 == BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX
+            (BINGO_OBJECTIVE_COLLECTABLE_MIN <= type1 && type1 <= BINGO_OBJECTIVE_COLLECTABLE_MAX)
             || type1 == BINGO_OBJECTIVE_LOSE_MARIO_HAT
             || type1 == BINGO_OBJECTIVE_BLJ
         ) {
