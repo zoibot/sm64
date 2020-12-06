@@ -2494,6 +2494,35 @@ s32 obj_set_hitbox_and_die_if_attacked(struct ObjectHitbox *hitbox, s32 deathSou
     return interacted;
 }
 
+s32 obj_set_hitbox_and_die_if_attacked_bingo(
+    struct ObjectHitbox *hitbox, s32 deathSound, s32 noLootCoins, enum BingoObjectiveUpdate update
+) {
+    s32 interacted = FALSE;
+
+    set_object_hitbox(o, hitbox);
+
+    if (noLootCoins) {
+        o->oNumLootCoins = 0;
+    }
+
+    if (o->oInteractStatus & INT_STATUS_INTERACTED) {
+        if (o->oInteractStatus & INT_STATUS_WAS_ATTACKED) {
+            func_802A3004();
+            spawn_object_loot_yellow_coins(o, o->oNumLootCoins, 20.0f);
+            if (is_new_kill(update, o->oBingoId)) {
+                bingo_update(update);
+            }
+            mark_object_for_deletion(o);
+            create_sound_spawner(deathSound);
+        } else {
+            interacted = TRUE;
+        }
+    }
+
+    o->oInteractStatus = 0;
+    return interacted;
+}
+
 void func_802A3C98(f32 sp18, s32 sp1C) {
     func_802AA618(0, 0, sp18);
     spawn_triangle_break_particles(30, 138, 3.0f, 4);

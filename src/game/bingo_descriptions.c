@@ -342,6 +342,9 @@ void get_collectable_objective_desc(struct BingoObjective *obj, char *desc) {
         case BINGO_OBJECTIVE_KILL_BOBOMBS:
             strcpy(collectName, "Bob-ombs");
             break;
+        case BINGO_OBJECTIVE_KILL_SPINDRIFTS:
+            strcpy(collectName, "Spindrifts");
+            break;
         case BINGO_OBJECTIVE_KILL_MR_IS:
             strcpy(collectName, "Mr. Is");
             break;
@@ -401,6 +404,7 @@ void describe_objective(struct BingoObjective *objective, char *desc) {
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
         case BINGO_OBJECTIVE_KILL_GOOMBAS:
         case BINGO_OBJECTIVE_KILL_BOBOMBS:
+        case BINGO_OBJECTIVE_KILL_SPINDRIFTS:
         case BINGO_OBJECTIVE_KILL_MR_IS:
             get_collectable_objective_desc(objective, desc);
             break;

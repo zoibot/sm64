@@ -108,6 +108,7 @@ void get_objective_title(struct BingoObjective *objective) {
         case BINGO_OBJECTIVE_RED_COIN:
         case BINGO_OBJECTIVE_KILL_GOOMBAS:
         case BINGO_OBJECTIVE_KILL_BOBOMBS:
+        case BINGO_OBJECTIVE_KILL_SPINDRIFTS:
         case BINGO_OBJECTIVE_KILL_MR_IS:
             get_collectable_objective_title(objective);
             break;

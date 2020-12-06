@@ -2,6 +2,7 @@
 #define OBJECT_HELPERS2_H
 
 #include "types.h"
+#include "bingo.h"
 
 // TODO: join this together with object_helpers.h
 
@@ -53,6 +54,7 @@ s32 item_in_array(s8,s8*);
 extern void bhv_init_room(void); // 802A3978
 extern void obj_enable_rendering_if_mario_in_room(void);
 s32 obj_set_hitbox_and_die_if_attacked(struct ObjectHitbox*,s32,s32);
+s32 obj_set_hitbox_and_die_if_attacked_bingo(struct ObjectHitbox*,s32,s32,enum BingoObjectiveUpdate);
 void func_802A3C98(f32 sp18, s32 sp1C);
 void set_object_collision_data(struct Object*, const void*);
 void obj_if_hit_wall_bounce_away(void);
