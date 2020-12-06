@@ -124,8 +124,8 @@ void bingo_update(enum BingoObjectiveUpdate update) {
         if (gBingoClickGameActive) {
             sSelectionFlags = gBingoClickGamePrevCameraSettings;
             gDialogCameraAngleIndex = gBingoClickGamePrevCameraIndex;
-            gBingoClickGameActive = 0;
         }
+        gBingoClickGameActive = 0;
 
         gBingoClickCounter = -1;
     }

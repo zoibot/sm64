@@ -513,9 +513,6 @@ s32 lvl_update_obj_and_load_act_button_actions(UNUSED s32 arg, UNUSED s32 unused
                 gDialogCameraAngleIndex = CAM_SELECTION_FIXED;
                 sSelectionFlags &= ~CAM_MODE_MARIO_SELECTED;
             }
-            // tell bingo to start the timer cuz it's too hard
-            // to tell when to start it
-            bingo_update(BINGO_UPDATE_RESET_TIMER);
             gStarSelectScreenActive = 0;
         }
     }
