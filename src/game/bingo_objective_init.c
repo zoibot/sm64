@@ -382,12 +382,12 @@ s32 bingo_objective_coin_init(
             break;
         case BINGO_CLASS_MEDIUM:
             course = random_main_course();
-            coins = ((RandomU16() % 90) + 10); // between 10 and 100
+            coins = ((RandomU16() % 40) + 50); // between 50 and 99
             break;
         case BINGO_CLASS_CENTER:
         case BINGO_CLASS_HARD:
             course = random_main_course();
-            coins = ((RandomU16() % 20) + 80); // between 80 and 100
+            coins = ((RandomU16() % 20) + 80); // between 80 and 99
             break;
     }
     objective->icon = BINGO_ICON_COIN;
