@@ -34,13 +34,13 @@ void get_star_objective_title(struct BingoObjective *objective) {
     } else if (course == COURSE_PSS) {
         switch (star) {
             case PSS_STAR_FAST:
-                strcpy(PSSname, "FAST");
+                strcpy(PSSname, "21s");
                 break;
             case PSS_STAR_SLOW:
-                strcpy(PSSname, "SLOW");
+                strcpy(PSSname, "BOX");
                 break;
         }
-        sprintf(objective->title, "%s%c%s", abbrev, TEXT_FILLED_STAR, PSSname);
+        sprintf(objective->title, "%s %s", abbrev, PSSname);
     } else {
         sprintf(objective->title, "%s%c", abbrev, TEXT_FILLED_STAR);
     }
