@@ -155,6 +155,8 @@
 #define TEXT_TARGET_3 _("3 Bingos")
 #define TEXT_TARGET_BLACKOUT _("Blackout")
 
+#define TEXT_TOGGLE_ALL _("Toggle all")
+
 #define TEXT_SINGLE_STAR _("Single Star")
 #define TEXT_MULTI_STAR _("Multiple Stars")
 #define TEXT_A_BUTTON _("A Button Challenge")
@@ -178,7 +180,6 @@
 #define TEXT_KILL_SPINDRIFTS _("Kill Spindrifts")
 #define TEXT_KILL_MR_IS _("Kill Mr. Is")
 
-// #define TEXT_DPAD _("Use D-Pad to select")
 #define TEXT_DPAD _("Use C or D-Pad to select")
 #define TEXT_PRESS_A _("Press A to toggle")
 #define TEXT_PRESS_RL_1 _("Page 1. Press R or L...")

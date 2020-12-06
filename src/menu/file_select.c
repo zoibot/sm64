@@ -115,7 +115,7 @@ u8 gBingoSeedText[] = { TEXT_RANDOM, 0xFF, 0xFF, 0xFF };
 
 s32 sBingoOptionSelection = 0;
 #define BINGO_ENTRIES_PER_COL 11
-#define BINGO_CONFIGS_IN_LEFT_COL 1 // not more than 10, hopefully
+#define BINGO_CONFIGS_IN_LEFT_COL 2 // not more than 10, hopefully
 #define BINGO_OPTIONS_IN_LEFT_COL_FIRST_PAGE (BINGO_ENTRIES_PER_COL - BINGO_CONFIGS_IN_LEFT_COL)
 #define BINGO_INSTRUCTIONS_IN_RIGHT_COL 3
 #define BINGO_OPTIONS_IN_RIGHT_COL (BINGO_ENTRIES_PER_COL - BINGO_INSTRUCTIONS_IN_RIGHT_COL)
@@ -831,6 +831,9 @@ static unsigned char text2Bingos[] = { TEXT_TARGET_2 };
 static unsigned char text3Bingos[] = { TEXT_TARGET_3 };
 static unsigned char textBlackout[] = { TEXT_TARGET_BLACKOUT };
 
+static unsigned char textToggleAll[] = { TEXT_TOGGLE_ALL };
+static unsigned char textEmpty[] = { 0xFF };
+
 static unsigned char textSingleStar[] = { TEXT_SINGLE_STAR };
 static unsigned char textMultiStar[] = { TEXT_MULTI_STAR };
 static unsigned char textAButton[] = { TEXT_A_BUTTON };
@@ -1086,61 +1089,74 @@ static void print_objective(enum BingoObjectiveType type, s32 pageNo) {
     }
 }
 
+static s32 bingo_config_target(s32 i, u8 **target) {
+    // Returns offsetX
+    if (sToggleCurrentOption && sBingoOptionSelection == i) {
+        sToggleCurrentOption = 0;
+        switch (gbBingoTarget) {
+            case 1:
+                gbBingoTarget = 2;
+                break;
+            case 2:
+                gbBingoTarget = 3;
+                break;
+            case 3:
+                gbBingoTarget = 12;
+                break;
+            case 12:
+                gbBingoTarget = 1;
+                break;
+        }
+    }
+    switch (gbBingoTarget) {
+        case 1:
+            *target = text1Bingo;
+            return 94;
+        case 2:
+            *target = text2Bingos;
+            return 89;
+        case 3:
+            *target = text3Bingos;
+            return 89;
+        case 12:
+            *target = textBlackout;
+            return 92;
+    }
+}
+
 static void print_bingo_configs() {
     s32 i;
     s32 offsetX;
+    u8 *label;
     u8 *target;
 
     for (i = 0; i < BINGO_CONFIGS_IN_LEFT_COL; i++) {
         switch (i) {
             case 0:
-                print_generic_string(
-                    LEFT_X,
-                    TOP_Y + ROW_HEIGHT * BINGO_ENTRIES_PER_COL - 2,
-                    textGameMode
-                );
-                if (sToggleCurrentOption && sBingoOptionSelection == 0) {
+                label = textGameMode;
+                offsetX = bingo_config_target(i, &target);
+                break;
+            case 1:
+                label = textToggleAll;
+                if (sToggleCurrentOption && sBingoOptionSelection == i) {
                     sToggleCurrentOption = 0;
-                    switch (gbBingoTarget) {
-                        case 1:
-                            gbBingoTarget = 2;
-                            break;
-                        case 2:
-                            gbBingoTarget = 3;
-                            break;
-                        case 3:
-                            gbBingoTarget = 12;
-                            break;
-                        case 12:
-                            gbBingoTarget = 1;
-                            break;
+                    for (i = 0; i < BINGO_OBJECTIVE_TOTAL_AMOUNT; i++) {
+                        gBingoObjectivesDisabled[i] ^= 1;
                     }
                 }
-                switch (gbBingoTarget) {
-                    case 1:
-                        offsetX = 94;
-                        target = text1Bingo;
-                        break;
-                    case 2:
-                        offsetX = 89;
-                        target = text2Bingos;
-                        break;
-                    case 3:
-                        offsetX = 89;
-                        target = text3Bingos;
-                        break;
-                    case 12:
-                        offsetX = 92;
-                        target = textBlackout;
-                        break;
-                }
-                print_generic_string(
-                    LEFT_X + offsetX,
-                    TOP_Y + ROW_HEIGHT * BINGO_ENTRIES_PER_COL - 2,
-                    target
-                );
-                break;
+                target = textEmpty;
+                offsetX = 0;
         }
+        print_generic_string(
+            LEFT_X,
+            TOP_Y + ROW_HEIGHT * (BINGO_ENTRIES_PER_COL - i) - 2,
+            label
+        );
+        print_generic_string(
+            LEFT_X + offsetX,
+            TOP_Y + ROW_HEIGHT * (BINGO_ENTRIES_PER_COL - i) - 2,
+            target
+        );
     }
 }
 
