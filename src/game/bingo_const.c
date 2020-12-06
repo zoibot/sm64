@@ -8,21 +8,21 @@ char *courseAbbreviations[24] = { "BOB",   "WF",   "JRB", "CCM",   "BBH",   "HMC
                                   "BitFS", "BitS", "PSS", "CotMC", "TotWC", "VCutM", "WMotR", "SA" };
 
 s32 course_1ups[15] = {
-    3,  // COURSE_BOB
-    4,  // COURSE_WF
-    2,  // COURSE_JRB
-    5,  // COURSE_CCM, without the impossible 1up
-    2,  // COURSE_BBH
-    4,  // COURSE_HMC
-    8,  // COURSE_LLL
-    9,  // COURSE_SSL
-    1,  // COURSE_DDD
-    4,  // COURSE_SL
-    4,  // COURSE_WDW
-    11, // COURSE_TTM
-    10, // COURSE_THI
-    4,  // COURSE_TTC
-    9,  // COURSE_RR
+    3,      // COURSE_BOB
+    4 - 1,  // COURSE_WF, without the 1 butterfly 1up
+    2,      // COURSE_JRB
+    6 - 1,  // COURSE_CCM, without the impossible 1up
+    2,      // COURSE_BBH
+    4,      // COURSE_HMC
+    8,      // COURSE_LLL
+    9,      // COURSE_SSL
+    1,      // COURSE_DDD
+    4,      // COURSE_SL
+    4,      // COURSE_WDW
+    11 - 1, // COURSE_TTM, without the 1 butterfly 1up
+    10 - 3, // COURSE_THI, without the 3 butterfly 1ups
+    4,      // COURSE_TTC
+    9,      // COURSE_RR
 };
 
 s32 get_1ups_in_level(enum CourseNum course) {
