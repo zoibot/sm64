@@ -100,8 +100,8 @@ s32 starTimes[90][3] = {
     { COURSE_WDW, 5, 87 }, { COURSE_WDW, 6, 62 },  { COURSE_TTM, 1, 35 }, { COURSE_TTM, 2, 52 },
     { COURSE_TTM, 3, 35 }, { COURSE_TTM, 4, 11 },  { COURSE_TTM, 5, 29 }, { COURSE_TTM, 6, 16 },
     { COURSE_THI, 1, 35 }, { COURSE_THI, 2, 30 },  { COURSE_THI, 3, 71 }, { COURSE_THI, 4, 28 },
-    { COURSE_THI, 5, 41 }, { COURSE_THI, 6, 63 },  { COURSE_TTC, 1, 16 }, { COURSE_TTC, 2, 19 },
-    { COURSE_TTC, 3, 13 }, { COURSE_TTC, 4, 35 },  { COURSE_TTC, 5, 23 }, { COURSE_TTC, 6, 22 },
+    { COURSE_THI, 5, 41 }, { COURSE_THI, 6, 63 },  { COURSE_TTC, 1, 20 }, { COURSE_TTC, 2, 25 },
+    { COURSE_TTC, 3, 20 }, { COURSE_TTC, 4, 65 },  { COURSE_TTC, 5, 30 }, { COURSE_TTC, 6, 40 },
     { COURSE_RR, 1, 28 },  { COURSE_RR, 2, 170 },  { COURSE_RR, 3, 33 },  { COURSE_RR, 4, 20 },
     { COURSE_RR, 5, 19 },  { COURSE_RR, 6, 70 }
 };
