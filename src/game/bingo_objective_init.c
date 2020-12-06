@@ -420,15 +420,12 @@ s32 bingo_objective_multistar_init(
         case BINGO_CLASS_EASY:
             numStars = 3 + (RandomU16() % 2);    // 3 to 4
             break;
-        default:
         case BINGO_CLASS_MEDIUM:
             numStars = 5 + (RandomU16() % 4);    // 5 to 8
             break;
+        default:
         case BINGO_CLASS_HARD:
-            numStars = 12 + (RandomU16() % 6);   // 12 to 17
-            break;
-        case BINGO_CLASS_CENTER:
-            numStars = 16 + (RandomU16() % 10);  // 16 to 25
+            numStars = 8 + (RandomU16() % 5);   // 8 to 12
             break;
     }
     bingo_objective_collectable_init(objective, BINGO_ICON_MULTISTAR, numStars);
