@@ -54,7 +54,6 @@ static void no_op(void) {
     gSaveBuffer.files[0][0].capPos[1] = 0;
     gSaveBuffer.files[0][0].capPos[2] = 0;
     gSaveBuffer.files[0][0].flags = 0x1F10FFCF;
-    // TODO: Determine if we need the cannons open or not.
     for (i = 0; i <= 15; i++) {
         gSaveBuffer.files[0][0].courseStars[i] = 0xFF;
     }
@@ -531,7 +530,8 @@ s32 save_file_get_course_coin_score(s32 fileIndex, s32 courseIndex) {
  * Return TRUE if the cannon is unlocked in the current course.
  */
 s32 save_file_is_cannon_unlocked(void) {
-    return (gSaveBuffer.files[gCurrSaveFileNum - 1][0].courseStars[gCurrCourseNum] & 0x80) != 0;
+    return TRUE;
+    // return (gSaveBuffer.files[gCurrSaveFileNum - 1][0].courseStars[gCurrCourseNum] & 0x80) != 0;
 }
 
 /**
