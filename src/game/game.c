@@ -21,6 +21,7 @@
 #include "bingo_board_setup.h"
 #include "bingo.h"
 #include "menu/star_select.h"
+#include "camera.h"
 
 // FIXME: I'm not sure all of these variables belong in this file, but I don't
 // know of a good way to split them
@@ -198,6 +199,7 @@ void read_controller_inputs(void) {
     s32 i;
     s8 unPressR = 0;
     s8 pressR = 0;
+    s8 alsoPressR = 0;
 
     // if any controllers are plugged in, update the
     // controller information.
@@ -232,11 +234,15 @@ void read_controller_inputs(void) {
                     unPressR = 1;
                 } else {
                     pressR = 1;
+                    // I HAVE NO IDEA HOW THIS FUCKING WORKS BUT IT'S DONE HOPEFULLY
+                    // I NEVER HAVE TO TOUCH IT AGAIN
+                    sCameraSoundFlags |= CAM_SOUND_FIXED_ACTIVE;
                     if (!(controller->buttonDown & R_TRIG)) {
                         // Either end of previous click, or start of level (assuming they
                         // didn't come in holding R).
                         bingo_update(BINGO_UPDATE_CAMERA_CLICK);
                         gBingoClickCounter++;
+                        alsoPressR = 1;
                     }
                 }
             }
@@ -250,8 +256,10 @@ void read_controller_inputs(void) {
                 controller->buttonPressed &= ~R_TRIG;
                 controller->buttonDown &= ~R_TRIG;
             } else if (pressR) {
-                controller->buttonPressed |= R_TRIG;
                 controller->buttonDown |= R_TRIG;
+                if (alsoPressR) {
+                    controller->buttonPressed |= R_TRIG;
+                }
             }
 
             // if (gBingoClickGameActive && !gStarSelectScreenActive) {

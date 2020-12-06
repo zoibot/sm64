@@ -675,6 +675,7 @@ extern struct Camera *gCamera;
 #endif
 
 extern s16 sSelectionFlags; // bingo camera hack!
+extern s16 sCameraSoundFlags; // another...
 extern struct Object *gCutsceneFocus;
 extern struct Object *gSecondCameraFocus;
 
