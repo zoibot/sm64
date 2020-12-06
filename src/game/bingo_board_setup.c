@@ -55,7 +55,7 @@ struct ObjectiveWeight sWeightsHard[] = {
     { BINGO_OBJECTIVE_STAR_A_BUTTON_CHALLENGE, 12, 2 },
     { BINGO_OBJECTIVE_1UPS_IN_LEVEL, 12, NO_LIMIT },
     { BINGO_OBJECTIVE_STARS_IN_LEVEL, 12, NO_LIMIT },
-    { BINGO_OBJECTIVE_MULTICOIN, 3, NO_LIMIT },
+    { BINGO_OBJECTIVE_MULTICOIN, 4, NO_LIMIT },
     { BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK, 16, NO_LIMIT },
     { BINGO_OBJECTIVE_STAR_CLICK_GAME, 16, NO_LIMIT },
     { BINGO_OBJECTIVE_STAR_GREEN_DEMON, 12, NO_LIMIT },
@@ -294,6 +294,7 @@ s32 are_duplicates(struct BingoObjective *obj1, struct BingoObjective *obj2) {
     }
     // The "multistar" objective, when less than or equal to the "stars in level"
     // objective, is duplicative.
+    // TODO: Add up the rest of the row's stars.
     if (
         (
             type1 == BINGO_OBJECTIVE_STARS_IN_LEVEL && type2 == BINGO_OBJECTIVE_MULTISTAR

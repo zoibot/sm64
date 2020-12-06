@@ -402,12 +402,8 @@ s32 bingo_objective_multicoin_init(
 ) {
     s32 numCoins;
     switch (class) {
-        case BINGO_CLASS_HARD:
         default:
-            numCoins = 200 + ((RandomU16() % 15) * 10); // [200:350:10]
-            break;
-        case BINGO_CLASS_CENTER:
-            numCoins = 300 + ((RandomU16() % 25) * 10); // [300:550:10]
+            numCoins = 100 + (RandomU16() % 151); // [100:250]
             break;
     }
     bingo_objective_collectable_init(objective, BINGO_ICON_MULTICOIN, numCoins);
