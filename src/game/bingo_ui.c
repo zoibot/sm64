@@ -50,9 +50,9 @@ void draw_bingo_win_screen() {
     char timestamp[10];
     char msg[40];
 
-    getTimeFmt(timestamp, gbGlobalBingoTimer);
+    getTimeFmtPrecise(timestamp, gbGlobalBingoTimer);
     sprintf(msg, "YOUR TIME WAS %s", timestamp);
-    print_text(40, 60, msg);
+    print_text(30, 60, msg);
 
     if (gbBingoShowCongratsCounter == (gbBingoShowCongratsLimit - 1)) {
         print_text(60, 40, "PRESS L AGAIN TO");
