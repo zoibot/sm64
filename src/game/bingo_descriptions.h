@@ -11,6 +11,7 @@ void get_level_name(char *buf, enum CourseNum course);
 void getTimeFmtTiny(char *buf, int timestamp);
 void getTimeFmt(char *buf, s32 timestamp);
 void getTimeFmtPrecise(char *buf, s32 timestamp);
+void getTimeFmtPreciseTiny(char *buf, s32 timestamp);
 
 void describe_objective(struct BingoObjective *obj, char*);
 

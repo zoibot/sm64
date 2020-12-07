@@ -660,6 +660,9 @@ u8 tiny_text_convert_ascii(char c) {
     if (c == ')') {
         return 0xE3;
     }
+    if (c == '"') {
+        return 66;
+    }
 
     return c; // lol idk
 }

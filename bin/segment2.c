@@ -3366,6 +3366,18 @@ ALIGNED8 static const u8 texture_122[] = {
 #include "textures/segment2/custom/tinyfont.122.ia8.inc.c"
 };
 
+ALIGNED8 static const u8 texture_34[] = {
+#include "textures/segment2/custom/tinyfont.34.ia8.inc.c"
+};
+
+ALIGNED8 static const u8 texture_39[] = {
+#include "textures/segment2/custom/tinyfont.39.ia8.inc.c"
+};
+
+ALIGNED8 static const u8 texture_46[] = {
+#include "textures/segment2/custom/tinyfont.46.ia8.inc.c"
+};
+
 const u8 *const seg2_tiny_font_lut[] = {
  texture_48, texture_49, texture_50, texture_51,
  texture_52, texture_53, texture_54, texture_55,
@@ -3385,8 +3397,9 @@ const u8 *const seg2_tiny_font_lut[] = {
 
 // texture_121, texture_122, 0, 0,
 // 0, 0, 0, 0,
- texture_121, texture_122, texture_0700B680, texture_0700B7C0,
- texture_0700B740, texture_0700B780,       0x00000000,       0x00000000,
+//  texture_121, texture_122, texture_0700B680, texture_0700B7C0,
+texture_121, texture_122, texture_39, texture_46,
+ texture_0700B740, texture_0700B780,       texture_34,       0x00000000,
 
        0x00000000,       0x00000000,       0x00000000,       0x00000000,
        0x00000000,       0x00000000,       0x00000000,       0x00000000,

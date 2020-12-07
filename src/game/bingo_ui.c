@@ -154,6 +154,8 @@ void draw_bingo_screen() {
     enum BingoObjectiveIcon icon;
     char desc_text[300];
     char seed_print[20];
+    char timestamp[40];
+    char time_print[40];
     char *bingo[5] = { "B", "I", "N", "G", "O" };
 
     // Shade the screen.
@@ -167,9 +169,16 @@ void draw_bingo_screen() {
         print_text_large(BINGO_MIN_X + spacing * i, BINGO_MAX_Y, bingo[i]);
     }
 
-    // Seed.
+    // Seed and time.
     sprintf(seed_print, "SEED %09d", gBingoInitialSeed);
     print_text_tiny(240, 214, seed_print);
+    print_text_tiny(240, 205, "VERSION 0.8a");
+    // if (gbBingosCompleted >= gbBingoTarget) {
+        // sprintf(timestamp, "TIME %09d", (s32) gbGlobalBingoTimer);
+        getTimeFmtPreciseTiny(timestamp, gbGlobalBingoTimer);
+        sprintf(time_print, "TIME %s", timestamp);
+        print_text_tiny(240, 196, time_print);
+    // }
 
     // Lines.
     for (i = 0; i < 4; i++) {
