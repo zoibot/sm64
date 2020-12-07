@@ -11,6 +11,7 @@
 #include "bingo_titles.h"
 #include "segment2.h"
 #include "strcpy.h"
+#include "level_table.h"
 
 #define TEXT_FILLED_STAR 0xFA
 
@@ -66,6 +67,20 @@ void get_in_level_objective_title(struct BingoObjective *objective) {
     sprintf(objective->title, "%s", abbrev);
 }
 
+void get_bowser_objective_title(struct BingoObjective *objective) {
+    char abbrev[6] = { 0xFF };
+    enum LevelNum level = objective->data.levelData.level;
+    if (level == LEVEL_BOWSER_1) {
+        get_course_abbreviation(COURSE_BITDW, &abbrev);
+    } else if (level == LEVEL_BOWSER_2) {
+        get_course_abbreviation(COURSE_BITFS, &abbrev);
+    } else if (level == LEVEL_BOWSER_3) {
+        get_course_abbreviation(COURSE_BITS, &abbrev);
+    }
+
+    sprintf(objective->title, "%s", abbrev);
+}
+
 void get_lose_mario_hat_objective_title(struct BingoObjective *objective) {
     sprintf(objective->title, "x1");
 }
@@ -98,6 +113,9 @@ void get_objective_title(struct BingoObjective *objective) {
         case BINGO_OBJECTIVE_1UPS_IN_LEVEL:
         case BINGO_OBJECTIVE_STARS_IN_LEVEL:
             get_in_level_objective_title(objective);
+            break;
+        case BINGO_OBJECTIVE_BOWSER:
+            get_bowser_objective_title(objective);
             break;
         case BINGO_OBJECTIVE_LOSE_MARIO_HAT:
         case BINGO_OBJECTIVE_BLJ:

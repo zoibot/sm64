@@ -9,6 +9,7 @@
 #include "bingo_objective_init.h"
 #include "bingo_titles.h"
 #include "strcpy.h"
+#include "level_table.h"
 
 s32 random_abc(enum CourseNum *course, s32 *star, char **hint) {
     u32 the_star = RandomU16() % numPossibleABC;
@@ -492,6 +493,30 @@ s32 bingo_objective_blj_init(
     get_objective_title(objective);
 }
 
+s32 bingo_objective_bowser_init(
+    struct BingoObjective *objective, enum BingoObjectiveClass class
+) {
+    enum LevelNum level;
+
+    switch (class) {
+        default:
+            if (RandomU16() % 2 == 0) {
+                level = LEVEL_BOWSER_1;
+            } else {
+                level = LEVEL_BOWSER_2;
+            }
+            break;
+        case BINGO_CLASS_CENTER:
+        case BINGO_CLASS_HARD:
+            level = LEVEL_BOWSER_3;
+            break;
+    }
+
+    objective->icon = BINGO_ICON_BOWSER;
+    objective->data.levelData.level = level;
+    get_objective_title(objective);
+}
+
 s32 bingo_objective_exclamation_mark_box_init(
     struct BingoObjective *objective, enum BingoObjectiveClass class
 ) {
@@ -631,6 +656,8 @@ s32 bingo_objective_init(
             return bingo_objective_lose_mario_hat_init(objective, class);
         case BINGO_OBJECTIVE_BLJ:
             return bingo_objective_blj_init(objective, class);
+        case BINGO_OBJECTIVE_BOWSER:
+            return bingo_objective_bowser_init(objective, class);
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
             return bingo_objective_exclamation_mark_box_init(objective, class);
         case BINGO_OBJECTIVE_RED_COIN:

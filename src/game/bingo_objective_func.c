@@ -177,6 +177,15 @@ s32 objective_blj(struct BingoObjective *objective, enum BingoObjectiveUpdate up
     }
 }
 
+s32 objective_bowser(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
+    if (
+        update == BINGO_UPDATE_BOWSER_KILLED
+        && gCurrLevelNum == objective->data.levelData.level
+    ) {
+        set_objective_state(objective, BINGO_STATE_COMPLETE);
+    }
+}
+
 s32 objective_generic_collectable(
     struct BingoObjective *objective,
     enum BingoObjectiveUpdate update,
@@ -228,6 +237,8 @@ s32 update_objective(struct BingoObjective *objective, enum BingoObjectiveUpdate
             return objective_lose_mario_hat(objective, update);
         case BINGO_OBJECTIVE_BLJ:
             return objective_blj(objective, update);
+        case BINGO_OBJECTIVE_BOWSER:
+            return objective_bowser(objective, update);
         case BINGO_OBJECTIVE_RED_COIN:
             return objective_generic_collectable(objective, update, BINGO_UPDATE_RED_COIN);
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:

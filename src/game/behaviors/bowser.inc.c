@@ -1,4 +1,5 @@
 // bowser.c.inc
+#include "game/bingo.h"
 
 void ActionBowserTailAnchor0(void) {
     struct Object *bowser = o->parentObj;
@@ -845,6 +846,7 @@ s32 func_802B6120(void) {
         }
         if (obj_update_dialog(2, 18, sBowserDefeatedDialogText[o->oBehParams2ndByte], 0)) {
             o->oBowserUnkF8++;
+            bingo_update(BINGO_UPDATE_BOWSER_KILLED);
             PlaySound2(SOUND_GENERAL2_BOWSER_EXPLODE);
             sequence_player_unlower(0, 60);
             sequence_player_fade_out(0, 1);

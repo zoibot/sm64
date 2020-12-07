@@ -2,6 +2,7 @@
 #define _BINGO_H
 
 #include "course_table.h"
+#include "level_table.h"
 
 // Global bingo state information
 extern s32 gBingoInitialized;
@@ -78,6 +79,8 @@ enum BingoObjectiveType
     // One-offs (for now):
     BINGO_OBJECTIVE_LOSE_MARIO_HAT,
     BINGO_OBJECTIVE_BLJ,
+    // Things that don't fit in any other category...
+    BINGO_OBJECTIVE_BOWSER,
     // Collectables:
     BINGO_OBJECTIVE_COLLECTABLE_MIN,
     BINGO_OBJECTIVE_MULTICOIN = BINGO_OBJECTIVE_COLLECTABLE_MIN,
@@ -116,6 +119,7 @@ enum BingoObjectiveIcon {
     BINGO_ICON_STARS_IN_LEVEL,
     BINGO_ICON_MARIO_HAT,
     BINGO_ICON_BLJ,
+    BINGO_ICON_BOWSER,
     BINGO_ICON_RED_COIN,
     BINGO_ICON_EXCLAMATION_MARK_BOX,
     BINGO_ICON_KILL_GOOMBAS,
@@ -148,7 +152,8 @@ enum BingoObjectiveUpdate
     BINGO_UPDATE_TIMER_FRAME,
     BINGO_UPDATE_GOT_1UP,
     BINGO_UPDATE_LOST_HAT,
-    BINGO_UPDATE_BLJ
+    BINGO_UPDATE_BLJ,
+    BINGO_UPDATE_BOWSER_KILLED
 };
 
 
@@ -194,6 +199,11 @@ struct CollectableData
     s32 gotten;
 };
 
+struct LevelObjectiveData
+{
+    enum LevelNum level;
+};
+
 struct BingoObjective
 {
     u8 initialized;  // marker for if this objective is all zeros
@@ -209,6 +219,7 @@ struct BingoObjective
         struct StarClickCounterData starClicksObjective;
         struct CourseCollectableData courseCollectableData;
         struct CollectableData collectableData;
+        struct LevelObjectiveData levelData;
     } data;
 };
 

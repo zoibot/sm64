@@ -1981,6 +1981,7 @@ const u8 *const bingo_lut[] = {
     seg2_texture_allstarslevel,  // BINGO_ICON_STARS_IN_LEVEL
     seg2_texture_mario_hat,      // BINGO_ICON_MARIO_HAT
     seg2_texture_blj,            // BINGO_ICON_BLJ
+    seg2_texture_failed,         // BINGO_ICON_BOWSER
     seg2_texture_red_coin,       // BINGO_ICON_RED_COIN
     seg2_texture_yellowbox,      // BINGO_ICON_EXCLAMATION_MARK_BOX
     seg2_texture_goomba,         // BINGO_ICON_KILL_GOOMBAS
