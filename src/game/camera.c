@@ -3121,7 +3121,7 @@ void update_camera(struct Camera *c) {
             gCameraMovementFlags &= ~CAM_MOVE_FIX_IN_PLACE;
         } else {
             // Play the "click" sound when fixed mode is released
-            if (sCameraSoundFlags & CAM_SOUND_FIXED_ACTIVE) {
+            if (sCameraSoundFlags & CAM_SOUND_FIXED_ACTIVE && (!gBingoClickGameActive || c->cutscene == 0) ) {
                 play_sound_rbutton_changed();
                 sCameraSoundFlags &= ~CAM_SOUND_FIXED_ACTIVE;
             }
