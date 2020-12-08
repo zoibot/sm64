@@ -290,6 +290,7 @@ void bhv_act_selector_loop(void) {
     } else {
         if (gPlayer1Controller->buttonDown & R_TRIG) {
             gBingoModifierScrollLockoutTimer = 5;
+            play_sound(SOUND_MENU_CHANGE_SELECT, gDefaultSoundArgs);
             obj_disable_rendering_func(sBingoStarSelectorModels[gBingoStarSelected]);
             if (gBingoStarSelected == BINGO_MODIFIER_MAX) {
                 gBingoStarSelected = BINGO_MODIFIER_NONE;
@@ -301,6 +302,7 @@ void bhv_act_selector_loop(void) {
             // sBingoStarSelectorModels[gBingoStarSelected]->oOpacity /= 2;
         } else if (gPlayer1Controller->buttonDown & L_TRIG) {
             gBingoModifierScrollLockoutTimer = 5;
+            play_sound(SOUND_MENU_CHANGE_SELECT, gDefaultSoundArgs);
             obj_disable_rendering_func(sBingoStarSelectorModels[gBingoStarSelected]);
             if (gBingoStarSelected == 0) {
                 gBingoStarSelected = BINGO_MODIFIER_MAX;
