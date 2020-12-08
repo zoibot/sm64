@@ -69,18 +69,37 @@ void draw_bingo_hud_timer() {
     const char empty_string[50] = { '\0' };
     char buffer[50];
     char buffer2[50];
+    s32 yOffset = (
+        // Koopa the Quick stars, where a timer might show
+        (gCurrCourseNum == COURSE_BOB && gCurrActNum == 2)
+        || (gCurrCourseNum == COURSE_THI && gCurrActNum == 3)
+    ) ? 168 : 190;
+
     for (i = 0; i < 5; i++) {
         for (j = 0; j < 5; j++) {
             objective = &gBingoObjectives[5 * i + j];
-            if (objective->type == BINGO_OBJECTIVE_STAR_TIMED
+            if (
+                objective->type == BINGO_OBJECTIVE_STAR_TIMED
                 && objective->data.starTimerObjective.course == gCurrCourseNum
                 && objective->state != BINGO_STATE_FAILED_IN_THIS_COURSE
-                && objective->state != BINGO_STATE_COMPLETE) {
-                getTimeFmtTiny(buffer, objective->data.starTimerObjective.maxTime
-                                           - objective->data.starTimerObjective.timer);
-                sprintf(buffer2, "%c%d: %s", 0xFA, objective->data.starTimerObjective.starIndex + 1,
-                        buffer);
-                print_text_not_tiny(242, 190 - (18 * (count + 1)), buffer2);
+                && objective->state != BINGO_STATE_COMPLETE
+            ) {
+                getTimeFmtTiny(
+                    buffer,
+                    objective->data.starTimerObjective.maxTime - objective->data.starTimerObjective.timer
+                );
+                sprintf(
+                    buffer2,
+                    "%c%d: %s",
+                    0xFA, // star icon
+                    objective->data.starTimerObjective.starIndex + 1,
+                    buffer
+                );
+                print_text_not_tiny(
+                    242,
+                    yOffset - (18 * (count + 1)),
+                    buffer2
+                );
                 count++;
                 strcpy(buffer, empty_string);
                 strcpy(buffer2, empty_string);
@@ -88,7 +107,7 @@ void draw_bingo_hud_timer() {
         }
     }
     if (count != 0) {
-        print_text_not_tiny(230, 190, "Time remaining:\xFF");
+        print_text_not_tiny(230, yOffset, "Time remaining:\xFF");
     }
 }
 
@@ -173,12 +192,9 @@ void draw_bingo_screen() {
     sprintf(seed_print, "SEED %09d", gBingoInitialSeed);
     print_text_tiny(240, 214, seed_print);
     print_text_tiny(240, 205, "VERSION 0.8a");
-    // if (gbBingosCompleted >= gbBingoTarget) {
-        // sprintf(timestamp, "TIME %09d", (s32) gbGlobalBingoTimer);
-        getTimeFmtPreciseTiny(timestamp, gbGlobalBingoTimer);
-        sprintf(time_print, "TIME %s", timestamp);
-        print_text_tiny(240, 196, time_print);
-    // }
+    getTimeFmtPreciseTiny(timestamp, gbGlobalBingoTimer);
+    sprintf(time_print, "TIME %s", timestamp);
+    print_text_tiny(240, 196, time_print);
 
     // Lines.
     for (i = 0; i < 4; i++) {
