@@ -204,8 +204,10 @@ void get_star_objective_desc(struct BingoObjective *obj, char *desc) {
         case BINGO_OBJECTIVE_STAR_CLICK_GAME:
             sprintf(
                 noTouchButtonText,
-                " with only %d R button clicks",
-                obj->data.starClicksObjective.maxClicks
+                " using%s %d R button click%s",
+                obj->data.starClicksObjective.maxClicks == 0 ? "" : " at most",
+                obj->data.starClicksObjective.maxClicks,
+                obj->data.starClicksObjective.maxClicks == 1 ? "" : "s"
             );
             break;
         case BINGO_OBJECTIVE_STAR_DAREDEVIL:
