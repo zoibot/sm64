@@ -358,6 +358,29 @@ void get_blj_objective_desc(struct BingoObjective *obj, char *desc) {
     sprintf(desc, "Perform a BLJ%s", suffix);
 }
 
+void get_bowser_objective_desc(struct BingoObjective *obj, char *desc) {
+    char revEncLevelName[60];
+    char suffix[20];
+    s8 bowserNum;
+    enum LevelNum level = obj->data.levelData.level;
+
+    if (level == LEVEL_BOWSER_1) {
+        bowserNum = 1;
+        get_level_name(revEncLevelName, COURSE_BITDW);
+    } else if (level == LEVEL_BOWSER_2) {
+        bowserNum = 2;
+        get_level_name(revEncLevelName, COURSE_BITFS);
+    } else if (level == LEVEL_BOWSER_3) {
+        bowserNum = 3;
+        get_level_name(revEncLevelName, COURSE_BITS);
+    }
+
+    if (obj->state == BINGO_STATE_COMPLETE) {
+        strcpy(suffix, ": Complete!");
+    }
+    sprintf(desc, "Defeat Bowser %d (in %s)%s", bowserNum, revEncLevelName + 3, suffix);
+}
+
 void get_collectable_objective_desc(struct BingoObjective *obj, char *desc) {
     char verb[15];
     char collectName[20];
@@ -446,6 +469,9 @@ void describe_objective(struct BingoObjective *objective, char *desc) {
             break;
         case BINGO_OBJECTIVE_BLJ:
             get_blj_objective_desc(objective, desc);
+            break;
+        case BINGO_OBJECTIVE_BOWSER:
+            get_bowser_objective_desc(objective, desc);
             break;
         case BINGO_OBJECTIVE_RED_COIN:
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
