@@ -300,7 +300,7 @@ void bhv_act_selector_loop(void) {
             obj_enable_rendering_func(sBingoStarSelectorModels[gBingoStarSelected]);
             // TODO: Use oOpacity to fade in/out selections.
             // sBingoStarSelectorModels[gBingoStarSelected]->oOpacity /= 2;
-        } else if (gPlayer1Controller->buttonDown & L_TRIG) {
+        } else if (gPlayer1Controller->buttonDown & (L_TRIG | Z_TRIG)) {
             gBingoModifierScrollLockoutTimer = 5;
             play_sound(SOUND_MENU_CHANGE_SELECT, gDefaultSoundArgs);
             obj_disable_rendering_func(sBingoStarSelectorModels[gBingoStarSelected]);

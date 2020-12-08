@@ -74,3 +74,6 @@ build/*
 !/sound/**/*custom*/**/*.aiff
 !/assets/**/*custom*.bin
 !/assets/**/*custom*/**/*.bin
+
+# Modified assets I'm too lazy to rename to contain "custom"
+!levels/menu/main_menu_seg7_us.0B500.ia8.png
