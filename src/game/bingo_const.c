@@ -109,3 +109,90 @@ s32 starTimes[90][3] = {
 s32 get_time_for_star(enum CourseNum course, s32 star) {
     return starTimes[(course - 1) * 6 + star][2];
 }
+
+#define X CLICK_GAME_STAR_BANNED  // indicating that the star should not be part of the click game
+#define E CLICK_GAME_MAX_IS_MIN   // indicating that the upper limit equals the lower limit
+struct ClickInfo clickGameStars[105] = {
+    // BOB
+    { COURSE_BOB, 1, 0, E }, { COURSE_BOB, 2, 0, 2 }, { COURSE_BOB, 3, 0, E },
+    { COURSE_BOB, 4, 0, E }, { COURSE_BOB, 5, 0, E }, { COURSE_BOB, 6, 0, E },
+    { COURSE_BOB, 7, 3, 5 }, // <-- random guess
+    // WF
+    //  - Top of Fortress is 0 to 1, depending on clicks it takes to get to warp
+    { COURSE_WF,  1, 0, E }, { COURSE_WF,  2, 0, 1 }, { COURSE_WF,  3, 0, E },
+    { COURSE_WF,  4, 0, E }, { COURSE_WF,  5, 0, E }, { COURSE_WF,  6, 0, E },
+    { COURSE_WF,  7, 0, E },
+    // JRB
+    //  - Can the Eel... is 1 to 4; people were able to do it in 1 but it seemed hard
+    //  - Red Coins is 3 to 5, since people didn't like 3 clicks but could do it
+    { COURSE_JRB, 1, 1, E }, { COURSE_JRB, 2, 1, 4 }, { COURSE_JRB, 3, 2, 4 },
+    { COURSE_JRB, 4, 3, 5 }, { COURSE_JRB, 5, 1, E }, { COURSE_JRB, 6, 1, E },
+    { COURSE_JRB, 7, X, E },
+    // CCM
+    //  - People hate the slide stars so they're disabled
+    //  - Snowman's Lost His Head, you have to know that you can activate the win
+    //    condition before doing the sliding, so it's disabled
+    { COURSE_CCM, 1, X, E }, { COURSE_CCM, 2, 2, E }, { COURSE_CCM, 3, X, E },
+    { COURSE_CCM, 4, 4, E }, { COURSE_CCM, 5, X, E }, { COURSE_CCM, 6, 1, E },
+    { COURSE_CCM, 7, X, E },
+    // BBH: Completely disallowed
+    { COURSE_BBH, 1, X, E }, { COURSE_BBH, 2, X, E }, { COURSE_BBH, 3, X, E },
+    { COURSE_BBH, 4, X, E }, { COURSE_BBH, 5, X, E }, { COURSE_BBH, 6, X, E },
+    { COURSE_BBH, 7, X, E },
+    // HMC
+    //  - 8 red coins is hell, obviously
+    //  - Idk, some of these might be too hard
+    { COURSE_HMC, 1, 0, E }, { COURSE_HMC, 2, X, E }, { COURSE_HMC, 3, 0, E },
+    { COURSE_HMC, 4, 5, E }, { COURSE_HMC, 5, 0, E }, { COURSE_HMC, 6, 0, 1 },
+    { COURSE_HMC, 7, X, E },
+    // LLL
+    { COURSE_LLL, 1, 0, E }, { COURSE_LLL, 2, 0, E }, { COURSE_LLL, 3, 0, E },
+    { COURSE_LLL, 4, 0, E }, { COURSE_LLL, 5, 1, E }, { COURSE_LLL, 6, 1, E },
+    { COURSE_LLL, 7, X, E },
+    // SSL
+    //  - Inside Ancient Pyramid is not easy but can be done in 0, so 1 is fine?
+    //  - 8 red coins sucks
+    { COURSE_SSL, 1, 0, E }, { COURSE_SSL, 2, 0, E }, { COURSE_SSL, 3, 1, 1 },
+    { COURSE_SSL, 4, X, E }, { COURSE_SSL, 5, X, E }, { COURSE_SSL, 6, X, E },
+    { COURSE_SSL, 7, X, E },
+    // DDD
+    //  - Manta Ray is very obnoxious
+    { COURSE_DDD, 1, 1, E }, { COURSE_DDD, 2, 1, E }, { COURSE_DDD, 3, 2, E },
+    { COURSE_DDD, 4, 1, E }, { COURSE_DDD, 5, X, E }, { COURSE_DDD, 6, 1, E },
+    { COURSE_DDD, 7, X, E },
+    // SL
+    { COURSE_SL,  1, 0, E }, { COURSE_SL,  2, 1, E }, { COURSE_SL,  3, 0, E },
+    { COURSE_SL,  4, 0, E }, { COURSE_SL,  5, 1, E }, { COURSE_SL,  6, 0, E },
+    { COURSE_SL,  7, X, E },
+    // WDW
+    { COURSE_WDW, 1, 0, E }, { COURSE_WDW, 2, 0, E }, { COURSE_WDW, 3, 0, E },
+    { COURSE_WDW, 4, 0, E }, { COURSE_WDW, 5, 0, E }, { COURSE_WDW, 6, 0, E },
+    { COURSE_WDW, 7, 0, E },
+    // TTM
+    //  - Mostly undoable
+    //  - Fly guy bounce makes Lonely Mushroom possible
+    //  - Mysterious Mountainside obviously possible
+    { COURSE_TTM, 1, X, E }, { COURSE_TTM, 2, X, E }, { COURSE_TTM, 3, X, E },
+    { COURSE_TTM, 4, 1, E }, { COURSE_TTM, 5, X, E }, { COURSE_TTM, 6, 0, E },
+    { COURSE_TTM, 7, X, E },
+    // THI
+    //  - KtQ too hard
+    { COURSE_THI, 1, 0, E }, { COURSE_THI, 2, 1, 3 }, { COURSE_THI, 3, X, E },
+    { COURSE_THI, 4, 0, 2 }, { COURSE_THI, 5, X, E }, { COURSE_THI, 6, 2, 4 },
+    { COURSE_THI, 7, X, E },
+    // TTC
+    { COURSE_TTC, 1, 0, 2 }, { COURSE_TTC, 2, 0, 1 }, { COURSE_TTC, 3, 0, 1 },
+    { COURSE_TTC, 4, X, E }, { COURSE_TTC, 5, 1, 3 }, { COURSE_TTC, 6, 0, E },
+    { COURSE_TTC, 7, X, E },
+    // RR
+    { COURSE_RR,  1, 3, E }, { COURSE_RR,  2, 2, E }, { COURSE_RR,  3, 0, 2 },
+    { COURSE_RR,  4, 1, 2 }, { COURSE_RR,  5, 3, E }, { COURSE_RR,  6, 3, E },
+    { COURSE_RR,  7, X, E }
+};
+
+struct ClickInfo *get_click_info_for_star(enum CourseNum course, s32 star) {
+    return &clickGameStars[(course - COURSE_BOB) * 7 + star];
+}
+
+#undef X
+#undef E

@@ -290,18 +290,32 @@ s32 bingo_objective_star_click_game_init(
 ) {
     enum CourseNum course;
     s32 star;
+    s32 clicks, clickDiff;
+    struct ClickInfo *clickInfo;
 
-    switch (class) {
-        // Obviously will need clicks per star...
-        default:
-            random_star_main_course_except_100c(&course, &star);
-            break;
+    do {
+        random_star_main_course(&course, &star);
+        clickInfo = get_click_info_for_star(course, star);
+    } while (clickInfo->minClicks == CLICK_GAME_STAR_BANNED);
+
+    if (clickInfo->maxClicks == CLICK_GAME_MAX_IS_MIN) {
+        clicks = clickInfo->minClicks;
+    } else {
+        switch (class) {
+            default:
+                clickDiff = clickInfo->maxClicks - clickInfo->minClicks;
+                clicks = clickInfo->minClicks + (RandomU16() % clickDiff) + 1;
+                break;
+            case BINGO_CLASS_HARD:
+                clicks = clickInfo->minClicks;
+                break;
+        }
     }
 
     objective->icon = BINGO_ICON_STAR_CLICK_GAME;
     objective->data.starClicksObjective.course = course;
     objective->data.starClicksObjective.starIndex = star;
-    objective->data.starClicksObjective.maxClicks = 5;
+    objective->data.starClicksObjective.maxClicks = clicks;
     // not 0 due to bug where level entry counts as a click:
     objective->data.starClicksObjective.clicks = -1;
     get_objective_title(objective);
