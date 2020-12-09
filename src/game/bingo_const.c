@@ -152,7 +152,7 @@ struct ClickInfo clickGameStars[105] = {
     // SSL
     //  - Inside Ancient Pyramid is not easy but can be done in 0, so 1 is fine?
     //  - 8 red coins sucks
-    { COURSE_SSL, 1, 0, E }, { COURSE_SSL, 2, 0, E }, { COURSE_SSL, 3, 1, 1 },
+    { COURSE_SSL, 1, 0, E }, { COURSE_SSL, 2, 0, E }, { COURSE_SSL, 3, 1, E },
     { COURSE_SSL, 4, X, E }, { COURSE_SSL, 5, X, E }, { COURSE_SSL, 6, X, E },
     { COURSE_SSL, 7, X, E },
     // DDD
