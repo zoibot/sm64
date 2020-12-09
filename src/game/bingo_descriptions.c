@@ -227,13 +227,19 @@ void get_star_objective_desc(struct BingoObjective *obj, char *desc) {
         }
     } else if (
         obj->type == BINGO_OBJECTIVE_STAR_CLICK_GAME
-        && gCurrCourseNum == obj->data.starClicksObjective.course
     ) {
-        sprintf(
-            hintOrCompleteSuffix,
-            ". Remaining: %d",
-            obj->data.starClicksObjective.maxClicks - obj->data.starClicksObjective.clicks
-        );
+        if (gCurrCourseNum == obj->data.starClicksObjective.course) {
+            sprintf(
+                hintOrCompleteSuffix,
+                ". Remaining: %d (Note: don't touch the controller during a click!)",
+                obj->data.starClicksObjective.maxClicks - obj->data.starClicksObjective.clicks
+            );
+        } else {
+            sprintf(
+                hintOrCompleteSuffix,
+                " (Note: don't touch the controller during a click!)"
+            );
+        }
     } else {
         sprintf(hintOrCompleteSuffix, "");
     }
