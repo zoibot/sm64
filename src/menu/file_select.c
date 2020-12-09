@@ -867,9 +867,19 @@ static unsigned char textPressRL_3[] = { TEXT_PRESS_RL_3 };
 static unsigned char textBingo64[] = { TEXT_BINGO64 };
 static unsigned char textCreatedBy[] = { TEXT_CREATED_BY };
 static unsigned char textSpecialThanks[] = { TEXT_SPECIAL_THANKS };
-static unsigned char textAlo[] = { TEXT_ALO };
-static unsigned char textGTM[] = { TEXT_GTM };
-static unsigned char textNo90[] = { TEXT_NO_90 };
+static unsigned char textSpecialThanks1[] = { TEXT_SPECIAL_THANKS_1 };
+static unsigned char textSpecialThanks2[] = { TEXT_SPECIAL_THANKS_2 };
+static unsigned char textSpecialThanks3[] = { TEXT_SPECIAL_THANKS_3 };
+static unsigned char textSpecialThanks4[] = { TEXT_SPECIAL_THANKS_4 };
+static unsigned char textSpecialThanks5[] = { TEXT_SPECIAL_THANKS_5 };
+static unsigned char textSpecialThanks6[] = { TEXT_SPECIAL_THANKS_6 };
+static unsigned char textSpecialThanks7[] = { TEXT_SPECIAL_THANKS_7 };
+static unsigned char textSpecialThanks8[] = { TEXT_SPECIAL_THANKS_8 };
+static unsigned char textSpecialThanks9[] = { TEXT_SPECIAL_THANKS_9 };
+static unsigned char textSpecialThanks10[] = { TEXT_SPECIAL_THANKS_10 };
+static unsigned char textSpecialThanks11[] = { TEXT_SPECIAL_THANKS_11 };
+static unsigned char textSpecialThanks12[] = { TEXT_SPECIAL_THANKS_12 };
+static unsigned char textSpecialThanks13[] = { TEXT_SPECIAL_THANKS_13 };
 
 
 #define LEFT_X     24
@@ -1234,6 +1244,7 @@ static void print_line(s32 startX, s32 length, s32 y, s32 alpha) {
 static void print_bingo_page_2(void) {
     s32 i;
     unsigned char *creditString;
+    unsigned char *creditString2;
     s32 optionLeftX = 90;
     s32 offsetY;
     s32 whiteTextAlpha = MIN(sTextBaseAlpha, 200);
@@ -1241,11 +1252,11 @@ static void print_bingo_page_2(void) {
 
     gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, whiteTextAlpha * 0.7);
-    for (i = 1; i < 8; i++) {
+    for (i = 0; i < 12; i++) {
         offsetY = ROW_HEIGHT * (BINGO_ENTRIES_PER_COL - i) - 2;
         creditString = NULL;
         switch (i) {
-            case 1:
+            case 0:
                 creditString = textBingo64;
                 creditsLeftX = optionLeftX + 38;
                 gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
@@ -1259,11 +1270,11 @@ static void print_bingo_page_2(void) {
                 gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, whiteTextAlpha * 0.7);
 
                 break;
-            case 2:
+            case 1:
                 creditString = textCreatedBy;
                 creditsLeftX = optionLeftX;
                 break;
-            case 4:
+            case 3:
                 creditString = textSpecialThanks;
                 creditsLeftX = optionLeftX + 26;
                 gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
@@ -1276,21 +1287,47 @@ static void print_bingo_page_2(void) {
                 gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
                 gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, whiteTextAlpha * 0.7);
                 break;
+            case 4:
+                creditString = textSpecialThanks1;
+                creditString2 = textSpecialThanks8;
+                creditsLeftX = optionLeftX - 10;
+                break;
             case 5:
-                creditString = textAlo;
-                creditsLeftX = optionLeftX;
+                creditString = textSpecialThanks2;
+                creditString2 = textSpecialThanks9;
+                creditsLeftX = optionLeftX - 10;
                 break;
             case 6:
-                creditString = textGTM;
-                creditsLeftX = optionLeftX;
+                creditString = textSpecialThanks3;
+                creditString2 = textSpecialThanks10;
+                creditsLeftX = optionLeftX - 10;
                 break;
             case 7:
-                creditString = textNo90;
-                creditsLeftX = optionLeftX;
+                creditString = textSpecialThanks4;
+                creditString2 = textSpecialThanks11;
+                creditsLeftX = optionLeftX - 10;
+                break;
+            case 8:
+                creditString = textSpecialThanks5;
+                creditString2 = textSpecialThanks12;
+                creditsLeftX = optionLeftX - 10;
+                break;
+            case 9:
+                creditString = textSpecialThanks6;
+                creditString2 = textSpecialThanks13;
+                creditsLeftX = optionLeftX - 10;
+                break;
+            case 10:
+                creditString = textSpecialThanks7;
+                creditString2 = NULL;  // I am a good programmer
+                creditsLeftX = optionLeftX - 10;
                 break;
         }
         if (creditString != NULL) {
             print_generic_string(creditsLeftX + 6, TOP_Y + offsetY, creditString);
+        }
+        if (creditString2 != NULL) {
+            print_generic_string(creditsLeftX + 6 + 80, TOP_Y + offsetY, creditString2);
         }
     }
     gSPDisplayList(gDisplayListHead++, dl_ia_text_end);

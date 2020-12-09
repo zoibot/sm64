@@ -191,9 +191,20 @@
 #define TEXT_BINGO64 _("Bingo64 (v0.8a)")
 #define TEXT_CREATED_BY _("by Quate and genteelman")
 #define TEXT_SPECIAL_THANKS _("Special Thanks")
-#define TEXT_ALO _("AloXado320")
-#define TEXT_GTM _("GTM")
-#define TEXT_NO_90 _("No. 90")
+#define TEXT_SPECIAL_THANKS_1 _("AloXado320")
+#define TEXT_SPECIAL_THANKS_2 _("GTM")
+#define TEXT_SPECIAL_THANKS_3 _("No. 90")
+#define TEXT_SPECIAL_THANKS_4 _("GiBoss")
+#define TEXT_SPECIAL_THANKS_5 _("Kann")
+#define TEXT_SPECIAL_THANKS_6 _("Gyroge")
+#define TEXT_SPECIAL_THANKS_7 _("BillyWAR")
+#define TEXT_SPECIAL_THANKS_8 _("Sunk")
+#define TEXT_SPECIAL_THANKS_9 _("Joey Bag o' Donuts")
+#define TEXT_SPECIAL_THANKS_10 _("Lt. Train Wreck")
+#define TEXT_SPECIAL_THANKS_11 _("Zyon")
+#define TEXT_SPECIAL_THANKS_12 _("nim")
+#define TEXT_SPECIAL_THANKS_13 _("JoshDuMan")
+
 
 // Menu Options
 #define TEXT_SCORE _("SCORE")
