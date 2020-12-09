@@ -20,6 +20,8 @@
 #include "segment2.h"
 #include "ingame_menu.h"
 
+s8 gBingoAllowBoardToShow = 0;
+
 #define BINGO_MIN_X 21
 #define BINGO_MAX_X 230
 #define BINGO_MIN_Y 10
@@ -177,8 +179,12 @@ void draw_bingo_screen() {
     char time_print[40];
     char *bingo[5] = { "B", "I", "N", "G", "O" };
 
+    if (!gBingoAllowBoardToShow) {
+        return;
+    }
+
     // Shade the screen.
-    if (gPlayer1Controller->buttonDown & L_TRIG && gHudDisplay.flags != HUD_DISPLAY_NONE) {
+    if (gPlayer1Controller->buttonDown & L_TRIG /*&& gHudDisplay.flags != HUD_DISPLAY_NONE*/) {
         shade_screen_opacity(180);
     }
 

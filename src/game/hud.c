@@ -433,6 +433,9 @@ void render_hud(void) {
         sPowerMeterHUD.animation = POWER_METER_HIDDEN;
         sPowerMeterStoredHealth = 8;
         sPowerMeterVisibleTimer = 0;
+        if (gPlayer1Controller->buttonDown & L_TRIG /* need something else here for file select */) {
+            draw_bingo_screen();
+        }
     } else {
 #ifdef VERSION_EU
         // basically create_dl_ortho_matrix but guOrtho screen width is different

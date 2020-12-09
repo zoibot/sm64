@@ -30,6 +30,7 @@
 #include "level_table.h"
 #include "object_helpers.h"
 #include "behavior_data.h"
+#include "bingo_ui.h"
 
 #define PLAY_MODE_NORMAL 0
 #define PLAY_MODE_PAUSED 2
@@ -1228,6 +1229,10 @@ s32 init_level(void) {
  */
 s32 lvl_init_or_update(s16 initOrUpdate, UNUSED s32 unused) {
     s32 result = 0;
+    // This is a hack, but the first time lvl_init_or_update() is
+    // called should be the first time the bingo board is viewable.
+    // (It is called for the first time right after file select.)
+    gBingoAllowBoardToShow = 1;
 
     switch (initOrUpdate) {
         case 0:
