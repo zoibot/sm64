@@ -767,9 +767,10 @@ void ActionBowser3(void) {
 }
 
 void func_802B5C78(void) {
-    if (BITS)
+    if (BITS) {
+        bingo_update(BINGO_UPDATE_BOWSER_KILLED);
         gSecondCameraFocus = spawn_object(o, MODEL_STAR, bhvGrandStar);
-    else {
+    } else {
         gSecondCameraFocus = spawn_object(o, MODEL_BOWSER_KEY, bhvBowserKey);
         PlaySound2(SOUND_GENERAL2_BOWSER_KEY);
     }
