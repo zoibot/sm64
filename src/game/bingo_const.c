@@ -64,10 +64,10 @@ struct ABCData possibleABC[] = {
     { COURSE_WDW, 1, "Teleport to success." },
     // WDW3 is possible but totally RNG (for getting past Chuckya)
     // TTM1 is possible but 11 mins long and requires a HOLP placement
-    { COURSE_TTM, 2, "You may have to framewalk or pause buffer to get past the rolling log." },
+    // { COURSE_TTM, 2, "You may have to framewalk or pause buffer to get past the rolling log." },  // too hard for 0x
     { COURSE_TTM, 3, "Use a Fly Guy to get past the rolling log." },
     { COURSE_TTM, 4, "A precise dive can help you skip the slide." },
-    { COURSE_TTM, 5, "You may have to framewalk or pause buffer to get past the rolling log." },
+    // { COURSE_TTM, 5, "You may have to framewalk or pause buffer to get past the rolling log." },  // too hard for 0x
     { COURSE_TTM, 6, "Use the Crazy Box to get to the mushroom." },
     { COURSE_THI, 1, "Enter Huge Island and use the shell." },
     { COURSE_THI, 2, "Enter Huge Island and use the shell." },
