@@ -40,6 +40,7 @@ s32 gBingoClickCounter = 0;
 s16 gBingoClickGamePrevCameraSettings = 0;
 s32 gBingoClickGamePrevCameraIndex = 0;
 s32 gBingoDaredevilActive = 0;
+s32 gBingoDaredevilPrevHealth = 0;
 s32 gStarSelectScreenActive = 0;
 
 // Star Selector count models printed in the act selector menu.

@@ -23,6 +23,7 @@ extern s32 gBingoClickCounter;
 extern s16 gBingoClickGamePrevCameraSettings;
 extern s32 gBingoClickGamePrevCameraIndex;
 extern s32 gBingoDaredevilActive;
+extern s32 gBingoDaredevilPrevHealth;
 extern s32 gStarSelectScreenActive;
 
 enum BingoModifier {

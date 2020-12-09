@@ -324,6 +324,7 @@ void bhv_act_selector_loop(void) {
         gBingoClickGameActive = 0;
     }
     if (gBingoStarSelected == BINGO_MODIFIER_DAREDEVIL) {
+        gBingoDaredevilPrevHealth = gMarioState->health;
         gBingoDaredevilActive = 1;
     } else {
         gBingoDaredevilActive = 0;
