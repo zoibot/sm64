@@ -64,7 +64,7 @@ void get_in_level_objective_title(struct BingoObjective *objective) {
     char abbrev[4];
     get_course_abbreviation(objective->data.courseCollectableData.course, &abbrev);
 
-    sprintf(objective->title, "%s", abbrev);
+    sprintf(objective->title, "%s %d", abbrev, objective->data.courseCollectableData.toGet);
 }
 
 void get_bowser_objective_title(struct BingoObjective *objective) {

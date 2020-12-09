@@ -317,17 +317,37 @@ void get_multistar_objective_desc(struct BingoObjective *obj, char *desc) {
 void get_1up_level_objective_desc(struct BingoObjective *obj, char *desc) {
     char revEncLevelName[60];
     char suffix[30];
+    char hint[30];
+    struct CourseCollectableData *data = &obj->data.courseCollectableData;
 
-    get_level_name(revEncLevelName, obj->data.starObjective.course);
+    get_level_name(revEncLevelName, data->course);
 
     if (obj->state == BINGO_STATE_COMPLETE) {
         strcpy(suffix, ": Complete!");
+        strcpy(hint, "");
     } else {
-        sprintf(suffix, ". Remaining: %d",
-                obj->data.courseCollectableData.toGet - obj->data.courseCollectableData.gotten);
+        sprintf(suffix, ". Remaining: %d", data->toGet - data->gotten);
+        sprintf(
+            hint,
+            " (Hint: there are %d total%s!)",
+            get_1ups_in_level(data->course),
+            // This is pretty bad/hardcoded...:
+            (
+                data->course == COURSE_WF
+                || data->course == COURSE_TTM
+                || data->course == COURSE_THI
+            ) ? ", plus butterflies" : ""
+        );
     }
 
-    sprintf(desc, "Collect all the 1up mushrooms in %s%s", revEncLevelName + 3, suffix);
+    sprintf(
+        desc,
+        "Collect%s 1up mushrooms in %s%s%s",
+        data->toGet == get_1ups_in_level(data->course) ? " all the" : "",
+        revEncLevelName + 3,
+        suffix,
+        hint
+    );
 }
 
 void get_stars_in_level_objective_desc(struct BingoObjective *obj, char *desc) {

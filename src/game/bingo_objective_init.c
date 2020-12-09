@@ -447,8 +447,17 @@ s32 bingo_objective_1ups_in_level_init(
 ) {
     enum CourseNum course;
     s32 _1ups;
+    s32 _1upsMin;
     switch (class) {
+        case BINGO_CLASS_MEDIUM:
         default:
+            do {
+                course = random_main_course();
+                _1upsMin = (s32) get_1ups_in_level(course) * 0.6f;
+                _1ups = (RandomU16() % (get_1ups_in_level(course) - _1upsMin)) + _1upsMin;
+            } while (_1ups < 3);
+            break;
+        case BINGO_CLASS_HARD:
             course = random_main_course();
             _1ups = get_1ups_in_level(course);
             break;
