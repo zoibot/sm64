@@ -230,4 +230,16 @@ extern u8 gBingoObjectivesDisabled[BINGO_OBJECTIVE_TOTAL_AMOUNT];
 void set_objective_state(struct BingoObjective *objective, enum BingoObjectiveState state);
 void bingo_update(enum BingoObjectiveUpdate update);
 
+
+// Some long-term thoughts...
+// I think that we can get rid of some of the large switch-cases
+// and repetitive code by having a static array of "ObjectiveInfo"
+// structs that glue together ObjectiveTypes, ObjectiveIcons,
+// perhaps BingoModifiers?, perhaps textures (get rid of bingo_lut),
+// option menu descriptors, and anything else static. This way
+// we can get rid of the long, repetitive switch cases that do this
+// gluing. (I would propose function pointers, too, for the init
+// and 'func' behaviors, but we have tried this before and it does
+// not work too well.) There should be as little friction as possible
+// in adding a new objective.
 #endif /* _BINGO_H */
