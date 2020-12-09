@@ -121,14 +121,21 @@ void bingo_update(enum BingoObjectiveUpdate update) {
     if (update == BINGO_UPDATE_COURSE_CHANGED) {
         // This is crufty but I can't think of any place else to put this...
         gBingoReverseJoystickActive = 0;
+
         gBingoDaredevilActive = 0;
+
         if (gBingoClickGameActive) {
             sSelectionFlags = gBingoClickGamePrevCameraSettings;
             gDialogCameraAngleIndex = gBingoClickGamePrevCameraIndex;
         }
         gBingoClickGameActive = 0;
-
         gBingoClickCounter = -1;
+
+        // Put this here because, long story short, the bingo modifier
+        // string renders before the game renders the stars; the star-rendering
+        // is what resets this back to NONE otherwise.
+        // TODO: be intelligent about retries
+        gBingoStarSelected = BINGO_MODIFIER_NONE;
     }
 
     // Timer updates can never result in bingo being won
