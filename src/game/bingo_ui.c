@@ -20,7 +20,7 @@
 #include "segment2.h"
 #include "ingame_menu.h"
 
-s8 gBingoAllowBoardToShow = 0;
+s8 gBingoAllowBoardToShow;
 
 #define BINGO_MIN_X 21
 #define BINGO_MAX_X 230

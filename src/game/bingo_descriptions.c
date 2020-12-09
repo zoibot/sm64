@@ -204,7 +204,7 @@ void get_star_objective_desc(struct BingoObjective *obj, char *desc) {
         case BINGO_OBJECTIVE_STAR_CLICK_GAME:
             sprintf(
                 noTouchButtonText,
-                " using%s %d R button click%s",
+                " using%s %d click%s in The Click Game!",
                 obj->data.starClicksObjective.maxClicks == 0 ? "" : " at most",
                 obj->data.starClicksObjective.maxClicks,
                 obj->data.starClicksObjective.maxClicks == 1 ? "" : "s"
@@ -228,10 +228,10 @@ void get_star_objective_desc(struct BingoObjective *obj, char *desc) {
     } else if (
         obj->type == BINGO_OBJECTIVE_STAR_CLICK_GAME
     ) {
-        if (gCurrCourseNum == obj->data.starClicksObjective.course) {
+        if (gCurrCourseNum == obj->data.starClicksObjective.course && gBingoClickGameActive) {
             sprintf(
                 hintOrCompleteSuffix,
-                ". Remaining: %d (Note: don't touch the controller during a click!)",
+                " Remaining: %d (Note: don't touch the controller during a click!)",
                 obj->data.starClicksObjective.maxClicks - obj->data.starClicksObjective.clicks
             );
         } else {

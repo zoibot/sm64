@@ -228,8 +228,8 @@ void read_controller_inputs(void) {
                 if (
                     (controller->controllerData->button & R_TRIG)
                     && !(controller->controllerData->button & ~R_TRIG)
-                    && controller->rawStickX == 0
-                    && controller->rawStickY == 0
+                    && ABS(controller->rawStickX) < 8
+                    && ABS(controller->rawStickY) < 8
                 ) {
                     unPressR = 1;
                 } else {
