@@ -177,6 +177,7 @@ void draw_bingo_screen() {
     char seed_print[20];
     char timestamp[40];
     char time_print[40];
+    char number[3];
     char *bingo[5] = { "B", "I", "N", "G", "O" };
 
     if (!gBingoAllowBoardToShow) {
@@ -248,6 +249,22 @@ void draw_bingo_screen() {
                 // 75 + spacing * (4 - i),
                 74 + spacing * (4 - i),
                 objective->title
+            );
+        }
+    }
+
+    // Icon add-ons: they tell you how many clicks/A presses/etc.
+    for (i = 0; i < 5; i++) {
+        for (j = 0; j < 5; j++) {
+            objective = &gBingoObjectives[5 * i + j];
+            if (objective->type != BINGO_OBJECTIVE_STAR_CLICK_GAME) {
+                continue;
+            }
+            sprintf(number, "%d ", objective->data.starClicksObjective.maxClicks);
+            print_text_tiny(
+                BINGO_MIN_X + spacing * j + 8 + 1 + 8,
+                55 + spacing * (4 - i),
+                number
             );
         }
     }
