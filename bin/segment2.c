@@ -138,11 +138,9 @@ ALIGNED8 static const u8 texture_hud_char_U[] = {
 #include "textures/segment2/segment2.03C00.rgba16.inc.c"
 };
 
-#if defined(VERSION_JP) || defined(VERSION_EU)
 ALIGNED8 static const u8 texture_hud_char_V[] = {
-#include "textures/segment2/segment2.03E00.rgba16.inc.c"
+#include "textures/segment2/custom/segment2.03E00.rgba16.inc.c"
 };
-#endif
 
 ALIGNED8 static const u8 texture_hud_char_W[] = {
 #include "textures/segment2/segment2.04000.rgba16.inc.c"
@@ -1938,7 +1936,7 @@ const u8 *const main_hud_lut[] = {
     texture_hud_char_G, texture_hud_char_H, texture_hud_char_I,               0x0,
     texture_hud_char_K, texture_hud_char_L, texture_hud_char_M, texture_hud_char_N,
     texture_hud_char_O, texture_hud_char_P,               0x0, texture_hud_char_R,
-    texture_hud_char_S, texture_hud_char_T, texture_hud_char_U,               0x0,
+    texture_hud_char_S, texture_hud_char_T, texture_hud_char_U, texture_hud_char_V,
     texture_hud_char_W,               0x0, texture_hud_char_Y,               0x0,
                   0x0,               0x0,               0x0,               0x0,
                   0x0,               0x0, seg2_texture_greendemon,  seg2_texture_joystick,

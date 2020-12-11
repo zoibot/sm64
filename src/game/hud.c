@@ -275,6 +275,13 @@ void render_hud_click_game(void) {
     print_text_fmt_int(54, 20, "%d", gBingoClickCounter);
 }
 
+void render_hud_reverse_joystick(void) {
+    gSPDisplayList(gDisplayListHead++, dl_hud_img_begin);
+    print_bingo_icon(20, 20, BINGO_ICON_STAR_REVERSE_JOYSTICK);
+    gSPDisplayList(gDisplayListHead++, dl_hud_img_end);
+    print_text(38, 20, "REV");
+}
+
 /**
  * Renders the amount of coins collected.
  */
@@ -482,6 +489,10 @@ void render_hud(void) {
 
             if (gBingoClickGameActive) {
                 render_hud_click_game();
+            }
+
+            if (gBingoReverseJoystickActive) {
+                render_hud_reverse_joystick();
             }
 
             if (hudDisplayFlags & HUD_DISPLAY_FLAG_COIN_COUNT) {
