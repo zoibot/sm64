@@ -275,8 +275,11 @@ s32 are_duplicates(struct BingoObjective *obj1, struct BingoObjective *obj2) {
     }
     // (This union stuff is scary, but safe, because the unions are aligned in
     // their member positions...)
-    if (type1 == BINGO_OBJECTIVE_STAR || type2 == BINGO_OBJECTIVE_STAR) {
-        // If one is a "plain star" objective, and the other is any type of
+    if (
+        (BINGO_OBJECTIVE_STAR_NO_DUPLICATES_MIN <= type1 && type1 <= BINGO_OBJECTIVE_STAR_NO_DUPLICATES_MAX)
+        || (BINGO_OBJECTIVE_STAR_NO_DUPLICATES_MIN <= type2 && type2 <= BINGO_OBJECTIVE_STAR_NO_DUPLICATES_MAX)
+    ) {
+        // If one is a star objective without a modifier, and the other is any type of
         // star objective, and the objectives match, they're duplicates:
         if (
             BINGO_OBJECTIVE_STAR_MIN <= type1 && type1 <= BINGO_OBJECTIVE_STAR_MAX
@@ -286,7 +289,7 @@ s32 are_duplicates(struct BingoObjective *obj1, struct BingoObjective *obj2) {
         ) {
             return 1;
         }
-        // If one is a "plain star" objective and the other is "get all the
+        // If one is a star objective without a modifier and the other is "get all the
         // stars in this course" and the courses match, they're duplicates:
         if (
             (type1 == BINGO_OBJECTIVE_STARS_IN_LEVEL || type2 == BINGO_OBJECTIVE_STARS_IN_LEVEL)
