@@ -1151,6 +1151,8 @@ s32 update_level(void) {
             break;
     }
 
+    bingo_update(BINGO_UPDATE_TIMER_FRAME_STAR);
+
     if (changeLevel) {
         func_80248C10();
         func_80248D90();

@@ -55,7 +55,7 @@ s32 objective_obtain_star_timer(struct BingoObjective *objective, enum BingoObje
     } else if (objective->state == BINGO_STATE_FAILED_IN_THIS_COURSE) {
         return;
     } else if (
-        update == BINGO_UPDATE_TIMER_FRAME
+        update == BINGO_UPDATE_TIMER_FRAME_STAR
         && gCurrCourseNum == data->course
         && !gbBingoTimerDisabled
     ) {

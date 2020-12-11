@@ -347,7 +347,7 @@ void play_transition_after_delay(s16 transType, s16 time, u8 red, u8 green, u8 b
 }
 
 void render_game(void) {
-    bingo_update(BINGO_UPDATE_TIMER_FRAME);
+    bingo_update(BINGO_UPDATE_TIMER_FRAME_GLOBAL);
     if (gCurrentArea != NULL && !gWarpTransition.pauseRendering) {
         geo_process_root(gCurrentArea->unk04, D_8032CE74, D_8032CE78, gFBSetColor);
 

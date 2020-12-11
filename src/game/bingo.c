@@ -113,7 +113,7 @@ void bingo_update(enum BingoObjectiveUpdate update) {
         update_objective(&gBingoObjectives[i], update);
     }
 
-    if (update == BINGO_UPDATE_TIMER_FRAME && gbBingosCompleted < gbBingoTarget) {
+    if (update == BINGO_UPDATE_TIMER_FRAME_GLOBAL && gbBingosCompleted < gbBingoTarget) {
         // Should we not increment if game is paused?
         // We probably should. Just a thought.
         gbGlobalBingoTimer++;
@@ -139,7 +139,7 @@ void bingo_update(enum BingoObjectiveUpdate update) {
     }
 
     // Timer updates can never result in bingo being won
-    if (update != BINGO_UPDATE_TIMER_FRAME) {
+    if (update != BINGO_UPDATE_TIMER_FRAME_GLOBAL && update != BINGO_UPDATE_TIMER_FRAME_STAR) {
         gbBingosCompleted = bingo_check_win();
     }
 }
