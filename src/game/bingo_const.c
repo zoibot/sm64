@@ -42,11 +42,12 @@ struct ABCData possibleABC[] = {
     // JRB1 is possible but 12 minutes long and very precise
     { COURSE_JRB, 2,
       "Use the B button underwater to go slightly faster." }, // pretty hard and quite boring...
-    { COURSE_CCM, 1, "" },
-    { COURSE_CCM, 2, "" },
-    { COURSE_CCM, 3, "" },
+    // CCM requires framewalking on all the stars unfortunately.
+    // { COURSE_CCM, 1, "" },
+    // { COURSE_CCM, 2, "" },
+    // { COURSE_CCM, 3, "" },
     // CCM4 is possible but there is a hard bounce
-    { COURSE_CCM, 5, "" },
+    // { COURSE_CCM, 5, "" },
     // BBH1 is possible but requires VSC
     { COURSE_HMC, 1, "Clip through a wall under an elevator with a zoomed-out camera." },
     { COURSE_LLL, 1, "" },

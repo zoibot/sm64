@@ -262,13 +262,6 @@ void read_controller_inputs(void) {
                 }
             }
 
-            // if (gBingoClickGameActive && !gStarSelectScreenActive) {
-            //     if (!(controller->buttonDown & R_TRIG)) {
-            //         controller->buttonDown |= R_TRIG;
-            //     }
-            //     if (!(controller->buttonPressed))
-            // }
-
             adjust_analog_stick(controller);
         } else // otherwise, if the controllerData is NULL, 0 out all of the inputs.
         {
