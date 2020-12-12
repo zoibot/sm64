@@ -494,6 +494,7 @@ s32 lvl_init_act_selector_values_and_stars(UNUSED s32 arg, UNUSED s32 unused) {
  * Also updates objects and returns act number selected after is choosen.
  */
 s32 lvl_update_obj_and_load_act_button_actions(UNUSED s32 arg, UNUSED s32 unused) {
+    s8 bingoClickGameActivate = 0;
     if (sActSelectorMenuTimer >= 11) {
         // If any of these buttons are pressed, play sound and go to course act
         if ((gPlayer3Controller->buttonPressed & A_BUTTON)
@@ -510,17 +511,18 @@ s32 lvl_update_obj_and_load_act_button_actions(UNUSED s32 arg, UNUSED s32 unused
                 sLoadedActNum = sInitSelectedActNum;
             }
             gDialogCourseActNum = sSelectedActIndex + 1;
-            if (gBingoClickGameActive) {
-                gBingoClickGamePrevCameraSettings = sSelectionFlags;
-                gBingoClickGamePrevCameraIndex = gDialogCameraAngleIndex;
-                gDialogCameraAngleIndex = CAM_SELECTION_FIXED;
-                sSelectionFlags &= ~CAM_MODE_MARIO_SELECTED;
-            }
+            bingoClickGameActivate = 1;
             gStarSelectScreenActive = 0;
         }
     }
 
     area_update_objects();
     sActSelectorMenuTimer++;
+    if (gBingoClickGameActive && bingoClickGameActivate) {
+        gBingoClickGamePrevCameraSettings = sSelectionFlags;
+        gBingoClickGamePrevCameraIndex = gDialogCameraAngleIndex;
+        gDialogCameraAngleIndex = CAM_SELECTION_FIXED;
+        sSelectionFlags &= ~CAM_MODE_MARIO_SELECTED;
+    }
     return sLoadedActNum;
 }

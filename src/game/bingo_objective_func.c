@@ -87,7 +87,7 @@ s32 objective_obtain_star_click_game(struct BingoObjective *objective, enum Bing
 
     if (update == BINGO_UPDATE_COURSE_CHANGED) {
         objective->state = BINGO_STATE_NONE;
-        data->clicks = -1;  // to fix bug where entering a level is a click
+        data->clicks = 0;  // to fix bug where entering a level is a click
     } else if (objective->state == BINGO_STATE_FAILED_IN_THIS_COURSE) {
         return;
     } else if (update == BINGO_UPDATE_CAMERA_CLICK && gCurrCourseNum == data->course) {
