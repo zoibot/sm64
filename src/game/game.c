@@ -194,12 +194,16 @@ void run_demo_inputs(void) {
     }
 }
 
+s8 sPreferredController = -1;
+
 // update the controller struct with available inputs if present.
 void read_controller_inputs(void) {
     s32 i;
     s8 unPressR = 0;
     s8 pressR = 0;
     s8 alsoPressR = 0;
+    s8 bingoUpdateClickGame = 0;
+    s8 bingoUpdateCameraSoundFlags = 0;
 
     // if any controllers are plugged in, update the
     // controller information.
@@ -211,10 +215,24 @@ void read_controller_inputs(void) {
 
     for (i = 0; i < 2; i++) {
         struct Controller *controller = &gControllers[i];
+        unPressR = 0;
+        pressR = 0;
+        alsoPressR = 0;
 
         // if we're receiving inputs, update the controller struct
         // with the new button info.
         if (controller->controllerData != NULL) {
+            if (
+                sPreferredController == -1
+                && (
+                    controller->controllerData->stick_x != 0
+                    || controller->controllerData->stick_y != 0
+                    || controller->controllerData->button != 0
+                )
+            ) {
+                sPreferredController = i;
+            }
+
             controller->rawStickX = controller->controllerData->stick_x;
             controller->rawStickY = controller->controllerData->stick_y;
 
@@ -236,12 +254,25 @@ void read_controller_inputs(void) {
                     pressR = 1;
                     // I HAVE NO IDEA HOW THIS FUCKING WORKS BUT IT'S DONE HOPEFULLY
                     // I NEVER HAVE TO TOUCH IT AGAIN
-                    sCameraSoundFlags |= CAM_SOUND_FIXED_ACTIVE;
+                    // (See below comment for why this is a flag)
+                    if (i == sPreferredController) {
+                        // Here's a secret... You can cheese this by plugging two controllers
+                        // in, inputting something on the second controller port BEFORE touching
+                        // the first controller port, then play the game as normal. When you
+                        // get to the click game, the sounds will be kinda jacked up, because
+                        // this dumb code thinks that the "preferred" controller is the
+                        // second port. I am sure there's a better source-of-truth than "the
+                        // first controller that has input" but I am too lazy to fix this.
+                        bingoUpdateCameraSoundFlags = 1;
+                    }
                     if (!(controller->buttonDown & R_TRIG)) {
                         // Either end of previous click, or start of level (assuming they
                         // didn't come in holding R).
-                        bingo_update(BINGO_UPDATE_CAMERA_CLICK);
-                        gBingoClickCounter++;
+                        // Note that we don't call bingo_update() directly here, because
+                        // the player might have both controllers plugged in. I don't want
+                        // to disable the functionality where you can play on the 2nd port,
+                        // so to avoid double-updating, I just set a flag here.
+                        bingoUpdateClickGame = 1;
                         alsoPressR = 1;
                     }
                 }
@@ -273,6 +304,13 @@ void read_controller_inputs(void) {
             controller->stickY = 0;
             controller->stickMag = 0;
         }
+    }
+    if (bingoUpdateCameraSoundFlags) {
+        sCameraSoundFlags |= CAM_SOUND_FIXED_ACTIVE;
+    }
+    if (bingoUpdateClickGame) {
+        bingo_update(BINGO_UPDATE_CAMERA_CLICK);
+        gBingoClickCounter++;
     }
 
     // For some reason, player 1's inputs are copied to player 3's port. This
