@@ -151,6 +151,7 @@ s32 objective_obtain_1ups_in_level(struct BingoObjective *objective, enum BingoO
         data->gotten = 0;
     } else if (update == BINGO_UPDATE_GOT_1UP && gCurrCourseNum == data->course) {
         data->gotten++;
+        bingo_hud_update(objective->icon, data->gotten);
         if (data->gotten == data->toGet) {
             set_objective_state(objective, BINGO_STATE_COMPLETE);
         }
