@@ -85,19 +85,8 @@ void func_80263AD4(struct MarioState *m, s16 frame1, s16 frame2) {
 }
 
 void func_80263C14(struct MarioState *m) {
-    Vec3f newPos;
-    newPos[0] = m->marioObj->header.gfx.pos[0] + 100.0f;
-    newPos[1] = m->marioObj->header.gfx.pos[1] + 100.0f;
-    newPos[2] = m->marioObj->header.gfx.pos[2] + 100.0f;
-    if (0) {
-        m->pos[1] = m->floorHeight;
-        mtxf_align_terrain_triangle(D_80339F50[m->unk00], m->pos, m->faceAngle[1], 40.0f);
-    } else {
-        mtxf_align_terrain_triangle(D_80339F50[m->unk00], m->pos, m->faceAngle[1], 40.0f);
-        D_80339F50[m->unk00][3][0] = newPos[0];
-        D_80339F50[m->unk00][3][1] = newPos[1];
-        D_80339F50[m->unk00][3][2] = newPos[2];
-    }
+    m->pos[1] = m->floorHeight;
+    mtxf_align_terrain_triangle(D_80339F50[m->unk00], m->pos, m->faceAngle[1], 40.0f);
     m->marioObj->header.gfx.throwMatrix = &D_80339F50[m->unk00];
 }
 

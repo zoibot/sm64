@@ -1508,21 +1508,13 @@ void update_mario_health(struct MarioState *m) {
 * Updates some basic info for camera usage.
 */
 void update_mario_info_for_cam(struct MarioState *m) {
-    Vec3f newPos;
     m->marioBodyState->action = m->action;
     m->statusForCamera->action = m->action;
 
     vec3s_copy(m->statusForCamera->faceAngle, m->faceAngle);
 
     if ((m->flags & MARIO_UNKNOWN_25) == 0) {
-        if (1) {
-            newPos[0] = m->pos[0] + 100.0f;
-            newPos[1] = m->pos[1] + 100.0f;
-            newPos[2] = m->pos[2] + 100.0f;
-            vec3f_copy(m->statusForCamera->pos, newPos);
-        } else {
-            vec3f_copy(m->statusForCamera->pos, m->pos);
-        }
+        vec3f_copy(m->statusForCamera->pos, m->pos);
     }
 }
 
@@ -1763,12 +1755,6 @@ s32 execute_mario_action(UNUSED struct Object *o) {
 
         if (gBingoDaredevilActive) {
             gMarioState->health = MIN(0x01FF, gMarioState->health);
-        }
-
-        if (1) {
-            gMarioObject->header.gfx.pos[0] += 100.0f;
-            gMarioObject->header.gfx.pos[1] += 100.0f;
-            gMarioObject->header.gfx.pos[2] += 100.0f;
         }
 
         play_infinite_stairs_music();
