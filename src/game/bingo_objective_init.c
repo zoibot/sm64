@@ -136,6 +136,11 @@ retry:
     // although ofc you can use PU speed lol
 }
 
+
+s32 random_range_inclusive(s32 low, s32 high) {
+    return low + (RandomU16() % (high - low + 1));
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 s32 bingo_objective_collectable_init(
@@ -231,13 +236,13 @@ s32 bingo_objective_star_timed_init(
         default:
             random_star_main_course_except_100c(&course, &star);
             maxTime = get_time_for_star(course, star) * 30 + (20 * 30) + // add 20 seconds to be nice
-                      (RandomU16() % (15 * 30));                         // up to 15 extra seconds
+                      (random_range_inclusive(0, 15) * 30);  // up to 15 extra seconds
             break;
         case BINGO_CLASS_HARD:
         case BINGO_CLASS_CENTER:
             random_star_main_course_except_100c(&course, &star);
             maxTime = (get_time_for_star(course, star) * 30)
-                      + (RandomU16() % (15 * 30)); // up to 15 extra seconds
+                      + (random_range_inclusive(0, 15) * 30);  // up to 15 extra seconds
             break;
     }
 
@@ -428,14 +433,14 @@ s32 bingo_objective_multistar_init(
 ) { s32 numStars;
     switch (class) {
         case BINGO_CLASS_EASY:
-            numStars = 3 + (RandomU16() % 2);    // 3 to 4
+            numStars = random_range_inclusive(3, 4);
             break;
         case BINGO_CLASS_MEDIUM:
-            numStars = 5 + (RandomU16() % 4);    // 5 to 8
+            numStars = random_range_inclusive(5, 8);
             break;
         default:
         case BINGO_CLASS_HARD:
-            numStars = 8 + (RandomU16() % 5);   // 8 to 12
+            numStars = random_range_inclusive(8, 12);
             break;
     }
     bingo_objective_collectable_init(objective, BINGO_ICON_MULTISTAR, numStars);
@@ -545,7 +550,7 @@ s32 bingo_objective_exclamation_mark_box_init(
     s32 boxes;
     switch (class) {
         default:
-            boxes = 6 + (RandomU16() % 8); // between 6 and 14
+            boxes = random_range_inclusive(6, 14);
             break;
     }
 
@@ -559,10 +564,10 @@ s32 bingo_objective_signpost_init(
     switch (class) {
         default:
         case BINGO_CLASS_MEDIUM:
-            signs = 7 + (RandomU16() % 7); // 7 to 13
+            signs = random_range_inclusive(7, 13);
             break;
         case BINGO_CLASS_HARD:
-            signs = 14 + (RandomU16() % 7);  // 14 to 20
+            signs = random_range_inclusive(14, 20);
             break;
     }
 
@@ -576,10 +581,10 @@ s32 bingo_objective_red_coin_init(
     switch (class) {
         default:
         case BINGO_CLASS_MEDIUM:
-            coins = 12 + (RandomU16() % 7);   // 12 to 18
+            coins = random_range_inclusive(12, 18);
             break;
         case BINGO_CLASS_HARD:
-            coins = 20 + (RandomU16() % 10);  // 20 to 29
+            coins = random_range_inclusive(20, 29);
             break;
     }
 
@@ -593,11 +598,11 @@ s32 bingo_objective_kill_goombas_init(
 
     switch (class) {
         case BINGO_CLASS_CENTER:
-            enemiesToKill = (RandomU16() % 5) + 15;
+            enemiesToKill = random_range_inclusive(15, 19);
             break;
         case BINGO_CLASS_MEDIUM:
         default:
-            enemiesToKill = (RandomU16() % 10) + 5;
+            enemiesToKill = random_range_inclusive(5, 14);
             break;
     }
 
@@ -611,11 +616,11 @@ s32 bingo_objective_kill_bobombs_init(
 
     switch (class) {
         case BINGO_CLASS_CENTER:
-            enemiesToKill = (RandomU16() % 5) + 15;
+            enemiesToKill = random_range_inclusive(15, 19);
             break;
         case BINGO_CLASS_MEDIUM:
         default:
-            enemiesToKill = (RandomU16() % 10) + 5;
+            enemiesToKill = random_range_inclusive(5, 14);
             break;
     }
 
@@ -630,7 +635,7 @@ s32 bingo_objective_kill_spindrifts_init(
     switch (class) {
         case BINGO_CLASS_MEDIUM:
         default:
-            enemiesToKill = (RandomU16() % 8) + 9;  // between 9 and 16
+            enemiesToKill = random_range_inclusive(9, 16);
             break;
     }
 
@@ -645,7 +650,7 @@ s32 bingo_objective_kill_mr_is_init(
     switch (class) {
         case BINGO_CLASS_MEDIUM:
         default:
-            enemiesToKill = (RandomU16() % 4) + 3;  // between 3 and 6
+            enemiesToKill = random_range_inclusive(3, 6);
             break;
     }
 
