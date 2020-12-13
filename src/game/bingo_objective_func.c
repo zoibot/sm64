@@ -14,6 +14,7 @@
 #include "camera.h"
 #include "ingame_menu.h"
 #include "print.h"
+#include "hud.h"
 
 
 s32 objective_obtain_star(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
@@ -191,9 +192,11 @@ s32 objective_generic_collectable(
     enum BingoObjectiveUpdate update,
     enum BingoObjectiveUpdate desiredUpdate
 ) {
+    struct CollectableData *data = &objective->data.collectableData;
     if (update == desiredUpdate) {
-        objective->data.collectableData.gotten++;
-        if (objective->data.collectableData.gotten >= objective->data.collectableData.toGet) {
+        data->gotten++;
+        bingo_hud_update(objective->icon, data->gotten);
+        if (data->gotten >= data->toGet) {
             set_objective_state(objective, BINGO_STATE_COMPLETE);
         }
     }

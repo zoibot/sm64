@@ -1,4 +1,5 @@
 #include <ultra64.h>
+#include <stdio.h>
 
 #include "sm64.h"
 #include "display.h"
@@ -15,6 +16,7 @@
 #include "save_file.h"
 #include "print.h"
 #include "bingo_ui.h"
+#include "strcpy.h"
 
 /* @file hud.c
  * This file implements HUD rendering and power meter animations.
@@ -424,6 +426,105 @@ void render_hud_camera_status(void) {
     gSPDisplayList(gDisplayListHead++, dl_hud_img_end);
 }
 
+s32 sLowestFreeSlotIndex = 0;
+
+struct Slot {
+    enum BingoObjectiveIcon icon;
+    char message[10];
+    s32 fadeTimer;
+};
+
+#define MAX_SLOTS 5
+#define MAX_FADE_TIMER (30 * 6)
+struct Slot sSlots[MAX_SLOTS] = { 0 };
+
+void delete_slot(s32 delete) {
+    s32 i;
+    for (i = 0; i < sLowestFreeSlotIndex; i++) {
+        if (i < delete) {
+            continue;
+        } else {
+            if (i < (sLowestFreeSlotIndex - 1)) {
+                sSlots[i].icon = sSlots[i + 1].icon;
+                strcpy(sSlots[i].message, sSlots[i + 1].message);
+                sSlots[i].fadeTimer = sSlots[i + 1].fadeTimer;
+            } else {
+                sSlots[i].icon = 0;
+                strcpy(sSlots[i].message, "");
+                sSlots[i].fadeTimer = 0;
+            }
+        }
+    }
+    sLowestFreeSlotIndex--;
+}
+
+void bingo_hud_update(enum BingoObjectiveIcon icon, s32 number) {
+    s32 i;
+    struct Slot *slot;
+
+    // Look through existing slots for matching icons
+    // If any exist, delete them and shift everything down
+        // Then, add new notification at the top
+    // Otherwise, check for extra room, and add if there is some
+    for (i = 0; i < sLowestFreeSlotIndex; i++) {
+        slot = &sSlots[i];
+        // TODO: Make deduplication depend on something a little
+        // more specific than icon?
+        if (slot->icon == icon) {
+            delete_slot(i);
+            break;
+        }
+    }
+
+    if (sLowestFreeSlotIndex >= MAX_SLOTS) {
+        return;  // refuse to print too much
+        // (Note, this won't happen if we just deleted a slot.)
+    }
+
+    slot = &sSlots[sLowestFreeSlotIndex];
+    slot->icon = icon;
+    sprintf(slot->message, "*%d", number);
+    slot->fadeTimer = 0;
+
+    sLowestFreeSlotIndex++;
+}
+
+void bingo_hud_render(void) {
+    s32 i;
+    s32 slotsToRemove = 0;
+    struct Slot *slot;
+
+    for (i = 0; i < sLowestFreeSlotIndex; i++) {
+        slot = &sSlots[i];
+        // opacity(frame_to_opacity(slot->fadeTimer))
+        gSPDisplayList(gDisplayListHead++, dl_hud_img_begin);
+        print_bingo_icon(20, 40 + 20 * i, slot->icon);
+        gSPDisplayList(gDisplayListHead++, dl_hud_img_end);
+        print_text(38, 40 + 20 * i, slot->message);
+
+        slot->fadeTimer++;
+        if (slot->fadeTimer > MAX_FADE_TIMER) {
+            slotsToRemove++;
+        }
+    }
+    for (i = 0; i < sLowestFreeSlotIndex; i++) {
+        if (slotsToRemove == 0) {
+            break;
+        }
+        if (i + slotsToRemove < MAX_SLOTS) {
+            sSlots[i].icon = sSlots[i + slotsToRemove].icon;
+            strcpy(sSlots[i].message, sSlots[i + slotsToRemove].message);
+            sSlots[i].fadeTimer = sSlots[i + slotsToRemove].fadeTimer;
+        }
+        if (i > (sLowestFreeSlotIndex - slotsToRemove)) {
+            sSlots[i].icon = 0;
+            strcpy(sSlots[i].message, "");
+            sSlots[i].fadeTimer = 0;
+        }
+    }
+    sLowestFreeSlotIndex -= slotsToRemove;
+}
+
 /**
  * Render HUD strings using hudDisplayFlags with it's render functions,
  * excluding the cannon reticle which detects a camera preset for it.
@@ -494,6 +595,8 @@ void render_hud(void) {
             if (gBingoReverseJoystickActive) {
                 render_hud_reverse_joystick();
             }
+
+            bingo_hud_render();
 
             if (hudDisplayFlags & HUD_DISPLAY_FLAG_COIN_COUNT) {
                 render_hud_coins();

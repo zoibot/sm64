@@ -2,6 +2,7 @@
 #define HUD_H
 
 #include "types.h"
+#include "bingo.h"
 
 #ifdef VERSION_JP
 #define HUD_TOP_Y 210
@@ -41,5 +42,6 @@ extern Gfx* dl_power_meter_health_segments_end;
 // Functions
 extern void set_hud_camera_status(s16 status);
 extern void render_hud(void);
+extern void bingo_hud_update(enum BingoObjectiveIcon, s32);
 
 #endif /* HUD_H */
