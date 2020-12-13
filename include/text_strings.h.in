@@ -169,7 +169,7 @@
 #define TEXT_DAREDEVIL _("Daredevil")
 #define TEXT_COIN_LEVEL _("Coins in Level")
 #define TEXT_TOTAL_COIN _("Total Coins")
-#define TEXT_1UP_LEVEL _("All 1-ups in Level")
+#define TEXT_1UP_LEVEL _("1-ups in Level")
 #define TEXT_STARS_LEVEL _("All Stars in Level")
 #define TEXT_MARIO_HAT _("Lose Mario's hat")
 #define TEXT_BLJ _("Perform a BLJ")
