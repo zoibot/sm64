@@ -239,7 +239,14 @@ void spawn_particle(u32 activeParticleFlag, s16 model, const BehaviorScript *beh
         struct Object *particle;
         gCurrentObject->oActiveParticleFlags |= activeParticleFlag;
         particle = spawn_object_at_origin(gCurrentObject, 0, model, behavior);
-        copy_object_pos_and_angle(particle, gCurrentObject);
+        if (1) {
+            particle->oPosX = gCurrentObject->header.gfx.pos[0];
+            particle->oPosY = gCurrentObject->header.gfx.pos[1];
+            particle->oPosZ = gCurrentObject->header.gfx.pos[2];
+        } else {
+            copy_object_pos(particle, gCurrentObject);
+        }
+        copy_object_angle(particle, gCurrentObject);
     }
 }
 

@@ -204,6 +204,7 @@ extern struct Object* spawn_object_relative_with_scale(s16,s16,s16,s16,f32,struc
 extern void copy_object_graph_y_offset(struct Object*,struct Object*);
 extern void copy_object_pos_and_angle(struct Object *, struct Object *);
 extern void copy_object_pos(struct Object*,struct Object*);
+extern void copy_object_angle(struct Object*,struct Object*);
 // extern ? copy_object_angle(?);
 extern void func_8029EA0C(struct Object*);
 // extern ? Unknown8029EA34(?);

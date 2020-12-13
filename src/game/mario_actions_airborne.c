@@ -893,9 +893,9 @@ s32 act_ground_pound(struct MarioState *m) {
             if (m->pos[1] + yOffset + 160.0f < m->ceilHeight) {
                 m->pos[1] += yOffset;
                 m->peakHeight = m->pos[1];
-                vec3f_copy(m->marioObj->header.gfx.pos, m->pos);
             }
         }
+        vec3f_copy(m->marioObj->header.gfx.pos, m->pos);
 
         m->vel[1] = -50.0f;
         mario_set_forward_vel(m, 0.0f);
