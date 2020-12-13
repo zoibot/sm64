@@ -432,6 +432,7 @@ struct Slot {
     enum BingoObjectiveIcon icon;
     s8 printTimes;
     char message[10];
+    enum BingoObjectiveIcon iconMessage;
     s32 fadeTimer;
 };
 
@@ -449,11 +450,13 @@ void delete_slot(s32 delete) {
                 sSlots[i].icon = sSlots[i + 1].icon;
                 sSlots[i].printTimes = sSlots[i + 1].printTimes;
                 strcpy(sSlots[i].message, sSlots[i + 1].message);
+                sSlots[i].iconMessage = sSlots[i + 1].iconMessage;
                 sSlots[i].fadeTimer = sSlots[i + 1].fadeTimer;
             } else {
                 sSlots[i].icon = 0;
                 sSlots[i].printTimes = 0;
                 strcpy(sSlots[i].message, "");
+                sSlots[i].iconMessage = 0;
                 sSlots[i].fadeTimer = 0;
             }
         }
@@ -472,9 +475,8 @@ void bingo_hud_update(enum BingoObjectiveIcon icon, s32 number) {
 
     for (i = 0; i < sLowestFreeSlotIndex; i++) {
         slot = &sSlots[i];
-        // TODO: Make deduplication depend on something a little
-        // more specific than icon?
-        if (slot->icon == icon) {
+        // TODO: Make deduplication not depend on the "printTimes" hack
+        if (slot->icon == icon && slot->printTimes == 1) {
             delete_slot(i);
             break;
         }
@@ -494,6 +496,22 @@ void bingo_hud_update(enum BingoObjectiveIcon icon, s32 number) {
     sLowestFreeSlotIndex++;
 }
 
+void bingo_hud_update_state(enum BingoObjectiveIcon icon, enum BingoObjectiveIcon stateIcon) {
+    struct Slot *slot;
+
+    if (sLowestFreeSlotIndex >= MAX_SLOTS) {
+        return;
+    }
+    slot = &sSlots[sLowestFreeSlotIndex];
+    slot->icon = stateIcon;
+    slot->printTimes = 0;
+    slot->iconMessage = icon;
+    slot->fadeTimer = 0;
+
+    sLowestFreeSlotIndex++;
+
+}
+
 u8 frame_to_opacity(s32 fadeTimer) {
     if (fadeTimer < (30 * 4)) {
         return 255;
@@ -507,6 +525,7 @@ void bingo_hud_render(void) {
     s32 slotsToRemove = 0;
     struct Slot *slot;
     u8 opacity;
+    // 200451241
 
     for (i = 0; i < sLowestFreeSlotIndex; i++) {
         slot = &sSlots[i];
@@ -518,7 +537,9 @@ void bingo_hud_render(void) {
             print_text_alpha(38, 40 + 20 * i, "*", opacity);
             print_text_alpha(53, 40 + 20 * i, slot->message, opacity);
         } else {
-            print_text_alpha(38, 40 + 20 * i, slot->message, opacity);
+            gSPDisplayList(gDisplayListHead++, dl_hud_img_begin);
+            print_bingo_icon_alpha(38, 40 + 20 * i, slot->iconMessage, opacity);
+            gSPDisplayList(gDisplayListHead++, dl_hud_img_end);
         }
 
         slot->fadeTimer++;

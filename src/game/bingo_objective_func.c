@@ -94,7 +94,7 @@ s32 objective_obtain_star_click_game(struct BingoObjective *objective, enum Bing
     } else if (update == BINGO_UPDATE_CAMERA_CLICK && gCurrCourseNum == data->course) {
         data->clicks++;
         if (data->clicks > data->maxClicks) {
-            objective->state = BINGO_STATE_FAILED_IN_THIS_COURSE;
+            set_objective_state(objective, BINGO_STATE_FAILED_IN_THIS_COURSE);
         }
     } else if (gBingoClickGameActive) {
         objective_obtain_star(objective, update);
