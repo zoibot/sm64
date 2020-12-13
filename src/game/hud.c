@@ -463,9 +463,10 @@ void bingo_hud_update(enum BingoObjectiveIcon icon, s32 number) {
     struct Slot *slot;
 
     // Look through existing slots for matching icons
-    // If any exist, delete them and shift everything down
-        // Then, add new notification at the top
-    // Otherwise, check for extra room, and add if there is some
+    // If any exist, delete them and shift everything down,
+    // then add a new one.
+    // Otherwise, check for extra room, and add it if there is.
+
     for (i = 0; i < sLowestFreeSlotIndex; i++) {
         slot = &sSlots[i];
         // TODO: Make deduplication depend on something a little
@@ -507,22 +508,9 @@ void bingo_hud_render(void) {
             slotsToRemove++;
         }
     }
-    for (i = 0; i < sLowestFreeSlotIndex; i++) {
-        if (slotsToRemove == 0) {
-            break;
-        }
-        if (i + slotsToRemove < MAX_SLOTS) {
-            sSlots[i].icon = sSlots[i + slotsToRemove].icon;
-            strcpy(sSlots[i].message, sSlots[i + slotsToRemove].message);
-            sSlots[i].fadeTimer = sSlots[i + slotsToRemove].fadeTimer;
-        }
-        if (i > (sLowestFreeSlotIndex - slotsToRemove)) {
-            sSlots[i].icon = 0;
-            strcpy(sSlots[i].message, "");
-            sSlots[i].fadeTimer = 0;
-        }
+    for (i = 0; i < slotsToRemove; i++) {
+        delete_slot(0);
     }
-    sLowestFreeSlotIndex -= slotsToRemove;
 }
 
 /**
