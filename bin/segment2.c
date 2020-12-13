@@ -270,6 +270,10 @@ ALIGNED8 static const u8 seg2_texture_red_coin[] = {
 #include "textures/segment2/custom/segment2.redcoin.rgba16.inc.c"
 };
 
+ALIGNED8 static const u8 seg2_texture_signpost[] = {
+#include "textures/segment2/custom/segment2.signpost.rgba16.inc.c"
+};
+
 ALIGNED8 static const u8 seg2_texture_bobomb[] = {
 #include "textures/segment2/custom/segment2.bobomb.rgba16.inc.c"
 };
@@ -1988,6 +1992,7 @@ const u8 *const bingo_lut[] = {
     seg2_texture_mario_hat,      // BINGO_ICON_MARIO_HAT
     seg2_texture_blj,            // BINGO_ICON_BLJ
     seg2_texture_bowser,         // BINGO_ICON_BOWSER
+    seg2_texture_signpost,       // BINGO_ICON_SIGNPOST
     seg2_texture_red_coin,       // BINGO_ICON_RED_COIN
     seg2_texture_yellowbox,      // BINGO_ICON_EXCLAMATION_MARK_BOX
     seg2_texture_goomba,         // BINGO_ICON_KILL_GOOMBAS

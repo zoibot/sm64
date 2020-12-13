@@ -123,6 +123,7 @@ void get_objective_title(struct BingoObjective *objective) {
             break;
         case BINGO_OBJECTIVE_MULTISTAR:
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
+        case BINGO_OBJECTIVE_SIGNPOST:
         case BINGO_OBJECTIVE_RED_COIN:
         case BINGO_OBJECTIVE_KILL_GOOMBAS:
         case BINGO_OBJECTIVE_KILL_BOBOMBS:

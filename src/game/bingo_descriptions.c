@@ -416,6 +416,9 @@ void get_collectable_objective_desc(struct BingoObjective *obj, char *desc) {
 
 
     switch (obj->type) {
+        case BINGO_OBJECTIVE_SIGNPOST:
+            strcpy(verb, "Read");
+            break;
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
             strcpy(verb, "Break");
             break;  // hah!
@@ -428,6 +431,9 @@ void get_collectable_objective_desc(struct BingoObjective *obj, char *desc) {
     }
 
     switch (obj->type) {
+        case BINGO_OBJECTIVE_SIGNPOST:
+            strcpy(collectName, "Signposts");
+            break;
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
             strcpy(collectName, "Yellow ! Boxes");
             break;
@@ -501,6 +507,7 @@ void describe_objective(struct BingoObjective *objective, char *desc) {
         case BINGO_OBJECTIVE_BOWSER:
             get_bowser_objective_desc(objective, desc);
             break;
+        case BINGO_OBJECTIVE_SIGNPOST:
         case BINGO_OBJECTIVE_RED_COIN:
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
         case BINGO_OBJECTIVE_KILL_GOOMBAS:

@@ -243,6 +243,8 @@ s32 update_objective(struct BingoObjective *objective, enum BingoObjectiveUpdate
             return objective_blj(objective, update);
         case BINGO_OBJECTIVE_BOWSER:
             return objective_bowser(objective, update);
+        case BINGO_OBJECTIVE_SIGNPOST:
+            return objective_generic_collectable(objective, update, BINGO_UPDATE_READ_SIGNPOST);
         case BINGO_OBJECTIVE_RED_COIN:
             return objective_generic_collectable(objective, update, BINGO_UPDATE_RED_COIN);
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:

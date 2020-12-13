@@ -275,6 +275,7 @@ void bhv_bobomb_buddy_init(void);
 void bhv_bobomb_buddy_loop(void);
 void bhv_cannon_closed_init(void);
 void bhv_cannon_closed_loop(void);
+void bhv_signpost_init(void);
 void bhv_whirlpool_init(void);
 void bhv_whirlpool_loop(void);
 void bhv_jet_stream_loop(void);

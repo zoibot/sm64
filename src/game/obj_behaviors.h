@@ -54,6 +54,7 @@ void bhv_cannon_closed_loop(void);
 void bhv_whirlpool_init(void);
 void func_802E70A8(void);
 void WhirlpoolOrientGraph(void);
+void bhv_signpost_init(void);
 void bhv_whirlpool_loop(void);
 void bhv_jet_stream_loop(void);
 void bhv_homing_amp_init(void);

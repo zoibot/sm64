@@ -552,6 +552,23 @@ s32 bingo_objective_exclamation_mark_box_init(
     bingo_objective_collectable_init(objective, BINGO_ICON_EXCLAMATION_MARK_BOX, boxes);
 }
 
+s32 bingo_objective_signpost_init(
+    struct BingoObjective *objective, enum BingoObjectiveClass class
+) {
+    s32 signs;
+    switch (class) {
+        default:
+        case BINGO_CLASS_MEDIUM:
+            signs = 7 + (RandomU16() % 7); // 7 to 13
+            break;
+        case BINGO_CLASS_HARD:
+            signs = 14 + (RandomU16() % 7);  // 14 to 20
+            break;
+    }
+
+    bingo_objective_collectable_init(objective, BINGO_ICON_SIGNPOST, signs);
+}
+
 s32 bingo_objective_red_coin_init(
     struct BingoObjective *objective, enum BingoObjectiveClass class
 ) {
@@ -682,6 +699,8 @@ s32 bingo_objective_init(
             return bingo_objective_bowser_init(objective, class);
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
             return bingo_objective_exclamation_mark_box_init(objective, class);
+        case BINGO_OBJECTIVE_SIGNPOST:
+            return bingo_objective_signpost_init(objective, class);
         case BINGO_OBJECTIVE_RED_COIN:
             return bingo_objective_red_coin_init(objective, class);
         case BINGO_OBJECTIVE_KILL_GOOMBAS:
