@@ -1606,7 +1606,7 @@ u32 func_8024FC94(struct MarioState *m, u32 arg) {
 u32 func_8024FD2C(struct MarioState *m, struct Object *o) {
     if ((m->input & READ_MASK) && func_8024FC94(m, 0) && object_facing_mario(m, o, SIGN_RANGE)) {
         s16 facingDYaw = (s16)(o->oMoveAngleYaw + 0x8000) - m->faceAngle[1];
-        if (is_new_kill(BINGO_UPDATE_READ_SIGNPOST, o->oBingoId)) {
+        if (o->oIsSignpost && is_new_kill(BINGO_UPDATE_READ_SIGNPOST, o->oBingoId)) {
             bingo_update(BINGO_UPDATE_READ_SIGNPOST);
         }
         if (facingDYaw >= -SIGN_RANGE && facingDYaw <= SIGN_RANGE) {
