@@ -494,22 +494,31 @@ void bingo_hud_update(enum BingoObjectiveIcon icon, s32 number) {
     sLowestFreeSlotIndex++;
 }
 
+u8 frame_to_opacity(s32 fadeTimer) {
+    if (fadeTimer < (30 * 4)) {
+        return 255;
+    } else {
+        return 255 - ((s32) (255 / (30 * 2)) * (fadeTimer - (30 * 4)));
+    }
+}
+
 void bingo_hud_render(void) {
     s32 i;
     s32 slotsToRemove = 0;
     struct Slot *slot;
+    u8 opacity;
 
     for (i = 0; i < sLowestFreeSlotIndex; i++) {
         slot = &sSlots[i];
-        // opacity(frame_to_opacity(slot->fadeTimer))
+        opacity = frame_to_opacity(slot->fadeTimer);
         gSPDisplayList(gDisplayListHead++, dl_hud_img_begin);
-        print_bingo_icon(20, 40 + 20 * i, slot->icon);
+        print_bingo_icon_alpha(20, 40 + 20 * i, slot->icon, opacity);
         gSPDisplayList(gDisplayListHead++, dl_hud_img_end);
         if (slot->printTimes) {
-            print_text(38, 40 + 20 * i, "*");
-            print_text(54, 40 + 20 * i, slot->message);
+            print_text_alpha(38, 40 + 20 * i, "*", opacity);
+            print_text_alpha(53, 40 + 20 * i, slot->message, opacity);
         } else {
-            print_text(38, 40 + 20 * i, slot->message);
+            print_text_alpha(38, 40 + 20 * i, slot->message, opacity);
         }
 
         slot->fadeTimer++;

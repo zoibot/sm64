@@ -152,7 +152,7 @@ void bingo_print_description(char *str) {
     print_text_not_tiny(190, 100 + total_lines * 10, finalDesc);
 }
 
-void print_bingo_icon(s32 x, s32 y, s32 iconIndex) {
+void print_bingo_icon_alpha(s32 x, s32 y, s32 iconIndex, u8 alpha) {
     s32 rectX = x;
     s32 rectY = 224 - y;
     const u8 *const *glyphs = segmented_to_virtual(bingo_lut);
@@ -162,11 +162,16 @@ void print_bingo_icon(s32 x, s32 y, s32 iconIndex) {
     gDPSetTextureImage(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, glyphs[iconIndex]);
     gSPDisplayList(gDisplayListHead++, dl_hud_img_load_tex_block);
 
-    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gOptionSelectIconOpacity);
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, alpha);
     gSPTextureRectangle(gDisplayListHead++, rectX << 2, rectY << 2, (rectX + 16) << 2,
                         (rectY + 16) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
-
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
 }
+
+void print_bingo_icon(s32 x, s32 y, s32 iconIndex) {
+    print_bingo_icon_alpha(x, y, iconIndex, gOptionSelectIconOpacity);
+}
+
 
 void draw_bingo_screen() {
     struct BingoObjective *objective;

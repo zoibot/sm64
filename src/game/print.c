@@ -25,6 +25,7 @@ struct TextLabel {
     u32 y;
     s16 length;
     u32 size;
+    u8 alpha;
     char buffer[50];
 };
 
@@ -235,13 +236,14 @@ void print_text_fmt_int(s32 x, s32 y, const char *str, s32 n) {
 
     sTextLabels[sTextLabelsCount]->length = len;
     sTextLabels[sTextLabelsCount]->size = 0;
+    sTextLabels[sTextLabelsCount]->alpha = 255;
     sTextLabelsCount++;
 }
 
 /**
 * Prints text in the colorful lettering at given X, Y coordinates.
 */
-void print_text(s32 x, s32 y, const char *str) {
+void print_text_alpha(s32 x, s32 y, const char *str, u8 alpha) {
     char c = 0;
     s32 length = 0;
     s32 srcIndex = 0;
@@ -266,7 +268,12 @@ void print_text(s32 x, s32 y, const char *str) {
     }
     sTextLabels[sTextLabelsCount]->length = length;
     sTextLabels[sTextLabelsCount]->size = 0;
+    sTextLabels[sTextLabelsCount]->alpha = alpha;
     sTextLabelsCount++;
+}
+
+void print_text(s32 x, s32 y, const char *str) {
+    print_text_alpha(x, y, str, 255);
 }
 
 void print_text_tiny(int x, int y, const char *str) {
@@ -290,6 +297,7 @@ void print_text_tiny(int x, int y, const char *str) {
     }
     sTextLabels[sTextLabelsCount]->length = len;
     sTextLabels[sTextLabelsCount]->size = -1;
+    sTextLabels[sTextLabelsCount]->alpha = 255;
     sTextLabelsCount++;
 }
 
@@ -315,6 +323,7 @@ void print_text_not_tiny(int x, int y, const char *str) {
     }
     sTextLabels[sTextLabelsCount]->length = len;
     sTextLabels[sTextLabelsCount]->size = 3;
+    sTextLabels[sTextLabelsCount]->alpha = 255;
     sTextLabelsCount++;
 }
 
@@ -339,6 +348,7 @@ void print_text_large(int x, int y, const char *str) {
     }
     sTextLabels[sTextLabelsCount]->length = len;
     sTextLabels[sTextLabelsCount]->size = 1;
+    sTextLabels[sTextLabelsCount]->alpha = 255;
     sTextLabelsCount++;
 }
 
@@ -356,6 +366,7 @@ void print_vertical_line(int x, int y) {
     sTextLabels[sTextLabelsCount]->buffer[len] = 'L';
     sTextLabels[sTextLabelsCount]->length = 1;
     sTextLabels[sTextLabelsCount]->size = 2;
+    sTextLabels[sTextLabelsCount]->alpha = 255;
     sTextLabelsCount++;
 }
 
@@ -373,6 +384,7 @@ void print_hand(int x, int y) {
     sTextLabels[sTextLabelsCount]->buffer[len] = '.';
     sTextLabels[sTextLabelsCount]->length = 1;
     sTextLabels[sTextLabelsCount]->size = 0;
+    sTextLabels[sTextLabelsCount]->alpha = 255;
     sTextLabelsCount++;
 }
 
@@ -392,6 +404,7 @@ void print_horizontal_line(int y) {
     sTextLabels[sTextLabelsCount]->buffer[len] = '\x1F';
     sTextLabels[sTextLabelsCount]->length = 1;
     sTextLabels[sTextLabelsCount]->size = -2;
+    sTextLabels[sTextLabelsCount]->alpha = 255;
     sTextLabelsCount++;
 }
 
@@ -423,6 +436,7 @@ void print_text_centered(s32 x, s32 y, const char *str) {
     }
     sTextLabels[sTextLabelsCount]->length = length;
     sTextLabels[sTextLabelsCount]->size = 0;
+    sTextLabels[sTextLabelsCount]->alpha = 255;
     sTextLabels[sTextLabelsCount]->x = x - length * 12 / 2;
     sTextLabels[sTextLabelsCount]->y = y;
     sTextLabelsCount++;
@@ -563,7 +577,7 @@ void clip_to_bounds(s32 *x, s32 *y) {
  * Renders the glyph that's set at the given position.
  */
 u8 gOptionSelectIconOpacity = 255;
-void render_textrect(s32 x, s32 y, s32 pos) {
+void render_textrect(s32 x, s32 y, s32 pos, u8 alpha) {
     s32 rectBaseX = x + pos * 12;
     s32 rectBaseY = 224 - y;
     s32 rectX;
@@ -572,7 +586,11 @@ void render_textrect(s32 x, s32 y, s32 pos) {
     clip_to_bounds(&rectBaseX, &rectBaseY);
     rectX = rectBaseX;
     rectY = rectBaseY;
-    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gOptionSelectIconOpacity);
+    if (gOptionSelectIconOpacity == 255) {
+        gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, alpha);
+    } else {
+        gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gOptionSelectIconOpacity);
+    }
     gSPTextureRectangle(gDisplayListHead++, rectX << 2, rectY << 2, (rectX + 16) << 2,
                         (rectY + 16) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
 }
@@ -774,7 +792,7 @@ void render_text_labels(void) {
                 } else if (sTextLabels[i]->size == 2) {
                     render_vertical_line(sTextLabels[i]->x, sTextLabels[i]->y, j);
                 } else if (sTextLabels[i]->size == 0) {
-                    render_textrect(sTextLabels[i]->x, sTextLabels[i]->y, j);
+                    render_textrect(sTextLabels[i]->x, sTextLabels[i]->y, j, sTextLabels[i]->alpha);
                 }
             }
         }
