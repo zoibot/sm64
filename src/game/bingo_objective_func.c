@@ -15,6 +15,7 @@
 #include "ingame_menu.h"
 #include "print.h"
 #include "hud.h"
+#include "bingo_tracking_collectables.h"
 
 
 s32 objective_obtain_star(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
@@ -205,14 +206,34 @@ s32 objective_generic_collectable(
 }
 
 s32 objective_dangerous_wall_kicks(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
-    struct CollectableData *data = &objective->data.collectableData;
+    struct MultiCourseCollectableData *data = &objective->data.multiCourseCollectableData;
+    u32 uid;
+
     if (update == BINGO_UPDATE_DANGEROUS_WALL_KICK_FAILED) {
-        if (data->gotten != 0) {
+        if (data->gottenThisCourse != 0 && data->gottenThisCourse < data->toGetEachCourse) {
             bingo_hud_update_state(BINGO_ICON_FAILED, BINGO_ICON_DANGEROUS_WALL_KICKS);
         }
-        data->gotten = 0;
-    } else {
-        objective_generic_collectable(objective, update, BINGO_UPDATE_DANGEROUS_WALL_KICK);
+        data->gottenThisCourse = 0;
+    } else if (update == BINGO_UPDATE_DANGEROUS_WALL_KICK) {
+        uid = get_unique_id(BINGO_UPDATE_DANGEROUS_WALL_KICK, 1.0f, 1.0f, 1.0f);
+        if (
+            data->gottenThisCourse == 0
+            && !peek_would_be_new_kill(BINGO_UPDATE_DANGEROUS_WALL_KICK, uid)
+        ) {
+            return;
+        }
+        data->gottenThisCourse++;
+        bingo_hud_update(objective->icon, data->gottenThisCourse);
+        if (data->gottenThisCourse >= data->toGetEachCourse) {
+            data->gottenThisCourse = 0;
+            data->gottenTotal++;
+            is_new_kill(BINGO_UPDATE_DANGEROUS_WALL_KICK, uid);  // return value useless, just writing down.
+            if (data->gottenTotal >= data->toGetTotal) {
+                set_objective_state(objective, BINGO_STATE_COMPLETE);
+            } else {
+                // TODO: update the HUD
+            }
+        }
     }
 }
 

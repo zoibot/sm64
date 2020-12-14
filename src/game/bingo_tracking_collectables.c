@@ -40,6 +40,7 @@ struct UID {
         + MAX_MR_IS \
         + MAX_SPINDRIFTS \
         + MAX_SIGNPOSTS \
+        + MAX_COURSES_WALLKICKS \
     ) + 1
 
 // I really hope nothing is actually at (0, 0, 0)....
@@ -137,4 +138,22 @@ s32 is_new_kill(enum BingoObjectiveUpdate type, u32 uid) {
         sIDTable[uid].killed = 1;
         return 1;
     }
+}
+
+s32 peek_would_be_new_kill(enum BingoObjectiveUpdate type, u32 uid) {
+    u8 killed;
+    s32 idxStart, idxLength = 0;
+    get_index_range(type, &idxStart, &idxLength);
+
+    if (idxLength == 0) {
+        return 1;
+    }
+
+    killed = sIDTable[uid].killed;
+    if (killed) {
+        return 0;
+    } else {
+        return 1;
+    }
+
 }

@@ -150,8 +150,11 @@ enum BingoObjectiveUpdate
     BINGO_UPDATE_READ_SIGNPOST,
     BINGO_UPDATE_EXCLAMATION_MARK_BOX,
 
-    BINGO_COLLECTABLES_MAX = BINGO_UPDATE_EXCLAMATION_MARK_BOX,
+    BINGO_UPDATE_DANGEROUS_WALL_KICK,
+
+    BINGO_COLLECTABLES_MAX = BINGO_UPDATE_DANGEROUS_WALL_KICK,
     // End collectables (TODO: migrate away from Update enum?)
+    BINGO_UPDATE_DANGEROUS_WALL_KICK_FAILED,
     BINGO_UPDATE_COURSE_CHANGED,
     BINGO_UPDATE_A_PRESSED,
     BINGO_UPDATE_B_PRESSED,
@@ -160,8 +163,6 @@ enum BingoObjectiveUpdate
     BINGO_UPDATE_TIMER_FRAME_GLOBAL,
     BINGO_UPDATE_TIMER_FRAME_STAR,
     BINGO_UPDATE_GOT_1UP,
-    BINGO_UPDATE_DANGEROUS_WALL_KICK,
-    BINGO_UPDATE_DANGEROUS_WALL_KICK_FAILED,
     BINGO_UPDATE_LOST_HAT,
     BINGO_UPDATE_BLJ,
     BINGO_UPDATE_BOWSER_KILLED
@@ -204,6 +205,14 @@ struct CourseCollectableData
     s32 gotten;
 };
 
+struct MultiCourseCollectableData
+{
+    s32 toGetTotal;
+    s32 gottenTotal;
+    s32 toGetEachCourse;
+    s32 gottenThisCourse;
+};
+
 struct CollectableData
 {
     s32 toGet;
@@ -229,6 +238,7 @@ struct BingoObjective
         struct StarTimerObjectiveData starTimerObjective;
         struct StarClickCounterData starClicksObjective;
         struct CourseCollectableData courseCollectableData;
+        struct MultiCourseCollectableData multiCourseCollectableData;
         struct CollectableData collectableData;
         struct LevelObjectiveData levelData;
     } data;

@@ -468,6 +468,19 @@ void get_collectable_objective_desc(struct BingoObjective *obj, char *desc) {
     sprintf(desc, "%s %d unique %s%s", verb, obj->data.collectableData.toGet, collectName, suffix);
 }
 
+void get_dangerous_wall_kicks_objective_desc(struct BingoObjective *obj, char *desc) {
+    struct MultiCourseCollectableData *data = &obj->data.multiCourseCollectableData;
+    sprintf(
+        desc,
+        "Get %d total in %d courses. Courses done: %d, curr course: %d",
+        data->toGetEachCourse,
+        data->toGetTotal,
+        data->gottenTotal,
+        data->gottenThisCourse
+    );
+}
+
+
 void describe_objective(struct BingoObjective *objective, char *desc) {
     switch (objective->type) {
         case BINGO_OBJECTIVE_STAR:
@@ -515,6 +528,9 @@ void describe_objective(struct BingoObjective *objective, char *desc) {
         case BINGO_OBJECTIVE_KILL_SPINDRIFTS:
         case BINGO_OBJECTIVE_KILL_MR_IS:
             get_collectable_objective_desc(objective, desc);
+            break;
+        case BINGO_OBJECTIVE_DANGEROUS_WALL_KICKS:
+            get_dangerous_wall_kicks_objective_desc(objective, desc);
             break;
     }
 }

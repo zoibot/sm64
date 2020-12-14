@@ -495,18 +495,21 @@ s32 bingo_objective_stars_in_level_init(
 s32 bingo_objective_dangerous_wall_kicks_init(
     struct BingoObjective *objective, enum BingoObjectiveClass class
 ) {
-    enum CourseNum course;
-    s32 toGet;
+    s32 toGetTotal;
+    s32 toGetEachCourse;
 
     switch (class) {
         default:
-            toGet = 10;
+            toGetTotal = random_range_inclusive(1, 3);
+            toGetEachCourse = random_range_inclusive(4, 6);
             break;
     }
 
     objective->icon = BINGO_ICON_DANGEROUS_WALL_KICKS;
-    objective->data.collectableData.toGet = toGet;
-    objective->data.collectableData.gotten = 0;
+    objective->data.multiCourseCollectableData.toGetTotal = toGetTotal;
+    objective->data.multiCourseCollectableData.gottenTotal = 0;
+    objective->data.multiCourseCollectableData.toGetEachCourse = toGetEachCourse;
+    objective->data.multiCourseCollectableData.gottenThisCourse = 0;
     get_objective_title(objective);
 }
 
