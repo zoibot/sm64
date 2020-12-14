@@ -12,6 +12,7 @@
 #include "save_file.h"
 #include "audio/external.h"
 #include "engine/graph_node.h"
+#include "bingo.h"
 
 void play_flip_sounds(struct MarioState *m, s16 frame1, s16 frame2, s16 frame3) {
     s32 animFrame = m->marioObj->header.gfx.unk38.animFrame;
@@ -1096,6 +1097,9 @@ u32 common_air_knockback_step(struct MarioState *m, u32 landAction, u32 hardFall
 s32 func_8026CDFC(struct MarioState *m) {
     if ((m->input & INPUT_A_PRESSED) && m->wallKickTimer != 0 && m->prevAction == ACT_AIR_HIT_WALL) {
         m->faceAngle[1] += 0x8000;
+        if (is_dangerous_wallkick(m)) {
+            bingo_update(BINGO_UPDATE_DANGEROUS_WALL_KICK);
+        }
         return set_mario_action(m, ACT_WALL_KICK_AIR, 0);
     }
 
@@ -1264,6 +1268,9 @@ s32 act_air_hit_wall(struct MarioState *m) {
         if (m->input & INPUT_A_PRESSED) {
             m->vel[1] = 52.0f;
             m->faceAngle[1] += 0x8000;
+            if (is_dangerous_wallkick(m)) {
+                bingo_update(BINGO_UPDATE_DANGEROUS_WALL_KICK);
+            }
             return set_mario_action(m, ACT_WALL_KICK_AIR, 0);
         }
     } else if (m->forwardVel >= 38.0f) {
@@ -1978,6 +1985,7 @@ s32 check_common_airborne_cancels(struct MarioState *m) {
 
 s32 mario_execute_airborne_action(struct MarioState *m) {
     u32 cancel;
+    u32 savedAction;
 
     if (check_common_airborne_cancels(m)) {
         return TRUE;
@@ -1985,6 +1993,7 @@ s32 mario_execute_airborne_action(struct MarioState *m) {
 
     play_far_fall_sound(m);
 
+    savedAction = m->action;
     /* clang-format off */
     switch (m->action) {
         case ACT_JUMP:                 cancel = act_jump(m);                 break;
@@ -2034,6 +2043,17 @@ s32 mario_execute_airborne_action(struct MarioState *m) {
         case ACT_VERTICAL_WIND:        cancel = act_vertical_wind(m);        break;
     }
     /* clang-format on */
+
+    if (
+        (savedAction != ACT_BACKWARD_AIR_KB)
+        && (savedAction != ACT_FORWARD_AIR_KB)
+        && (savedAction != ACT_SOFT_BONK)
+        && (savedAction != ACT_AIR_HIT_WALL)
+        && (savedAction != ACT_WALL_KICK_AIR)
+        && !is_dangerous_wallkick(m)
+    ) {
+        bingo_update(BINGO_UPDATE_DANGEROUS_WALL_KICK_FAILED);
+    }
 
     return cancel;
 }

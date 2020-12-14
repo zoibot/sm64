@@ -492,6 +492,24 @@ s32 bingo_objective_stars_in_level_init(
     get_objective_title(objective);
 }
 
+s32 bingo_objective_dangerous_wall_kicks_init(
+    struct BingoObjective *objective, enum BingoObjectiveClass class
+) {
+    enum CourseNum course;
+    s32 toGet;
+
+    switch (class) {
+        default:
+            toGet = 10;
+            break;
+    }
+
+    objective->icon = BINGO_ICON_DANGEROUS_WALL_KICKS;
+    objective->data.collectableData.toGet = toGet;
+    objective->data.collectableData.gotten = 0;
+    get_objective_title(objective);
+}
+
 s32 bingo_objective_lose_mario_hat_init(
     struct BingoObjective *objective, enum BingoObjectiveClass class
 ) {
@@ -696,6 +714,8 @@ s32 bingo_objective_init(
             return bingo_objective_1ups_in_level_init(objective, class);
         case BINGO_OBJECTIVE_STARS_IN_LEVEL:
             return bingo_objective_stars_in_level_init(objective, class);
+        case BINGO_OBJECTIVE_DANGEROUS_WALL_KICKS:
+            return bingo_objective_dangerous_wall_kicks_init(objective, class);
         case BINGO_OBJECTIVE_LOSE_MARIO_HAT:
             return bingo_objective_lose_mario_hat_init(objective, class);
         case BINGO_OBJECTIVE_BLJ:

@@ -28,6 +28,7 @@ extern void play_mario_heavy_landing_sound(struct MarioState *m, u32 soundBits);
 extern void play_mario_heavy_landing_sound_once(struct MarioState *m, u32 soundBits);
 extern void play_mario_sound(struct MarioState *m, s32 primarySoundBits, s32 scondarySoundBits);
 extern void mario_set_forward_vel(struct MarioState *m, f32 speed);
+extern s32 is_dangerous_wallkick(struct MarioState *m);
 extern s32 mario_get_floor_class(struct MarioState *m);
 extern u32 mario_get_terrain_sound_addend(struct MarioState *m);
 extern struct Surface *resolve_and_return_wall_collisions(Vec3f pos, f32 offset, f32 radius);

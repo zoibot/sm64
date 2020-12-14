@@ -29,6 +29,8 @@ struct UID {
 #define MAX_SPINDRIFTS 25
 // There are 83
 #define MAX_SIGNPOSTS 100
+// Well, there are 25 courses...
+#define MAX_COURSES_WALLKICKS 30
 
 #define TOTAL_UIDS ( \
         MAX_GOOMBAS \
@@ -72,6 +74,9 @@ void get_index_range(enum BingoObjectiveUpdate update, s32 *start, s32 *length) 
                 break;
             case BINGO_UPDATE_READ_SIGNPOST:
                 rangeLength = MAX_SIGNPOSTS;
+                break;
+            case BINGO_UPDATE_DANGEROUS_WALL_KICK:
+                rangeLength = MAX_COURSES_WALLKICKS;
                 break;
         }
         *start += prevRangeLength;

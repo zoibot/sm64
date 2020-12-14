@@ -382,6 +382,10 @@ void mario_set_forward_vel(struct MarioState *m, f32 forwardVel) {
     m->vel[2] = (f32) m->slideVelZ;
 }
 
+s32 is_dangerous_wallkick(struct MarioState *m) {
+    return m->floor->type == SURFACE_DEATH_PLANE;
+}
+
 /**
 * Returns the slipperines class of Mario's floor.
 */
@@ -1699,6 +1703,9 @@ s32 execute_mario_action(UNUSED struct Object *o) {
         // which can lead to unexpected sub-frame behavior. Could potentially hang
         // if a loop of actions were found, but there has not been a situation found.
         while (inLoop) {
+            if ((gMarioState->action & ACT_GROUP_MASK) != ACT_GROUP_AIRBORNE) {
+                bingo_update(BINGO_UPDATE_DANGEROUS_WALL_KICK_FAILED);
+            }
             switch (gMarioState->action & ACT_GROUP_MASK) {
                 case ACT_GROUP_STATIONARY:
                     inLoop = mario_execute_stationary_action(gMarioState);

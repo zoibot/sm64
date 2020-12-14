@@ -254,6 +254,10 @@ ALIGNED8 static const u8 seg2_texture_allstarslevel[] = {
 #include "textures/segment2/custom/segment2.allstarslevel.rgba16.inc.c"
 };
 
+ALIGNED8 static const u8 seg2_texture_wallkick[] = {
+#include "textures/segment2/custom/segment2.wallkick.rgba16.inc.c"
+};
+
 ALIGNED8 static const u8 seg2_texture_mario_hat[] = {
 #include "textures/segment2/custom/segment2.mario_hat.rgba16.inc.c"
 };
@@ -1989,6 +1993,7 @@ const u8 *const bingo_lut[] = {
     seg2_texture_multistar,      // BINGO_ICON_MULTISTAR
     seg2_texture_1up,            // BINGO_ICON_1UPS_IN_LEVEL
     seg2_texture_allstarslevel,  // BINGO_ICON_STARS_IN_LEVEL
+    seg2_texture_wallkick,       // BINGO_ICON_DANGEROUS_WALL_KICKS
     seg2_texture_mario_hat,      // BINGO_ICON_MARIO_HAT
     seg2_texture_blj,            // BINGO_ICON_BLJ
     seg2_texture_bowser,         // BINGO_ICON_BOWSER

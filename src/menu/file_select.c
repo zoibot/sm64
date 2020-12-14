@@ -848,6 +848,7 @@ static unsigned char textCoinLevel[] = { TEXT_COIN_LEVEL };
 static unsigned char textTotalCoin[] = { TEXT_TOTAL_COIN };
 static unsigned char text1upLevel[] = { TEXT_1UP_LEVEL };
 static unsigned char textStarsLevel[] = { TEXT_STARS_LEVEL };
+static unsigned char textDangerousWallKicks[] = { TEXT_DANGEROUS_WALL_KICKS };
 static unsigned char textMarioHat[] = { TEXT_MARIO_HAT };
 static unsigned char textBLJ[] = { TEXT_BLJ };
 static unsigned char textBowser[] = { TEXT_BOWSER };
@@ -1030,6 +1031,10 @@ static void print_objective(enum BingoObjectiveType type, s32 pageNo) {
         case BINGO_OBJECTIVE_STARS_IN_LEVEL:
             obj_icon = BINGO_ICON_STARS_IN_LEVEL;
             option = textStarsLevel;
+            break;
+        case BINGO_OBJECTIVE_DANGEROUS_WALL_KICKS:
+            obj_icon = BINGO_ICON_DANGEROUS_WALL_KICKS;
+            option = textDangerousWallKicks;
             break;
         case BINGO_OBJECTIVE_LOSE_MARIO_HAT:
             obj_icon = BINGO_ICON_MARIO_HAT;

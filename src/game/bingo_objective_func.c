@@ -167,6 +167,7 @@ s32 objective_obtain_stars_in_level(struct BingoObjective *objective, enum Bingo
     }
 }
 
+
 s32 objective_lose_mario_hat(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
     if (update == BINGO_UPDATE_LOST_HAT) {
         set_objective_state(objective, BINGO_STATE_COMPLETE);
@@ -200,6 +201,18 @@ s32 objective_generic_collectable(
         if (data->gotten >= data->toGet) {
             set_objective_state(objective, BINGO_STATE_COMPLETE);
         }
+    }
+}
+
+s32 objective_dangerous_wall_kicks(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
+    struct CollectableData *data = &objective->data.collectableData;
+    if (update == BINGO_UPDATE_DANGEROUS_WALL_KICK_FAILED) {
+        if (data->gotten != 0) {
+            bingo_hud_update_state(BINGO_ICON_FAILED, BINGO_ICON_DANGEROUS_WALL_KICKS);
+        }
+        data->gotten = 0;
+    } else {
+        objective_generic_collectable(objective, update, BINGO_UPDATE_DANGEROUS_WALL_KICK);
     }
 }
 
@@ -237,6 +250,8 @@ s32 update_objective(struct BingoObjective *objective, enum BingoObjectiveUpdate
             return objective_obtain_1ups_in_level(objective, update);
         case BINGO_OBJECTIVE_STARS_IN_LEVEL:
             return objective_obtain_stars_in_level(objective, update);
+        case BINGO_OBJECTIVE_DANGEROUS_WALL_KICKS:
+            return objective_dangerous_wall_kicks(objective, update);
         case BINGO_OBJECTIVE_LOSE_MARIO_HAT:
             return objective_lose_mario_hat(objective, update);
         case BINGO_OBJECTIVE_BLJ:

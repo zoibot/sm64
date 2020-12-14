@@ -600,6 +600,8 @@ void render_hud(void) {
         } else {
             if ((gbBingosCompleted >= gbBingoTarget) && gbBingoShowCongratsCounter < gbBingoShowCongratsLimit) {
                 draw_bingo_win_screen();
+            } else {
+                bingo_hud_render();
             }
 
             if (gbBingoShowTimer) {
@@ -622,8 +624,6 @@ void render_hud(void) {
             if (gBingoReverseJoystickActive) {
                 render_hud_reverse_joystick();
             }
-
-            bingo_hud_render();
 
             if (hudDisplayFlags & HUD_DISPLAY_FLAG_COIN_COUNT) {
                 render_hud_coins();
