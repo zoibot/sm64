@@ -208,6 +208,7 @@ s32 objective_generic_collectable(
 s32 objective_dangerous_wall_kicks(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
     struct MultiCourseCollectableData *data = &objective->data.multiCourseCollectableData;
     u32 uid;
+    s32 objIndex = objective - gBingoObjectives;  // to uniquely identify _this_ objective
 
     if (update == BINGO_UPDATE_DANGEROUS_WALL_KICK_FAILED) {
         if (data->gottenThisCourse != 0 && data->gottenThisCourse < data->toGetEachCourse) {
@@ -215,11 +216,8 @@ s32 objective_dangerous_wall_kicks(struct BingoObjective *objective, enum BingoO
         }
         data->gottenThisCourse = 0;
     } else if (update == BINGO_UPDATE_DANGEROUS_WALL_KICK) {
-        uid = get_unique_id(BINGO_UPDATE_DANGEROUS_WALL_KICK, 1.0f, 1.0f, 1.0f);
-        if (
-            data->gottenThisCourse == 0
-            && !peek_would_be_new_kill(BINGO_UPDATE_DANGEROUS_WALL_KICK, uid)
-        ) {
+        uid = get_unique_id(BINGO_UPDATE_DANGEROUS_WALL_KICK, objIndex, 0.0f, 0.0f);
+        if (!peek_would_be_new_kill(BINGO_UPDATE_DANGEROUS_WALL_KICK, uid)) {
             return;
         }
         data->gottenThisCourse++;

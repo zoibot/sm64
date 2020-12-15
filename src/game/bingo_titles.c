@@ -90,8 +90,8 @@ void get_collectable_objective_title(struct BingoObjective *objective) {
 }
 
 void get_dangerous_wallkicks_title(struct BingoObjective *objective) {
-    sprintf(objective->title, "%d in %d",
-        objective->data.multiCourseCollectableData.toGetEachCourse, objective->data.multiCourseCollectableData.toGetTotal);
+    struct MultiCourseCollectableData *data = &objective->data.multiCourseCollectableData;
+    sprintf(objective->title, "%dx %dc", data->toGetEachCourse, data->toGetTotal);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
