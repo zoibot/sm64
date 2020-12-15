@@ -500,8 +500,8 @@ s32 bingo_objective_dangerous_wall_kicks_init(
 
     switch (class) {
         default:
-            toGetTotal = random_range_inclusive(1, 3);
-            toGetEachCourse = random_range_inclusive(4, 6);
+            toGetTotal = random_range_inclusive(2, 4);
+            toGetEachCourse = random_range_inclusive(5, 7);
             break;
     }
 

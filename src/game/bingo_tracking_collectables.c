@@ -30,10 +30,10 @@ struct UID {
 // There are 83
 #define MAX_SIGNPOSTS 100
 // Well, there are 25 courses, and the objective could show
-// up 3 times... 75 --> 80
+// up 2 times... 25 * 2
 // This is really inefficient and also fragile. This should use
 // a different type of memorization system.
-#define MAX_COURSES_WALLKICKS 80
+#define MAX_COURSES_WALLKICKS 50
 
 #define TOTAL_UIDS ( \
         MAX_GOOMBAS \
