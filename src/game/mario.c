@@ -383,7 +383,23 @@ void mario_set_forward_vel(struct MarioState *m, f32 forwardVel) {
 }
 
 s32 is_dangerous_wallkick(struct MarioState *m) {
-    return m->floor->type == SURFACE_DEATH_PLANE;
+    s32 requiredWedges;
+    f32 fallHeight = m->peakHeight - m->floorHeight;
+
+    if (m->floor->type == SURFACE_DEATH_PLANE || m->floor->type ==/*doesnt work :( */ SURFACE_INSTANT_QUICKSAND) {
+        return 1;
+    }
+
+    if (m->floor->type == SURFACE_BURNING) {
+        requiredWedges = (m->flags & MARIO_CAP_ON_HEAD) ? 3 : 4;
+    } else if (fallHeight > 3000.0f) {
+        requiredWedges = (m->flags & MARIO_CAP_ON_HEAD) ? 4 : 6;
+    } else if (fallHeight > 1150.0f && !mario_floor_is_slippery(m)) {
+        requiredWedges = (m->flags & MARIO_CAP_ON_HEAD) ? 2 : 3;
+    } else {
+        return 0;
+    }
+    return m->health < (requiredWedges + 1) * 0x100;
 }
 
 /**

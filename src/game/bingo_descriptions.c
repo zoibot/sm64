@@ -472,7 +472,11 @@ void get_dangerous_wall_kicks_objective_desc(struct BingoObjective *obj, char *d
     struct MultiCourseCollectableData *data = &obj->data.multiCourseCollectableData;
     sprintf(
         desc,
-        "Get %d total in %d courses. Courses done: %d, curr course: %d",
+        (
+            "Perform %d consecutive perilous wallkicks in %d courses "
+            "(i.e. you would die if you failed!). "
+            "Courses done: %d. This course: %d"
+        ),
         data->toGetEachCourse,
         data->toGetTotal,
         data->gottenTotal,
