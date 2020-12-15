@@ -152,7 +152,7 @@ s32 objective_obtain_1ups_in_level(struct BingoObjective *objective, enum BingoO
         data->gotten = 0;
     } else if (update == BINGO_UPDATE_GOT_1UP && gCurrCourseNum == data->course) {
         data->gotten++;
-        bingo_hud_update(objective->icon, data->gotten);
+        bingo_hud_update_number(objective->icon, data->gotten);
         if (data->gotten == data->toGet) {
             set_objective_state(objective, BINGO_STATE_COMPLETE);
         }
@@ -198,7 +198,7 @@ s32 objective_generic_collectable(
     struct CollectableData *data = &objective->data.collectableData;
     if (update == desiredUpdate) {
         data->gotten++;
-        bingo_hud_update(objective->icon, data->gotten);
+        bingo_hud_update_number(objective->icon, data->gotten);
         if (data->gotten >= data->toGet) {
             set_objective_state(objective, BINGO_STATE_COMPLETE);
         }
@@ -209,6 +209,7 @@ s32 objective_dangerous_wall_kicks(struct BingoObjective *objective, enum BingoO
     struct MultiCourseCollectableData *data = &objective->data.multiCourseCollectableData;
     u32 uid;
     s32 objIndex = objective - gBingoObjectives;  // to uniquely identify _this_ objective
+    char message[10];
 
     if (update == BINGO_UPDATE_DANGEROUS_WALL_KICK_FAILED) {
         if (data->gottenThisCourse != 0 && data->gottenThisCourse < data->toGetEachCourse) {
@@ -221,7 +222,7 @@ s32 objective_dangerous_wall_kicks(struct BingoObjective *objective, enum BingoO
             return;
         }
         data->gottenThisCourse++;
-        bingo_hud_update(objective->icon, data->gottenThisCourse);
+        bingo_hud_update_number(objective->icon, data->gottenThisCourse);
         if (data->gottenThisCourse >= data->toGetEachCourse) {
             data->gottenThisCourse = 0;
             data->gottenTotal++;
@@ -229,7 +230,8 @@ s32 objective_dangerous_wall_kicks(struct BingoObjective *objective, enum BingoO
             if (data->gottenTotal >= data->toGetTotal) {
                 set_objective_state(objective, BINGO_STATE_COMPLETE);
             } else {
-                // TODO: update the HUD
+                sprintf(message, "%d COURSE%s", data->gottenTotal, data->gottenTotal == 1 ? "" : "S");
+                bingo_hud_update_message(objective->icon, message);
             }
         }
     }

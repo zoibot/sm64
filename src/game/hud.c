@@ -464,7 +464,7 @@ void delete_slot(s32 delete) {
     sLowestFreeSlotIndex--;
 }
 
-void bingo_hud_update(enum BingoObjectiveIcon icon, s32 number) {
+void bingo_hud_update_message(enum BingoObjectiveIcon icon, char message[10]) {
     s32 i;
     struct Slot *slot;
 
@@ -490,10 +490,16 @@ void bingo_hud_update(enum BingoObjectiveIcon icon, s32 number) {
     slot = &sSlots[sLowestFreeSlotIndex];
     slot->icon = icon;
     slot->printTimes = 1;
-    sprintf(slot->message, "%d", number);
+    strcpy(slot->message, message);
     slot->fadeTimer = 0;
 
     sLowestFreeSlotIndex++;
+}
+
+void bingo_hud_update_number(enum BingoObjectiveIcon icon, s32 number) {
+    char message[10];
+    sprintf(message, "%d", number);
+    bingo_hud_update_message(icon, message);
 }
 
 void bingo_hud_update_state(enum BingoObjectiveIcon icon, enum BingoObjectiveIcon stateIcon) {

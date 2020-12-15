@@ -386,7 +386,11 @@ s32 is_dangerous_wallkick(struct MarioState *m) {
     s32 requiredWedges;
     f32 fallHeight = m->peakHeight - m->floorHeight;
 
-    if (m->floor->type == SURFACE_DEATH_PLANE || m->floor->type ==/*doesnt work :( */ SURFACE_INSTANT_QUICKSAND) {
+    if (
+        m->floor->type == SURFACE_DEATH_PLANE
+        || m->floor->type == SURFACE_INSTANT_QUICKSAND
+        || m->floor->type == SURFACE_INSTANT_MOVING_QUICKSAND
+    ) {
         return 1;
     }
 
