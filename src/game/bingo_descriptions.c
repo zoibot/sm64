@@ -323,7 +323,7 @@ void get_multistar_objective_desc(struct BingoObjective *obj, char *desc) {
 void get_1up_level_objective_desc(struct BingoObjective *obj, char *desc) {
     char revEncLevelName[60];
     char suffix[30];
-    char hint[30];
+    char hint[70];
     struct CourseCollectableData *data = &obj->data.courseCollectableData;
 
     get_level_name(revEncLevelName, data->course);
@@ -410,7 +410,7 @@ void get_bowser_objective_desc(struct BingoObjective *obj, char *desc) {
 }
 
 void get_collectable_objective_desc(struct BingoObjective *obj, char *desc) {
-    char verb[15];
+    char verb[16];
     char collectName[20];
     char suffix[30];
 
@@ -424,6 +424,9 @@ void get_collectable_objective_desc(struct BingoObjective *obj, char *desc) {
             break;  // hah!
         case BINGO_OBJECTIVE_RED_COIN:
             strcpy(verb, "Collect");
+            break;
+        case BINGO_OBJECTIVE_AMPS:
+            strcpy(verb, "Get zapped by");
             break;
         default:
             strcpy(verb, "Kill");
@@ -439,6 +442,9 @@ void get_collectable_objective_desc(struct BingoObjective *obj, char *desc) {
             break;
         case BINGO_OBJECTIVE_RED_COIN:
             strcpy(collectName, "Red Coins");
+            break;
+        case BINGO_OBJECTIVE_AMPS:
+            strcpy(collectName, "Amps");
             break;
         case BINGO_OBJECTIVE_KILL_GOOMBAS:
             strcpy(collectName, "Goombas");
@@ -527,6 +533,7 @@ void describe_objective(struct BingoObjective *objective, char *desc) {
         case BINGO_OBJECTIVE_SIGNPOST:
         case BINGO_OBJECTIVE_RED_COIN:
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
+        case BINGO_OBJECTIVE_AMPS:
         case BINGO_OBJECTIVE_KILL_GOOMBAS:
         case BINGO_OBJECTIVE_KILL_BOBOMBS:
         case BINGO_OBJECTIVE_KILL_SPINDRIFTS:

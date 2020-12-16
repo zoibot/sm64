@@ -178,6 +178,7 @@
 #define TEXT_EXCLAM_BOXES _("Break ! Boxes")
 #define TEXT_SIGNPOSTS _("Read Signposts")
 #define TEXT_RED_COINS _("Collect Red Coins")
+#define TEXT_AMPS _("Touch Amps")
 #define TEXT_KILL_GOOMBAS _("Kill Goombas")
 #define TEXT_KILL_BOBOMBS _("Kill Bob-ombs")
 #define TEXT_KILL_SPINDRIFTS _("Kill Spindrifts")

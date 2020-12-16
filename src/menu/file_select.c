@@ -855,6 +855,7 @@ static unsigned char textBowser[] = { TEXT_BOWSER };
 static unsigned char textExclamBoxes[] = { TEXT_EXCLAM_BOXES };
 static unsigned char textSignposts[] = { TEXT_SIGNPOSTS };
 static unsigned char textRedCoins[] = { TEXT_RED_COINS };
+static unsigned char textAmps[] = { TEXT_AMPS };
 static unsigned char textKillGoombas[] = { TEXT_KILL_GOOMBAS };
 static unsigned char textKillBobOmbs[] = { TEXT_KILL_BOBOMBS };
 static unsigned char textKillSpindrifts[] = { TEXT_KILL_SPINDRIFTS };
@@ -1059,6 +1060,10 @@ static void print_objective(enum BingoObjectiveType type, s32 pageNo) {
         case BINGO_OBJECTIVE_RED_COIN:
             obj_icon = BINGO_ICON_RED_COIN;
             option = textRedCoins;
+            break;
+        case BINGO_OBJECTIVE_AMPS:
+            obj_icon = BINGO_ICON_AMP;
+            option = textAmps;
             break;
         case BINGO_OBJECTIVE_KILL_GOOMBAS:
             obj_icon = BINGO_ICON_KILL_GOOMBAS;

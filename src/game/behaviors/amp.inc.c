@@ -1,3 +1,6 @@
+#include "game/bingo.h"
+#include "game/bingo_tracking_collectables.h"
+
 /**
  * Behavior for bhvHomingAmp and bhvCirclingAmp.
  * These are distinct objects; one chases (homes in on) Mario,
@@ -28,6 +31,7 @@ void bhv_homing_amp_init(void) {
     o->oFriction = 1.0;
     o->oBuoyancy = 1.0;
     o->oHomingAmpAvgY = o->oHomeY;
+    o->oBingoId = get_unique_id(BINGO_UPDATE_ZAPPED_BY_AMP, o->oPosX, o->oPosY, o->oPosZ);
 
     // Homing amps start at 1/10th their normal size.
     // They grow when they "appear" to Mario.
@@ -52,6 +56,9 @@ static void check_amp_attack(void) {
         //         o->oAction = X;
         // ?
         if (o->oInteractStatus & INT_STATUS_INTERACTED) {
+            if (is_new_kill(BINGO_UPDATE_ZAPPED_BY_AMP, o->oBingoId)) {
+                bingo_update(BINGO_UPDATE_ZAPPED_BY_AMP);
+            }
             // This function is used for both normal amps and homing amps,
             // AMP_ACT_ATTACK_COOLDOWN == HOMING_AMP_ACT_ATTACK_COOLDOWN
             o->oAction = AMP_ACT_ATTACK_COOLDOWN;
@@ -239,6 +246,7 @@ void bhv_circling_amp_init(void) {
     o->oHomeY = o->oPosY;
     o->oHomeZ = o->oPosZ;
     o->oAnimState = 1;
+    o->oBingoId = get_unique_id(BINGO_UPDATE_ZAPPED_BY_AMP, o->oPosX, o->oPosY, o->oPosZ);
 
     // Determine the radius of the circling amp's circle
     switch (o->oBehParams2ndByte) {

@@ -38,6 +38,7 @@ struct ObjectiveWeight sWeightsMedium[] = {
     { BINGO_OBJECTIVE_KILL_BOBOMBS, 6, 2 },
     { BINGO_OBJECTIVE_KILL_SPINDRIFTS, 6, 1 },
     { BINGO_OBJECTIVE_KILL_MR_IS, 6, 1 },
+    { BINGO_OBJECTIVE_AMPS, 6, 1 },
     { BINGO_OBJECTIVE_STAR_TIMED, 12, 3 },
     { BINGO_OBJECTIVE_STAR_B_BUTTON_CHALLENGE, 3, 3 },
     { BINGO_OBJECTIVE_STAR_Z_BUTTON_CHALLENGE, 3, 3 },
@@ -66,6 +67,7 @@ struct ObjectiveWeight sWeightsHard[] = {
     { BINGO_OBJECTIVE_STAR_DAREDEVIL, 8, 3 },
     { BINGO_OBJECTIVE_DANGEROUS_WALL_KICKS, 12, 1 },
     { BINGO_OBJECTIVE_RED_COIN, 12, 1 },
+    { BINGO_OBJECTIVE_AMPS, 6, 1 },
     { BINGO_OBJECTIVE_SIGNPOST, 12, 1 },
     { BINGO_OBJECTIVE_MULTISTAR, 6, 1 },
 };
@@ -77,6 +79,7 @@ struct ObjectiveWeight sWeightsCenter[] = {
     { BINGO_OBJECTIVE_KILL_BOBOMBS, 6, 1 },
     { BINGO_OBJECTIVE_MULTICOIN, 12, NO_LIMIT },
     { BINGO_OBJECTIVE_MULTISTAR, 6, 1 },
+    { BINGO_OBJECTIVE_AMPS, 3, 1 },
     { BINGO_OBJECTIVE_BOWSER, 3, 1 },
 };
 s32 sWeightsSizeCenter = sizeof(sWeightsCenter) / sizeof(struct ObjectiveWeight);

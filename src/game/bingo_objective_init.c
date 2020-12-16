@@ -612,6 +612,25 @@ s32 bingo_objective_red_coin_init(
     bingo_objective_collectable_init(objective, BINGO_ICON_RED_COIN, coins);
 }
 
+s32 bingo_objective_amps_init(
+    struct BingoObjective *objective, enum BingoObjectiveClass class
+) {
+    s32 toGet;
+
+    switch (class) {
+        case BINGO_CLASS_MEDIUM:
+        default:
+            toGet = random_range_inclusive(5, 10);
+            break;
+        case BINGO_CLASS_HARD:
+        case BINGO_CLASS_CENTER:
+            toGet = random_range_inclusive(11, 16);
+            break;
+    }
+
+    bingo_objective_collectable_init(objective, BINGO_ICON_AMP, toGet);
+}
+
 s32 bingo_objective_kill_goombas_init(
     struct BingoObjective *objective, enum BingoObjectiveClass class
 ) {
@@ -731,6 +750,8 @@ s32 bingo_objective_init(
             return bingo_objective_signpost_init(objective, class);
         case BINGO_OBJECTIVE_RED_COIN:
             return bingo_objective_red_coin_init(objective, class);
+        case BINGO_OBJECTIVE_AMPS:
+            return bingo_objective_amps_init(objective, class);
         case BINGO_OBJECTIVE_KILL_GOOMBAS:
             return bingo_objective_kill_goombas_init(objective, class);
         case BINGO_OBJECTIVE_KILL_BOBOMBS:

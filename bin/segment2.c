@@ -2004,6 +2004,7 @@ const u8 *const bingo_lut[] = {
     seg2_texture_signpost,       // BINGO_ICON_SIGNPOST
     seg2_texture_red_coin,       // BINGO_ICON_RED_COIN
     seg2_texture_yellowbox,      // BINGO_ICON_EXCLAMATION_MARK_BOX
+    seg2_texture_amp,            // BINGO_ICON_AMP
     seg2_texture_goomba,         // BINGO_ICON_KILL_GOOMBAS
     seg2_texture_bobomb,         // BINGO_ICON_KILL_BOBOMBS
     seg2_texture_spindrift,      // BINGO_ICON_KILL_SPINDRIFTS
