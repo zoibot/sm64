@@ -181,6 +181,9 @@ void bhv_act_selector_init(void) {
     gStarSelectScreenActive = 1;
 
     sVisibleStars = 0;
+    if (gCurrCourseNum > COURSE_STAGES_MAX) {
+        sObtainedStars = 0;  // yeah todo
+    }
     while (i != sObtainedStars) {
         if (stars & (1 << sVisibleStars)) // Star has been collected
         {
@@ -228,6 +231,10 @@ void bhv_act_selector_init(void) {
     }
 
     // Render star selector objects
+    if (gCurrCourseNum > COURSE_STAGES_MAX) {
+        sVisibleStars = 1;  // yeah todo
+    }
+
     for (i = 0; i < sVisibleStars; i++) {
         sStarSelectorModels[i] =
             spawn_object_abs_with_rot(gCurrentObject, 0, selectorModelIDs[i], bhvActSelectorStarType,
@@ -388,18 +395,19 @@ static void print_act_selector_strings(void) {
 
     create_dl_ortho_matrix();
 
-    // Print the coin highscore.
-    gSPDisplayList(gDisplayListHead++, dl_rgba16_text_begin);
-    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
-    print_hud_my_score_coins(1, gCurrSaveFileNum - 1, gCurrCourseNum - 1, 155, 106);
-    gSPDisplayList(gDisplayListHead++, dl_rgba16_text_end);
+    // No need for coin highscore in bingo.
+    // // Print the coin highscore.
+    // gSPDisplayList(gDisplayListHead++, dl_rgba16_text_begin);
+    // gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
+    // print_hud_my_score_coins(1, gCurrSaveFileNum - 1, gCurrCourseNum - 1, 155, 106);
+    // gSPDisplayList(gDisplayListHead++, dl_rgba16_text_end);
 
     gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
     gDPSetEnvColor(gDisplayListHead++, 0, 0, 0, 255);
-    // Print the "MY SCORE" text if the coin score is more than 0
-    if (save_file_get_course_coin_score(gCurrSaveFileNum - 1, gCurrCourseNum - 1) != 0) {
-        print_generic_string(102, 118, myScore);
-    }
+    // // Print the "MY SCORE" text if the coin score is more than 0
+    // if (save_file_get_course_coin_score(gCurrSaveFileNum - 1, gCurrCourseNum - 1) != 0) {
+    //     print_generic_string(102, 118, myScore);
+    // }
     // Print the level name; add 3 to skip the number and spacing to get to the actual string to center.
     lvlNameX = get_str_x_pos_from_center(160, currLevelName + 3, 10.0f);
     print_generic_string(lvlNameX, 33, currLevelName + 3);
@@ -411,7 +419,12 @@ static void print_act_selector_strings(void) {
     gDPSetEnvColor(gDisplayListHead++, 0, 0, 0, 255);
     // Print the name of the selected act.
     if (sVisibleStars != 0) {
-        selectedActName = segmented_to_virtual(actNameTbl[(gCurrCourseNum - 1) * 6 + sSelectedActIndex]);
+        if (gCurrCourseNum <= COURSE_STAGES_MAX) {
+            selectedActName = segmented_to_virtual(actNameTbl[(gCurrCourseNum - 1) * 6 + sSelectedActIndex]);
+        } else {
+            selectedActName = segmented_to_virtual(actNameTbl[(COURSE_STAGES_MAX) * 6]);
+            sVisibleStars = 1;
+        }
         actNameX = get_str_x_pos_from_center(ACT_NAME_X, selectedActName, 8.0f);
         print_menu_generic_string(actNameX, 81, selectedActName);
     }
