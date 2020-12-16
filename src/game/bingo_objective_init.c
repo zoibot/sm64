@@ -321,7 +321,7 @@ s32 bingo_objective_star_click_game_init(
     objective->data.starClicksObjective.course = course;
     objective->data.starClicksObjective.starIndex = star;
     objective->data.starClicksObjective.maxClicks = clicks;
-    objective->data.starClicksObjective.clicks = 0;
+    objective->data.starClicksObjective.clicks = -1;  // a bug adds a click on level start
     get_objective_title(objective);
 }
 

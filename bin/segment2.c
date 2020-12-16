@@ -278,6 +278,10 @@ ALIGNED8 static const u8 seg2_texture_signpost[] = {
 #include "textures/segment2/custom/segment2.signpost.rgba16.inc.c"
 };
 
+ALIGNED8 static const u8 seg2_texture_amp[] = {
+#include "textures/segment2/custom/segment2.amp.rgba16.inc.c"
+};
+
 ALIGNED8 static const u8 seg2_texture_bobomb[] = {
 #include "textures/segment2/custom/segment2.bobomb.rgba16.inc.c"
 };
