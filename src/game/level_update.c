@@ -1312,10 +1312,15 @@ s32 lvl_set_current_level(UNUSED s16 arg0, s32 levelNum) {
         nop_change_course();
         disable_warp_checkpoint();
     }
-
-    if (gCurrCourseNum > COURSE_STAGES_MAX || val4 != 0) {
+    if (
+        gCurrLevelNum == LEVEL_BOWSER_1
+        || gCurrLevelNum == LEVEL_BOWSER_2
+        || gCurrLevelNum == LEVEL_BOWSER_3
+    ) {
+        return 0;
+    } else if ((gCurrCourseNum > COURSE_STAGES_MAX || val4 != 0)) {
         return 1;
-    }
+    } else
 
     if (gDebugLevelSelect != 0 && gShowProfiler == 0) {
         return 0;
