@@ -262,7 +262,7 @@ s32 bingo_objective_star_reverse_joystick_init(
 
     switch (class) {
         default:
-            random_star_main_course_except_100c(&course, &star);
+            random_star_except_mips_toad(&course, &star);
             break;
     }
 
@@ -353,12 +353,13 @@ s32 bingo_objective_star_daredevil_init(
         default:
         case BINGO_CLASS_MEDIUM:
             do {
-                random_star_main_course_except_100c(&course, &star);
+                random_star_except_mips_toad(&course, &star);
             } while (
                 (
                     course == COURSE_JRB
                     || (course == COURSE_DDD && (star != 1 || star != 4))
                     || (course == COURSE_WDW && (star == 4 || star == 5))
+                    // COURSE_SA is actually possible/not hard
                 )
             );
             break;
@@ -386,6 +387,82 @@ s32 bingo_objective_star_daredevil_init(
     objective->data.starObjective.starIndex = star;
     get_objective_title(objective);
 }
+void random_main_course_coins(enum BingoObjectiveClass class, enum CourseNum *course, s32 *coins) {
+    switch (class) {
+        default:
+        case BINGO_CLASS_EASY:
+            *course = random_main_course();
+            *coins = random_range_inclusive(30, 60);
+            break;
+        case BINGO_CLASS_MEDIUM:
+            *course = random_main_course();
+            *coins = random_range_inclusive(50, 99);
+            break;
+        case BINGO_CLASS_CENTER:
+        case BINGO_CLASS_HARD:
+            *course = random_main_course();
+            *coins = random_range_inclusive(80, 99);
+            break;
+    }
+}
+
+void random_special_course_coins(enum BingoObjectiveClass class, enum CourseNum *course, s32 *coins) {
+    f32 max;
+    f32 min;
+    switch (class) {
+        case BINGO_CLASS_EASY:
+            min = 0.4f;
+            max = 0.5f;
+            break;
+        case BINGO_CLASS_MEDIUM:
+            min = 0.5f;
+            max = 0.6f;
+            break;
+        default:
+        case BINGO_CLASS_HARD:
+            min = 0.6f;
+            max = 1.0f;
+            break;
+    }
+
+    *course = random_range_inclusive(COURSE_BITDW, COURSE_SA);
+    switch (*course) {
+        case COURSE_BITDW:
+            *coins = random_range_inclusive((s32)(80 * min), (s32)(80 * max));
+            break;
+        case COURSE_BITFS:
+            *coins = random_range_inclusive((s32)(80 * min), (s32)(80 * max));
+            break;
+        case COURSE_BITS:
+            *coins = random_range_inclusive((s32)(76 * min), (s32)(76 * max));
+            break;
+        case COURSE_PSS:
+            *coins = random_range_inclusive((s32)(80 * min), (s32)(80 * max));
+            break;
+        case COURSE_COTMC:
+            // There's only 47 coins, which isn't too hard.
+            *coins = random_range_inclusive(37, 47);
+            break;
+        case COURSE_TOTWC:
+            // There are actually 63 coins but it's far too hard to
+            // get that many.
+            *coins = random_range_inclusive(37, 53);
+            break;
+        case COURSE_VCUTM:
+            // There aren't enough coins to have a lower goal.
+            *coins = 27;
+            break;
+        case COURSE_WMOTR:
+            *coins = random_range_inclusive((s32)(56 * min), (s32)(56 * max));
+            break;
+        case COURSE_SA:
+            // There's nothing difficult about getting all the coins
+            // so just have that be the default.
+            *coins = 56;
+            break;
+    }
+}
+
 
 s32 bingo_objective_coin_init(
     struct BingoObjective *objective, enum BingoObjectiveClass class
@@ -393,22 +470,14 @@ s32 bingo_objective_coin_init(
     enum CourseNum course;
     s32 coins;
 
-    switch (class) {
-        default:
-        case BINGO_CLASS_EASY:
-            course = random_main_course();
-            coins = ((RandomU16() % 30) + 30); // between 30 and 60
-            break;
-        case BINGO_CLASS_MEDIUM:
-            course = random_main_course();
-            coins = ((RandomU16() % 40) + 50); // between 50 and 99
-            break;
-        case BINGO_CLASS_CENTER:
-        case BINGO_CLASS_HARD:
-            course = random_main_course();
-            coins = ((RandomU16() % 20) + 80); // between 80 and 99
-            break;
+    // For some reason, I want the main courses to have
+    // 80% stake in these coin objectives. It feels "right".
+    if (random_range_inclusive(1, 100) <= 80) {
+        random_main_course_coins(class, &course, &coins);
+    } else {
+        random_special_course_coins(class, &course, &coins);
     }
+
     objective->icon = BINGO_ICON_COIN;
     objective->data.courseCollectableData.course = course;
     objective->data.courseCollectableData.toGet = coins;
@@ -422,7 +491,7 @@ s32 bingo_objective_multicoin_init(
     s32 numCoins;
     switch (class) {
         default:
-            numCoins = 100 + (RandomU16() % 151); // [100:250]
+            numCoins = random_range_inclusive(100, 250);
             break;
     }
     bingo_objective_collectable_init(objective, BINGO_ICON_MULTICOIN, numCoins);

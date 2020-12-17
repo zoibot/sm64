@@ -50,10 +50,14 @@ void get_star_objective_title(struct BingoObjective *objective) {
 void get_coin_objective_title(struct BingoObjective *objective) {
     enum CourseNum course = objective->data.courseCollectableData.course;
     s32 coins = objective->data.courseCollectableData.toGet;
-    char abbrev[4];
+    char abbrev[9];
     get_course_abbreviation(course, &abbrev);
 
-    sprintf(objective->title, "%s %d", abbrev, coins);
+    if (strlen(abbrev) >= 4) {
+        sprintf(objective->title, "%s%d", abbrev, coins);
+    } else {
+        sprintf(objective->title, "%s %d", abbrev, coins);
+    }
 }
 
 void get_multicoin_objective_title(struct BingoObjective *objective) {
