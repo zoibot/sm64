@@ -25,7 +25,7 @@ void get_course_abbreviation(enum CourseNum course, char *abbrev) {
 void get_star_objective_title(struct BingoObjective *objective) {
     enum CourseNum course = objective->data.starObjective.course;
     s32 star = objective->data.starObjective.starIndex;
-    char abbrev[7] = { 0xFF };
+    char abbrev[9] = { 0xFF };
     char PSSname[5] = { 0xFF };
     get_course_abbreviation(course, &abbrev);
 
@@ -65,14 +65,14 @@ void get_multicoin_objective_title(struct BingoObjective *objective) {
 }
 
 void get_in_level_objective_title(struct BingoObjective *objective) {
-    char abbrev[4];
+    char abbrev[9];
     get_course_abbreviation(objective->data.courseCollectableData.course, &abbrev);
 
     sprintf(objective->title, "%s %d", abbrev, objective->data.courseCollectableData.toGet);
 }
 
 void get_bowser_objective_title(struct BingoObjective *objective) {
-    char abbrev[6] = { 0xFF };
+    char abbrev[9] = { 0xFF };
     enum LevelNum level = objective->data.levelData.level;
     if (level == LEVEL_BOWSER_1) {
         get_course_abbreviation(COURSE_BITDW, &abbrev);

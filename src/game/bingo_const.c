@@ -7,7 +7,7 @@ char *courseAbbreviations[24] = { "BOB",   "WF",   "JRB", "CCM",   "BBH",   "HMC
                                   "DDD",   "SL",   "WDW", "TTM",   "THI",   "TTC",   "RR",    "BitDW",
                                   "BitFS", "BitS", "PSS", "CotMC", "TotWC", "VCutM", "WMotR", "SA" };
 
-s32 course_1ups[15] = {
+s32 course_1ups[] = {
     3,      // COURSE_BOB
     4 - 1,  // COURSE_WF, without the 1 butterfly 1up
     2,      // COURSE_JRB
@@ -23,6 +23,17 @@ s32 course_1ups[15] = {
     10 - 3, // COURSE_THI, without the 3 butterfly 1ups
     4,      // COURSE_TTC
     9,      // COURSE_RR
+    6,      // COURSE_BITDW
+    6,      // COURSE_BITFS
+    6,      // COURSE_BITS
+    2,      // COURSE_PSS
+    2,      // COURSE_COTMC
+    0,      // COURSE_TOTWC
+    4,      // COURSE_VCUTM
+    4,      // COURSE_WMOTR
+    1,      // COURSE_SA
+    // There are 7 outside the castle
+    // And 2 inside the castle
 };
 
 s32 get_1ups_in_level(enum CourseNum course) {

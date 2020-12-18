@@ -22,6 +22,10 @@ enum CourseNum random_main_course() {
     return (RandomU16() % 15) + 1;
 }
 
+enum CourseNum random_course_including_special() {
+    return (RandomU16() % 24) + 1;
+}
+
 s32 random_star_main_course(enum CourseNum *course, s32 *star) {
     *course = random_main_course();
     *star = (RandomU16() % 7); // zero-indexed
@@ -471,8 +475,8 @@ s32 bingo_objective_coin_init(
     s32 coins;
 
     // For some reason, I want the main courses to have
-    // 80% stake in these coin objectives. It feels "right".
-    if (random_range_inclusive(1, 100) <= 80) {
+    // this stake in these coin objectives. It feels "right".
+    if (random_range_inclusive(1, 100) <= 76) {
         random_main_course_coins(class, &course, &coins);
     } else {
         random_special_course_coins(class, &course, &coins);
@@ -491,7 +495,7 @@ s32 bingo_objective_multicoin_init(
     s32 numCoins;
     switch (class) {
         default:
-            numCoins = random_range_inclusive(100, 250);
+            numCoins = random_range_inclusive(200, 350);
             break;
     }
     bingo_objective_collectable_init(objective, BINGO_ICON_MULTICOIN, numCoins);
@@ -499,7 +503,8 @@ s32 bingo_objective_multicoin_init(
 
 s32 bingo_objective_multistar_init(
     struct BingoObjective *objective, enum BingoObjectiveClass class
-) { s32 numStars;
+) {
+    s32 numStars;
     switch (class) {
         case BINGO_CLASS_EASY:
             numStars = random_range_inclusive(3, 4);
@@ -525,14 +530,16 @@ s32 bingo_objective_1ups_in_level_init(
         case BINGO_CLASS_MEDIUM:
         default:
             do {
-                course = random_main_course();
+                course = random_course_including_special();
                 _1upsMin = (s32) get_1ups_in_level(course) * 0.6f;
                 _1ups = (RandomU16() % (get_1ups_in_level(course) - _1upsMin)) + _1upsMin;
             } while (_1ups < 3);
             break;
         case BINGO_CLASS_HARD:
-            course = random_main_course();
-            _1ups = get_1ups_in_level(course);
+            do {
+                course = random_main_course();
+                _1ups = get_1ups_in_level(course);
+            } while (_1ups < 2);  // allow 2, but not 1 or 0
             break;
     }
 
