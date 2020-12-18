@@ -217,17 +217,21 @@ s32 bingo_objective_star_timed_init(
     s32 star, maxTime;
 
     switch (class) {
-        case BINGO_CLASS_MEDIUM:
         default:
             random_star_main_course_except_100c(&course, &star);
-            maxTime = get_time_for_star(course, star) * 30 + (20 * 30) + // add 20 seconds to be nice
-                      (random_range_inclusive(0, 15) * 30);  // up to 15 extra seconds
+            maxTime = 30 * (  // convert frames to seconds
+                get_time_for_star(course, star)
+                + 20  // add time to be nice
+                + random_range_inclusive(0, 15)  // random extra seconds
+            );
             break;
         case BINGO_CLASS_HARD:
         case BINGO_CLASS_CENTER:
             random_star_main_course_except_100c(&course, &star);
-            maxTime = (get_time_for_star(course, star) * 30)
-                      + (random_range_inclusive(0, 15) * 30);  // up to 15 extra seconds
+            maxTime = 30 * (
+                get_time_for_star(course, star)
+                + random_range_inclusive(0, 15)  // random extra seconds
+            );
             break;
     }
 
@@ -282,7 +286,10 @@ s32 bingo_objective_star_click_game_init(
         clickInfo = get_click_info_for_star(course, star);
     } while (clickInfo->minClicks == CLICK_GAME_STAR_BANNED);
 
-    if (clickInfo->maxClicks == CLICK_GAME_MAX_IS_MIN) {
+    if (
+        clickInfo->maxClicks == CLICK_GAME_MAX_IS_MIN
+        || clickInfo->maxClicks == clickInfo->minClicks
+    ) {
         clicks = clickInfo->minClicks;
     } else {
         switch (class) {
