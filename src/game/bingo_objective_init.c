@@ -158,7 +158,6 @@ s32 bingo_objective_star_init(
             random_star_except_mips_toad(&course, &star);
             break;
     }
-    objective->icon = BINGO_ICON_STAR;
     objective->data.starObjective.course = course;
     objective->data.starObjective.starIndex = star;
 }
@@ -175,7 +174,6 @@ s32 bingo_objective_star_a_button_challenge_init(
             random_abc(&course, &star, &hint);
             break;
     }
-    objective->icon = BINGO_ICON_STAR_A_BUTTON_CHALLENGE;
     objective->data.abcStarObjective.course = course;
     objective->data.abcStarObjective.starIndex = star;
     objective->data.abcStarObjective.hint = hint;
@@ -192,7 +190,6 @@ s32 bingo_objective_star_b_button_challenge_init(
             random_bbc(&course, &star);
             break;
     }
-    objective->icon = BINGO_ICON_STAR_B_BUTTON_CHALLENGE;
     objective->data.starObjective.course = course;
     objective->data.starObjective.starIndex = star;
 }
@@ -209,7 +206,6 @@ s32 bingo_objective_star_z_button_challenge_init(
             break;
     }
 
-    objective->icon = BINGO_ICON_STAR_Z_BUTTON_CHALLENGE;
     objective->data.starObjective.course = course;
     objective->data.starObjective.starIndex = star;
 }
@@ -235,7 +231,6 @@ s32 bingo_objective_star_timed_init(
             break;
     }
 
-    objective->icon = BINGO_ICON_STAR_TIMED;
     objective->data.starTimerObjective.course = course;
     objective->data.starTimerObjective.starIndex = star;
     objective->data.starTimerObjective.timer = 0;
@@ -254,7 +249,6 @@ s32 bingo_objective_star_reverse_joystick_init(
             break;
     }
 
-    objective->icon = BINGO_ICON_STAR_REVERSE_JOYSTICK;
     objective->data.starObjective.course = course;
     objective->data.starObjective.starIndex = star;
 }
@@ -271,7 +265,6 @@ s32 bingo_objective_star_green_demon_init(
             break;
     }
 
-    objective->icon = BINGO_ICON_STAR_GREEN_DEMON;
     objective->data.starObjective.course = course;
     objective->data.starObjective.starIndex = star;
 }
@@ -303,7 +296,6 @@ s32 bingo_objective_star_click_game_init(
         }
     }
 
-    objective->icon = BINGO_ICON_STAR_CLICK_GAME;
     objective->data.starClicksObjective.course = course;
     objective->data.starClicksObjective.starIndex = star;
     objective->data.starClicksObjective.maxClicks = clicks;
@@ -367,10 +359,10 @@ s32 bingo_objective_star_daredevil_init(
             break;
     }
 
-    objective->icon = BINGO_ICON_STAR_DAREDEVIL;
     objective->data.starObjective.course = course;
     objective->data.starObjective.starIndex = star;
 }
+
 void random_main_course_coins(enum BingoObjectiveClass class, enum CourseNum *course, s32 *coins) {
     switch (class) {
         default:
@@ -462,7 +454,6 @@ s32 bingo_objective_coin_init(
         random_special_course_coins(class, &course, &coins);
     }
 
-    objective->icon = BINGO_ICON_COIN;
     objective->data.courseCollectableData.course = course;
     objective->data.courseCollectableData.toGet = coins;
     objective->data.courseCollectableData.gotten = 0;
@@ -491,7 +482,6 @@ s32 bingo_objective_1ups_in_level_init(
             break;
     }
 
-    objective->icon = BINGO_ICON_1UPS_IN_LEVEL;
     objective->data.courseCollectableData.course = course;
     objective->data.courseCollectableData.toGet = _1ups;
     objective->data.courseCollectableData.gotten = 0;
@@ -508,7 +498,6 @@ s32 bingo_objective_stars_in_level_init(
             break;
     }
 
-    objective->icon = BINGO_ICON_STARS_IN_LEVEL;
     objective->data.courseCollectableData.course = course;
     objective->data.courseCollectableData.toGet = 7;
     objective->data.courseCollectableData.gotten = 0;
@@ -527,7 +516,6 @@ s32 bingo_objective_dangerous_wall_kicks_init(
             break;
     }
 
-    objective->icon = BINGO_ICON_DANGEROUS_WALL_KICKS;
     objective->data.multiCourseCollectableData.toGetTotal = toGetTotal;
     objective->data.multiCourseCollectableData.gottenTotal = 0;
     objective->data.multiCourseCollectableData.toGetEachCourse = toGetEachCourse;
@@ -544,7 +532,6 @@ s32 bingo_objective_lose_mario_hat_init(
             break;
     }
 
-    objective->icon = BINGO_ICON_MARIO_HAT;
 }
 
 s32 bingo_objective_blj_init(
@@ -557,7 +544,6 @@ s32 bingo_objective_blj_init(
             break;
     }
 
-    objective->icon = BINGO_ICON_BLJ;
 }
 
 s32 bingo_objective_bowser_init(
@@ -579,7 +565,6 @@ s32 bingo_objective_bowser_init(
             break;
     }
 
-    objective->icon = BINGO_ICON_BOWSER;
     objective->data.levelData.level = level;
 }
 
@@ -671,22 +656,18 @@ s32 bingo_objective_kill_mr_is_init(enum BingoObjectiveClass class) {
 s32 bingo_objective_collectable_init(
     struct BingoObjective *obj, enum BingoObjectiveIcon icon, s32 toGet
 ) {
-    obj->icon = icon;
     obj->data.collectableData.toGet = toGet;
     obj->data.collectableData.gotten = 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-s32 bingo_objective_init_first(
+s32 bingo_objective_init_dispatch(
     struct BingoObjective *objective,
     enum BingoObjectiveClass class,
     enum BingoObjectiveType type
 ) {
     s32 collectables;
-    objective->initialized = 1;
-    objective->type = type;
-    objective->class = class;
     switch (type) {
         case BINGO_OBJECTIVE_STAR:
             return bingo_objective_star_init(objective, class);
@@ -758,6 +739,10 @@ s32 bingo_objective_init(
     enum BingoObjectiveClass class,
     enum BingoObjectiveType type
 ) {
-    bingo_objective_init_first(objective, class, type);
+    objective->initialized = 1;
+    objective->type = type;
+    objective->class = class;
+    objective->icon = get_objective_info(type)->icon;
+    bingo_objective_init_dispatch(objective, class, type);
     get_objective_title(objective);
 }

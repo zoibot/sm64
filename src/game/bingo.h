@@ -247,6 +247,15 @@ struct BingoObjective
     } data;
 };
 
+// Tie it all together:
+struct BingoObjectiveInfo
+{
+    enum BingoObjectiveType type;
+    enum BingoObjectiveIcon icon;
+};
+
+struct BingoObjectiveInfo *get_objective_info(enum BingoObjectiveType type);
+
 extern struct BingoObjective gBingoObjectives[25];
 extern u8 gBingoObjectivesDisabled[BINGO_OBJECTIVE_TOTAL_AMOUNT];
 
