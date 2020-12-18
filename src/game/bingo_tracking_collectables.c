@@ -34,6 +34,7 @@ struct UID {
 // This is really inefficient and also fragile. This should use
 // a different type of memorization system.
 #define MAX_COURSES_WALLKICKS 50
+#define MAX_COURSES_BLJ 25
 // There are 24
 #define MAX_AMPS 25
 
@@ -46,6 +47,7 @@ struct UID {
         + MAX_SPINDRIFTS \
         + MAX_SIGNPOSTS \
         + MAX_COURSES_WALLKICKS \
+        + MAX_COURSES_BLJ \
         + MAX_AMPS \
     ) + 1
 
@@ -84,6 +86,9 @@ void get_index_range(enum BingoObjectiveUpdate update, s32 *start, s32 *length) 
                 break;
             case BINGO_UPDATE_DANGEROUS_WALL_KICK:
                 rangeLength = MAX_COURSES_WALLKICKS;
+                break;
+            case BINGO_UPDATE_BLJ:
+                rangeLength = MAX_COURSES_BLJ;
                 break;
             case BINGO_UPDATE_ZAPPED_BY_AMP:
                 rangeLength = MAX_AMPS;

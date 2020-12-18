@@ -378,14 +378,6 @@ void get_lose_hat_objective_desc(struct BingoObjective *obj, char *desc) {
     sprintf(desc, "Lose Mario's hat%s", suffix);
 }
 
-void get_blj_objective_desc(struct BingoObjective *obj, char *desc) {
-    char suffix[20];
-    if (obj->state == BINGO_STATE_COMPLETE) {
-        strcpy(suffix, ": Complete!");
-    }
-    sprintf(desc, "Perform a BLJ%s", suffix);
-}
-
 void get_bowser_objective_desc(struct BingoObjective *obj, char *desc) {
     char revEncLevelName[60];
     char suffix[20];
@@ -411,8 +403,9 @@ void get_bowser_objective_desc(struct BingoObjective *obj, char *desc) {
 
 void get_collectable_objective_desc(struct BingoObjective *obj, char *desc) {
     char verb[16];
-    char collectName[20];
+    char collectName[30];
     char suffix[30];
+    s8 printUnique = 1;
 
 
     switch (obj->type) {
@@ -428,12 +421,19 @@ void get_collectable_objective_desc(struct BingoObjective *obj, char *desc) {
         case BINGO_OBJECTIVE_AMPS:
             strcpy(verb, "Get zapped by");
             break;
+        case BINGO_OBJECTIVE_BLJ:
+            strcpy(verb, "Perform");
+            break;
         default:
             strcpy(verb, "Kill");
             break;
     }
 
     switch (obj->type) {
+        case BINGO_OBJECTIVE_BLJ:
+            strcpy(collectName, "BLJs in unique courses");
+            printUnique = 0;
+            break;
         case BINGO_OBJECTIVE_SIGNPOST:
             strcpy(collectName, "Signposts");
             break;
@@ -471,7 +471,15 @@ void get_collectable_objective_desc(struct BingoObjective *obj, char *desc) {
         );
     }
 
-    sprintf(desc, "%s %d unique %s%s", verb, obj->data.collectableData.toGet, collectName, suffix);
+    sprintf(
+        desc,
+        "%s %d%s %s%s",
+        verb,
+        obj->data.collectableData.toGet,
+        printUnique ? " unique" : "",
+        collectName,
+        suffix
+    );
 }
 
 void get_dangerous_wall_kicks_objective_desc(struct BingoObjective *obj, char *desc) {
@@ -524,12 +532,10 @@ void describe_objective(struct BingoObjective *objective, char *desc) {
         case BINGO_OBJECTIVE_LOSE_MARIO_HAT:
             get_lose_hat_objective_desc(objective, desc);
             break;
-        case BINGO_OBJECTIVE_BLJ:
-            get_blj_objective_desc(objective, desc);
-            break;
         case BINGO_OBJECTIVE_BOWSER:
             get_bowser_objective_desc(objective, desc);
             break;
+        case BINGO_OBJECTIVE_BLJ:
         case BINGO_OBJECTIVE_SIGNPOST:
         case BINGO_OBJECTIVE_RED_COIN:
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:

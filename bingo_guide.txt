@@ -5,16 +5,17 @@
       3.1.1. textures/segment2/custom: Add a new 16x16 PNG.
       3.1.2. bin/segment2.c: Add a new seg2_texture_* glabel and put it at the position in bingo_lut corresponding to your BingoObjectiveIcon.
    3.2. bingo.h: Write or choose a *ObjectiveData struct and add it to the BingoObjective struct.
-4. bingo_board_setup.c: Modify get_random_objective_type() to include your BingoObjectiveType.
-5. bingo_objective_func.c: Write an objective_*() function that uses your BingoObjectiveUpdate.
-6. bingo_descriptions.c: Add a description in describe_objective().
-7. bingo_titles.c: Add a title in get_objective_title().
-8. file_select.c and text_strings.h.in: Add an option and descriptor.
-9. elsewhere: Call bingo_update() with your BingoObjectiveUpdate. Modify global variables with the gb* prefix if need be.
+4. bingo.c: Register the type, icon, etc. in the gBingoObjectiveInfo array.
+5. bingo_board_setup.c: Modify get_random_objective_type() to include your BingoObjectiveType.
+6. bingo_objective_func.c: Write an objective_*() function that uses your BingoObjectiveUpdate.
+7. bingo_descriptions.c: Add a description in describe_objective().
+8. bingo_titles.c: Add a title in get_objective_title().
+9. file_select.c and text_strings.h.in: Add an option and descriptor.
+10. elsewhere: Call bingo_update() with your BingoObjectiveUpdate. Modify global variables with the gb* prefix if need be.
 
-10. If your objective is game-modifying:
-   10.1. bingo.h: Add a new BingoModifier.
-   10.2. star_select.c and others: Use your new BingoModifier, and add a new star model.
+11. If your objective is game-modifying:
+   11.1. bingo.h: Add a new BingoModifier.
+   11.2. star_select.c and others: Use your new BingoModifier, and add a new star model.
 
-11. If your objective is to collect/kill unique instances of items/enemies:
-   11.1. bingo_tracking_collectables.c: Add a new MAX_ amount and modify get_index_range().
+12. If your objective is to collect/kill unique instances of items/enemies:
+   12.1. bingo_tracking_collectables.c: Add a new MAX_ amount and modify get_index_range().

@@ -176,8 +176,20 @@ s32 objective_lose_mario_hat(struct BingoObjective *objective, enum BingoObjecti
 }
 
 s32 objective_blj(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
+    struct CollectableData *data = &objective->data.collectableData;
+    s32 objIndex = objective - gBingoObjectives;  // to uniquely identify _this_ objective
+    u32 uid;
+
     if (update == BINGO_UPDATE_BLJ) {
-        set_objective_state(objective, BINGO_STATE_COMPLETE);
+        uid = get_unique_id(BINGO_UPDATE_BLJ, objIndex, 0.0f, 0.0f);
+        if (!is_new_kill(BINGO_UPDATE_BLJ, uid)) {
+            return;
+        }
+        data->gotten++;
+        bingo_hud_update_number(objective->icon, data->gotten);
+        if (data->gotten >= data->toGet) {
+            set_objective_state(objective, BINGO_STATE_COMPLETE);
+        }
     }
 }
 
