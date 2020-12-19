@@ -1,16 +1,14 @@
-1. bingo.h: Add a new BingoObjectiveType.
-2. bingo.h: Add or reuse a BingoObjectiveUpdate.
-3. bingo_objective_init.c: Write a bingo_objective_*_init() function.
-   3.1. bingo.h: Define a new BingoObjectiveIcon.
-      3.1.1. textures/segment2/custom: Add a new 16x16 PNG.
-      3.1.2. bin/segment2.c: Add a new seg2_texture_* glabel and put it at the position in bingo_lut corresponding to your BingoObjectiveIcon.
-   3.2. bingo.h: Write or choose a *ObjectiveData struct and add it to the BingoObjective struct.
-4. bingo.c: Register the type, icon, etc. in the gBingoObjectiveInfo array.
-5. bingo_board_setup.c: Modify get_random_objective_type() to include your BingoObjectiveType.
+1. bingo.h: Add a new BingoObjectiveType and BingoObjectiveIcon. Add or reuse a BingoObjectiveUpdate.
+2. text_strings.h.in: Add a new TEXT_ that will describe your objective on the Options screen.
+3. textures/segment2/custom: Add a new 16x16 PNG as your icon.
+4. bingo_objective_info.c: Include your texture. Add an entry connecting your type, option text, icon, and texture.
+5. bingo_objective_init.c: Write a bingo_objective_*_init() function.
+   5.2. bingo.h: Write or reuse a *ObjectiveData struct and add it to the BingoObjective struct.
 6. bingo_objective_func.c: Write an objective_*() function that uses your BingoObjectiveUpdate.
-7. bingo_descriptions.c: Add a description in describe_objective().
-8. bingo_titles.c: Add a title in get_objective_title().
-9. file_select.c and text_strings.h.in: Add an option and descriptor.
+7. bingo_board_setup.c: Modify the ObjectiveWeight arrays to spawn your objective.
+   7.1. bingo_board_setup.c: Modify the are_duplicates() function appropriately.
+8. bingo_descriptions.c: Add a description in describe_objective().
+9. bingo_titles.c: Add a title in get_objective_title().
 10. elsewhere: Call bingo_update() with your BingoObjectiveUpdate. Modify global variables with the gb* prefix if need be.
 
 11. If your objective is game-modifying:
