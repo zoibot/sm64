@@ -19,6 +19,8 @@
 #include "strcpy.h"
 #include "segment2.h"
 #include "ingame_menu.h"
+#include "bingo_objective_info.h"
+#include "segment2.h"
 
 s8 gBingoAllowBoardToShow;
 
@@ -156,11 +158,19 @@ void bingo_print_description(char *str) {
 void print_bingo_icon_alpha(s32 x, s32 y, s32 iconIndex, u8 alpha) {
     s32 rectX = x;
     s32 rectY = 224 - y;
-    const u8 *const *glyphs = segmented_to_virtual(bingo_lut);
+    const u8 *const *glyphs = segmented_to_virtual(bingo_special_icon_lut);
+    const u8 *texture;
+    if (iconIndex == BINGO_ICON_FAILED) {
+        texture = glyphs[1];
+    } else if (iconIndex == BINGO_ICON_SUCCESS) {
+        texture = glyphs[0];
+    } else {
+        texture = get_objective_info_from_icon(iconIndex)->texture;
+    }
 
 
     gDPPipeSync(gDisplayListHead++);
-    gDPSetTextureImage(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, glyphs[iconIndex]);
+    gDPSetTextureImage(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture);
     gSPDisplayList(gDisplayListHead++, dl_hud_img_load_tex_block);
 
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, alpha);

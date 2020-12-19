@@ -105,11 +105,11 @@ enum BingoObjectiveType
 };
 
 enum BingoObjectiveIcon {
-    // Don't mess with the order here.
-    // It needs to be kept in sync with
-    // bingo_lut in segment2.c.
+    // These two are handled specially by segment2.c
     BINGO_ICON_FAILED,
     BINGO_ICON_SUCCESS,
+
+    // These other ones are handled by bingo_objective_info
     BINGO_ICON_STAR,
     BINGO_ICON_STAR_TIMED,
     BINGO_ICON_STAR_TTC_RANDOM,

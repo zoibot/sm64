@@ -531,7 +531,6 @@ void bingo_hud_render(void) {
     s32 slotsToRemove = 0;
     struct Slot *slot;
     u8 opacity;
-    // 200451241
 
     for (i = 0; i < sLowestFreeSlotIndex; i++) {
         slot = &sSlots[i];

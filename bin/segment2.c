@@ -214,90 +214,6 @@ ALIGNED8 static const u8 seg2_texture_hand[] = {
 #include "textures/segment2/custom/segment2.hand_small.rgba16.inc.c"
 };
 
-ALIGNED8 static const u8 seg2_texture_goomba[] = {
-#include "textures/segment2/custom/segment2.goomba.rgba16.inc.c"
-};
-
-ALIGNED8 static const u8 seg2_texture_abutton[] = {
-#include "textures/segment2/custom/segment2.abutton.rgba16.inc.c"
-};
-
-ALIGNED8 static const u8 seg2_texture_greendemon[] = {
-#include "textures/segment2/custom/segment2.greendemon.rgba16.inc.c"
-};
-
-ALIGNED8 static const u8 seg2_texture_rbutton[] = {
-#include "textures/segment2/custom/segment2.rbutton.rgba16.inc.c"
-};
-
-ALIGNED8 static const u8 seg2_texture_daredevil[] = {
-#include "textures/segment2/custom/segment2.daredevil.rgba16.inc.c"
-};
-
-ALIGNED8 static const u8 seg2_texture_joystick[] = {
-#include "textures/segment2/custom/segment2.joystick.rgba16.inc.c"
-};
-
-ALIGNED8 static const u8 seg2_texture_timer[] = {
-#include "textures/segment2/custom/segment2.timer.rgba16.inc.c"
-};
-
-ALIGNED8 static const u8 seg2_texture_ttc_random[] = {
-#include "textures/segment2/custom/segment2.ttc_random.rgba16.inc.c"
-};
-
-ALIGNED8 static const u8 seg2_texture_checkmark[] = {
-#include "textures/segment2/custom/segment2.checkmark.rgba16.inc.c"
-};
-
-ALIGNED8 static const u8 seg2_texture_1up[] = {
-#include "textures/segment2/custom/segment2.1up.rgba16.inc.c"
-};
-
-ALIGNED8 static const u8 seg2_texture_allstarslevel[] = {
-#include "textures/segment2/custom/segment2.allstarslevel.rgba16.inc.c"
-};
-
-ALIGNED8 static const u8 seg2_texture_wallkick[] = {
-#include "textures/segment2/custom/segment2.wallkick.rgba16.inc.c"
-};
-
-ALIGNED8 static const u8 seg2_texture_mario_hat[] = {
-#include "textures/segment2/custom/segment2.mario_hat.rgba16.inc.c"
-};
-
-ALIGNED8 static const u8 seg2_texture_blj[] = {
-#include "textures/segment2/custom/segment2.blj.rgba16.inc.c"
-};
-
-ALIGNED8 static const u8 seg2_texture_bowser[] = {
-#include "textures/segment2/custom/segment2.bowser.rgba16.inc.c"
-};
-
-ALIGNED8 static const u8 seg2_texture_red_coin[] = {
-#include "textures/segment2/custom/segment2.redcoin.rgba16.inc.c"
-};
-
-ALIGNED8 static const u8 seg2_texture_signpost[] = {
-#include "textures/segment2/custom/segment2.signpost.rgba16.inc.c"
-};
-
-ALIGNED8 static const u8 seg2_texture_amp[] = {
-#include "textures/segment2/custom/segment2.amp.rgba16.inc.c"
-};
-
-ALIGNED8 static const u8 seg2_texture_bobomb[] = {
-#include "textures/segment2/custom/segment2.bobomb.rgba16.inc.c"
-};
-
-ALIGNED8 static const u8 seg2_texture_spindrift[] = {
-#include "textures/segment2/custom/segment2.spindrift.rgba16.inc.c"
-};
-
-ALIGNED8 static const u8 seg2_texture_mr_i[] = {
-#include "textures/segment2/custom/segment2.mr_i.rgba16.inc.c"
-};
-
 ALIGNED8 static const u8 texture_hud_char_star[] = {
 #include "textures/segment2/segment2.05C00.rgba16.inc.c"
 };
@@ -1906,29 +1822,19 @@ ALIGNED8 static const u8 seg2_texture_B4[] = {
 #include "textures/segment2/custom/segment2.B4.rgba16.inc.c"
 };
 
-ALIGNED8 static const u8 seg2_texture_bbutton[] = {
-#include "textures/segment2/custom/segment2.bbutton.rgba16.inc.c"
-};
-
-ALIGNED8 static const u8 seg2_texture_zbutton[] = {
-#include "textures/segment2/custom/segment2.zbutton.rgba16.inc.c"
-};
-
-ALIGNED8 static const u8 seg2_texture_multicoin[] = {
-#include "textures/segment2/custom/segment2.coins.rgba16.inc.c"
-};
-
-ALIGNED8 static const u8 seg2_texture_multistar[] = {
-#include "textures/segment2/custom/segment2.multistar.rgba16.inc.c"
+ALIGNED8 static const u8 seg2_texture_checkmark[] = {
+#include "textures/segment2/custom/segment2.checkmark.rgba16.inc.c"
 };
 
 ALIGNED8 static const u8 seg2_texture_failed[] = {
 #include "textures/segment2/custom/segment2.nope.rgba16.inc.c"
 };
 
-ALIGNED8 static const u8 seg2_texture_yellowbox[] = {
-#include "textures/segment2/custom/segment2.yellowbox.rgba16.inc.c"
+const u8 *const bingo_special_icon_lut[] = {
+    seg2_texture_checkmark,
+    seg2_texture_failed
 };
+
 
 // Main HUD print table 0x02008250-0x02008337
 const u8 *const main_hud_lut[] = {
@@ -1959,12 +1865,12 @@ const u8 *const main_hud_lut[] = {
     texture_hud_char_S, texture_hud_char_T, texture_hud_char_U, texture_hud_char_V,
     texture_hud_char_W,               0x0, texture_hud_char_Y,               0x0,
                   0x0,               0x0,               0x0,               0x0,
-                  0x0,               0x0, seg2_texture_greendemon,  seg2_texture_joystick,
-    texture_hud_char_Lflip, seg2_texture_bobomb, seg2_texture_allstarslevel, seg2_texture_1up,
-    seg2_texture_timer,  seg2_texture_abutton, texture_hud_char_multiply,  texture_hud_char_coin,
-    texture_hud_char_mario_head, texture_hud_char_star, seg2_texture_hand, seg2_texture_goomba,
-    texture_hud_char_apostrophe, texture_hud_char_double_quote,  seg2_texture_bbutton,   seg2_texture_zbutton,
-    seg2_texture_multicoin,  seg2_texture_failed, seg2_texture_yellowbox,
+                  0x0,               0x0, 0,  0,
+    texture_hud_char_Lflip, 0, 0, 0,
+    0,  0, texture_hud_char_multiply,  texture_hud_char_coin,
+    texture_hud_char_mario_head, texture_hud_char_star, seg2_texture_hand, 0,
+    texture_hud_char_apostrophe, texture_hud_char_double_quote, 0,   0,
+    0,  0, 0,
 // #else
 //     texture_hud_char_0, texture_hud_char_1, texture_hud_char_2, texture_hud_char_3,
 //     texture_hud_char_4, texture_hud_char_5, texture_hud_char_6, texture_hud_char_7,
@@ -1984,38 +1890,6 @@ const u8 *const main_hud_lut[] = {
 // #endif
 };
 
-const u8 *const bingo_lut[] = {
-    seg2_texture_failed,         // BINGO_ICON_FAILED
-    seg2_texture_checkmark,      // BINGO_ICON_SUCCESS
-    texture_hud_char_star,       // BINGO_ICON_STAR
-    seg2_texture_timer,          // BINGO_ICON_STAR_TIMED
-    seg2_texture_ttc_random,     // BINGO_ICON_TTC_RANDOM
-    seg2_texture_abutton,        // BINGO_ICON_STAR_A_BUTTON_CHALLENGE
-    seg2_texture_bbutton,        // BINGO_ICON_STAR_B_BUTTON_CHALLENGE
-    seg2_texture_zbutton,        // BINGO_ICON_STAR_Z_BUTTON_CHALLENGE
-    seg2_texture_rbutton,        // BINGO_ICON_STAR_CLICK_GAME
-    seg2_texture_joystick,       // BINGO_ICON_STAR_REVERSE_JOYSTICK
-    seg2_texture_greendemon,     // BINGO_ICON_STAR_GREEN_DEMON
-    seg2_texture_daredevil,      // BINGO_ICON_STAR_DAREDEVIL
-    texture_hud_char_coin,       // BINGO_ICON_COIN
-    seg2_texture_multicoin,      // BINGO_ICON_MULTICOIN
-    seg2_texture_multistar,      // BINGO_ICON_MULTISTAR
-    seg2_texture_1up,            // BINGO_ICON_1UPS_IN_LEVEL
-    seg2_texture_allstarslevel,  // BINGO_ICON_STARS_IN_LEVEL
-    seg2_texture_wallkick,       // BINGO_ICON_DANGEROUS_WALL_KICKS
-    seg2_texture_mario_hat,      // BINGO_ICON_MARIO_HAT
-    seg2_texture_blj,            // BINGO_ICON_BLJ
-    seg2_texture_bowser,         // BINGO_ICON_BOWSER
-    seg2_texture_signpost,       // BINGO_ICON_SIGNPOST
-    seg2_texture_red_coin,       // BINGO_ICON_RED_COIN
-    seg2_texture_yellowbox,      // BINGO_ICON_EXCLAMATION_MARK_BOX
-    seg2_texture_amp,            // BINGO_ICON_AMP
-    seg2_texture_goomba,         // BINGO_ICON_KILL_GOOMBAS
-    seg2_texture_bobomb,         // BINGO_ICON_KILL_BOBOMBS
-    seg2_texture_spindrift,      // BINGO_ICON_KILL_SPINDRIFTS
-    seg2_texture_mr_i,           // BINGO_ICON_KILL_MR_IS
-};
-s32 bingoLUTSize = sizeof(bingo_lut) / sizeof(bingo_lut[0]);
 
 // Main small font print table 0x02008338-0x02008737
 const u8 *const main_font_lut[] = {
