@@ -402,7 +402,7 @@ void get_bowser_objective_desc(struct BingoObjective *obj, char *desc) {
 }
 
 void get_collectable_objective_desc(struct BingoObjective *obj, char *desc) {
-    char verb[16];
+    char verb[25];
     char collectName[30];
     char suffix[30];
     s8 printUnique = 1;
@@ -424,6 +424,9 @@ void get_collectable_objective_desc(struct BingoObjective *obj, char *desc) {
         case BINGO_OBJECTIVE_BLJ:
             strcpy(verb, "Perform");
             break;
+        case BINGO_OBJECTIVE_LOSE_MARIO_HAT:
+            strcpy(verb, "Lose your hat in");
+            break;
         default:
             strcpy(verb, "Kill");
             break;
@@ -433,6 +436,9 @@ void get_collectable_objective_desc(struct BingoObjective *obj, char *desc) {
         case BINGO_OBJECTIVE_BLJ:
             strcpy(collectName, "BLJs in unique courses");
             printUnique = 0;
+            break;
+        case BINGO_OBJECTIVE_LOSE_MARIO_HAT:
+            strcpy(collectName, "ways");
             break;
         case BINGO_OBJECTIVE_SIGNPOST:
             strcpy(collectName, "Signposts");
@@ -529,12 +535,10 @@ void describe_objective(struct BingoObjective *objective, char *desc) {
         case BINGO_OBJECTIVE_STARS_IN_LEVEL:
             get_stars_in_level_objective_desc(objective, desc);
             break;
-        case BINGO_OBJECTIVE_LOSE_MARIO_HAT:
-            get_lose_hat_objective_desc(objective, desc);
-            break;
         case BINGO_OBJECTIVE_BOWSER:
             get_bowser_objective_desc(objective, desc);
             break;
+        case BINGO_OBJECTIVE_LOSE_MARIO_HAT:
         case BINGO_OBJECTIVE_BLJ:
         case BINGO_OBJECTIVE_SIGNPOST:
         case BINGO_OBJECTIVE_RED_COIN:

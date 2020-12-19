@@ -81,7 +81,6 @@ enum BingoObjectiveType
     BINGO_OBJECTIVE_STARS_IN_LEVEL,
     // One-offs (for now):
     BINGO_OBJECTIVE_DANGEROUS_WALL_KICKS,
-    BINGO_OBJECTIVE_LOSE_MARIO_HAT,
     // Things that don't fit in any other category...
     BINGO_OBJECTIVE_BOWSER,
     // Collectables:
@@ -89,6 +88,7 @@ enum BingoObjectiveType
     BINGO_OBJECTIVE_MULTICOIN = BINGO_OBJECTIVE_COLLECTABLE_MIN,
     BINGO_OBJECTIVE_MULTISTAR,
     BINGO_OBJECTIVE_BLJ,
+    BINGO_OBJECTIVE_LOSE_MARIO_HAT,
     BINGO_OBJECTIVE_SIGNPOST,
     BINGO_OBJECTIVE_RED_COIN,
     BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX,
@@ -156,8 +156,17 @@ enum BingoObjectiveUpdate
     BINGO_UPDATE_BLJ,
     BINGO_UPDATE_DANGEROUS_WALL_KICK,
 
+
     BINGO_COLLECTABLES_MAX = BINGO_UPDATE_DANGEROUS_WALL_KICK,
     // End collectables (TODO: migrate away from Update enum?)
+
+    BINGO_UPDATE_LOST_HAT_FLAGS_BEGIN,
+    BINGO_UPDATE_LOST_HAT_KLEPTO = BINGO_UPDATE_LOST_HAT_FLAGS_BEGIN,
+    BINGO_UPDATE_LOST_HAT_SL_WIND,
+    BINGO_UPDATE_LOST_HAT_TTM_WIND,
+    BINGO_UPDATE_LOST_HAT_UKIKI,
+    BINGO_UPDATE_LOST_HAT_FLAGS_END = BINGO_UPDATE_LOST_HAT_UKIKI,
+
     BINGO_UPDATE_DANGEROUS_WALL_KICK_FAILED,
     BINGO_UPDATE_COURSE_CHANGED,
     BINGO_UPDATE_A_PRESSED,
@@ -167,7 +176,6 @@ enum BingoObjectiveUpdate
     BINGO_UPDATE_TIMER_FRAME_GLOBAL,
     BINGO_UPDATE_TIMER_FRAME_STAR,
     BINGO_UPDATE_GOT_1UP,
-    BINGO_UPDATE_LOST_HAT,
     BINGO_UPDATE_BOWSER_KILLED
 };
 
@@ -222,6 +230,12 @@ struct CollectableData
     s32 gotten;
 };
 
+struct CollectableFlagsData
+{
+    s32 toGet;  // must be aligned with CollectableData
+    u32 flags;  // initialized to 0
+};
+
 struct LevelObjectiveData
 {
     enum LevelNum level;
@@ -243,6 +257,7 @@ struct BingoObjective
         struct CourseCollectableData courseCollectableData;
         struct MultiCourseCollectableData multiCourseCollectableData;
         struct CollectableData collectableData;
+        struct CollectableFlagsData collectableFlagsData;
         struct LevelObjectiveData levelData;
     } data;
 };

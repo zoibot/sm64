@@ -170,8 +170,26 @@ s32 objective_obtain_stars_in_level(struct BingoObjective *objective, enum Bingo
 
 
 s32 objective_lose_mario_hat(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
-    if (update == BINGO_UPDATE_LOST_HAT) {
-        set_objective_state(objective, BINGO_STATE_COMPLETE);
+    struct CollectableFlagsData *data = &objective->data.collectableFlagsData;
+    u32 flags, flag;
+    s32 count = 0;
+
+    flags = data->flags;
+    while (flags) {
+        count += flags & 1;
+        flags >>= 1;
+    }
+    if (BINGO_UPDATE_LOST_HAT_FLAGS_BEGIN <= update && update <= BINGO_UPDATE_LOST_HAT_FLAGS_END) {
+        flag = 1 << (update - BINGO_UPDATE_LOST_HAT_FLAGS_BEGIN);
+        if (!(data->flags & flag)) {
+            data->flags |= flag;
+            count++;
+            if (count >= data->toGet) {
+                set_objective_state(objective, BINGO_STATE_COMPLETE);
+            } else {
+                bingo_hud_update_number(objective->icon, count);
+            }
+        }
     }
 }
 

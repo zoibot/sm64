@@ -551,14 +551,11 @@ s32 bingo_objective_bowser_init(
     objective->data.levelData.level = level;
 }
 
-s32 bingo_objective_lose_mario_hat_init(
-    struct BingoObjective *objective, enum BingoObjectiveClass class
-) {
+s32 bingo_objective_lose_mario_hat_init(enum BingoObjectiveClass class) {
     switch (class) {
         default:
-            break;
+            return random_range_inclusive(3, 4);
     }
-
 }
 
 s32 bingo_objective_blj_init(enum BingoObjectiveClass class) {
@@ -670,6 +667,8 @@ s32 bingo_objective_collectable_init_dispatch(
             return bingo_objective_multistar_init(class);
         case BINGO_OBJECTIVE_BLJ:
             return bingo_objective_blj_init(class);
+        case BINGO_OBJECTIVE_LOSE_MARIO_HAT:
+            return bingo_objective_lose_mario_hat_init(class);
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
             return bingo_objective_exclamation_mark_box_init(class);
         case BINGO_OBJECTIVE_SIGNPOST:
@@ -722,8 +721,6 @@ s32 bingo_objective_init_dispatch(
             return bingo_objective_stars_in_level_init(objective, class);
         case BINGO_OBJECTIVE_DANGEROUS_WALL_KICKS:
             return bingo_objective_dangerous_wall_kicks_init(objective, class);
-        case BINGO_OBJECTIVE_LOSE_MARIO_HAT:
-            return bingo_objective_lose_mario_hat_init(objective, class);
         case BINGO_OBJECTIVE_BOWSER:
             return bingo_objective_bowser_init(objective, class);
     }
