@@ -42,7 +42,7 @@ extern Gfx* dl_power_meter_health_segments_end;
 // Functions
 extern void set_hud_camera_status(s16 status);
 extern void render_hud(void);
-extern void bingo_hud_update_message(enum BingoObjectiveIcon, char message[10]);
+extern void bingo_hud_update_message(enum BingoObjectiveIcon, char message[10], s8 horribleHackWallkick);
 extern void bingo_hud_update_number(enum BingoObjectiveIcon, s32);
 extern void bingo_hud_update_state(enum BingoObjectiveIcon, enum BingoObjectiveIcon);
 

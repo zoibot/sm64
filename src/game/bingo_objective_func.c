@@ -269,7 +269,7 @@ s32 objective_dangerous_wall_kicks(struct BingoObjective *objective, enum BingoO
                 set_objective_state(objective, BINGO_STATE_COMPLETE);
             } else {
                 sprintf(message, "%d COURSE%s", data->gottenTotal, data->gottenTotal == 1 ? "" : "S");
-                bingo_hud_update_message(objective->icon, message);
+                bingo_hud_update_message(objective->icon, message, 1);
             }
         }
     }

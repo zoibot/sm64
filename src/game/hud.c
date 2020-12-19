@@ -435,6 +435,7 @@ struct Slot {
     char message[10];
     enum BingoObjectiveIcon iconMessage;
     s32 fadeTimer;
+    s8 horribleHackForWallkickDedupe;
 };
 
 #define MAX_SLOTS 5
@@ -453,19 +454,21 @@ void delete_slot(s32 delete) {
                 strcpy(sSlots[i].message, sSlots[i + 1].message);
                 sSlots[i].iconMessage = sSlots[i + 1].iconMessage;
                 sSlots[i].fadeTimer = sSlots[i + 1].fadeTimer;
+                sSlots[i].horribleHackForWallkickDedupe = sSlots[i + 1].horribleHackForWallkickDedupe;
             } else {
                 sSlots[i].icon = 0;
                 sSlots[i].printTimes = 0;
                 strcpy(sSlots[i].message, "");
                 sSlots[i].iconMessage = 0;
                 sSlots[i].fadeTimer = 0;
+                sSlots[i].horribleHackForWallkickDedupe = 0;
             }
         }
     }
     sLowestFreeSlotIndex--;
 }
 
-void bingo_hud_update_message(enum BingoObjectiveIcon icon, char message[10]) {
+void bingo_hud_update_message(enum BingoObjectiveIcon icon, char message[10], s8 horribleHackWallkick) {
     s32 i;
     struct Slot *slot;
 
@@ -474,12 +477,14 @@ void bingo_hud_update_message(enum BingoObjectiveIcon icon, char message[10]) {
     // then add a new one.
     // Otherwise, check for extra room, and add it if there is.
 
-    for (i = 0; i < sLowestFreeSlotIndex; i++) {
-        slot = &sSlots[i];
-        // TODO: Make deduplication not depend on the "printTimes" hack
-        if (slot->icon == icon && slot->printTimes == 1) {
-            delete_slot(i);
-            break;
+    if (!horribleHackWallkick) {
+        for (i = 0; i < sLowestFreeSlotIndex; i++) {
+            slot = &sSlots[i];
+            // TODO: Make deduplication not depend on the "printTimes" hack
+            if (slot->icon == icon && slot->printTimes == 1 && slot->horribleHackForWallkickDedupe == 0) {
+                delete_slot(i);
+                break;
+            }
         }
     }
 
@@ -491,6 +496,7 @@ void bingo_hud_update_message(enum BingoObjectiveIcon icon, char message[10]) {
     slot = &sSlots[sLowestFreeSlotIndex];
     slot->icon = icon;
     slot->printTimes = 1;
+    slot->horribleHackForWallkickDedupe = horribleHackWallkick;
     strcpy(slot->message, message);
     slot->fadeTimer = 0;
 
@@ -500,7 +506,7 @@ void bingo_hud_update_message(enum BingoObjectiveIcon icon, char message[10]) {
 void bingo_hud_update_number(enum BingoObjectiveIcon icon, s32 number) {
     char message[10];
     sprintf(message, "%d", number);
-    bingo_hud_update_message(icon, message);
+    bingo_hud_update_message(icon, message, 0);
 }
 
 void bingo_hud_update_state(enum BingoObjectiveIcon icon, enum BingoObjectiveIcon stateIcon) {
