@@ -279,22 +279,21 @@ s32 are_duplicates(struct BingoObjective *obj1, struct BingoObjective *obj2) {
             return 1;
         }
     }
+    // Two identical star objectives are duplicates.
+    if (
+        BINGO_OBJECTIVE_STAR_MIN <= type1 && type1 <= BINGO_OBJECTIVE_STAR_MAX
+        && BINGO_OBJECTIVE_STAR_MIN <= type2 && type2 <= BINGO_OBJECTIVE_STAR_MAX
+        && obj1->data.starObjective.course == obj2->data.starObjective.course
+        && obj1->data.starObjective.starIndex == obj2->data.starObjective.starIndex
+    ) {
+        return 1;
+    }
     // (This union stuff is scary, but safe, because the unions are aligned in
     // their member positions...)
     if (
         (BINGO_OBJECTIVE_STAR_NO_DUPLICATES_MIN <= type1 && type1 <= BINGO_OBJECTIVE_STAR_NO_DUPLICATES_MAX)
         || (BINGO_OBJECTIVE_STAR_NO_DUPLICATES_MIN <= type2 && type2 <= BINGO_OBJECTIVE_STAR_NO_DUPLICATES_MAX)
     ) {
-        // If one is a star objective without a modifier, and the other is any type of
-        // star objective, and the objectives match, they're duplicates:
-        if (
-            BINGO_OBJECTIVE_STAR_MIN <= type1 && type1 <= BINGO_OBJECTIVE_STAR_MAX
-            && BINGO_OBJECTIVE_STAR_MIN <= type2 && type2 <= BINGO_OBJECTIVE_STAR_MAX
-            && obj1->data.starObjective.course == obj2->data.starObjective.course
-            && obj1->data.starObjective.starIndex == obj2->data.starObjective.starIndex
-        ) {
-            return 1;
-        }
         // If one is a star objective without a modifier and the other is "get all the
         // stars in this course" and the courses match, they're duplicates:
         if (
