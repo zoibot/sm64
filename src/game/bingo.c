@@ -18,6 +18,8 @@
 #include "audio/external.h"
 #include "bingo_objective_func.h"
 #include "camera.h"
+#include "object_helpers.h"
+#include "behavior_data.h"
 
 s32 gBingoInitialized = 0;
 u32 gBingoInitialSeed = 0;
@@ -48,6 +50,21 @@ enum BingoModifier gBingoStarSelected = BINGO_MODIFIER_NONE;
 
 struct BingoObjective gBingoObjectives[25];
 u8 gBingoObjectivesDisabled[BINGO_OBJECTIVE_TOTAL_AMOUNT] = { 0 };
+
+
+void disable_bingo_modifiers() {
+    if (gBingoClickGameActive) {
+        sSelectionFlags = gBingoClickGamePrevCameraSettings;
+        gDialogCameraAngleIndex = gBingoClickGamePrevCameraIndex;
+    }
+    if (obj_nearest_object_with_behavior(bhv1upGreenDemon) != NULL) {
+        mark_object_for_deletion(obj_nearest_object_with_behavior(bhv1upGreenDemon));
+    }
+    gBingoReverseJoystickActive = 0;
+    gBingoDaredevilActive = 0;
+    gBingoClickGameActive = 0;
+    gBingoClickCounter = -1;
+}
 
 void set_objective_state(struct BingoObjective *objective, enum BingoObjectiveState state) {
     // Only play the corresponding sound once
@@ -120,17 +137,7 @@ void bingo_update(enum BingoObjectiveUpdate update) {
         gbGlobalBingoTimer++;
     }
     if (update == BINGO_UPDATE_COURSE_CHANGED) {
-        // This is crufty but I can't think of any place else to put this...
-        gBingoReverseJoystickActive = 0;
-
-        gBingoDaredevilActive = 0;
-
-        if (gBingoClickGameActive) {
-            sSelectionFlags = gBingoClickGamePrevCameraSettings;
-            gDialogCameraAngleIndex = gBingoClickGamePrevCameraIndex;
-        }
-        gBingoClickGameActive = 0;
-        gBingoClickCounter = -1;
+        disable_bingo_modifiers();
 
         // Put this here because, long story short, the bingo modifier
         // string renders before the game renders the stars; the star-rendering

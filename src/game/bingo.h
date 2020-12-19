@@ -267,6 +267,7 @@ struct BingoObjective
 extern struct BingoObjective gBingoObjectives[25];
 extern u8 gBingoObjectivesDisabled[BINGO_OBJECTIVE_TOTAL_AMOUNT];
 
+void disable_bingo_modifiers();
 void set_objective_state(struct BingoObjective *objective, enum BingoObjectiveState state);
 void bingo_update(enum BingoObjectiveUpdate update);
 

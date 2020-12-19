@@ -620,7 +620,12 @@ void general_star_dance_handler(struct MarioState *m, s32 isInWater) {
         }
     } else if (m->actionState == 1 && gDialogResponse) {
         if (gDialogResponse == 1) {
-            save_file_do_save(gCurrSaveFileNum - 1);
+            // save_file_do_save(gCurrSaveFileNum - 1);
+        } else {
+            // no means yes here, because I was too lazy
+            // to switch the default selection and instead
+            // just switched the order.
+            disable_bingo_modifiers();
         }
         m->actionState = 2;
     } else if (m->actionState == 2 && is_anim_at_end(m)) {

@@ -195,8 +195,11 @@ DEFINE_DIALOG(DIALOG_013, 1, 5, 30, 200, _("\
 You've collected 100\n\
 coins! Mario gains more\n\
 power from the castle.\n\
-Do you want to Save?\n\
-//Yes////No"))
+\n\
+\n\
+Do you want to disable\n\
+active Bingo Modifiers?\n\
+//No////Yes"))
 
 DEFINE_DIALOG(DIALOG_014, 1, 4, 30, 200, _("\
 Wow! Another Power Star!\n\
