@@ -3099,14 +3099,10 @@ void update_camera(struct Camera *c) {
     if (gCurrLevelNum != LEVEL_CASTLE) {
         // If fixed camera is selected as the alternate mode, then fix the camera as long as the right
         // trigger is held
-        if (
-            (
-                c->cutscene == 0 &&
-                (gPlayer1Controller->buttonDown & R_TRIG)
-                && cam_select_alt_mode(0) == CAM_SELECTION_FIXED
-            ) || (gCameraMovementFlags & CAM_MOVE_FIX_IN_PLACE)
-            || (sMarioCamState->action) == ACT_GETTING_BLOWN
-        ) {
+        if ((c->cutscene == 0 &&
+            (gPlayer1Controller->buttonDown & R_TRIG) && cam_select_alt_mode(0) == CAM_SELECTION_FIXED)
+            || (gCameraMovementFlags & CAM_MOVE_FIX_IN_PLACE)
+            || (sMarioCamState->action) == ACT_GETTING_BLOWN) {
             // If this is the first frame that R_TRIG is held, play the "click" sound
             if (c->cutscene == 0 && (gPlayer1Controller->buttonPressed & R_TRIG)
                 && cam_select_alt_mode(0) == CAM_SELECTION_FIXED) {

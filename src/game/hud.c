@@ -66,6 +66,7 @@ static struct CameraHUD sCameraHUD = { CAM_STATUS_NONE };
  */
 void render_hud_tex_lut(s32 x, s32 y, u8 *texture) {
     gDPPipeSync(gDisplayListHead++);
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
     gDPSetTextureImage(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture);
     gSPDisplayList(gDisplayListHead++, &dl_hud_img_load_tex_block);
     gSPTextureRectangle(gDisplayListHead++, x << 2, y << 2, (x + 16) << 2, (y + 16) << 2,
