@@ -118,8 +118,18 @@ void getTimeFmtPrecise(char *buf, s32 timestamp) {
     int hundredthsec = (subsec % 3) * 3;
     s32 i = 0;
 
+    if (min > 999) {
+        min = 999;
+        tensec = 5;
+        onesec = 9;
+        tenthsec = 9;
+        hundredthsec = 9;
+    }
+    if (min > 99) {
+        buf[i++] = (min / 100) + 0x30;
+    }
     if (min > 9) {
-        buf[i++] = (min / 10) + 0x30;
+        buf[i++] = ((min % 100) / 10) + 0x30;
     }
     buf[i++] = (min % 10) + 0x30;
     buf[i++] = '[';
@@ -141,8 +151,18 @@ void getTimeFmtPreciseTiny(char *buf, s32 timestamp) {
     int hundredthsec = (subsec % 3) * 3;
     s32 i = 0;
 
+    if (min > 999) {
+        min = 999;
+        tensec = 5;
+        onesec = 9;
+        tenthsec = 9;
+        hundredthsec = 9;
+    }
+    if (min > 99) {
+        buf[i++] = (min / 100) + 0x30;
+    }
     if (min > 9) {
-        buf[i++] = (min / 10) + 0x30;
+        buf[i++] = ((min % 100) / 10) + 0x30;
     }
     buf[i++] = (min % 10) + 0x30;
     buf[i++] = '\'';

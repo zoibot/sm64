@@ -49,11 +49,12 @@ int bingostrlen(char *str) {
 }
 
 void draw_bingo_win_screen() {
-    char timestamp[10];
+    char timestamp[16];
     char msg[40];
 
     getTimeFmtPrecise(timestamp, gbGlobalBingoTimer);
-    sprintf(msg, "YOUR TIME WAS %s", timestamp);
+    sprintf(msg, "YOUR TIME IS %s", timestamp);
+    // TODO: insert 0/0.5 spaces at front to center align:
     print_text(30, 60, msg);
 
     if (gbBingoShowCongratsCounter == (gbBingoShowCongratsLimit - 1)) {
