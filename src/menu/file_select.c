@@ -955,7 +955,7 @@ void print_option_nav_instructions(s32 pageNo) {
         }
     }
 }
-
+#include "game/bingo_objective_info.h"
 static void print_objective(enum BingoObjectiveType type, s32 pageNo) {
     enum BingoObjectiveIcon obj_icon;
     unsigned char *option;
@@ -983,114 +983,88 @@ static void print_objective(enum BingoObjectiveType type, s32 pageNo) {
 
     switch (type) {
         case BINGO_OBJECTIVE_STAR:
-            obj_icon = BINGO_ICON_STAR;
             option = textSingleStar;
             break;
         case BINGO_OBJECTIVE_MULTISTAR:
-            obj_icon = BINGO_ICON_MULTISTAR;
             option = textMultiStar;
             break;
         case BINGO_OBJECTIVE_STAR_A_BUTTON_CHALLENGE:
-            obj_icon = BINGO_ICON_STAR_A_BUTTON_CHALLENGE;
             option = textAButton;
             break;
         case BINGO_OBJECTIVE_STAR_B_BUTTON_CHALLENGE:
-            obj_icon = BINGO_ICON_STAR_B_BUTTON_CHALLENGE;
             option = textBButton;
             break;
         case BINGO_OBJECTIVE_STAR_Z_BUTTON_CHALLENGE:
-            obj_icon = BINGO_ICON_STAR_Z_BUTTON_CHALLENGE;
             option = textZButton;
             break;
         case BINGO_OBJECTIVE_STAR_TIMED:
-            obj_icon = BINGO_ICON_STAR_TIMED;
             option = textTimedStar;
             break;
         case BINGO_OBJECTIVE_STAR_TTC_RANDOM:
-            obj_icon = BINGO_ICON_STAR_TTC_RANDOM;
             option = textTTCRandom;
             break;
         case BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK:
-            obj_icon = BINGO_ICON_STAR_REVERSE_JOYSTICK;
             option = textReverseJoystick;
             break;
         case BINGO_OBJECTIVE_STAR_GREEN_DEMON:
-            obj_icon = BINGO_ICON_STAR_GREEN_DEMON;
             option = textGreenDemon;
             break;
         case BINGO_OBJECTIVE_STAR_CLICK_GAME:
-            obj_icon = BINGO_ICON_STAR_CLICK_GAME;
             option = textClickGame;
             break;
         case BINGO_OBJECTIVE_STAR_DAREDEVIL:
-            obj_icon = BINGO_ICON_STAR_DAREDEVIL;
             option = textDaredevil;
             break;
         case BINGO_OBJECTIVE_COIN:
-            obj_icon = BINGO_ICON_COIN;;
             option = textCoinLevel;
             break;
         case BINGO_OBJECTIVE_MULTICOIN:
-            obj_icon = BINGO_ICON_MULTICOIN;;
             option = textTotalCoin;
             break;
         case BINGO_OBJECTIVE_1UPS_IN_LEVEL:
-            obj_icon = BINGO_ICON_1UPS_IN_LEVEL;
             option = text1upLevel;
             break;
         case BINGO_OBJECTIVE_STARS_IN_LEVEL:
-            obj_icon = BINGO_ICON_STARS_IN_LEVEL;
             option = textStarsLevel;
             break;
         case BINGO_OBJECTIVE_DANGEROUS_WALL_KICKS:
-            obj_icon = BINGO_ICON_DANGEROUS_WALL_KICKS;
             option = textDangerousWallKicks;
             break;
         case BINGO_OBJECTIVE_LOSE_MARIO_HAT:
-            obj_icon = BINGO_ICON_MARIO_HAT;
             option = textMarioHat;
             break;
         case BINGO_OBJECTIVE_BLJ:
-            obj_icon = BINGO_ICON_BLJ;
             option = textBLJ;
             break;
         case BINGO_OBJECTIVE_BOWSER:
-            obj_icon = BINGO_ICON_BOWSER;
             option = textBowser;
             break;
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
-            obj_icon = BINGO_ICON_EXCLAMATION_MARK_BOX;
             option = textExclamBoxes;
             break;
         case BINGO_OBJECTIVE_SIGNPOST:
-            obj_icon = BINGO_ICON_SIGNPOST;
             option = textSignposts;
             break;
         case BINGO_OBJECTIVE_RED_COIN:
-            obj_icon = BINGO_ICON_RED_COIN;
             option = textRedCoins;
             break;
         case BINGO_OBJECTIVE_AMPS:
-            obj_icon = BINGO_ICON_AMP;
             option = textAmps;
             break;
         case BINGO_OBJECTIVE_KILL_GOOMBAS:
-            obj_icon = BINGO_ICON_KILL_GOOMBAS;
             option = textKillGoombas;
             break;
         case BINGO_OBJECTIVE_KILL_BOBOMBS:
-            obj_icon = BINGO_ICON_KILL_BOBOMBS;
             option = textKillBobOmbs;
             break;
         case BINGO_OBJECTIVE_KILL_SPINDRIFTS:
-            obj_icon = BINGO_ICON_KILL_SPINDRIFTS;
             option = textKillSpindrifts;
             break;
         case BINGO_OBJECTIVE_KILL_MR_IS:
-            obj_icon = BINGO_ICON_KILL_MR_IS;
             option = textKillMrIs;
             break;
     }
+    obj_icon = get_objective_info(type)->icon;
     if (pageNo == 0) {
         leftColAmount = BINGO_OPTIONS_IN_LEFT_COL_FIRST_PAGE;
     } else {
