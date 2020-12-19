@@ -23,11 +23,17 @@ def green_demon_object(mario_pos):
 
 
 for script in Path("./levels").glob("**/script.c"):
-    response = input(f"should I do {script}?: ")
-    if response.lower() != "y":
+    lines = script.read_text().splitlines()
+
+    already_done = False
+    for line in lines:
+        if "bhv1upGreenDemon" in line:
+            print(f"{script} already has a green demon")
+            already_done = True
+    if already_done:
         continue
 
-    lines = script.read_text().splitlines()
+
     mario_pos = None
     for line in lines:
         if "MARIO_POS(" in line:
@@ -35,6 +41,7 @@ for script in Path("./levels").glob("**/script.c"):
             break
     if not mario_pos:
         print(f"could not find mario_pos in {script}")
+        continue
 
     inside_script_func_local = False
     the_return_line = None
@@ -46,6 +53,10 @@ for script in Path("./levels").glob("**/script.c"):
             break
     if not the_return_line:
         print(f"could not find return line in {script}")
+        continue
+
+    response = input(f"should I do {script}?: ")
+    if response.lower() != "y":
         continue
 
     object = green_demon_object(mario_pos)
