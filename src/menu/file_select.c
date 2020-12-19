@@ -155,11 +155,14 @@ static s32 check_clicked_button(s16 x, s16 y, f32 depth) {
     f32 a = 52.4213;
     f32 newX = ((f32) x * 160.0) / (a * depth);
     f32 newY = ((f32) y * 120.0) / (a * 3.0f / 4.0f * depth);
-    s16 maxX = newX + 25.0f;
-    s16 minX = newX - 25.0f;
-    s16 maxY = newY + 21.0f;
-    s16 minY = newY - 21.0f;
-
+    // s16 maxX = newX + 25.0f;
+    // s16 minX = newX - 25.0f;
+    // s16 maxY = newY + 21.0f;
+    // s16 minY = newY - 21.0f;
+    s16 maxX = newX + 20.0f;
+    s16 minX = newX - 30.0f;
+    s16 maxY = newY + 31.0f;
+    s16 minY = newY - 11.0f;
     if (sClickPos[0] < maxX && minX < sClickPos[0] && sClickPos[1] < maxY && minY < sClickPos[1]) {
         return TRUE;
     }
@@ -430,10 +433,10 @@ static void seed_reset(void) {
 static void seed_backspace(void) {
     s32 i;
     if (gBingoSeedIsSet) {
-        gBingoSeedText[0] = 0x00;
         for (i = 8; i > 0; i--) {
             gBingoSeedText[i] = gBingoSeedText[i - 1];
         }
+        gBingoSeedText[0] = 0x00;
     }
 }
 
@@ -473,6 +476,7 @@ static void seed_menu_check_clicked_buttons() {
                     seed_push_key(buttonId - MENU_BUTTON_SEED_NUM_1 + 1);  // Sort of hacky.
                     break;
                 case MENU_BUTTON_SEED_NUM_0:
+                    sMainMenuButtons[buttonId]->oMenuButtonState = MENU_BUTTON_STATE_ZOOM_IN_OUT;
                     seed_push_key(0);
                     break;
             }
