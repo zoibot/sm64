@@ -838,34 +838,6 @@ static unsigned char textBlackout[] = { TEXT_TARGET_BLACKOUT };
 static unsigned char textToggleAll[] = { TEXT_TOGGLE_ALL };
 static unsigned char textEmpty[] = { 0xFF };
 
-static unsigned char textSingleStar[] = { TEXT_SINGLE_STAR };
-static unsigned char textMultiStar[] = { TEXT_MULTI_STAR };
-static unsigned char textAButton[] = { TEXT_A_BUTTON };
-static unsigned char textBButton[] = { TEXT_B_BUTTON };
-static unsigned char textZButton[] = { TEXT_Z_BUTTON };
-static unsigned char textTimedStar[] = { TEXT_TIMED_STAR };
-static unsigned char textTTCRandom[] = { TEXT_TTC_RANDOM };
-static unsigned char textReverseJoystick[] = { TEXT_REVERSE_JOYSTICK };
-static unsigned char textGreenDemon[] = { TEXT_GREEN_DEMON };
-static unsigned char textClickGame[] = { TEXT_CLICK_GAME };
-static unsigned char textDaredevil[] = { TEXT_DAREDEVIL };
-static unsigned char textCoinLevel[] = { TEXT_COIN_LEVEL };
-static unsigned char textTotalCoin[] = { TEXT_TOTAL_COIN };
-static unsigned char text1upLevel[] = { TEXT_1UP_LEVEL };
-static unsigned char textStarsLevel[] = { TEXT_STARS_LEVEL };
-static unsigned char textDangerousWallKicks[] = { TEXT_DANGEROUS_WALL_KICKS };
-static unsigned char textMarioHat[] = { TEXT_MARIO_HAT };
-static unsigned char textBLJ[] = { TEXT_BLJ };
-static unsigned char textBowser[] = { TEXT_BOWSER };
-static unsigned char textExclamBoxes[] = { TEXT_EXCLAM_BOXES };
-static unsigned char textSignposts[] = { TEXT_SIGNPOSTS };
-static unsigned char textRedCoins[] = { TEXT_RED_COINS };
-static unsigned char textAmps[] = { TEXT_AMPS };
-static unsigned char textKillGoombas[] = { TEXT_KILL_GOOMBAS };
-static unsigned char textKillBobOmbs[] = { TEXT_KILL_BOBOMBS };
-static unsigned char textKillSpindrifts[] = { TEXT_KILL_SPINDRIFTS };
-static unsigned char textKillMrIs[] = { TEXT_KILL_MR_IS };
-
 static unsigned char textDPad[] = { TEXT_DPAD };
 static unsigned char textPressA[] = { TEXT_PRESS_A };
 static unsigned char textPressRL_1[] = { TEXT_PRESS_RL_1 };
@@ -981,90 +953,9 @@ static void print_objective(enum BingoObjectiveType type, s32 pageNo) {
         gBingoObjectivesDisabled[type] ^= 1;
     }
 
-    switch (type) {
-        case BINGO_OBJECTIVE_STAR:
-            option = textSingleStar;
-            break;
-        case BINGO_OBJECTIVE_MULTISTAR:
-            option = textMultiStar;
-            break;
-        case BINGO_OBJECTIVE_STAR_A_BUTTON_CHALLENGE:
-            option = textAButton;
-            break;
-        case BINGO_OBJECTIVE_STAR_B_BUTTON_CHALLENGE:
-            option = textBButton;
-            break;
-        case BINGO_OBJECTIVE_STAR_Z_BUTTON_CHALLENGE:
-            option = textZButton;
-            break;
-        case BINGO_OBJECTIVE_STAR_TIMED:
-            option = textTimedStar;
-            break;
-        case BINGO_OBJECTIVE_STAR_TTC_RANDOM:
-            option = textTTCRandom;
-            break;
-        case BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK:
-            option = textReverseJoystick;
-            break;
-        case BINGO_OBJECTIVE_STAR_GREEN_DEMON:
-            option = textGreenDemon;
-            break;
-        case BINGO_OBJECTIVE_STAR_CLICK_GAME:
-            option = textClickGame;
-            break;
-        case BINGO_OBJECTIVE_STAR_DAREDEVIL:
-            option = textDaredevil;
-            break;
-        case BINGO_OBJECTIVE_COIN:
-            option = textCoinLevel;
-            break;
-        case BINGO_OBJECTIVE_MULTICOIN:
-            option = textTotalCoin;
-            break;
-        case BINGO_OBJECTIVE_1UPS_IN_LEVEL:
-            option = text1upLevel;
-            break;
-        case BINGO_OBJECTIVE_STARS_IN_LEVEL:
-            option = textStarsLevel;
-            break;
-        case BINGO_OBJECTIVE_DANGEROUS_WALL_KICKS:
-            option = textDangerousWallKicks;
-            break;
-        case BINGO_OBJECTIVE_LOSE_MARIO_HAT:
-            option = textMarioHat;
-            break;
-        case BINGO_OBJECTIVE_BLJ:
-            option = textBLJ;
-            break;
-        case BINGO_OBJECTIVE_BOWSER:
-            option = textBowser;
-            break;
-        case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
-            option = textExclamBoxes;
-            break;
-        case BINGO_OBJECTIVE_SIGNPOST:
-            option = textSignposts;
-            break;
-        case BINGO_OBJECTIVE_RED_COIN:
-            option = textRedCoins;
-            break;
-        case BINGO_OBJECTIVE_AMPS:
-            option = textAmps;
-            break;
-        case BINGO_OBJECTIVE_KILL_GOOMBAS:
-            option = textKillGoombas;
-            break;
-        case BINGO_OBJECTIVE_KILL_BOBOMBS:
-            option = textKillBobOmbs;
-            break;
-        case BINGO_OBJECTIVE_KILL_SPINDRIFTS:
-            option = textKillSpindrifts;
-            break;
-        case BINGO_OBJECTIVE_KILL_MR_IS:
-            option = textKillMrIs;
-            break;
-    }
+    option = get_objective_info(type)->optionText;
     obj_icon = get_objective_info(type)->icon;
+
     if (pageNo == 0) {
         leftColAmount = BINGO_OPTIONS_IN_LEFT_COL_FIRST_PAGE;
     } else {
