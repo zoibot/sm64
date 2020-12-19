@@ -173,7 +173,7 @@
 #define TEXT_STARS_LEVEL _("All Stars in Level")
 #define TEXT_MARIO_HAT _("Lose Mario's hat")
 #define TEXT_DANGEROUS_WALL_KICKS _("Perilous Wallkicks")
-#define TEXT_BLJ _("Perform a BLJ")
+#define TEXT_BLJ _("Perform BLJs")
 #define TEXT_BOWSER _("Defeat Bowser")
 #define TEXT_EXCLAM_BOXES _("Break ! Boxes")
 #define TEXT_SIGNPOSTS _("Read Signposts")
