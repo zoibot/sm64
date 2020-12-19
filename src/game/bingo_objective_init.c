@@ -7,6 +7,7 @@
 #include "bingo_descriptions.h"
 #include "bingo_objective_func.h"
 #include "bingo_objective_init.h"
+#include "bingo_objective_info.h"
 #include "bingo_titles.h"
 #include "strcpy.h"
 #include "level_table.h"
