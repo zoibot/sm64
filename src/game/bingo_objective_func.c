@@ -16,6 +16,8 @@
 #include "print.h"
 #include "hud.h"
 #include "bingo_tracking_collectables.h"
+#include "room.h"
+#include "object_constants.h"
 
 
 s32 objective_obtain_star(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
@@ -66,6 +68,12 @@ s32 objective_obtain_star_timer(struct BingoObjective *objective, enum BingoObje
             set_objective_state(objective, BINGO_STATE_FAILED_IN_THIS_COURSE);
         }
     } else if (objective->state != BINGO_STATE_FAILED_IN_THIS_COURSE) {
+        objective_obtain_star(objective, update);
+    }
+}
+
+s32 objective_obtain_ttc_random_star(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
+    if (gTTCSpeedSetting == TTC_SPEED_RANDOM) {
         objective_obtain_star(objective, update);
     }
 }
@@ -283,6 +291,8 @@ s32 update_objective(struct BingoObjective *objective, enum BingoObjectiveUpdate
             return objective_obtain_abz_button_challenges(objective, update, BINGO_UPDATE_Z_PRESSED);
         case BINGO_OBJECTIVE_STAR_TIMED:
             return objective_obtain_star_timer(objective, update);
+        case BINGO_OBJECTIVE_STAR_TTC_RANDOM:
+            return objective_obtain_ttc_random_star(objective, update);
         case BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK:
             return objective_obtain_star_reverse_joystick(objective, update);
         case BINGO_OBJECTIVE_STAR_GREEN_DEMON:

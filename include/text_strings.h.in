@@ -163,6 +163,7 @@
 #define TEXT_B_BUTTON _("B Button Challenge")
 #define TEXT_Z_BUTTON _("Z Button Challenge")
 #define TEXT_TIMED_STAR _("Timed Stars")
+#define TEXT_TTC_RANDOM _("TTC Random Stars")
 #define TEXT_REVERSE_JOYSTICK _("Reverse Joystick")
 #define TEXT_GREEN_DEMON _("Green Demon")
 #define TEXT_CLICK_GAME _("The Click Game!")

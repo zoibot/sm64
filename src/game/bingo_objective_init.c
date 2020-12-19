@@ -241,6 +241,20 @@ s32 bingo_objective_star_timed_init(
     objective->data.starTimerObjective.maxTime = maxTime;
 }
 
+s32 bingo_objective_star_ttc_random_init(
+    struct BingoObjective *objective, enum BingoObjectiveClass class
+) {
+    s32 star;
+    switch (class) {
+        default:
+            star = RandomU16() % 7;
+            break;
+    }
+
+    objective->data.starObjective.course = COURSE_TTC;
+    objective->data.starObjective.starIndex = star;
+}
+
 s32 bingo_objective_star_reverse_joystick_init(
     struct BingoObjective *objective, enum BingoObjectiveClass class
 ) {
@@ -705,6 +719,8 @@ s32 bingo_objective_init_dispatch(
             return bingo_objective_star_z_button_challenge_init(objective, class);
         case BINGO_OBJECTIVE_STAR_TIMED:
             return bingo_objective_star_timed_init(objective, class);
+        case BINGO_OBJECTIVE_STAR_TTC_RANDOM:
+            return bingo_objective_star_ttc_random_init(objective, class);
         case BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK:
             return bingo_objective_star_reverse_joystick_init(objective, class);
         case BINGO_OBJECTIVE_STAR_GREEN_DEMON:

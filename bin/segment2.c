@@ -242,6 +242,10 @@ ALIGNED8 static const u8 seg2_texture_timer[] = {
 #include "textures/segment2/custom/segment2.timer.rgba16.inc.c"
 };
 
+ALIGNED8 static const u8 seg2_texture_ttc_random[] = {
+#include "textures/segment2/custom/segment2.ttc_random.rgba16.inc.c"
+};
+
 ALIGNED8 static const u8 seg2_texture_checkmark[] = {
 #include "textures/segment2/custom/segment2.checkmark.rgba16.inc.c"
 };
@@ -1985,6 +1989,7 @@ const u8 *const bingo_lut[] = {
     seg2_texture_checkmark,      // BINGO_ICON_SUCCESS
     texture_hud_char_star,       // BINGO_ICON_STAR
     seg2_texture_timer,          // BINGO_ICON_STAR_TIMED
+    seg2_texture_ttc_random,     // BINGO_ICON_TTC_RANDOM
     seg2_texture_abutton,        // BINGO_ICON_STAR_A_BUTTON_CHALLENGE
     seg2_texture_bbutton,        // BINGO_ICON_STAR_B_BUTTON_CHALLENGE
     seg2_texture_zbutton,        // BINGO_ICON_STAR_Z_BUTTON_CHALLENGE

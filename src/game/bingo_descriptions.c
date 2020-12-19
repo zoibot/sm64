@@ -206,6 +206,9 @@ void get_star_objective_desc(struct BingoObjective *obj, char *desc) {
         case BINGO_OBJECTIVE_STAR:
             strcpy(noTouchButtonText, "");
             break;
+        case BINGO_OBJECTIVE_STAR_TTC_RANDOM:
+            strcpy(noTouchButtonText, " with the clock set to random");
+            break;
         case BINGO_OBJECTIVE_STAR_A_BUTTON_CHALLENGE:
             strcpy(noTouchButtonText, " without touching the A button");
             break;
@@ -528,6 +531,7 @@ void get_dangerous_wall_kicks_objective_desc(struct BingoObjective *obj, char *d
 void describe_objective(struct BingoObjective *objective, char *desc) {
     switch (objective->type) {
         case BINGO_OBJECTIVE_STAR:
+        case BINGO_OBJECTIVE_STAR_TTC_RANDOM:
         case BINGO_OBJECTIVE_STAR_A_BUTTON_CHALLENGE:
         case BINGO_OBJECTIVE_STAR_B_BUTTON_CHALLENGE:
         case BINGO_OBJECTIVE_STAR_Z_BUTTON_CHALLENGE:
