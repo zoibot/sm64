@@ -37,6 +37,9 @@ struct UID {
 #define MAX_COURSES_BLJ 25
 // There are 24
 #define MAX_AMPS 25
+// There are 32 regular poles, 1 giant pole in WF,
+// 9 poles in DDD, 4 moving ones in BitFS.
+#define MAX_POLES 50
 
 #define TOTAL_UIDS ( \
         MAX_GOOMBAS \
@@ -49,7 +52,8 @@ struct UID {
         + MAX_COURSES_WALLKICKS \
         + MAX_COURSES_BLJ \
         + MAX_AMPS \
-    ) + 1
+        + MAX_POLES \
+    ) + 2
 
 // I really hope nothing is actually at (0, 0, 0)....
 struct UID sIDTable[TOTAL_UIDS] = { { 0 } };
@@ -59,7 +63,7 @@ void get_index_range(enum BingoObjectiveUpdate update, s32 *start, s32 *length) 
     s32 rangeLength = 0;
     s32 prevRangeLength = 0;
 
-    *start = 0;
+    *start = 1;  // Avoid UID 0.
     for (i = BINGO_COLLECTABLES_MIN; i <= BINGO_COLLECTABLES_MAX; i++) {
         prevRangeLength = rangeLength;
         switch (i) {
@@ -92,6 +96,9 @@ void get_index_range(enum BingoObjectiveUpdate update, s32 *start, s32 *length) 
                 break;
             case BINGO_UPDATE_ZAPPED_BY_AMP:
                 rangeLength = MAX_AMPS;
+                break;
+            case BINGO_UPDATE_GRABBED_POLE:
+                rangeLength = MAX_POLES;
                 break;
         }
         *start += prevRangeLength;

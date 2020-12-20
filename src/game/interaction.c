@@ -1449,6 +1449,10 @@ u32 interact_pole(struct MarioState *m, UNUSED u32 interactType, struct Object *
             u32 lowSpeed = m->forwardVel <= 10.0f;
             struct Object *marioObj = m->marioObj;
 
+            if (o->oBingoId != 0 && is_new_kill(BINGO_UPDATE_GRABBED_POLE, o->oBingoId)) {
+                bingo_update(BINGO_UPDATE_GRABBED_POLE);
+            }
+
             mario_stop_riding_and_holding(m);
 
             m->interactObj = o;

@@ -619,6 +619,18 @@ s32 bingo_objective_signpost_init(enum BingoObjectiveClass class) {
     }
 }
 
+s32 bingo_objective_poles_init(enum BingoObjectiveClass class) {
+    switch (class) {
+        default:
+            return random_range_inclusive(10, 17);
+        case BINGO_CLASS_CENTER:
+            // 27 was chosen here because that would mean getting every
+            // pole in LLL, WMotR, RR, and DDD (if you were to go to the
+            // minimum number of levels). That's nearly too tough.
+            return random_range_inclusive(20, 27);
+    }
+}
+
 s32 bingo_objective_red_coin_init(enum BingoObjectiveClass class) {
     switch (class) {
         default:
@@ -693,6 +705,8 @@ s32 bingo_objective_collectable_init_dispatch(
             return bingo_objective_exclamation_mark_box_init(class);
         case BINGO_OBJECTIVE_SIGNPOST:
             return bingo_objective_signpost_init(class);
+        case BINGO_OBJECTIVE_POLES:
+            return bingo_objective_poles_init(class);
         case BINGO_OBJECTIVE_RED_COIN:
             return bingo_objective_red_coin_init(class);
         case BINGO_OBJECTIVE_AMPS:

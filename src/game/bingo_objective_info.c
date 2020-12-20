@@ -108,6 +108,10 @@ ALIGNED8 static const u8 seg2_texture_yellowbox[] = {
 #include "textures/segment2/custom/segment2.yellowbox.rgba16.inc.c"
 };
 
+ALIGNED8 static const u8 seg2_texture_pole[] = {
+#include "textures/segment2/custom/segment2.pole.rgba16.inc.c"
+};
+
 ALIGNED8 static const u8 texture_hud_char_coin[] = {
 #include "textures/segment2/segment2.05800.rgba16.inc.c"
 };
@@ -133,6 +137,7 @@ struct BingoObjectiveInfo sBingoObjectiveInfo[] = {
     { BINGO_OBJECTIVE_MULTICOIN, BINGO_ICON_MULTICOIN, { TEXT_TOTAL_COIN }, seg2_texture_multicoin },
     { BINGO_OBJECTIVE_MULTISTAR, BINGO_ICON_MULTISTAR, { TEXT_MULTI_STAR }, seg2_texture_multistar },
     { BINGO_OBJECTIVE_SIGNPOST, BINGO_ICON_SIGNPOST, { TEXT_SIGNPOSTS }, seg2_texture_signpost },
+    { BINGO_OBJECTIVE_POLES, BINGO_ICON_POLE, { TEXT_POLES }, seg2_texture_pole},
     { BINGO_OBJECTIVE_RED_COIN, BINGO_ICON_RED_COIN, { TEXT_RED_COINS }, seg2_texture_red_coin },
     { BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX, BINGO_ICON_EXCLAMATION_MARK_BOX, { TEXT_EXCLAM_BOXES }, seg2_texture_yellowbox },
     { BINGO_OBJECTIVE_AMPS, BINGO_ICON_AMP, { TEXT_AMPS }, seg2_texture_amp },

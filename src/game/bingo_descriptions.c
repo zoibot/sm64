@@ -453,6 +453,9 @@ void get_collectable_objective_desc(struct BingoObjective *obj, char *desc) {
         case BINGO_OBJECTIVE_LOSE_MARIO_HAT:
             strcpy(verb, "Lose your hat in");
             break;
+        case BINGO_OBJECTIVE_POLES:
+            strcpy(verb, "Grab");
+            break;
         default:
             strcpy(verb, "Kill");
             break;
@@ -468,6 +471,9 @@ void get_collectable_objective_desc(struct BingoObjective *obj, char *desc) {
             break;
         case BINGO_OBJECTIVE_SIGNPOST:
             strcpy(collectName, "Signposts");
+            break;
+        case BINGO_OBJECTIVE_POLES:
+            strcpy(collectName, "Poles");
             break;
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
             strcpy(collectName, "Yellow ! Boxes");
@@ -579,6 +585,7 @@ void describe_objective(struct BingoObjective *objective, char *desc) {
         case BINGO_OBJECTIVE_LOSE_MARIO_HAT:
         case BINGO_OBJECTIVE_BLJ:
         case BINGO_OBJECTIVE_SIGNPOST:
+        case BINGO_OBJECTIVE_POLES:
         case BINGO_OBJECTIVE_RED_COIN:
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
         case BINGO_OBJECTIVE_AMPS:

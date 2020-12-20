@@ -1,4 +1,6 @@
 // falling_rising_platform.c.inc
+#include "game/bingo.h"
+#include "game/bingo_tracking_collectables.h"
 
 void bhv_squishable_platform_loop(void) {
     o->header.gfx.scale[1] = (sins(o->oPlatformTimer) + 1.0) * 0.3 + 0.4;
@@ -15,6 +17,9 @@ void bhv_bitfs_sinking_platform_loop(void) {
 // TODO: Named incorrectly. fix
 void bhv_ddd_moving_pole_loop(void) {
     copy_object_pos_and_angle(o, o->parentObj);
+    if (o->oTimer == 0) {
+        o->oBingoId = get_unique_id(BINGO_UPDATE_GRABBED_POLE, o->oPosX, o->oPosY, o->oPosZ);
+    }
 }
 
 void bhv_bitfs_sinking_cage_platform_loop(void) {

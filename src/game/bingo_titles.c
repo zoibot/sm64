@@ -102,6 +102,7 @@ void get_dangerous_wallkicks_title(struct BingoObjective *objective) {
 
 void get_objective_title(struct BingoObjective *objective) {
     switch (objective->type) {
+        // TODO: Get these for free by being a star:
         case BINGO_OBJECTIVE_STAR:
         case BINGO_OBJECTIVE_STAR_A_BUTTON_CHALLENGE:
         case BINGO_OBJECTIVE_STAR_B_BUTTON_CHALLENGE:
@@ -127,11 +128,13 @@ void get_objective_title(struct BingoObjective *objective) {
         case BINGO_OBJECTIVE_BOWSER:
             get_bowser_objective_title(objective);
             break;
+        // TODO: Get these for free by being a collectable:
         case BINGO_OBJECTIVE_LOSE_MARIO_HAT:
         case BINGO_OBJECTIVE_BLJ:
         case BINGO_OBJECTIVE_MULTISTAR:
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
         case BINGO_OBJECTIVE_SIGNPOST:
+        case BINGO_OBJECTIVE_POLES:
         case BINGO_OBJECTIVE_RED_COIN:
         case BINGO_OBJECTIVE_AMPS:
         case BINGO_OBJECTIVE_KILL_GOOMBAS:

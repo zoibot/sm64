@@ -178,6 +178,7 @@
 #define TEXT_BOWSER _("Defeat Bowser")
 #define TEXT_EXCLAM_BOXES _("Break ! Boxes")
 #define TEXT_SIGNPOSTS _("Read Signposts")
+#define TEXT_POLES _("Grab Poles")
 #define TEXT_RED_COINS _("Collect Red Coins")
 #define TEXT_AMPS _("Touch Amps")
 #define TEXT_KILL_GOOMBAS _("Kill Goombas")

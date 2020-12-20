@@ -6,6 +6,7 @@ void bhv_ddd_pole_init(void) {
     } else {
         o->hitboxDownOffset = 100.0f;
         o->oDDDPoleMaxOffset = 100.0f * o->oBehParams2ndByte;
+        o->oBingoId = get_unique_id(BINGO_UPDATE_GRABBED_POLE, o->oPosX, o->oPosY, o->oPosZ);
     }
 }
 
