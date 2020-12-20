@@ -425,6 +425,9 @@ void get_bowser_objective_desc(struct BingoObjective *obj, char *desc) {
 }
 
 void get_collectable_objective_desc(struct BingoObjective *obj, char *desc) {
+    u32 flags;
+    s32 count = 0;
+
     char verb[25];
     char collectName[30];
     char suffix[30];
@@ -491,6 +494,17 @@ void get_collectable_objective_desc(struct BingoObjective *obj, char *desc) {
 
     if (obj->state == BINGO_STATE_COMPLETE) {
         strcpy(suffix, ": Complete!");
+    } else if (obj->type == BINGO_OBJECTIVE_LOSE_MARIO_HAT) {
+        flags = obj->data.collectableFlagsData.flags;
+        while (flags) {
+            count += flags & 1;
+            flags >>= 1;
+        }
+        sprintf(
+            suffix,
+            ". Remaining: %d",
+            obj->data.collectableData.toGet - count
+        );
     } else {
         // TODO: Level-by-level breakdown of what's been gotten so far.
         sprintf(
