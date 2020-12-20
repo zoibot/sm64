@@ -493,7 +493,12 @@ s32 bingo_objective_1ups_in_level_init(
             do {
                 course = random_course_including_special();
                 _1upsMin = (s32) get_1ups_in_level(course) * 0.6f;
-                _1ups = (RandomU16() % (get_1ups_in_level(course) - _1upsMin)) + _1upsMin;
+                if (get_1ups_in_level(course) == _1upsMin) {
+                    _1ups = _1upsMin;
+                    RandomU16();
+                } else {
+                    _1ups = (RandomU16() % (get_1ups_in_level(course) - _1upsMin)) + _1upsMin;
+                }
             } while (_1ups < 3);
             break;
         case BINGO_CLASS_HARD:
