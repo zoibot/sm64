@@ -21,6 +21,11 @@ struct UID {
 #define MAX_BOBOMBS 40
 // sm64.com says 65 ! boxes.
 #define MAX_EXCLAMATION_BOXES 70
+
+#define MAX_WING_CAP_BOXES 15
+#define MAX_VANISH_CAP_BOXES 9
+#define MAX_METAL_CAP_BOXES 14
+
 // 8 * (15 + 3 + 3 + 1 + 1) = 184 (Bowser, Cap Courses, SA, WMoTR)
 #define MAX_RED_COINS 200
 // There are 6 in the game
@@ -45,6 +50,9 @@ struct UID {
         MAX_GOOMBAS \
         + MAX_BOBOMBS \
         + MAX_EXCLAMATION_BOXES \
+        + MAX_WING_CAP_BOXES \
+        + MAX_VANISH_CAP_BOXES \
+        + MAX_METAL_CAP_BOXES \
         + MAX_RED_COINS \
         + MAX_MR_IS \
         + MAX_SPINDRIFTS \
@@ -75,6 +83,15 @@ void get_index_range(enum BingoObjectiveUpdate update, s32 *start, s32 *length) 
                 break;
             case BINGO_UPDATE_EXCLAMATION_MARK_BOX:
                 rangeLength = MAX_EXCLAMATION_BOXES;
+                break;
+            case BINGO_UPDATE_WING_CAP_BOX:
+                rangeLength = MAX_WING_CAP_BOXES;
+                break;
+            case BINGO_UPDATE_VANISH_CAP_BOX:
+                rangeLength = MAX_VANISH_CAP_BOXES;
+                break;
+            case BINGO_UPDATE_METAL_CAP_BOX:
+                rangeLength = MAX_METAL_CAP_BOXES;
                 break;
             case BINGO_UPDATE_RED_COIN:
                 rangeLength = MAX_RED_COINS;

@@ -108,6 +108,18 @@ ALIGNED8 static const u8 seg2_texture_yellowbox[] = {
 #include "textures/segment2/custom/segment2.yellowbox.rgba16.inc.c"
 };
 
+ALIGNED8 static const u8 seg2_texture_wingbox[] = {
+#include "textures/segment2/custom/segment2.wingbox.rgba16.inc.c"
+};
+
+ALIGNED8 static const u8 seg2_texture_vanishbox[] = {
+#include "textures/segment2/custom/segment2.vanishbox.rgba16.inc.c"
+};
+
+ALIGNED8 static const u8 seg2_texture_metalbox[] = {
+#include "textures/segment2/custom/segment2.metalbox.rgba16.inc.c"
+};
+
 ALIGNED8 static const u8 seg2_texture_pole[] = {
 #include "textures/segment2/custom/segment2.pole.rgba16.inc.c"
 };
@@ -140,6 +152,9 @@ struct BingoObjectiveInfo sBingoObjectiveInfo[] = {
     { BINGO_OBJECTIVE_POLES, BINGO_ICON_POLE, { TEXT_POLES }, seg2_texture_pole},
     { BINGO_OBJECTIVE_RED_COIN, BINGO_ICON_RED_COIN, { TEXT_RED_COINS }, seg2_texture_red_coin },
     { BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX, BINGO_ICON_EXCLAMATION_MARK_BOX, { TEXT_EXCLAM_BOXES }, seg2_texture_yellowbox },
+    { BINGO_OBJECTIVE_WING_CAP_BOX, BINGO_ICON_WING_CAP_BOX, { TEXT_WING_BOXES }, seg2_texture_wingbox },
+    { BINGO_OBJECTIVE_VANISH_CAP_BOX, BINGO_ICON_VANISH_CAP_BOX, { TEXT_VANISH_BOXES }, seg2_texture_vanishbox },
+    { BINGO_OBJECTIVE_METAL_CAP_BOX, BINGO_ICON_METAL_CAP_BOX, { TEXT_METAL_BOXES }, seg2_texture_metalbox },
     { BINGO_OBJECTIVE_AMPS, BINGO_ICON_AMP, { TEXT_AMPS }, seg2_texture_amp },
     { BINGO_OBJECTIVE_KILL_GOOMBAS, BINGO_ICON_KILL_GOOMBAS, { TEXT_KILL_GOOMBAS }, seg2_texture_goomba },
     { BINGO_OBJECTIVE_KILL_BOBOMBS, BINGO_ICON_KILL_BOBOMBS, { TEXT_KILL_BOBOMBS }, seg2_texture_bobomb },
