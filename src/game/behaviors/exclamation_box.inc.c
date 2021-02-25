@@ -39,7 +39,28 @@ void bhv_rotatin_exclamation_box_loop(void) {
 }
 
 void ActionExclamationBox0(void) {
-    o->oBingoId = get_unique_id(BINGO_UPDATE_EXCLAMATION_MARK_BOX, o->oPosX, o->oPosY, o->oPosZ);
+    switch (o->oBehParams2ndByte) {
+        case 0:
+            o->oBingoId = get_unique_id(
+                BINGO_UPDATE_WING_CAP_BOX, o->oPosX, o->oPosY, o->oPosZ
+            );
+            break;
+        case 1:
+            o->oBingoId = get_unique_id(
+                BINGO_UPDATE_METAL_CAP_BOX, o->oPosX, o->oPosY, o->oPosZ
+            );
+            break;
+        case 2:
+            o->oBingoId = get_unique_id(
+                BINGO_UPDATE_VANISH_CAP_BOX, o->oPosX, o->oPosY, o->oPosZ
+            );
+            break;
+        default:
+            o->oBingoId = get_unique_id(
+                BINGO_UPDATE_EXCLAMATION_MARK_BOX, o->oPosX, o->oPosY, o->oPosZ
+            );
+            break;
+    }
 
     if (o->oBehParams2ndByte < 3) {
         o->oAnimState = o->oBehParams2ndByte;
@@ -124,18 +145,34 @@ void func_802C0DF0(struct Struct802C0DF0 *a0, u8 a1) {
 }
 
 void ActionExclamationBox4(void) {
+    enum BingoObjectiveUpdate updateType;
     func_802C0DF0(sExclamationBoxContents, o->oBehParams2ndByte);
     func_802AA618(0, 0, 46.0f);
     spawn_triangle_break_particles(20, 139, 0.3f, o->oAnimState);
     create_sound_spawner(SOUND_GENERAL_BREAK_BOX);
+    switch (o->oBehParams2ndByte) {
+        case 0:
+            updateType = BINGO_UPDATE_WING_CAP_BOX;
+            break;
+        case 1:
+            updateType = BINGO_UPDATE_METAL_CAP_BOX;
+            break;
+        case 2:
+            updateType = BINGO_UPDATE_VANISH_CAP_BOX;
+            break;
+        default:
+            updateType = BINGO_UPDATE_EXCLAMATION_MARK_BOX;
+            break;
+    }
+    if (is_new_kill(updateType, o->oBingoId)) {
+        bingo_update(updateType);
+    }
+
     if (o->oBehParams2ndByte < 3) {
         o->oAction = 5;
         obj_hide();
     } else {
         mark_object_for_deletion(o);
-        if (is_new_kill(BINGO_UPDATE_EXCLAMATION_MARK_BOX, o->oBingoId)) {
-            bingo_update(BINGO_UPDATE_EXCLAMATION_MARK_BOX);
-        }
     }
 }
 

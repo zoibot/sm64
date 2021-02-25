@@ -439,6 +439,9 @@ void get_collectable_objective_desc(struct BingoObjective *obj, char *desc) {
             strcpy(verb, "Read");
             break;
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
+        case BINGO_OBJECTIVE_WING_CAP_BOX:
+        case BINGO_OBJECTIVE_VANISH_CAP_BOX:
+        case BINGO_OBJECTIVE_METAL_CAP_BOX:
             strcpy(verb, "Break");
             break;  // hah!
         case BINGO_OBJECTIVE_RED_COIN:
@@ -477,6 +480,15 @@ void get_collectable_objective_desc(struct BingoObjective *obj, char *desc) {
             break;
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
             strcpy(collectName, "Yellow ! Boxes");
+            break;
+        case BINGO_OBJECTIVE_WING_CAP_BOX:
+            strcpy(collectName, "Wing Cap Boxes");
+            break;
+        case BINGO_OBJECTIVE_VANISH_CAP_BOX:
+            strcpy(collectName, "Vanish Cap Boxes");
+            break;
+        case BINGO_OBJECTIVE_METAL_CAP_BOX:
+            strcpy(collectName, "Metal Cap Boxes");
             break;
         case BINGO_OBJECTIVE_RED_COIN:
             strcpy(collectName, "Red Coins");
@@ -588,6 +600,9 @@ void describe_objective(struct BingoObjective *objective, char *desc) {
         case BINGO_OBJECTIVE_POLES:
         case BINGO_OBJECTIVE_RED_COIN:
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
+        case BINGO_OBJECTIVE_WING_CAP_BOX:
+        case BINGO_OBJECTIVE_VANISH_CAP_BOX:
+        case BINGO_OBJECTIVE_METAL_CAP_BOX:
         case BINGO_OBJECTIVE_AMPS:
         case BINGO_OBJECTIVE_KILL_GOOMBAS:
         case BINGO_OBJECTIVE_KILL_BOBOMBS:

@@ -610,6 +610,27 @@ s32 bingo_objective_exclamation_mark_box_init(enum BingoObjectiveClass class) {
     }
 }
 
+s32 bingo_objective_wing_cap_box_init(enum BingoObjectiveClass class) {
+    switch (class) {
+        default:
+            return random_range_inclusive(5, 9);
+    }
+}
+
+s32 bingo_objective_vanish_cap_box_init(enum BingoObjectiveClass class) {
+    switch (class) {
+        default:
+            return random_range_inclusive(4, 7);
+    }
+}
+
+s32 bingo_objective_metal_cap_box_init(enum BingoObjectiveClass class) {
+    switch (class) {
+        default:
+            return random_range_inclusive(5, 9);
+    }
+}
+
 s32 bingo_objective_signpost_init(enum BingoObjectiveClass class) {
     switch (class) {
         default:
@@ -703,6 +724,12 @@ s32 bingo_objective_collectable_init_dispatch(
             return bingo_objective_lose_mario_hat_init(class);
         case BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX:
             return bingo_objective_exclamation_mark_box_init(class);
+        case BINGO_OBJECTIVE_WING_CAP_BOX:
+            return bingo_objective_wing_cap_box_init(class);
+        case BINGO_OBJECTIVE_VANISH_CAP_BOX:
+            return bingo_objective_vanish_cap_box_init(class);
+        case BINGO_OBJECTIVE_METAL_CAP_BOX:
+            return bingo_objective_metal_cap_box_init(class);
         case BINGO_OBJECTIVE_SIGNPOST:
             return bingo_objective_signpost_init(class);
         case BINGO_OBJECTIVE_POLES:
