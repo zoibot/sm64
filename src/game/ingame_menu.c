@@ -2763,14 +2763,14 @@ s16 render_pause_courses_and_castle(void) {
 #endif
             {
                 level_set_transition(0, 0);
-                if (gBingoDaredevilActive) {
-                    gMarioState->health = gBingoDaredevilPrevHealth;
-                }
                 play_sound(SOUND_MENU_PAUSE_2, gDefaultSoundArgs);
                 gDialogBoxState = DIALOG_STATE_OPENING;
                 gMenuMode = -1;
 
                 if (gDialogLineNum == 2) {
+                    if (gBingoDaredevilActive) {
+                        gMarioState->health = gBingoDaredevilPrevHealth;
+                    }
                     num = gDialogLineNum;
                 } else {
                     num = 1;
