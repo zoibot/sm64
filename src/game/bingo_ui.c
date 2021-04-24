@@ -23,6 +23,7 @@
 #include "segment2.h"
 
 s8 gBingoAllowBoardToShow;
+s8 gForceDrawBingoScreen = 0;
 
 #define BINGO_MIN_X 21
 #define BINGO_MAX_X 230
@@ -201,9 +202,10 @@ void draw_bingo_screen() {
     }
 
     // Shade the screen.
-    if (gPlayer1Controller->buttonDown & L_TRIG) {
+    // Why was I checking this twice?
+    // if (gPlayer1Controller->buttonDown & L_TRIG) {
         shade_screen_opacity(180);
-    }
+    // }
 
     // Title.
     for (i = 0; i < 5; i++) {

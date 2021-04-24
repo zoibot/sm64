@@ -607,7 +607,7 @@ void render_hud(void) {
             // If you press L twice, the congrats message goes away.
             gbBingoShowCongratsCounter++;
         }
-        if (gPlayer1Controller->buttonDown & L_TRIG) {
+        if (gPlayer1Controller->buttonDown & L_TRIG || gForceDrawBingoScreen == 1) {
             draw_bingo_screen();
         } else {
             if ((gbBingosCompleted >= gbBingoTarget) && gbBingoShowCongratsCounter < gbBingoShowCongratsLimit) {

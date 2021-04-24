@@ -2,6 +2,7 @@
 #define _BINGO_UI_H
 
 extern s8 gBingoAllowBoardToShow;
+extern s8 gForceDrawBingoScreen;
 
 void print_bingo_icon(s32 x, s32 y, s32 iconIndex);
 void print_bingo_icon_alpha(s32 x, s32 y, s32 iconIndex, u8 alpha);

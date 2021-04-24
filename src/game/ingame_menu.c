@@ -3054,6 +3054,7 @@ void render_course_complete_lvl_info_and_hud_str(void) {
 #define TXT_CONTNOSAVE_Y 40
 #endif
 
+#if 0
 #ifdef VERSION_EU
 #define X_VAL9 xOffset - 12
 void render_save_confirmation(s16 y, s8 *index, s16 sp6e)
@@ -3106,7 +3107,12 @@ void render_save_confirmation(s16 x, s16 y, s8 *index, s16 sp6e)
 
     gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
 }
+#endif
+void render_save_confirmation(s16 x, s16 y, s8 *index, s16 sp6e) {
 
+}
+
+#if 0
 s16 render_course_complete_screen(void) {
     s16 num;
 #ifdef VERSION_EU
@@ -3162,6 +3168,26 @@ s16 render_course_complete_screen(void) {
 
     return 0;
 }
+#else
+#include "bingo_ui.h"
+s16 render_course_complete_screen(void) {
+    gForceDrawBingoScreen = 1;
+    if (gCourseDoneMenuTimer > 110) {
+        // TODO: Do I need all these?
+        // gDialogBoxState = DIALOG_STATE_OPENING;
+        gMenuMode = -1;
+        gCourseDoneMenuTimer = 0;
+        gCourseCompleteCoins = 0;
+        // gCourseCompleteCoinsEqual = 0;
+        gHudFlash = 0;
+        gForceDrawBingoScreen = 0;
+        return 3;
+    }
+
+    gCourseDoneMenuTimer++;
+    return 0;
+}
+#endif
 
 // Only case 1 and 2 are used
 s16 render_menus_and_dialogs() {
