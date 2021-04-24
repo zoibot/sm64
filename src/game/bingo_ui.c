@@ -193,7 +193,7 @@ void draw_bingo_screen() {
     char seed_print[20];
     char timestamp[40];
     char time_print[40];
-    char number[3];
+    char number[5];
     char *bingo[5] = { "B", "I", "N", "G", "O" };
 
     if (!gBingoAllowBoardToShow) {
@@ -276,9 +276,9 @@ void draw_bingo_screen() {
             if (objective->type != BINGO_OBJECTIVE_STAR_CLICK_GAME) {
                 continue;
             }
-            sprintf(number, "%d ", objective->data.starClicksObjective.maxClicks);
+            sprintf(number, "%dx", objective->data.starClicksObjective.maxClicks);
             print_text_tiny(
-                BINGO_MIN_X + spacing * j + 8 + 1 + 8,
+                BINGO_MIN_X + spacing * j + 14,
                 55 + spacing * (4 - i),
                 number
             );
