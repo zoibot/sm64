@@ -266,6 +266,8 @@ s32 are_duplicates(struct BingoObjective *obj1, struct BingoObjective *obj2) {
         if (
             (BINGO_OBJECTIVE_COLLECTABLE_MIN <= type1 && type1 <= BINGO_OBJECTIVE_COLLECTABLE_MAX)
             || type1 == BINGO_OBJECTIVE_LOSE_MARIO_HAT
+            || type1 == BINGO_OBJECTIVE_BOWSER
+            || type1 == BINGO_ICON_DANGEROUS_WALL_KICKS
         ) {
             return 1;
         }
