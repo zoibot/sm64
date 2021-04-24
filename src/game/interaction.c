@@ -1616,14 +1616,16 @@ u32 func_8024FC94(struct MarioState *m, u32 arg) {
 #endif
 
 u32 func_8024FD2C(struct MarioState *m, struct Object *o) {
+    s16 facingDYaw;
+    f32 targetX, targetZ;
     if ((m->input & READ_MASK) && func_8024FC94(m, 0) && object_facing_mario(m, o, SIGN_RANGE)) {
         s16 facingDYaw = (s16)(o->oMoveAngleYaw + 0x8000) - m->faceAngle[1];
-        if (o->oIsSignpost && is_new_kill(BINGO_UPDATE_READ_SIGNPOST, o->oBingoId)) {
-            bingo_update(BINGO_UPDATE_READ_SIGNPOST);
-        }
         if (facingDYaw >= -SIGN_RANGE && facingDYaw <= SIGN_RANGE) {
-            f32 targetX = o->oPosX + 105.0f * sins(o->oMoveAngleYaw);
-            f32 targetZ = o->oPosZ + 105.0f * coss(o->oMoveAngleYaw);
+            if (o->oIsSignpost && is_new_kill(BINGO_UPDATE_READ_SIGNPOST, o->oBingoId)) {
+                bingo_update(BINGO_UPDATE_READ_SIGNPOST);
+            }
+            targetX = o->oPosX + 105.0f * sins(o->oMoveAngleYaw);
+            targetZ = o->oPosZ + 105.0f * coss(o->oMoveAngleYaw);
 
             m->marioObj->oMarioReadingSignDYaw = facingDYaw;
             m->marioObj->oMarioReadingSignDPosX = targetX - m->pos[0];
