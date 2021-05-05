@@ -140,29 +140,39 @@ void render_bingo_modifier_star(void) {
     // Zero this out every time we render the star select screen
     gBingoStarSelected = BINGO_MODIFIER_NONE;
 
+    // TODO: Make this centered dynamically
+    // so I don't have to manually inspect it every
+    // time I add a bingo modifier
+    #define Y_POS 120
+    #define X_LEFT_POS -303
+    #define X_SPACE 150
+
     sBingoStarSelectorModels[0] = spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR,
-                                                       bhvActSelectorStarType, -450, -60, -300, 0, 0, 0);
+                                                       bhvActSelectorStarType, X_LEFT_POS, Y_POS, -300, 0, 0, 0);
 
     sBingoStarSelectorModels[BINGO_MODIFIER_GREEN_DEMON] =
         spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR_GREEN,
-                                  bhvActSelectorStarType, -450, -60, -300, 0, 0, 0);
+                                  bhvActSelectorStarType, X_LEFT_POS + X_SPACE * 1, Y_POS, -300, 0, 0, 0);
 
     sBingoStarSelectorModels[BINGO_MODIFIER_REVERSE_JOYSTICK] =
         spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR_BLUE,
-                                  bhvActSelectorStarTypeReversed, -450, -60, -300, 0, 0, 0);
+                                  bhvActSelectorStarTypeReversed, X_LEFT_POS + X_SPACE * 2, Y_POS, -300, 0, 0, 0);
 
     sBingoStarSelectorModels[BINGO_MODIFIER_CLICK_GAME] =
         spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR_GRAY,
-                                  bhvActSelectorStarType, -450, -60, -300, 0, 0, 0);
+                                  bhvActSelectorStarType, X_LEFT_POS + X_SPACE * 3, Y_POS, -300, 0, 0, 0);
 
     sBingoStarSelectorModels[BINGO_MODIFIER_DAREDEVIL] =
         spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR_RED,
-                                  bhvActSelectorStarType, -450, -60, -300, 0, 0, 0);
+                                  bhvActSelectorStarType, X_LEFT_POS + X_SPACE * 4, Y_POS, -300, 0, 0, 0);
+    #undef Y_POS
+    #undef X_LEFT_POS
+    #undef X_SPACE
 
     for (i = 0; i < BINGO_STARS_TOTAL_AMOUNT; i++) {
         sBingoStarSelectorModels[i]->oStarSelectorSize = 1.0;
         sBingoStarSelectorModels[i]->oStarSelectorType = STAR_SELECTOR_100_COINS;
-        obj_disable_rendering_func(sBingoStarSelectorModels[i]);
+        // obj_disable_rendering_func(sBingoStarSelectorModels[i]);
     }
     obj_enable_rendering_func(sBingoStarSelectorModels[0]);
 }
@@ -238,7 +248,7 @@ void bhv_act_selector_init(void) {
     for (i = 0; i < sVisibleStars; i++) {
         sStarSelectorModels[i] =
             spawn_object_abs_with_rot(gCurrentObject, 0, selectorModelIDs[i], bhvActSelectorStarType,
-                                      75 + sVisibleStars * -75 + i * 152, 248, -300, 0, 0, 0);
+                                      75 + sVisibleStars * -75 + i * 152, 340, -300, 0, 0, 0);
         sStarSelectorModels[i]->oStarSelectorSize = 1.0f;
     }
 
@@ -298,7 +308,7 @@ void bhv_act_selector_loop(void) {
         if (gPlayer1Controller->buttonDown & R_TRIG) {
             gBingoModifierScrollLockoutTimer = 5;
             play_sound(SOUND_MENU_CHANGE_SELECT, gDefaultSoundArgs);
-            obj_disable_rendering_func(sBingoStarSelectorModels[gBingoStarSelected]);
+            // obj_disable_rendering_func(sBingoStarSelectorModels[gBingoStarSelected]);
             if (gBingoStarSelected == BINGO_MODIFIER_MAX) {
                 gBingoStarSelected = BINGO_MODIFIER_NONE;
             } else {
@@ -310,13 +320,20 @@ void bhv_act_selector_loop(void) {
         } else if (gPlayer1Controller->buttonDown & Z_TRIG) {
             gBingoModifierScrollLockoutTimer = 5;
             play_sound(SOUND_MENU_CHANGE_SELECT, gDefaultSoundArgs);
-            obj_disable_rendering_func(sBingoStarSelectorModels[gBingoStarSelected]);
+            // obj_disable_rendering_func(sBingoStarSelectorModels[gBingoStarSelected]);
             if (gBingoStarSelected == 0) {
                 gBingoStarSelected = BINGO_MODIFIER_MAX;
             } else {
                 gBingoStarSelected -= 1;
             }
             obj_enable_rendering_func(sBingoStarSelectorModels[gBingoStarSelected]);
+        }
+    }
+    for (i = BINGO_MODIFIER_NONE; i < BINGO_STARS_TOTAL_AMOUNT; i++) {
+        if (i == gBingoStarSelected) {
+            sBingoStarSelectorModels[i]->oStarSelectorType = STAR_SELECTOR_SELECTED;
+        } else {
+            sBingoStarSelectorModels[i]->oStarSelectorType = STAR_SELECTOR_NOT_SELECTED;
         }
     }
 
@@ -344,7 +361,7 @@ void bhv_act_selector_loop(void) {
 static void print_course_number(void) {
     u8 courseNum[4];
 
-    create_dl_translation_matrix(MENU_MTX_PUSH, 158.0f, 81.0f, 0.0f);
+    create_dl_translation_matrix(MENU_MTX_PUSH, 158.0f, 63.0f, 0.0f);
 
     gSPDisplayList(gDisplayListHead++, dl_menu_rgba16_wood_course);
     gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
@@ -353,11 +370,13 @@ static void print_course_number(void) {
 
     int_to_str(gCurrCourseNum, courseNum);
 
+    #define Y_POS 174
     if (gCurrCourseNum < 10) { // 1 digit number
-        print_hud_lut_string(HUD_LUT_GLOBAL, 152, 158, courseNum);
+        print_hud_lut_string(HUD_LUT_GLOBAL, 152, Y_POS, courseNum);
     } else { // 2 digit number
-        print_hud_lut_string(HUD_LUT_GLOBAL, 143, 158, courseNum);
+        print_hud_lut_string(HUD_LUT_GLOBAL, 143, Y_POS, courseNum);
     }
+    #undef Y_POS
 
     gSPDisplayList(gDisplayListHead++, dl_rgba16_text_end);
 }
@@ -410,7 +429,7 @@ static void print_act_selector_strings(void) {
     // }
     // Print the level name; add 3 to skip the number and spacing to get to the actual string to center.
     lvlNameX = get_str_x_pos_from_center(160, currLevelName + 3, 10.0f);
-    print_generic_string(lvlNameX, 33, currLevelName + 3);
+    print_generic_string(lvlNameX, 10, currLevelName + 3);
     gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
 
     print_course_number();
@@ -426,17 +445,15 @@ static void print_act_selector_strings(void) {
             sVisibleStars = 1;
         }
         actNameX = get_str_x_pos_from_center(ACT_NAME_X, selectedActName, 8.0f);
-        print_menu_generic_string(actNameX, 81, selectedActName);
+        print_menu_generic_string(actNameX, 63, selectedActName);
     }
 
     // Print the numbers above each star.
     for (i = 1; i <= sVisibleStars; i++) {
         starNumbers[0] = i;
-        print_menu_generic_string(i * 34 - sVisibleStars * 17 + 139, 38, starNumbers);
+        print_menu_generic_string(i * 34 - sVisibleStars * 17 + 139, 15, starNumbers);
     }
 
-    print_menu_generic_string(
-        get_str_x_pos_from_center(62, bingoModifierText, 10.0f), 150, bingoModifierText);
 
     switch (gBingoStarSelected) {
         case BINGO_MODIFIER_NONE:
@@ -457,7 +474,9 @@ static void print_act_selector_strings(void) {
     }
 
     print_menu_generic_string(
-        get_str_x_pos_from_center(62, bingoModifierName, 10.0f), 165, bingoModifierName);
+        get_str_x_pos_from_center(159, bingoModifierText, 10.0f), 115, bingoModifierText);
+    print_menu_generic_string(
+        get_str_x_pos_from_center(159, bingoModifierName, 10.0f), 128, bingoModifierName);
 
     gSPDisplayList(gDisplayListHead++, dl_menu_ia8_text_end);
 #endif // !VERSION_EU
