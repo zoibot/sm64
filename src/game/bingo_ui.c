@@ -216,7 +216,7 @@ void draw_bingo_screen() {
     // Seed and time.
     sprintf(seed_print, "SEED %09d", gBingoInitialSeed);
     print_text_tiny(240, 214, seed_print);
-    print_text_tiny(240, 205, "VERSION 0.9b");
+    print_text_tiny(240, 205, "VERSION 0.10a");
     getTimeFmtPreciseTiny(timestamp, gbGlobalBingoTimer);
     sprintf(time_print, "TIME %s", timestamp);
     print_text_tiny(240, 196, time_print);
