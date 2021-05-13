@@ -971,7 +971,9 @@ static void print_objective(enum BingoObjectiveType type, s32 pageNo) {
         optionLeftX = RIGHT_X;
         onOrOffLeftX = RIGHT_X + (RIGHT_X - LEFT_X) - 19;
         offsetY = ROW_HEIGHT * (
-            BINGO_OPTIONS_TOTAL_ENTRIES_PER_PAGE - (type % BINGO_OPTIONS_IN_FIRST_PAGE) - BINGO_CONFIGS_IN_LEFT_COL
+            BINGO_OPTIONS_TOTAL_ENTRIES_PER_PAGE
+            - (type % BINGO_OPTIONS_IN_FIRST_PAGE)
+            - (pageNo == 0 ? BINGO_CONFIGS_IN_LEFT_COL : 0)
         ) - 2;
     }
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, whiteTextAlpha);
