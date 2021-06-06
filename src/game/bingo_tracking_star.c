@@ -43,7 +43,7 @@ s32 bingo_get_star_count(void) {
     s32 count = 0;
 
     // Get standard course star count.
-    for (course = COURSE_MIN - 1; course < COURSE_MAX - 1; course++) {
+    for (course = COURSE_MIN - 1; course < COURSE_MAX; course++) {
         count += bingo_get_course_count(course);
     }
 
