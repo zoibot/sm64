@@ -188,6 +188,7 @@
 #define TEXT_KILL_BOBOMBS _("Kill Bob-ombs")
 #define TEXT_KILL_SPINDRIFTS _("Kill Spindrifts")
 #define TEXT_KILL_MR_IS _("Kill Mr. Is")
+#define TEXT_KILL_SCUTTLEBUGS _("Kill Scuttlebugs")
 
 #define TEXT_DPAD _("Use C or D-Pad to select")
 #define TEXT_PRESS_A _("Press A to toggle")
