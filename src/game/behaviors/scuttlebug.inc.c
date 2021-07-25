@@ -27,7 +27,7 @@ void bhv_scuttlebug_loop(void) {
     UNUSED s32 unused;
     f32 sp18;
     obj_update_floor_and_walls();
-    if (o->oSubAction != 1
+    if (o->oSubAction != 0 && o->oSubAction != 1
         && obj_set_hitbox_and_die_if_attacked_bingo(&sScuttlebugHitbox, SOUND_OBJ_DYING_ENEMY1,
                                               o->oScuttlebugUnkF4, BINGO_UPDATE_KILLED_SCUTTLEBUG))
         o->oSubAction = 4;
@@ -36,7 +36,7 @@ void bhv_scuttlebug_loop(void) {
     switch (o->oSubAction) {
         case 0:
             o->oBingoId = get_unique_id(BINGO_UPDATE_KILLED_SCUTTLEBUG, o->oPosX, o->oPosY, o->oPosZ);
-            o->oAction = 1;
+            o->oSubAction = 1;
             break;
         case 1:
             if (o->oMoveFlags & 1)
