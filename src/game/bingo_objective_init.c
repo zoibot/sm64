@@ -706,7 +706,7 @@ s32 bingo_objective_kill_mr_is_init(enum BingoObjectiveClass class) {
 s32 bingo_objective_kill_scuttlebugs_init(enum BingoObjectiveClass class) {
     switch (class) {
         default:
-            return random_range_inclusive(3, 9);
+            return random_range_inclusive(4, 9);
     }
 }
 
