@@ -37,7 +37,7 @@ void bhv_scuttlebug_loop(void) {
         case 0:
             o->oBingoId = get_unique_id(BINGO_UPDATE_KILLED_SCUTTLEBUG, o->oPosX, o->oPosY, o->oPosZ);
             o->oSubAction = 1;
-            break;
+            // Fall immediately into original step 0 (no 'break')
         case 1:
             if (o->oMoveFlags & 1)
                 PlaySound2(SOUND_OBJ_GOOMBA_ALERT);
