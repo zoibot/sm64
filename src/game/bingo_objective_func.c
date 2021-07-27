@@ -343,5 +343,7 @@ s32 update_objective(struct BingoObjective *objective, enum BingoObjectiveUpdate
             return objective_generic_collectable(objective, update, BINGO_UPDATE_KILLED_SPINDRIFT);
         case BINGO_OBJECTIVE_KILL_MR_IS:
             return objective_generic_collectable(objective, update, BINGO_UPDATE_KILLED_MR_I);
+        case BINGO_OBJECTIVE_KILL_SCUTTLEBUGS:
+            return objective_generic_collectable(objective, update, BINGO_UPDATE_KILLED_SCUTTLEBUG);
     }
 }

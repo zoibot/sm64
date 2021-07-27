@@ -27,14 +27,18 @@ void bhv_scuttlebug_loop(void) {
     UNUSED s32 unused;
     f32 sp18;
     obj_update_floor_and_walls();
-    if (o->oSubAction != 0
-        && obj_set_hitbox_and_die_if_attacked(&sScuttlebugHitbox, SOUND_OBJ_DYING_ENEMY1,
-                                              o->oScuttlebugUnkF4))
-        o->oSubAction = 3;
-    if (o->oSubAction != 1)
+    if (o->oSubAction != 0 && o->oSubAction != 1
+        && obj_set_hitbox_and_die_if_attacked_bingo(&sScuttlebugHitbox, SOUND_OBJ_DYING_ENEMY1,
+                                              o->oScuttlebugUnkF4, BINGO_UPDATE_KILLED_SCUTTLEBUG))
+        o->oSubAction = 4;
+    if (o->oSubAction != 2)
         o->oScuttlebugUnkF8 = 0;
     switch (o->oSubAction) {
         case 0:
+            o->oBingoId = get_unique_id(BINGO_UPDATE_KILLED_SCUTTLEBUG, o->oPosX, o->oPosY, o->oPosZ);
+            o->oSubAction = 1;
+            // Fall immediately into original step 0 (no 'break')
+        case 1:
             if (o->oMoveFlags & 1)
                 PlaySound2(SOUND_OBJ_GOOMBA_ALERT);
             if (o->oMoveFlags & 3) {
@@ -44,7 +48,7 @@ void bhv_scuttlebug_loop(void) {
                 o->oSubAction++;
             }
             break;
-        case 1:
+        case 2:
             o->oForwardVel = 5.0f;
             if (obj_lateral_dist_from_mario_to_home() > 1000.0f)
                 o->oAngleToMario = obj_angle_to_home();
@@ -65,25 +69,25 @@ void bhv_scuttlebug_loop(void) {
                 }
             }
             if (func_802C5A64(&o->oAngleToMario))
-                o->oSubAction = 2;
+                o->oSubAction = 3;
             obj_rotate_yaw_toward(o->oAngleToMario, 0x200);
             break;
-        case 2:
+        case 3:
             o->oForwardVel = 5.0f;
             if ((s16) o->oMoveAngleYaw == (s16) o->oAngleToMario)
-                o->oSubAction = 1;
+                o->oSubAction = 2;
             if (o->oPosY - o->oHomeY < -200.0f)
                 mark_object_for_deletion(o);
             obj_rotate_yaw_toward(o->oAngleToMario, 0x400);
             break;
-        case 3:
+        case 4:
             o->oFlags &= ~8;
             o->oForwardVel = -10.0f;
             o->oVelY = 30.0f;
             PlaySound2(SOUND_OBJ2_SCUTTLEBUG_ALERT);
             o->oSubAction++;
             break;
-        case 4:
+        case 5:
             o->oForwardVel = -10.0f;
             if (o->oMoveFlags & 1) {
                 o->oSubAction++;
@@ -93,11 +97,11 @@ void bhv_scuttlebug_loop(void) {
                 o->oInteractStatus = 0;
             }
             break;
-        case 5:
+        case 6:
             o->oForwardVel = 2.0f;
             o->oScuttlebugUnkFC++;
             if (o->oScuttlebugUnkFC > 30)
-                o->oSubAction = 0;
+                o->oSubAction = 1;
             break;
     }
     if (o->oForwardVel < 10.0f)
