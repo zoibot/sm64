@@ -846,6 +846,7 @@ static unsigned char textPressRL_3[] = { TEXT_PRESS_RL_3 };
 
 static unsigned char textBingo64[] = { TEXT_BINGO64 };
 static unsigned char textCreatedBy[] = { TEXT_CREATED_BY };
+static unsigned char textContributionsFrom[] = { TEXT_CONTRIBUTIONS };
 static unsigned char textSpecialThanks[] = { TEXT_SPECIAL_THANKS };
 static unsigned char textSpecialThanks1[] = { TEXT_SPECIAL_THANKS_1 };
 static unsigned char textSpecialThanks2[] = { TEXT_SPECIAL_THANKS_2 };
@@ -1164,6 +1165,10 @@ static void print_bingo_page_2(void) {
             case 1:
                 creditString = textCreatedBy;
                 creditsLeftX = optionLeftX;
+                break;
+            case 2:
+                creditString = textContributionsFrom;
+                creditsLeftX = optionLeftX - 20;
                 break;
             case 3:
                 creditString = textSpecialThanks;

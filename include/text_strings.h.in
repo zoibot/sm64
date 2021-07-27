@@ -199,6 +199,7 @@
 // Bingo Credits
 #define TEXT_BINGO64 _("Bingo64 (v0.10a)")
 #define TEXT_CREATED_BY _("by Quate and genteelman")
+#define TEXT_CONTRIBUTIONS _("with contributions from zcoop98")
 #define TEXT_SPECIAL_THANKS _("Special Thanks")
 #define TEXT_SPECIAL_THANKS_1 _("AloXado320")
 #define TEXT_SPECIAL_THANKS_2 _("GTM")
