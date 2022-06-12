@@ -562,6 +562,20 @@ void get_dangerous_wall_kicks_objective_desc(struct BingoObjective *obj, char *d
     );
 }
 
+void get_roof_without_cannon_objective_desc(struct BingoObjective *obj, char *desc) {
+    char hintOrCompleteSuffix[25];
+    if (obj->state == BINGO_STATE_COMPLETE) {
+        sprintf(hintOrCompleteSuffix, ": Complete!");
+    } else if (obj->state == BINGO_STATE_FAILED_IN_THIS_COURSE) {
+        sprintf(hintOrCompleteSuffix, ": Failed!");
+    }
+    sprintf(
+        desc,
+        "Reach the top of the castle roof without using the cannon%s",
+        hintOrCompleteSuffix
+    );
+}
+
 
 void describe_objective(struct BingoObjective *objective, char *desc) {
     switch (objective->type) {
@@ -616,6 +630,9 @@ void describe_objective(struct BingoObjective *objective, char *desc) {
             break;
         case BINGO_OBJECTIVE_DANGEROUS_WALL_KICKS:
             get_dangerous_wall_kicks_objective_desc(objective, desc);
+            break;
+        case BINGO_OBJECTIVE_ROOF_WITHOUT_CANNON:
+            get_roof_without_cannon_objective_desc(objective, desc);
             break;
     }
 }

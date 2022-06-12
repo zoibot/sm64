@@ -228,6 +228,22 @@ s32 objective_bowser(struct BingoObjective *objective, enum BingoObjectiveUpdate
     }
 }
 
+s32 objective_roof_without_cannon(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
+    if (update == BINGO_UPDATE_COURSE_CHANGED) {
+        objective->state = BINGO_STATE_NONE;
+    } else if (
+        update == BINGO_UPDATE_SHOT_FROM_CANNON
+        && gCurrLevelNum == LEVEL_CASTLE_GROUNDS
+    ) {
+        set_objective_state(objective, BINGO_STATE_FAILED_IN_THIS_COURSE);
+    } else if (
+        objective->state != BINGO_STATE_FAILED_IN_THIS_COURSE
+        && update == BINGO_UPDATE_ON_CASTLE_ROOF
+    ) {
+        set_objective_state(objective, BINGO_STATE_COMPLETE);
+    }
+}
+
 s32 objective_generic_collectable(
     struct BingoObjective *objective,
     enum BingoObjectiveUpdate update,
@@ -319,6 +335,8 @@ s32 update_objective(struct BingoObjective *objective, enum BingoObjectiveUpdate
             return objective_blj(objective, update);
         case BINGO_OBJECTIVE_BOWSER:
             return objective_bowser(objective, update);
+        case BINGO_OBJECTIVE_ROOF_WITHOUT_CANNON:
+            return objective_roof_without_cannon(objective, update);
         case BINGO_OBJECTIVE_SIGNPOST:
             return objective_generic_collectable(objective, update, BINGO_UPDATE_READ_SIGNPOST);
         case BINGO_OBJECTIVE_POLES:

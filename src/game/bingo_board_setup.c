@@ -57,6 +57,7 @@ struct ObjectiveWeight sWeightsMedium[] = {
     { BINGO_OBJECTIVE_DANGEROUS_WALL_KICKS, 12, 1 },
     { BINGO_OBJECTIVE_MULTISTAR, 6, NO_LIMIT },
     { BINGO_OBJECTIVE_BOWSER, 4, 1 },
+    { BINGO_OBJECTIVE_ROOF_WITHOUT_CANNON, 2, 1 },
 };
 s32 sWeightsSizeMedium = sizeof(sWeightsMedium) / sizeof(struct ObjectiveWeight);
 
@@ -268,7 +269,8 @@ s32 are_duplicates(struct BingoObjective *obj1, struct BingoObjective *obj2) {
             (BINGO_OBJECTIVE_COLLECTABLE_MIN <= type1 && type1 <= BINGO_OBJECTIVE_COLLECTABLE_MAX)
             || type1 == BINGO_OBJECTIVE_LOSE_MARIO_HAT
             || type1 == BINGO_OBJECTIVE_BOWSER
-            || type1 == BINGO_ICON_DANGEROUS_WALL_KICKS
+            || type1 == BINGO_OBJECTIVE_DANGEROUS_WALL_KICKS
+            || type1 == BINGO_OBJECTIVE_ROOF_WITHOUT_CANNON
         ) {
             return 1;
         }

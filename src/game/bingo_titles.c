@@ -85,7 +85,7 @@ void get_bowser_objective_title(struct BingoObjective *objective) {
     sprintf(objective->title, "%s", abbrev);
 }
 
-void get_lose_mario_hat_objective_title(struct BingoObjective *objective) {
+void get_roof_without_cannon_objective_title(struct BingoObjective *objective) {
     sprintf(objective->title, "x1");
 }
 
@@ -149,6 +149,9 @@ void get_objective_title(struct BingoObjective *objective) {
             break;
         case BINGO_OBJECTIVE_DANGEROUS_WALL_KICKS:
             get_dangerous_wallkicks_title(objective);
+            break;
+        case BINGO_OBJECTIVE_ROOF_WITHOUT_CANNON:
+            get_roof_without_cannon_objective_title(objective);
             break;
     }
 }

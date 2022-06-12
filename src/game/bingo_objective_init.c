@@ -571,6 +571,12 @@ s32 bingo_objective_bowser_init(
     objective->data.levelData.level = level;
 }
 
+s32 bingo_objective_roof_without_cannon_init(
+    struct BingoObjective *objective, enum BingoObjectiveClass class
+) {
+    return;
+}
+
 s32 bingo_objective_lose_mario_hat_init(enum BingoObjectiveClass class) {
     switch (class) {
         default:
@@ -795,6 +801,8 @@ s32 bingo_objective_init_dispatch(
             return bingo_objective_dangerous_wall_kicks_init(objective, class);
         case BINGO_OBJECTIVE_BOWSER:
             return bingo_objective_bowser_init(objective, class);
+        case BINGO_OBJECTIVE_ROOF_WITHOUT_CANNON:
+            return bingo_objective_roof_without_cannon_init(objective, class);
     }
     if (BINGO_OBJECTIVE_COLLECTABLE_MIN <= type && type <= BINGO_OBJECTIVE_COLLECTABLE_MAX) {
         collectables = bingo_objective_collectable_init_dispatch(class, type);

@@ -1,4 +1,5 @@
 // cannon.c.inc
+#include "../bingo.h"
 
 void bhv_cannon_base_unused_loop(void) {
     o->oPosY += o->oVelY;
@@ -91,6 +92,7 @@ void ActionOpenedCannon1(void) {
     obj_disable_rendering();
     o->oCannonUnk10C = 0;
     gMarioShotFromCannon = 1;
+    bingo_update(BINGO_UPDATE_SHOT_FROM_CANNON);
 }
 
 void ActionOpenedCannon2(void) {

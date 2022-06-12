@@ -1275,6 +1275,10 @@ void debug_print_speed_action_normal(struct MarioState *m) {
 
         // STA short for "status," the official action name via SMS map.
         print_text_fmt_int(210, 56, "STA %x", (m->action & ACT_ID_MASK));
+
+        print_text_fmt_int(210, 104, "PSX %d", m->pos[0]);
+        print_text_fmt_int(210, 120, "PSX %d", m->pos[1]);
+        print_text_fmt_int(210, 136, "PSZ %d", m->pos[2]);
     }
 }
 
@@ -1701,6 +1705,13 @@ static void debug_update_mario_cap(u16 button, s32 flags, u16 capTimer, u16 capM
     }
 }
 
+void bingo_check_on_castle_roof(struct MarioState *m) {
+    // Precondition: Mario is not airborne in this function.
+    if (gCurrLevelNum == LEVEL_CASTLE_GROUNDS && m->pos[1] > 2338.0f) {
+        bingo_update(BINGO_UPDATE_ON_CASTLE_ROOF);
+    }
+}
+
 /**
 * Main function for executing Mario's behavior.
 */
@@ -1725,6 +1736,7 @@ s32 execute_mario_action(UNUSED struct Object *o) {
         while (inLoop) {
             if ((gMarioState->action & ACT_GROUP_MASK) != ACT_GROUP_AIRBORNE) {
                 bingo_update(BINGO_UPDATE_DANGEROUS_WALL_KICK_FAILED);
+                bingo_check_on_castle_roof(gMarioState);
             }
             switch (gMarioState->action & ACT_GROUP_MASK) {
                 case ACT_GROUP_STATIONARY:
