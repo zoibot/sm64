@@ -467,16 +467,20 @@ $(GLOBAL_ASM_DEP).$(NON_MATCHING):
 	@rm -f $(GLOBAL_ASM_DEP).*
 	touch $@
 
-$(BUILD_DIR)/%.o: %.c
+CUSTOM_TEXTURES := \
+    $(addprefix $(BUILD_DIR)/,$(foreach file,$(wildcard textures/segment2/custom/*.rgba16.png),$(file:.png=.inc.c))) \
+    $(addprefix $(BUILD_DIR)/,$(foreach file,$(wildcard textures/segment2/*.rgba16.png),$(file:.png=.inc.c)))
+
+$(BUILD_DIR)/%.o: %.c $(CUSTOM_TEXTURES)
 	@$(CC_CHECK) -MMD -MP -MT $@ -MF $(BUILD_DIR)/$*.d $<
 	$(CC) -c $(CFLAGS) -o $@ $<
 
 
-$(BUILD_DIR)/%.o: $(BUILD_DIR)/%.c
+$(BUILD_DIR)/%.o: $(BUILD_DIR)/%.c $(CUSTOM_TEXTURES)
 	@$(CC_CHECK) -MMD -MP -MT $@ -MF $(BUILD_DIR)/$*.d $<
 	$(CC) -c $(CFLAGS) -o $@ $<
 
-$(BUILD_DIR)/%.o: %.s
+$(BUILD_DIR)/%.o: %.s $(CUSTOM_TEXTURES)
 	$(AS) $(ASFLAGS) -MD $(BUILD_DIR)/$*.d -o $@ $<
 
 $(BUILD_DIR)/$(LD_SCRIPT): $(LD_SCRIPT)
