@@ -183,6 +183,7 @@
 #define TEXT_METAL_BOXES _("Metal Cap Boxes")
 #define TEXT_SIGNPOSTS _("Read Signposts")
 #define TEXT_POLES _("Grab Poles")
+#define TEXT_CANNONS _("Shoot Cannons")
 #define TEXT_RED_COINS _("Collect Red Coins")
 #define TEXT_AMPS _("Touch Amps")
 #define TEXT_KILL_GOOMBAS _("Kill Goombas")

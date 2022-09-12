@@ -47,6 +47,8 @@ struct UID {
 // There are 32 regular poles, 1 giant pole in WF,
 // 9 poles in DDD, 4 moving ones in BitFS.
 #define MAX_POLES 50
+// There are 17
+#define MAX_CANNONS 20
 
 #define TOTAL_UIDS ( \
         MAX_GOOMBAS \
@@ -64,6 +66,7 @@ struct UID {
         + MAX_COURSES_BLJ \
         + MAX_AMPS \
         + MAX_POLES \
+        + MAX_CANNONS \
     ) + 2
 
 // I really hope nothing is actually at (0, 0, 0)....
@@ -122,6 +125,9 @@ void get_index_range(enum BingoObjectiveUpdate update, s32 *start, s32 *length) 
                 break;
             case BINGO_UPDATE_GRABBED_POLE:
                 rangeLength = MAX_POLES;
+                break;
+            case BINGO_UPDATE_CANNON_COLLECTABLE:
+                rangeLength = MAX_CANNONS;
                 break;
         }
         *start += prevRangeLength;

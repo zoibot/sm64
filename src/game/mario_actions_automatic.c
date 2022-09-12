@@ -2,6 +2,9 @@
 
 #include "sm64.h"
 #include "behavior_data.h"
+#include "bingo.h"
+#include "bingo_tracking_collectables.h"
+#include "object_helpers.h"
 #include "mario_actions_automatic.h"
 #include "audio/external.h"
 #include "area.h"
@@ -660,6 +663,7 @@ s32 act_grabbed(struct MarioState *m) {
 
 s32 act_in_cannon(struct MarioState *m) {
     struct Object *marioObj = m->marioObj;
+    struct Object *cannon = NULL;
     s16 startFacePitch = m->faceAngle[0];
     s16 startFaceYaw = m->faceAngle[1];
 
@@ -726,6 +730,14 @@ s32 act_in_cannon(struct MarioState *m) {
                 play_sound(SOUND_OBJ_POUNDING_CANNON, m->marioObj->header.gfx.cameraToObject);
 
                 m->marioObj->header.gfx.node.flags |= 0x0001;
+
+                cannon = obj_nearest_object_with_behavior(bhvCannon);
+                if (cannon) {
+                    bingo_update(BINGO_UPDATE_SHOT_FROM_CANNON);
+                    if (is_new_kill(BINGO_UPDATE_CANNON_COLLECTABLE, cannon->oBingoId)) {
+                        bingo_update(BINGO_UPDATE_CANNON_COLLECTABLE);
+                    }
+                }
 
                 set_mario_action(m, ACT_SHOT_FROM_CANNON, 0);
                 m->usedObj->oAction = 2;

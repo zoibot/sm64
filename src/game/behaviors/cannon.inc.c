@@ -11,6 +11,7 @@ void ActionOpenedCannon0(void) {
         o->oPosX = o->oHomeX;
         o->oPosY = o->oHomeY;
         o->oPosZ = o->oHomeZ;
+        o->oBingoId = get_unique_id(BINGO_UPDATE_CANNON_COLLECTABLE, o->oPosX, o->oPosY, o->oPosZ);
         o->oMoveAnglePitch = 0;
         o->oMoveAngleYaw = (s16)(o->oBehParams2ndByte << 8);
         o->oCannonUnkF4 = 0;
@@ -92,7 +93,6 @@ void ActionOpenedCannon1(void) {
     obj_disable_rendering();
     o->oCannonUnk10C = 0;
     gMarioShotFromCannon = 1;
-    bingo_update(BINGO_UPDATE_SHOT_FROM_CANNON);
 }
 
 void ActionOpenedCannon2(void) {

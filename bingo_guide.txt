@@ -17,3 +17,5 @@
 
 12. If your objective is to collect/kill unique instances of items/enemies:
    12.1. bingo_tracking_collectables.c: Add a new MAX_ amount and modify get_index_range().
+   12.2. Call `o->oBingoId = get_unique_id(BINGO_UPDATE_XXX, o->oPosX, o->oPosY, o->oPosZ)` in the object's init function
+   12.3. Check `if (is_new_kill(BINGO_UPDATE_KILLED_GOOMBA, o->oBingoId)) {` before the bingo_update() call
