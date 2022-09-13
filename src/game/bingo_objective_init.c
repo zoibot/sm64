@@ -549,6 +549,13 @@ s32 bingo_objective_dangerous_wall_kicks_init(
     objective->data.multiCourseCollectableData.gottenThisCourse = 0;
 }
 
+s32 bingo_objective_racing_init(
+    struct BingoObjective *objective, enum BingoObjectiveClass class
+) {
+    objective->data.collectableData.toGet = 3;
+    objective->data.collectableData.gotten = 0;
+}
+
 s32 bingo_objective_bowser_init(
     struct BingoObjective *objective, enum BingoObjectiveClass class
 ) {
@@ -810,6 +817,8 @@ s32 bingo_objective_init_dispatch(
             return bingo_objective_stars_in_level_init(objective, class);
         case BINGO_OBJECTIVE_DANGEROUS_WALL_KICKS:
             return bingo_objective_dangerous_wall_kicks_init(objective, class);
+        case BINGO_OBJECTIVE_RACING_STARS:
+            return bingo_objective_racing_init(objective, class);
         case BINGO_OBJECTIVE_BOWSER:
             return bingo_objective_bowser_init(objective, class);
         case BINGO_OBJECTIVE_ROOF_WITHOUT_CANNON:

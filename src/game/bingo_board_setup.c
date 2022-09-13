@@ -27,6 +27,7 @@ struct ObjectiveWeight sWeightsEasy[] = {
     { BINGO_OBJECTIVE_STAR, 12, 3 },
     { BINGO_OBJECTIVE_LOSE_MARIO_HAT, 12, 1 },
     { BINGO_OBJECTIVE_BLJ, 12, 1 },
+    { BINGO_OBJECTIVE_RACING_STARS, 12, 1 },
     { BINGO_OBJECTIVE_MULTISTAR, 6, 1 },
 };
 s32 sWeightsSizeEasy = sizeof(sWeightsEasy) / sizeof(struct ObjectiveWeight);
@@ -52,6 +53,7 @@ struct ObjectiveWeight sWeightsMedium[] = {
     { BINGO_OBJECTIVE_SHOOT_CANNONS, 12, 2 },
     { BINGO_OBJECTIVE_RED_COIN, 12, 2 },
     { BINGO_OBJECTIVE_EXCLAMATION_MARK_BOX, 8, 2 },
+    { BINGO_OBJECTIVE_RACING_STARS, 4, 1 },
     { BINGO_OBJECTIVE_WING_CAP_BOX, 4, 2 },
     { BINGO_OBJECTIVE_VANISH_CAP_BOX, 4, 2 },
     { BINGO_OBJECTIVE_METAL_CAP_BOX, 4, 2 },
@@ -274,6 +276,7 @@ s32 are_duplicates(struct BingoObjective *obj1, struct BingoObjective *obj2) {
             || type1 == BINGO_OBJECTIVE_BOWSER
             || type1 == BINGO_OBJECTIVE_DANGEROUS_WALL_KICKS
             || type1 == BINGO_OBJECTIVE_ROOF_WITHOUT_CANNON
+            || type1 == BINGO_OBJECTIVE_RACING_STARS
         ) {
             return 1;
         }

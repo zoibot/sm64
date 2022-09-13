@@ -401,6 +401,16 @@ void get_lose_hat_objective_desc(struct BingoObjective *obj, char *desc) {
     sprintf(desc, "Lose Mario's hat%s", suffix);
 }
 
+void get_racing_objective_desc(struct BingoObjective *obj, char *desc) {
+    char suffix[20];
+    if (obj->state == BINGO_STATE_COMPLETE) {
+        strcpy(suffix, ": Complete!");
+    } else {
+        sprintf(suffix, ". Remaining: %d", 3 - obj->data.collectableData.gotten);
+    }
+    sprintf(desc, "Collect all three racing stars (defeat the Big Penguin once and Koopa the Quick twice)%s", suffix);
+}
+
 void get_bowser_objective_desc(struct BingoObjective *obj, char *desc) {
     char revEncLevelName[60];
     char suffix[20];
@@ -616,6 +626,9 @@ void describe_objective(struct BingoObjective *objective, char *desc) {
             break;
         case BINGO_OBJECTIVE_BOWSER:
             get_bowser_objective_desc(objective, desc);
+            break;
+        case BINGO_OBJECTIVE_RACING_STARS:
+            get_racing_objective_desc(objective, desc);
             break;
         case BINGO_OBJECTIVE_LOSE_MARIO_HAT:
         case BINGO_OBJECTIVE_BLJ:
