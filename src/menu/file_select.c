@@ -936,6 +936,8 @@ static void print_objective(enum BingoObjectiveType type, s32 pageNo) {
     s32 onOrOffLeftX;
     s32 offsetY;
     s32 leftColAmount;
+    s32 page_index;
+    s32 objectives_on_prior_pages;
     s32 whiteTextAlpha = MIN(sTextBaseAlpha, 200);
 
     if (
@@ -956,24 +958,33 @@ static void print_objective(enum BingoObjectiveType type, s32 pageNo) {
 
     option = get_objective_info(type)->optionText;
     obj_icon = get_objective_info(type)->icon;
+    if (pageNo == 0) {
+        objectives_on_prior_pages = 0;
+    } else {
+        objectives_on_prior_pages = (
+            BINGO_OPTIONS_IN_FIRST_PAGE
+            + BINGO_OPTIONS_IN_SECONDARY_PAGES * (pageNo - 1)
+        );
+    }
+    page_index = type - objectives_on_prior_pages;
 
     if (pageNo == 0) {
         leftColAmount = BINGO_OPTIONS_IN_LEFT_COL_FIRST_PAGE;
     } else {
         leftColAmount = BINGO_ENTRIES_PER_COL;
     }
-    if ((type % BINGO_OPTIONS_IN_FIRST_PAGE) < leftColAmount) {
+    if (page_index < leftColAmount) {
         optionLeftX = LEFT_X + 1;
         onOrOffLeftX = RIGHT_X - 19;
         offsetY = ROW_HEIGHT * (
-            leftColAmount - (type % BINGO_OPTIONS_IN_FIRST_PAGE)
+            leftColAmount - page_index
         ) - 2;
     } else {
         optionLeftX = RIGHT_X;
         onOrOffLeftX = RIGHT_X + (RIGHT_X - LEFT_X) - 19;
         offsetY = ROW_HEIGHT * (
             BINGO_OPTIONS_TOTAL_ENTRIES_PER_PAGE
-            - (type % BINGO_OPTIONS_IN_FIRST_PAGE)
+            - page_index
             - (pageNo == 0 ? BINGO_CONFIGS_IN_LEFT_COL : 0)
         ) - 2;
     }
