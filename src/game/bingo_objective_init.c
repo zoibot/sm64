@@ -556,6 +556,13 @@ s32 bingo_objective_racing_init(
     objective->data.collectableData.gotten = 0;
 }
 
+s32 bingo_objective_secrets_init(
+    struct BingoObjective *objective, enum BingoObjectiveClass class
+) {
+    objective->data.collectableData.toGet = 4;
+    objective->data.collectableData.gotten = 0;
+}
+
 s32 bingo_objective_bowser_init(
     struct BingoObjective *objective, enum BingoObjectiveClass class
 ) {
@@ -834,6 +841,8 @@ s32 bingo_objective_init_dispatch(
             return bingo_objective_dangerous_wall_kicks_init(objective, class);
         case BINGO_OBJECTIVE_RACING_STARS:
             return bingo_objective_racing_init(objective, class);
+        case BINGO_OBJECTIVE_SECRETS_STARS:
+            return bingo_objective_secrets_init(objective, class);
         case BINGO_OBJECTIVE_BOWSER:
             return bingo_objective_bowser_init(objective, class);
         case BINGO_OBJECTIVE_ROOF_WITHOUT_CANNON:

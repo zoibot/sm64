@@ -202,6 +202,36 @@ s32 objective_racing_stars(struct BingoObjective *objective, enum BingoObjective
     }
 }
 
+s32 objective_secrets_stars(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
+    s32 count = 0;
+    s32 old_count = 0;
+    if (update == BINGO_UPDATE_STAR) {
+        if (bingo_get_course_flags(COURSE_BOB - 1) & (1 << (5 - 1))) {
+            // Mario Wings to the Sky
+            count++;
+        }
+        if (bingo_get_course_flags(COURSE_SSL - 1) & (1 << (6 - 1))) {
+            // Pyramid Puzzle
+            count++;
+        }
+        if (bingo_get_course_flags(COURSE_WDW - 1) & (1 << (3 - 1))) {
+            // Secrets In the Shallows & Sky
+            count++;
+        }
+        if (bingo_get_course_flags(COURSE_THI - 1) & (1 << (4 - 1))) {
+            // Five Itty Bitty Secrets
+            count++;
+        }
+        old_count = objective->data.collectableData.gotten;
+        objective->data.collectableData.gotten = count;
+        if (count == 4) {
+            set_objective_state(objective, BINGO_STATE_COMPLETE);
+        } else if (count > old_count) {
+            bingo_hud_update_number(objective->icon, count);
+        }
+    }
+}
+
 s32 objective_stars_multiple_levels(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
     s32 count = 0;
     s32 old_count = 0;
@@ -378,6 +408,8 @@ s32 update_objective(struct BingoObjective *objective, enum BingoObjectiveUpdate
             return objective_blj(objective, update);
         case BINGO_OBJECTIVE_RACING_STARS:
             return objective_racing_stars(objective, update);
+        case BINGO_OBJECTIVE_SECRETS_STARS:
+            return objective_secrets_stars(objective, update);
         case BINGO_OBJECTIVE_STARS_MULTIPLE_LEVELS:
             return objective_stars_multiple_levels(objective, update);
         case BINGO_OBJECTIVE_BOWSER:
