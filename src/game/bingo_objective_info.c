@@ -44,6 +44,10 @@ ALIGNED8 static const u8 seg2_texture_allstarslevel[] = {
 #include "textures/segment2/custom/segment2.allstarslevel.rgba16.inc.c"
 };
 
+ALIGNED8 static const u8 seg2_texture_lightning[] = {
+#include "textures/segment2/custom/segment2.lightning.rgba16.inc.c"
+};
+
 ALIGNED8 static const u8 seg2_texture_wallkick[] = {
 #include "textures/segment2/custom/segment2.wallkick.rgba16.inc.c"
 };
@@ -158,6 +162,7 @@ struct BingoObjectiveInfo sBingoObjectiveInfo[] = {
     { BINGO_OBJECTIVE_COIN, BINGO_ICON_COIN, { TEXT_COIN_LEVEL }, texture_hud_char_coin },
     { BINGO_OBJECTIVE_1UPS_IN_LEVEL, BINGO_ICON_1UPS_IN_LEVEL, { TEXT_1UP_LEVEL }, seg2_texture_1up },
     { BINGO_OBJECTIVE_STARS_IN_LEVEL, BINGO_ICON_STARS_IN_LEVEL, { TEXT_STARS_LEVEL }, seg2_texture_allstarslevel },
+    { BINGO_OBJECTIVE_STARS_MULTIPLE_LEVELS, BINGO_ICON_STARS_MULTIPLE_LEVELS, { TEXT_STARS_MULTI_LEVELS }, seg2_texture_lightning },
     { BINGO_OBJECTIVE_DANGEROUS_WALL_KICKS, BINGO_ICON_DANGEROUS_WALL_KICKS, { TEXT_DANGEROUS_WALL_KICKS }, seg2_texture_wallkick },
     { BINGO_OBJECTIVE_LOSE_MARIO_HAT, BINGO_ICON_MARIO_HAT, { TEXT_MARIO_HAT }, seg2_texture_mario_hat },
     { BINGO_OBJECTIVE_BLJ, BINGO_ICON_BLJ, { TEXT_BLJ }, seg2_texture_blj },

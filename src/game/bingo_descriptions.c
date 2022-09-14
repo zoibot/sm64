@@ -455,7 +455,8 @@ void get_collectable_objective_desc(struct BingoObjective *obj, char *desc) {
             strcpy(verb, "Break");
             break;  // hah!
         case BINGO_OBJECTIVE_RED_COIN:
-            strcpy(verb, "Collect");
+        case BINGO_OBJECTIVE_STARS_MULTIPLE_LEVELS:
+            strcpy(verb, "Collect one star in");
             break;
         case BINGO_OBJECTIVE_AMPS:
             strcpy(verb, "Get zapped by");
@@ -478,6 +479,9 @@ void get_collectable_objective_desc(struct BingoObjective *obj, char *desc) {
     }
 
     switch (obj->type) {
+        case BINGO_OBJECTIVE_STARS_MULTIPLE_LEVELS:
+            strcpy(collectName, "main courses");
+            break;
         case BINGO_OBJECTIVE_BLJ:
             strcpy(collectName, "BLJs in unique courses");
             printUnique = 0;
@@ -646,6 +650,7 @@ void describe_objective(struct BingoObjective *objective, char *desc) {
         case BINGO_OBJECTIVE_KILL_SPINDRIFTS:
         case BINGO_OBJECTIVE_KILL_MR_IS:
         case BINGO_OBJECTIVE_KILL_SCUTTLEBUGS:
+        case BINGO_OBJECTIVE_STARS_MULTIPLE_LEVELS:
             get_collectable_objective_desc(objective, desc);
             break;
         case BINGO_OBJECTIVE_DANGEROUS_WALL_KICKS:

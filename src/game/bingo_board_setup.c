@@ -29,6 +29,7 @@ struct ObjectiveWeight sWeightsEasy[] = {
     { BINGO_OBJECTIVE_BLJ, 12, 1 },
     { BINGO_OBJECTIVE_RACING_STARS, 12, 1 },
     { BINGO_OBJECTIVE_MULTISTAR, 6, 1 },
+    { BINGO_OBJECTIVE_STARS_MULTIPLE_LEVELS, 6, 1 },
 };
 s32 sWeightsSizeEasy = sizeof(sWeightsEasy) / sizeof(struct ObjectiveWeight);
 
@@ -59,6 +60,7 @@ struct ObjectiveWeight sWeightsMedium[] = {
     { BINGO_OBJECTIVE_METAL_CAP_BOX, 4, 2 },
     { BINGO_OBJECTIVE_DANGEROUS_WALL_KICKS, 12, 1 },
     { BINGO_OBJECTIVE_MULTISTAR, 6, NO_LIMIT },
+    { BINGO_OBJECTIVE_STARS_MULTIPLE_LEVELS, 6, 1 },
     { BINGO_OBJECTIVE_BOWSER, 4, 1 },
     { BINGO_OBJECTIVE_ROOF_WITHOUT_CANNON, 2, 1 },
 };
@@ -81,6 +83,7 @@ struct ObjectiveWeight sWeightsHard[] = {
     { BINGO_OBJECTIVE_AMPS, 6, 1 },
     { BINGO_OBJECTIVE_SIGNPOST, 12, 1 },
     { BINGO_OBJECTIVE_MULTISTAR, 6, 1 },
+    { BINGO_OBJECTIVE_STARS_MULTIPLE_LEVELS, 6, 1 },
 };
 s32 sWeightsSizeHard = sizeof(sWeightsHard) / sizeof(struct ObjectiveWeight);
 
@@ -90,6 +93,7 @@ struct ObjectiveWeight sWeightsCenter[] = {
     { BINGO_OBJECTIVE_KILL_BOBOMBS, 6, 1 },
     { BINGO_OBJECTIVE_MULTICOIN, 12, NO_LIMIT },
     { BINGO_OBJECTIVE_MULTISTAR, 6, 1 },
+    { BINGO_OBJECTIVE_STARS_MULTIPLE_LEVELS, 6, 1 },
     { BINGO_OBJECTIVE_POLES, 3, 1 },
     { BINGO_OBJECTIVE_SHOOT_CANNONS, 3, 1 },
     { BINGO_OBJECTIVE_AMPS, 3, 1 },

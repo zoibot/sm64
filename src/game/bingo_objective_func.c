@@ -202,6 +202,24 @@ s32 objective_racing_stars(struct BingoObjective *objective, enum BingoObjective
     }
 }
 
+s32 objective_stars_multiple_levels(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
+    s32 count = 0;
+    s32 old_count = 0;
+    enum CourseNum course;
+    if (update == BINGO_UPDATE_STAR) {
+        for (course = COURSE_BOB; course < COURSE_RR; course++) {
+            count += bingo_get_course_count(course - 1) > 0 ? 1 : 0;
+        }
+        old_count = objective->data.collectableData.gotten;
+        objective->data.collectableData.gotten = count;
+        if (count == objective->data.collectableData.toGet) {
+            set_objective_state(objective, BINGO_STATE_COMPLETE);
+        } else if (count > old_count) {
+            bingo_hud_update_number(objective->icon, count);
+        }
+    }
+}
+
 s32 objective_lose_mario_hat(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
     struct CollectableFlagsData *data = &objective->data.collectableFlagsData;
     u32 flags, flag;
@@ -360,6 +378,8 @@ s32 update_objective(struct BingoObjective *objective, enum BingoObjectiveUpdate
             return objective_blj(objective, update);
         case BINGO_OBJECTIVE_RACING_STARS:
             return objective_racing_stars(objective, update);
+        case BINGO_OBJECTIVE_STARS_MULTIPLE_LEVELS:
+            return objective_stars_multiple_levels(objective, update);
         case BINGO_OBJECTIVE_BOWSER:
             return objective_bowser(objective, update);
         case BINGO_OBJECTIVE_ROOF_WITHOUT_CANNON:

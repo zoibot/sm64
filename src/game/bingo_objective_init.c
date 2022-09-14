@@ -616,6 +616,19 @@ s32 bingo_objective_multistar_init(enum BingoObjectiveClass class) {
     }
 }
 
+s32 bingo_objective_stars_multiple_levels(enum BingoObjectiveClass class) {
+    switch (class) {
+        case BINGO_CLASS_EASY:
+            return random_range_inclusive(3, 5);
+        case BINGO_CLASS_MEDIUM:
+            return random_range_inclusive(4, 6);
+        case BINGO_CLASS_HARD:
+            return random_range_inclusive(7, 10);
+        case BINGO_CLASS_CENTER:
+            return random_range_inclusive(11, 15);
+    }
+}
+
 s32 bingo_objective_exclamation_mark_box_init(enum BingoObjectiveClass class) {
     switch (class) {
         default:
@@ -747,6 +760,8 @@ s32 bingo_objective_collectable_init_dispatch(
             return bingo_objective_multicoin_init(class);
         case BINGO_OBJECTIVE_MULTISTAR:
             return bingo_objective_multistar_init(class);
+        case BINGO_OBJECTIVE_STARS_MULTIPLE_LEVELS:
+            return bingo_objective_stars_multiple_levels(class);
         case BINGO_OBJECTIVE_BLJ:
             return bingo_objective_blj_init(class);
         case BINGO_OBJECTIVE_LOSE_MARIO_HAT:
