@@ -126,7 +126,7 @@ s32 sBingoOptionSelectTimer = 0;
 #define BINGO_OPTION_TIMER_FRAMES 3
 s32 sToggleCurrentOption = 0;
 s32 sBingoOptionCurrentPage = 0;
-#define BINGO_MAX_PAGE_INDEX 2
+#define BINGO_MAX_PAGE_INDEX 3
 
 
 /**
@@ -940,13 +940,22 @@ static void print_objective(enum BingoObjectiveType type, s32 pageNo) {
     s32 objectives_on_prior_pages;
     s32 whiteTextAlpha = MIN(sTextBaseAlpha, 200);
 
+    if (pageNo == 0) {
+        objectives_on_prior_pages = 0;
+    } else {
+        objectives_on_prior_pages = (
+            BINGO_OPTIONS_IN_FIRST_PAGE
+            + BINGO_OPTIONS_IN_SECONDARY_PAGES * (pageNo - 1)
+        );
+    }
+
     if (
         (
             (pageNo == 0 && type == (sBingoOptionSelection - BINGO_CONFIGS_IN_LEFT_COL))
             || (
                 pageNo != 0
                 && sBingoOptionSelection == (
-                    (type - BINGO_OPTIONS_IN_FIRST_PAGE) % BINGO_OPTIONS_TOTAL_ENTRIES_PER_PAGE
+                    (type - objectives_on_prior_pages) % BINGO_OPTIONS_TOTAL_ENTRIES_PER_PAGE
                 )
             )
         )
@@ -958,14 +967,6 @@ static void print_objective(enum BingoObjectiveType type, s32 pageNo) {
 
     option = get_objective_info(type)->optionText;
     obj_icon = get_objective_info(type)->icon;
-    if (pageNo == 0) {
-        objectives_on_prior_pages = 0;
-    } else {
-        objectives_on_prior_pages = (
-            BINGO_OPTIONS_IN_FIRST_PAGE
-            + BINGO_OPTIONS_IN_SECONDARY_PAGES * (pageNo - 1)
-        );
-    }
     page_index = type - objectives_on_prior_pages;
 
     if (pageNo == 0) {
@@ -1253,6 +1254,9 @@ static void print_bingo_options(void) {
             print_bingo_middle_page(1);
             break;
         case 2:
+            print_bingo_middle_page(2);
+            break;
+        case 3:
             print_bingo_page_2();
             break;
     }
