@@ -25,6 +25,7 @@
 #include "game/bingo_ui.h"
 #include "game/strcpy.h"
 #include "engine/rand.h"
+#include "game/save_file.h"
 
 /**
  * @file file_select.c
@@ -1361,6 +1362,9 @@ s32 lvl_update_obj_and_load_file_selected(UNUSED s32 arg, UNUSED s32 unused) {
     area_update_objects();
     if (sSelectedFileNum && !gBingoInitialized) {
         setup_bingo_objectives(get_seed());
+    }
+    if (gBingoFullGameUnlocked) {
+        unlock_full_game();
     }
     return sSelectedFileNum;
 }

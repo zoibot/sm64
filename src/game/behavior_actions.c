@@ -38,6 +38,7 @@
 #include "room.h"
 #include "rendering_graph_node.h"
 #include "level_table.h"
+#include "game/bingo.h"
 
 #define o gCurrentObject
 

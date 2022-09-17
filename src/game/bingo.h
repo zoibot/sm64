@@ -17,6 +17,7 @@ extern s32 gbBingoShowTimer;
 
 extern s16 gbStarIndex;
 extern s32 gbCoinsJustGotten;
+extern s32 gBingoFullGameUnlocked;
 extern s32 gBingoReverseJoystickActive;
 extern s32 gBingoClickGameActive;
 extern s32 gBingoClickCounter;

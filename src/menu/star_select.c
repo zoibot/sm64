@@ -207,17 +207,16 @@ void bhv_act_selector_init(void) {
             }
             i++;
         }
-        // The shit below ain't gonna happen cuz we collected every star haha
-        // else // Star has not been collected
-        // {
-        //     selectorModelIDs[sVisibleStars] = MODEL_TRANSPARENT_STAR;
-        //     if (sDefaultSelectedAct == 0) // If this is the first star that has not been collected,
-        //     set the default selection to this star.
-        //     {
-        //         sDefaultSelectedAct = sVisibleStars + 1;
-        //         sSelectedStarIndex = sVisibleStars;
-        //     }
-        // }
+        else if (!gBingoFullGameUnlocked) // Star has not been collected
+        {
+            selectorModelIDs[sVisibleStars] = MODEL_TRANSPARENT_STAR;
+            if (sInitSelectedActNum  == 0) // If this is the first star that has not been collected,
+            // set the default selection to this star.
+            {
+                sInitSelectedActNum = sVisibleStars + 1;
+                sSelectableStarIndex = sVisibleStars;
+            }
+        }
         sVisibleStars++;
     }
 

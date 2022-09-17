@@ -46,7 +46,7 @@ STATIC_ASSERT(ARRAY_COUNT(gLevelToCourseNumTable) == LEVEL_COUNT - 1,
 
 // This was probably used to set progress to 100% for debugging, but
 // it was removed from the release ROM.
-static void no_op(void) {
+void unlock_full_game(void) {
     int i;
     gSaveBuffer.files[0][0].capLevel = 0;
     gSaveBuffer.files[0][0].capArea = 0;
@@ -335,7 +335,7 @@ void save_file_load_all(void) {
         }
     }
 
-    no_op();
+    // unlock_full_game();
 }
 
 /**
@@ -530,8 +530,11 @@ s32 save_file_get_course_coin_score(s32 fileIndex, s32 courseIndex) {
  * Return TRUE if the cannon is unlocked in the current course.
  */
 s32 save_file_is_cannon_unlocked(void) {
-    return TRUE;
-    // return (gSaveBuffer.files[gCurrSaveFileNum - 1][0].courseStars[gCurrCourseNum] & 0x80) != 0;
+    if (gBingoFullGameUnlocked) {
+        return TRUE;
+    } else {
+        return (gSaveBuffer.files[gCurrSaveFileNum - 1][0].courseStars[gCurrCourseNum] & 0x80) != 0;
+    }
 }
 
 /**
