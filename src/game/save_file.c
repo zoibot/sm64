@@ -77,15 +77,15 @@ void unlock_full_game(void) {
 static s32 read_eeprom_data(void *buffer, s32 size) {
     s32 status = 0;
 
-    if (gEepromProbe != 0) {
-        s32 triesLeft = 4;
-        u32 offset = (u32)((u8 *) buffer - (u8 *) &gSaveBuffer) / 8;
+    // if (gEepromProbe != 0) {
+    //     s32 triesLeft = 4;
+    //     u32 offset = (u32)((u8 *) buffer - (u8 *) &gSaveBuffer) / 8;
 
-        do {
-            triesLeft--;
-            status = osEepromLongRead(&gSIEventMesgQueue, offset, buffer, size);
-        } while (triesLeft > 0 && status != 0);
-    }
+    //     do {
+    //         triesLeft--;
+    //         status = osEepromLongRead(&gSIEventMesgQueue, offset, buffer, size);
+    //     } while (triesLeft > 0 && status != 0);
+    // }
 
     return status;
 }
@@ -99,15 +99,15 @@ static s32 read_eeprom_data(void *buffer, s32 size) {
 static s32 write_eeprom_data(void *buffer, s32 size) {
     s32 status = 1;
 
-    if (gEepromProbe != 0) {
-        s32 triesLeft = 4;
-        u32 offset = (u32)((u8 *) buffer - (u8 *) &gSaveBuffer) >> 3;
+    // if (gEepromProbe != 0) {
+    //     s32 triesLeft = 4;
+    //     u32 offset = (u32)((u8 *) buffer - (u8 *) &gSaveBuffer) >> 3;
 
-        do {
-            triesLeft--;
-            status = osEepromLongWrite(&gSIEventMesgQueue, offset, buffer, size);
-        } while (triesLeft > 0 && status != 0);
-    }
+    //     do {
+    //         triesLeft--;
+    //         status = osEepromLongWrite(&gSIEventMesgQueue, offset, buffer, size);
+    //     } while (triesLeft > 0 && status != 0);
+    // }
 
     return status;
 }

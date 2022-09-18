@@ -36,7 +36,7 @@ s16 gbStarIndex = 0;
 
 s32 gbCoinsJustGotten = 0;
 
-s32 gBingoFullGameUnlocked = 1;
+s32 gBingoFullGameUnlocked = 0;
 s32 gBingoReverseJoystickActive = 0;
 s32 gBingoClickGameActive = 0;
 s32 gBingoClickCounter = 0;
