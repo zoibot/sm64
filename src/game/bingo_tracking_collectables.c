@@ -32,6 +32,8 @@ struct UID {
 #define MAX_MR_IS 10
 // There are 9 in the game
 #define MAX_SCUTTLEBUGS 15
+// There are 16 (not including the chill bully)
+#define MAX_BULLIES 19
 // There are 19
 #define MAX_SPINDRIFTS 25
 // There are 83
@@ -60,6 +62,7 @@ struct UID {
         + MAX_RED_COINS \
         + MAX_MR_IS \
         + MAX_SCUTTLEBUGS \
+        + MAX_BULLIES \
         + MAX_SPINDRIFTS \
         + MAX_SIGNPOSTS \
         + MAX_COURSES_WALLKICKS \
@@ -110,6 +113,9 @@ void get_index_range(enum BingoObjectiveUpdate update, s32 *start, s32 *length) 
                 break;
             case BINGO_UPDATE_KILLED_SCUTTLEBUG:
                 rangeLength = MAX_SCUTTLEBUGS;
+                break;
+            case BINGO_UPDATE_KILLED_BULLY:
+                rangeLength = MAX_BULLIES;
                 break;
             case BINGO_UPDATE_READ_SIGNPOST:
                 rangeLength = MAX_SIGNPOSTS;

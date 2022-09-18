@@ -863,6 +863,7 @@ static unsigned char textSpecialThanks10[] = { TEXT_SPECIAL_THANKS_10 };
 static unsigned char textSpecialThanks11[] = { TEXT_SPECIAL_THANKS_11 };
 static unsigned char textSpecialThanks12[] = { TEXT_SPECIAL_THANKS_12 };
 static unsigned char textSpecialThanks13[] = { TEXT_SPECIAL_THANKS_13 };
+static unsigned char textSpecialThanks14[] = { TEXT_SPECIAL_THANKS_14 };
 
 
 #define LEFT_X     24
@@ -1172,7 +1173,7 @@ static void print_bingo_page_2(void) {
 
     gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, whiteTextAlpha * 0.7);
-    for (i = 0; i < 12; i++) {
+    for (i = 0; i < 11; i++) {
         offsetY = ROW_HEIGHT * (BINGO_ENTRIES_PER_COL - i) - 2;
         creditString = NULL;
         switch (i) {
@@ -1214,37 +1215,37 @@ static void print_bingo_page_2(void) {
             case 4:
                 creditString = textSpecialThanks1;
                 creditString2 = textSpecialThanks8;
-                creditsLeftX = optionLeftX - 10;
+                creditsLeftX = optionLeftX - 40;
                 break;
             case 5:
                 creditString = textSpecialThanks2;
                 creditString2 = textSpecialThanks9;
-                creditsLeftX = optionLeftX - 10;
+                creditsLeftX = optionLeftX - 40;
                 break;
             case 6:
                 creditString = textSpecialThanks3;
                 creditString2 = textSpecialThanks10;
-                creditsLeftX = optionLeftX - 10;
+                creditsLeftX = optionLeftX - 40;
                 break;
             case 7:
                 creditString = textSpecialThanks4;
                 creditString2 = textSpecialThanks11;
-                creditsLeftX = optionLeftX - 10;
+                creditsLeftX = optionLeftX - 40;
                 break;
             case 8:
                 creditString = textSpecialThanks5;
                 creditString2 = textSpecialThanks12;
-                creditsLeftX = optionLeftX - 10;
+                creditsLeftX = optionLeftX - 40;
                 break;
             case 9:
                 creditString = textSpecialThanks6;
                 creditString2 = textSpecialThanks13;
-                creditsLeftX = optionLeftX - 10;
+                creditsLeftX = optionLeftX - 40;
                 break;
             case 10:
                 creditString = textSpecialThanks7;
-                creditString2 = NULL;  // I am a good programmer
-                creditsLeftX = optionLeftX - 10;
+                creditString2 = textSpecialThanks14;
+                creditsLeftX = optionLeftX - 40;
                 break;
         }
         if (creditString != NULL) {

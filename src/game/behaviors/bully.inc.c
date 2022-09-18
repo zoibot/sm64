@@ -29,6 +29,7 @@ void bhv_small_bully_init(void) {
 
     o->oHomeX = o->oPosX;
     o->oHomeZ = o->oPosZ;
+    o->oBingoId = get_unique_id(BINGO_UPDATE_KILLED_BULLY, o->oPosX, o->oPosY, o->oPosZ);
     o->oBehParams2ndByte = BULLY_BP_SIZE_SMALL;
     o->oGravity = 4.0;
     o->oFriction = 0.91;
@@ -43,6 +44,7 @@ void bhv_big_bully_init(void) {
     o->oHomeX = o->oPosX;
     o->oHomeY = o->oPosY;
     o->oHomeZ = o->oPosZ;
+    o->oBingoId = get_unique_id(BINGO_UPDATE_KILLED_BULLY, o->oPosX, o->oPosY, o->oPosZ);
     o->oBehParams2ndByte = BULLY_BP_SIZE_BIG;
     o->oGravity = 5.0;
     o->oFriction = 0.93;
@@ -194,12 +196,18 @@ void BullyLavaDeath(void) {
             if (o->oBullySubtype == BULLY_STYPE_MINION)
                 o->parentObj->oBullyKBTimerAndMinionKOCounter++;
             BullySpawnCoin();
+            if (is_new_kill(BINGO_UPDATE_KILLED_BULLY, o->oBingoId)) {
+                bingo_update(BINGO_UPDATE_KILLED_BULLY);
+            }
         } else {
             func_802A3004();
 
             if (o->oBullySubtype == BULLY_STYPE_CHILL)
                 create_star(130.0f, 1600.0f, -4335.0f);
             else {
+                if (is_new_kill(BINGO_UPDATE_KILLED_BULLY, o->oBingoId)) {
+                    bingo_update(BINGO_UPDATE_KILLED_BULLY);
+                }
                 create_star(0, 950.0f, -6800.0f);
                 spawn_object_abs_with_rot(o, 0, MODEL_NONE, bhvLllTumblingBridge, 0, 154, -5631, 0, 0,
                                           0);
