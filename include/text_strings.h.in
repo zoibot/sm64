@@ -155,6 +155,7 @@
 #define TEXT_TARGET_3 _("3 Bingos")
 #define TEXT_TARGET_BLACKOUT _("Blackout")
 
+#define TEXT_UNLOCK_GAME _("Unlock Full Game")
 #define TEXT_TOGGLE_ALL _("Toggle all")
 
 #define TEXT_SINGLE_STAR _("Single Star")

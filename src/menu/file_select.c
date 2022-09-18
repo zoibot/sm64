@@ -116,7 +116,7 @@ u8 gBingoSeedText[] = { TEXT_RANDOM, 0xFF, 0xFF, 0xFF };
 
 s32 sBingoOptionSelection = 0;
 #define BINGO_ENTRIES_PER_COL 11
-#define BINGO_CONFIGS_IN_LEFT_COL 2 // not more than 10, hopefully
+#define BINGO_CONFIGS_IN_LEFT_COL 3 // not more than 10, hopefully
 #define BINGO_OPTIONS_IN_LEFT_COL_FIRST_PAGE (BINGO_ENTRIES_PER_COL - BINGO_CONFIGS_IN_LEFT_COL)
 #define BINGO_INSTRUCTIONS_IN_RIGHT_COL 3
 #define BINGO_OPTIONS_IN_RIGHT_COL (BINGO_ENTRIES_PER_COL - BINGO_INSTRUCTIONS_IN_RIGHT_COL)
@@ -836,6 +836,7 @@ static unsigned char text2Bingos[] = { TEXT_TARGET_2 };
 static unsigned char text3Bingos[] = { TEXT_TARGET_3 };
 static unsigned char textBlackout[] = { TEXT_TARGET_BLACKOUT };
 
+static unsigned char textUnlockGame[] = { TEXT_UNLOCK_GAME };
 static unsigned char textToggleAll[] = { TEXT_TOGGLE_ALL };
 static unsigned char textEmpty[] = { 0xFF };
 
@@ -1056,7 +1057,7 @@ static void print_bingo_configs() {
                 label = textGameMode;
                 offsetX = bingo_config_target(i, &target);
                 break;
-            case 1:
+            case 2:
                 label = textToggleAll;
                 if (sToggleCurrentOption && sBingoOptionSelection == i) {
                     sToggleCurrentOption = 0;
@@ -1066,6 +1067,20 @@ static void print_bingo_configs() {
                 }
                 target = textEmpty;
                 offsetX = 0;
+                break;
+            case 1:
+                label = textUnlockGame;
+                if (sToggleCurrentOption && sBingoOptionSelection == i) {
+                    sToggleCurrentOption = 0;
+                    gBingoFullGameUnlocked ^= 1;
+                }
+                if (!gBingoFullGameUnlocked) {
+                    target = textOff;
+                } else {
+                    target = textOn;
+                }
+                offsetX = RIGHT_X - 19 - LEFT_X;
+                break;
         }
 
         gDPSetEnvColor(gDisplayListHead++, 120, 120, 90, MIN(sTextBaseAlpha, 170));
@@ -1362,9 +1377,9 @@ s32 lvl_update_obj_and_load_file_selected(UNUSED s32 arg, UNUSED s32 unused) {
     area_update_objects();
     if (sSelectedFileNum && !gBingoInitialized) {
         setup_bingo_objectives(get_seed());
-    }
-    if (gBingoFullGameUnlocked) {
-        unlock_full_game();
+        if (gBingoFullGameUnlocked) {
+            unlock_full_game();
+        }
     }
     return sSelectedFileNum;
 }
