@@ -2149,24 +2149,26 @@ void print_peach_letter_message(void) {
 
     str = segmented_to_virtual(dialog->str);
 
-    create_dl_translation_matrix(MENU_MTX_PUSH, 97.0f, 118.0f, 0);
+    if (!(gPlayer1Controller->buttonDown & L_TRIG)) {
+        create_dl_translation_matrix(MENU_MTX_PUSH, 97.0f, 118.0f, 0);
 
-    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gCutsceneMsgFade);
-    gSPDisplayList(gDisplayListHead++, castle_grounds_seg7_dl_0700EA58);
-    gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
-    gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
-    gDPSetEnvColor(gDisplayListHead++, 20, 20, 20, gCutsceneMsgFade);
+        gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gCutsceneMsgFade);
+        gSPDisplayList(gDisplayListHead++, castle_grounds_seg7_dl_0700EA58);
+        gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
+        gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
+        gDPSetEnvColor(gDisplayListHead++, 20, 20, 20, gCutsceneMsgFade);
 
-    print_generic_string(STR_X, STR_Y, str);
-#ifdef VERSION_JP
-    gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
-#endif
-    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
-#ifndef VERSION_JP
-    gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
-    gDPSetEnvColor(gDisplayListHead++, 200, 80, 120, gCutsceneMsgFade);
-    gSPDisplayList(gDisplayListHead++, castle_grounds_seg7_us_dl_0700F2E8);
-#endif
+        print_generic_string(STR_X, STR_Y, str);
+    #ifdef VERSION_JP
+        gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
+    #endif
+        gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
+    #ifndef VERSION_JP
+        gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
+        gDPSetEnvColor(gDisplayListHead++, 200, 80, 120, gCutsceneMsgFade);
+        gSPDisplayList(gDisplayListHead++, castle_grounds_seg7_us_dl_0700F2E8);
+    #endif
+    }
 
     // at the start/end of message, reset the fade.
     if (gCutsceneMsgTimer == 0) {
