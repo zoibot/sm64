@@ -666,6 +666,7 @@ void describe_objective(struct BingoObjective *objective, char *desc) {
         case BINGO_OBJECTIVE_KILL_SPINDRIFTS:
         case BINGO_OBJECTIVE_KILL_MR_IS:
         case BINGO_OBJECTIVE_KILL_SCUTTLEBUGS:
+        case BINGO_OBJECTIVE_KILL_BULLIES:
         case BINGO_OBJECTIVE_STARS_MULTIPLE_LEVELS:
             get_collectable_objective_desc(objective, desc);
             break;
