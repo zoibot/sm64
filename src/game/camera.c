@@ -9430,6 +9430,7 @@ s32 intro_peach_move_camera_start_to_pipe(struct Camera *c, struct CutsceneSplin
  * Create a dialog box with the letter text
  */
 CmdRet peach_letter_text(UNUSED struct Camera *c) {
+    // TODO(bingo): Disable when bingo enabled?
     create_dialog_box(DIALOG_020);
 }
 

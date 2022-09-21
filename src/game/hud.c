@@ -581,6 +581,7 @@ void render_hud(void) {
         sPowerMeterStoredHealth = 8;
         sPowerMeterVisibleTimer = 0;
         if (gPlayer1Controller->buttonDown & L_TRIG /* need something else here for file select */) {
+            create_dl_ortho_matrix();
             draw_bingo_screen();
         }
     } else {
