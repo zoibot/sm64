@@ -74,8 +74,10 @@ void ActionChuckya0(void) {
     s32 sp3C;
     UNUSED u8 pad[16];
     s32 sp28;
-    if (o->oTimer == 0)
+    if (o->oTimer == 0) {
         o->oChuckyaUnkFC = 0;
+        o->oBingoId = get_unique_id(BINGO_UPDATE_KILLED_CHUCKYA, o->oPosX, o->oPosY, o->oPosZ);
+    }
     o->oAngleToMario = angle_to_object(o, gMarioObject);
     switch (sp28 = o->oSubAction) {
         case 0:
@@ -172,6 +174,9 @@ void ActionChuckya2(void) {
         mark_object_for_deletion(o);
         spawn_object_loot_yellow_coins(o, 5, 20.0f);
         func_802A3034(SOUND_OBJ_CHUCKYA_DEATH);
+        if (is_new_kill(BINGO_UPDATE_KILLED_CHUCKYA, o->oBingoId)) {
+            bingo_update(BINGO_UPDATE_KILLED_CHUCKYA);
+        }
     }
 }
 

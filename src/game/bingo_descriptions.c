@@ -544,6 +544,9 @@ void get_collectable_objective_desc(struct BingoObjective *obj, char *desc) {
         case BINGO_OBJECTIVE_KILL_BULLIES:
             strcpy(collectName, "Bullies or Big Bullies");
             break;
+        case BINGO_OBJECTIVE_KILL_CHUCKYAS:
+            strcpy(collectName, "Chuckyas");
+            break;
     }
 
     if (obj->state == BINGO_STATE_COMPLETE) {
@@ -667,6 +670,7 @@ void describe_objective(struct BingoObjective *objective, char *desc) {
         case BINGO_OBJECTIVE_KILL_MR_IS:
         case BINGO_OBJECTIVE_KILL_SCUTTLEBUGS:
         case BINGO_OBJECTIVE_KILL_BULLIES:
+        case BINGO_OBJECTIVE_KILL_CHUCKYAS:
         case BINGO_OBJECTIVE_STARS_MULTIPLE_LEVELS:
             get_collectable_objective_desc(objective, desc);
             break;
