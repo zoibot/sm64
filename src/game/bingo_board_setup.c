@@ -42,6 +42,7 @@ struct ObjectiveWeight sWeightsMedium[] = {
     { BINGO_OBJECTIVE_KILL_MR_IS, 6, 1 },
     { BINGO_OBJECTIVE_KILL_SCUTTLEBUGS, 6, 1 },
     { BINGO_OBJECTIVE_KILL_BULLIES, 6, 1 },
+    { BINGO_OBJECTIVE_KILL_CHUCKYAS, 24, 1 }, // TODO for testing
     { BINGO_OBJECTIVE_AMPS, 6, 1 },
     { BINGO_OBJECTIVE_STAR_TIMED, 12, 3 },
     { BINGO_OBJECTIVE_STAR_TTC_RANDOM, 8, 2 },
@@ -65,6 +66,7 @@ struct ObjectiveWeight sWeightsMedium[] = {
     { BINGO_OBJECTIVE_STARS_MULTIPLE_LEVELS, 6, 1 },
     { BINGO_OBJECTIVE_BOWSER, 4, 1 },
     { BINGO_OBJECTIVE_ROOF_WITHOUT_CANNON, 2, 1 },
+    { BINGO_OBJECTIVE_RIDE_SHELL, 24, 1 }, // TODO for testing
 };
 s32 sWeightsSizeMedium = sizeof(sWeightsMedium) / sizeof(struct ObjectiveWeight);
 
@@ -88,6 +90,7 @@ struct ObjectiveWeight sWeightsHard[] = {
     { BINGO_OBJECTIVE_SIGNPOST, 12, 1 },
     { BINGO_OBJECTIVE_MULTISTAR, 6, 1 },
     { BINGO_OBJECTIVE_STARS_MULTIPLE_LEVELS, 6, 1 },
+    { BINGO_OBJECTIVE_RIDE_SHELL, 24, 1 }, // TODO for testing
 };
 s32 sWeightsSizeHard = sizeof(sWeightsHard) / sizeof(struct ObjectiveWeight);
 
@@ -271,7 +274,7 @@ void shuffle(s32 *array, s32 length) {
         array[i] = choice;
     }
 }
-// TODO are kills duplicates?
+
 s32 are_duplicates(struct BingoObjective *obj1, struct BingoObjective *obj2) {
     enum BingoObjectiveType type1, type2;
 

@@ -448,5 +448,7 @@ s32 update_objective(struct BingoObjective *objective, enum BingoObjectiveUpdate
             return objective_generic_collectable(objective, update, BINGO_UPDATE_KILLED_BULLY);
         case BINGO_OBJECTIVE_KILL_CHUCKYAS:
             return objective_generic_collectable(objective, update, BINGO_UPDATE_KILLED_CHUCKYA);
+        case BINGO_OBJECTIVE_RIDE_SHELL:
+            return objective_generic_collectable(objective, update, BINGO_UPDATE_RODE_SHELL);
     }
 }

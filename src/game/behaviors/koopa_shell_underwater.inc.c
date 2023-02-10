@@ -16,12 +16,20 @@ void func_802AA0D4(void) {
     set_object_hitbox(o, &sKoopaShellUnderwaterHitbox);
 }
 
+
 void bhv_koopa_shell_underwater_loop(void) {
+    if(o->oTimer == 0) {
+        o->oBingoId = get_unique_id(BINGO_UPDATE_RODE_SHELL, o->oPosX, o->oPosY, o->oPosZ);
+    }
     switch (o->oHeldState) {
         case HELD_FREE:
             func_802AA0D4();
             break;
         case HELD_HELD:
+            // TODO is this checking every frame?
+            if (is_new_kill(BINGO_UPDATE_RODE_SHELL, o->oBingoId)) {
+                bingo_update(BINGO_UPDATE_RODE_SHELL);
+            }
             func_8029FA5C(-1, 0);
             break;
         case HELD_THROWN:

@@ -770,6 +770,15 @@ s32 bingo_objective_kill_chuckyas_init(enum BingoObjectiveClass class) {
     }
 }
 
+s32 bingo_objective_ride_shells_init(enum BingoObjectiveClass class) {
+    switch (class) {
+        default:
+            return random_range_inclusive(3, 4);
+        case BINGO_CLASS_HARD:
+            return random_range_inclusive(5, 7);
+    }
+}
+
 s32 bingo_objective_collectable_init(struct BingoObjective *obj, s32 toGet) {
     obj->data.collectableData.toGet = toGet;
     obj->data.collectableData.gotten = 0;
@@ -823,6 +832,8 @@ s32 bingo_objective_collectable_init_dispatch(
             return bingo_objective_kill_bullies_init(class);
         case BINGO_OBJECTIVE_KILL_CHUCKYAS:
             return bingo_objective_kill_chuckyas_init(class);
+        case BINGO_OBJECTIVE_RIDE_SHELL:
+            return bingo_objective_ride_shells_init(class);
     }
 }
 

@@ -483,6 +483,9 @@ void get_collectable_objective_desc(struct BingoObjective *obj, char *desc) {
         case BINGO_OBJECTIVE_SHOOT_CANNONS:
             strcpy(verb, "Shoot from");
             break;
+        case BINGO_OBJECTIVE_RIDE_SHELL:
+            strcpy(verb, "Ride");
+            break;
         default:
             strcpy(verb, "Kill");
             break;
@@ -546,6 +549,9 @@ void get_collectable_objective_desc(struct BingoObjective *obj, char *desc) {
             break;
         case BINGO_OBJECTIVE_KILL_CHUCKYAS:
             strcpy(collectName, "Chuckyas");
+            break;
+        case BINGO_OBJECTIVE_RIDE_SHELL:
+            strcpy(collectName, "Koopa shells");
             break;
     }
 
@@ -672,6 +678,7 @@ void describe_objective(struct BingoObjective *objective, char *desc) {
         case BINGO_OBJECTIVE_KILL_BULLIES:
         case BINGO_OBJECTIVE_KILL_CHUCKYAS:
         case BINGO_OBJECTIVE_STARS_MULTIPLE_LEVELS:
+        case BINGO_OBJECTIVE_RIDE_SHELL:
             get_collectable_objective_desc(objective, desc);
             break;
         case BINGO_OBJECTIVE_DANGEROUS_WALL_KICKS:

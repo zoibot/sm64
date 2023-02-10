@@ -108,6 +108,10 @@ ALIGNED8 static const u8 seg2_texture_chuckya[] = {
 #include "textures/segment2/custom/segment2.chuckya.rgba16.inc.c"
 };
 
+ALIGNED8 static const u8 seg2_texture_shell[] = {
+#include "textures/segment2/custom/segment2.shell.rgba16.inc.c"
+};
+
 ALIGNED8 static const u8 texture_hud_char_star[] = {
 #include "textures/segment2/segment2.05C00.rgba16.inc.c"
 };
@@ -199,7 +203,8 @@ struct BingoObjectiveInfo sBingoObjectiveInfo[] = {
     { BINGO_OBJECTIVE_KILL_MR_IS, BINGO_ICON_KILL_MR_IS, { TEXT_KILL_MR_IS }, seg2_texture_mr_i },
     { BINGO_OBJECTIVE_KILL_SCUTTLEBUGS, BINGO_ICON_KILL_SCUTTLEBUGS, { TEXT_KILL_SCUTTLEBUGS }, seg2_texture_scuttlebug },
     { BINGO_OBJECTIVE_KILL_BULLIES, BINGO_ICON_KILL_BULLIES, { TEXT_KILL_BULLIES }, seg2_texture_bully },
-    { BINGO_OBJECTIVE_KILL_CHUCKYAS, BINGO_ICON_KILL_CHUCKYAS, { TEXT_KILL_CHUCKYAS }, seg2_texture_chuckya }
+    { BINGO_OBJECTIVE_KILL_CHUCKYAS, BINGO_ICON_KILL_CHUCKYAS, { TEXT_KILL_CHUCKYAS }, seg2_texture_chuckya },
+    { BINGO_OBJECTIVE_RIDE_SHELL, BINGO_ICON_RIDE_SHELLS, { TEXT_RIDE_SHELLS }, seg2_texture_shell }
 };
 
 struct BingoObjectiveInfo *get_objective_info(enum BingoObjectiveType type) {

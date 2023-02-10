@@ -54,13 +54,22 @@ void func_802BCCD4(f32 a) {
 void bhv_koopa_shell_loop(void) {
     struct Surface *sp34;
     set_object_hitbox(o, &sKoopaShellHitbox);
-    obj_scale(1.0f);
+    obj_scale(5.0f);
+    
+    if(o->oTimer == 0) {
+        o->oBingoId = get_unique_id(BINGO_UPDATE_RODE_SHELL, o->oPosX, o->oPosY, o->oPosZ);
+    }
+    
     switch (o->oAction) {
         case 0:
             obj_update_floor_and_walls();
             obj_if_hit_wall_bounce_away();
-            if (o->oInteractStatus & INT_STATUS_INTERACTED)
+            if (o->oInteractStatus & INT_STATUS_INTERACTED) {
                 o->oAction++;
+                if (is_new_kill(BINGO_UPDATE_RODE_SHELL, o->oBingoId)) {
+                    bingo_update(BINGO_UPDATE_RODE_SHELL);
+                }
+            }
             o->oFaceAngleYaw += 0x1000;
             obj_move_standard(-20);
             func_802BCCD4(10.0f);
