@@ -613,6 +613,7 @@ s32 bingo_objective_multicoin_init(enum BingoObjectiveClass class) {
 }
 
 s32 bingo_objective_multistar_init(enum BingoObjectiveClass class) {
+    return 1;
     switch (class) {
         case BINGO_CLASS_EASY:
             return random_range_inclusive(3, 4);
@@ -779,6 +780,15 @@ s32 bingo_objective_ride_shells_init(enum BingoObjectiveClass class) {
     }
 }
 
+s32 bingo_objective_castle_secret_stars_init(enum BingoObjectiveClass class) {
+    switch (class) {
+        default:
+            return random_range_inclusive(2, 6);
+        case BINGO_CLASS_HARD:
+            return random_range_inclusive(7, 10);
+    }
+}
+
 s32 bingo_objective_collectable_init(struct BingoObjective *obj, s32 toGet) {
     obj->data.collectableData.toGet = toGet;
     obj->data.collectableData.gotten = 0;
@@ -834,6 +844,8 @@ s32 bingo_objective_collectable_init_dispatch(
             return bingo_objective_kill_chuckyas_init(class);
         case BINGO_OBJECTIVE_RIDE_SHELL:
             return bingo_objective_ride_shells_init(class);
+        case BINGO_OBJECTIVE_CASTLE_SECRET_STARS:
+            return bingo_objective_castle_secret_stars_init(class);
     }
 }
 

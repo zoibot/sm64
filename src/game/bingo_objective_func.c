@@ -232,6 +232,23 @@ s32 objective_secrets_stars(struct BingoObjective *objective, enum BingoObjectiv
     }
 }
 
+s32 objective_castle_secret_stars(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
+    s32 count = 0;
+    s32 old_count = 0;
+    if (update == BINGO_UPDATE_STAR) {
+        count = bingo_get_castle_secret_star_count();
+            bingo_hud_update_number(objective->icon, count);
+        old_count = objective->data.collectableData.gotten;
+        objective->data.collectableData.gotten = count;
+        //fatal_printf("ok, got here! count: %d, old_count: %d", count, old_count);
+        if (count == objective->data.collectableData.toGet) {
+            set_objective_state(objective, BINGO_STATE_COMPLETE);
+        } else if (count > old_count) {
+            bingo_hud_update_number(objective->icon, count);
+        }
+    }
+}
+
 s32 objective_stars_multiple_levels(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
     s32 count = 0;
     s32 old_count = 0;
@@ -412,6 +429,8 @@ s32 update_objective(struct BingoObjective *objective, enum BingoObjectiveUpdate
             return objective_secrets_stars(objective, update);
         case BINGO_OBJECTIVE_STARS_MULTIPLE_LEVELS:
             return objective_stars_multiple_levels(objective, update);
+        case BINGO_OBJECTIVE_CASTLE_SECRET_STARS:
+            return objective_castle_secret_stars(objective, update);
         case BINGO_OBJECTIVE_BOWSER:
             return objective_bowser(objective, update);
         case BINGO_OBJECTIVE_ROOF_WITHOUT_CANNON:

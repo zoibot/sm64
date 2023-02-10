@@ -11,6 +11,7 @@
 #include "bingo.h"
 #include "bingo_tracking_star.h"
 #include "level_table.h"
+#include "hud.h"
 
 #define MENU_DATA_MAGIC 0x4849
 #define SAVE_FILE_MAGIC 0x4441
@@ -362,6 +363,7 @@ void save_file_reload(void) {
 void save_file_collect_star_or_key(s16 coinScore, s16 starIndex) {
     s32 fileIndex = gCurrSaveFileNum - 1;
     s32 courseIndex = gCurrCourseNum - 1;
+            char message[20];
 
     s32 starFlag = 1 << starIndex;
     UNUSED s32 flags = save_file_get_flags();
@@ -407,6 +409,10 @@ void save_file_collect_star_or_key(s16 coinScore, s16 starIndex) {
         default:
             // Tell bingo we got a star
             gbStarIndex = starIndex;
+            
+            sprintf(message, "C %x S %x L %x", courseIndex, gCurrCourseNum, gCurrLevelNum);
+            bingo_hud_update_message(BINGO_ICON_1UPS_IN_LEVEL, message, 0);
+    
             bingo_set_star(courseIndex, starIndex);
             bingo_update(BINGO_UPDATE_STAR);
 

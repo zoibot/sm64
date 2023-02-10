@@ -67,6 +67,7 @@ struct ObjectiveWeight sWeightsMedium[] = {
     { BINGO_OBJECTIVE_BOWSER, 4, 1 },
     { BINGO_OBJECTIVE_ROOF_WITHOUT_CANNON, 2, 1 },
     { BINGO_OBJECTIVE_RIDE_SHELL, 24, 1 }, // TODO for testing
+    { BINGO_OBJECTIVE_CASTLE_SECRET_STARS, 24, 1 }, // TODO for testing
 };
 s32 sWeightsSizeMedium = sizeof(sWeightsMedium) / sizeof(struct ObjectiveWeight);
 
@@ -91,6 +92,7 @@ struct ObjectiveWeight sWeightsHard[] = {
     { BINGO_OBJECTIVE_MULTISTAR, 6, 1 },
     { BINGO_OBJECTIVE_STARS_MULTIPLE_LEVELS, 6, 1 },
     { BINGO_OBJECTIVE_RIDE_SHELL, 24, 1 }, // TODO for testing
+    { BINGO_OBJECTIVE_CASTLE_SECRET_STARS, 24, 1 }, // TODO for testing
 };
 s32 sWeightsSizeHard = sizeof(sWeightsHard) / sizeof(struct ObjectiveWeight);
 
