@@ -15,18 +15,11 @@ u32 gbCourseStars[25] = { 0 };
 u32 gbSecretStarFlags = 0;
 
 void bingo_set_star(s16 course, s16 star) {
-    //char message[20];
-    //sprintf(message, "C %x S %x", course, star);
-    //bingo_hud_update_message(BINGO_ICON_1UPS_IN_LEVEL, message, 0);
-
-    if (course == -1) {
+    if (!COURSE_IS_MAIN_COURSE(course)) {
         gbSecretStarFlags |= (1 << star);
     } else {
         gbCourseStars[course] |= (1 << star);
-    //bingo_hud_update_message(BINGO_ICON_BLJ, "WTF", 0);
     }
-    //sprintf(message, "total %x", gbSecretStarFlags);
-    //bingo_hud_update_message(BINGO_ICON_AMP, message, 0);
 }
 
 s32 bingo_get_course_count(enum CourseNum course) {
