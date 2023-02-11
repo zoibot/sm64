@@ -613,7 +613,6 @@ s32 bingo_objective_multicoin_init(enum BingoObjectiveClass class) {
 }
 
 s32 bingo_objective_multistar_init(enum BingoObjectiveClass class) {
-    return 1;
     switch (class) {
         case BINGO_CLASS_EASY:
             return random_range_inclusive(3, 4);

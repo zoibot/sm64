@@ -14,11 +14,12 @@
 u32 gbCourseStars[25] = { 0 };
 u32 gbSecretStarFlags = 0;
 
-void bingo_set_star(s16 course, s16 star) {
+void bingo_set_star(s16 courseIndex, s16 star) {
+    enum CourseNum course = courseIndex + 1;
     if (!COURSE_IS_MAIN_COURSE(course)) {
         gbSecretStarFlags |= (1 << star);
     } else {
-        gbCourseStars[course] |= (1 << star);
+        gbCourseStars[courseIndex] |= (1 << star);
     }
 }
 
