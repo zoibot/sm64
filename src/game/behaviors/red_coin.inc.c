@@ -107,6 +107,9 @@ void bhv_red_coin_loop(void) {
         o->oInteractStatus = 0;
         bingoNumber = obj_nearest_object_with_behavior(bhvBingoOrangeNumber);
         if (bingoNumber != NULL) {
+            if (o->parentObj->oHiddenStarTriggerCounter != bingoNumber->oBehParams2ndByte) {
+                bingo_update(BINGO_UPDATE_WRONG_RED_COIN);
+            }
             bingoNumber->activeFlags = 0;
         }
         // Tell Bingo

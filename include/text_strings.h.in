@@ -169,6 +169,7 @@
 #define TEXT_GREEN_DEMON _("Green Demon")
 #define TEXT_CLICK_GAME _("The Click Game!")
 #define TEXT_DAREDEVIL _("Daredevil")
+#define TEXT_RANDOM_REDS _("Random Route Reds")
 #define TEXT_COIN_LEVEL _("Coins in Level")
 #define TEXT_TOTAL_COIN _("Total Coins")
 #define TEXT_1UP_LEVEL _("1-ups in Level")

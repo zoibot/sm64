@@ -50,6 +50,22 @@ s32 objective_obtain_abz_button_challenges(
     }
 }
 
+s32 objective_obtain_star_random_reds(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
+    if (gBingoStarSelected != BINGO_MODIFIER_ORDERED_RED_COINS) {
+        return;
+    }
+    if (update == BINGO_UPDATE_COURSE_CHANGED) {
+        objective->state = BINGO_STATE_NONE;
+    } else if (
+        update == BINGO_UPDATE_WRONG_RED_COIN
+        && gCurrCourseNum == objective->data.courseCollectableData.course
+    ) {
+        set_objective_state(objective, BINGO_STATE_FAILED_IN_THIS_COURSE);
+    } else if (objective->state != BINGO_STATE_FAILED_IN_THIS_COURSE) {
+        objective_obtain_star(objective, update);
+    }
+}
+
 s32 objective_obtain_star_timer(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
     struct StarTimerObjectiveData *data = &objective->data.starTimerObjective;
 
@@ -89,6 +105,7 @@ s32 objective_obtain_star_greendemon(struct BingoObjective *objective, enum Bing
         objective_obtain_star(objective, update);
     }
 }
+
 
 s32 objective_obtain_star_click_game(struct BingoObjective *objective, enum BingoObjectiveUpdate update) {
     // This function will probably be combined with the A button challenge
@@ -378,6 +395,8 @@ s32 update_objective(struct BingoObjective *objective, enum BingoObjectiveUpdate
             return objective_obtain_abz_button_challenges(objective, update, BINGO_UPDATE_B_PRESSED);
         case BINGO_OBJECTIVE_STAR_Z_BUTTON_CHALLENGE:
             return objective_obtain_abz_button_challenges(objective, update, BINGO_UPDATE_Z_PRESSED);
+        case BINGO_OBJECTIVE_RANDOM_RED_COINS:
+            return objective_obtain_star_random_reds(objective, update);
         case BINGO_OBJECTIVE_STAR_TIMED:
             return objective_obtain_star_timer(objective, update);
         case BINGO_OBJECTIVE_STAR_TTC_RANDOM:

@@ -385,6 +385,59 @@ s32 bingo_objective_star_daredevil_init(
     objective->data.starObjective.starIndex = star;
 }
 
+s32 bingo_objective_star_random_reds_init(
+    struct BingoObjective *objective, enum BingoObjectiveClass class
+) {
+    enum CourseNum course;
+    s32 star;
+
+    switch (class) {
+        default:
+        case BINGO_CLASS_EASY:
+        case BINGO_CLASS_MEDIUM:
+        case BINGO_CLASS_CENTER:
+        case BINGO_CLASS_HARD:
+            // PSS is the only course without red coins
+            do {
+                course = random_course_including_special();
+            } while (course == COURSE_PSS);
+    }
+
+    switch (course) {
+        default:
+            star = 0;
+            break;
+        case COURSE_BOB:
+        case COURSE_WF:
+        case COURSE_JRB:
+        case COURSE_CCM:
+        case COURSE_BBH:
+            star = 3;
+            break;
+        case COURSE_HMC:
+            star = 1;
+            break;
+        case COURSE_LLL:
+        case COURSE_DDD:
+        case COURSE_TTM:
+        case COURSE_RR:
+            star = 2;
+            break;
+        case COURSE_SSL:
+        case COURSE_SL:
+        case COURSE_WDW:
+        case COURSE_THI:
+            star = 4;
+            break;
+        case COURSE_TTC:
+            star = 5;
+            break;
+    }
+
+    objective->data.starObjective.course = course;
+    objective->data.starObjective.starIndex = star;
+}
+
 void random_main_course_coins(enum BingoObjectiveClass class, enum CourseNum *course, s32 *coins) {
     switch (class) {
         default:
@@ -842,6 +895,8 @@ s32 bingo_objective_init_dispatch(
             return bingo_objective_star_click_game_init(objective, class);
         case BINGO_OBJECTIVE_STAR_DAREDEVIL:
             return bingo_objective_star_daredevil_init(objective, class);
+        case BINGO_OBJECTIVE_RANDOM_RED_COINS:
+            return bingo_objective_star_random_reds_init(objective, class);
         case BINGO_OBJECTIVE_COIN:
             return bingo_objective_coin_init(objective, class);
         case BINGO_OBJECTIVE_1UPS_IN_LEVEL:
