@@ -412,6 +412,8 @@ void bhv_floating_platform_loop(void);
 void bhv_arrow_lift_loop(void);
 void bhv_orange_number_init(void);
 void bhv_orange_number_loop(void);
+void bhv_bingo_orange_number_init(void);
+void bhv_bingo_orange_number_loop(void);
 void bhv_manta_ray_init(void);
 void bhv_manta_ray_loop(void);
 void bhv_falling_pillar_init(void);

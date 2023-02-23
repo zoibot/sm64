@@ -31,6 +31,7 @@ s32 gbBingoShowCongratsCounter = 0;
 s32 gbBingoShowCongratsLimit = 2;
 s32 gbBingoTimerDisabled = 0;
 s32 gbBingoShowTimer = 1;
+u32 gBingoSeed = 0;
 
 s16 gbStarIndex = 0;
 

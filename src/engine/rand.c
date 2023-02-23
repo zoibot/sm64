@@ -60,6 +60,36 @@
 static unsigned long x[N]; /* the array for the state vector  */
 static unsigned long *p0, *p1, *pm;
 
+/**
+ * Enable "pushing" and "popping" the state of the RNG machine
+ * by allowing for one (1) backup instance.
+ * It *might* be possible to package this up in a struct and keep
+ * it on the stack, but I don't know that for sure and don't want
+ * to cause mysterious issues.
+ */
+static unsigned long xBackup[N];
+static unsigned long *p0Backup, *p1Backup, *pmBackup;
+
+void genrand_push() {
+    int i;
+    for (i = 0; i < N; i++) {
+        xBackup[i] = x[i];
+    }
+    p0Backup = p0;
+    p1Backup = p1;
+    pmBackup = pm;
+}
+
+void genrand_pop() {
+    int i;
+    for (i = 0; i < N; i++) {
+        x[i] = xBackup[i];
+    }
+    p0 = p0Backup;
+    p1 = p1Backup;
+    pm = pmBackup;
+}
+
 /*
    initialize with a seed
 

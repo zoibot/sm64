@@ -14,6 +14,7 @@ extern s32 gbBingosCompleted;
 extern s32 gbBingoShowCongratsCounter;
 extern s32 gbBingoShowCongratsLimit;
 extern s32 gbBingoShowTimer;
+extern u32 gBingoSeed;
 
 extern s16 gbStarIndex;
 extern s32 gbCoinsJustGotten;
@@ -31,6 +32,7 @@ enum BingoModifier {
     BINGO_MODIFIER_NONE = 0,
     BINGO_MODIFIER_GREEN_DEMON,
     BINGO_MODIFIER_REVERSE_JOYSTICK,
+    BINGO_MODIFIER_ORDERED_RED_COINS,
     BINGO_MODIFIER_CLICK_GAME,
     BINGO_MODIFIER_DAREDEVIL,
     BINGO_MODIFIER_MAX = BINGO_MODIFIER_DAREDEVIL,
