@@ -25,7 +25,7 @@ ALIGNED8 static const u8 seg2_texture_daredevil[] = {
 };
 
 ALIGNED8 static const u8 seg2_texture_randomreds[] = {
-#include "textures/segment2/custom/segment2.yellowbox.rgba16.inc.c"
+#include "textures/segment2/custom/segment2.randomreds.rgba16.inc.c"
 };
 
 ALIGNED8 static const u8 seg2_texture_joystick[] = {
