@@ -14,15 +14,13 @@
 u32 gbCourseStars[25] = { 0 };
 u32 gbSecretStarFlags = 0;
 
-void bingo_set_star(s16 courseIndex, s16 star) {
-    enum CourseNum course = courseIndex + 1;
-    if (!COURSE_IS_MAIN_COURSE(course)) {
+void bingo_set_star(s16 course, s16 star) {
+    if (course == -1) {
         gbSecretStarFlags |= (1 << star);
     } else {
-        gbCourseStars[courseIndex] |= (1 << star);
+        gbCourseStars[course] |= (1 << star);
     }
 }
-
 s32 bingo_get_course_count(enum CourseNum course) {
     s32 i;
     u32 flag = 1;
@@ -51,15 +49,21 @@ s32 bingo_get_star_count(void) {
     return count;
 }
 
-
 s32 bingo_get_castle_secret_star_count(void) {
     u32 flag = 1;
     s32 count = 0;
+    s32 course;
 
+    // castle stars
     for (flag = 1; flag != (1 << 31); flag <<= 1) {
         if (gbSecretStarFlags & flag) {
             count++;
         }
+    }
+    
+    // bonus stages
+    for (course = COURSE_BONUS_STAGES - 1; course < COURSE_MAX; course++) {
+        count += bingo_get_course_count(course);
     }
     
     return count;
