@@ -57,7 +57,9 @@ void bhv_koopa_shell_loop(void) {
     obj_scale(5.0f);
     
     if(o->oTimer == 0) {
-        o->oBingoId = get_unique_id(BINGO_UPDATE_RODE_SHELL, o->oPosX, o->oPosY, o->oPosZ);
+        // Koopa shells spawn in different places so position doesn't work as an ID. There's only one
+        // shell per level though.
+        o->oBingoId = get_unique_id(BINGO_UPDATE_RODE_SHELL, 0, 0, 0);
     }
     
     switch (o->oAction) {
