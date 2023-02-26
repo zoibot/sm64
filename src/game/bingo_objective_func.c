@@ -254,7 +254,6 @@ s32 objective_castle_secret_stars(struct BingoObjective *objective, enum BingoOb
     s32 old_count = 0;
     if (update == BINGO_UPDATE_STAR) {
         count = bingo_get_castle_secret_star_count();
-            bingo_hud_update_number(objective->icon, count);
         old_count = objective->data.collectableData.gotten;
         objective->data.collectableData.gotten = count;
         //fatal_printf("ok, got here! count: %d, old_count: %d", count, old_count);

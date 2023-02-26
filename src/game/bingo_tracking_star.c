@@ -36,6 +36,7 @@ s32 bingo_get_course_count(enum CourseNum course) {
 }
 
 s32 bingo_get_star_count(void) {
+    u32 flag = 1;
     s32 course;
     s32 count = 0;
 
@@ -44,7 +45,12 @@ s32 bingo_get_star_count(void) {
         count += bingo_get_course_count(course);
     }
 
-    count += bingo_get_castle_secret_star_count();
+    // castle stars
+    for (flag = 1; flag != (1 << 31); flag <<= 1) {
+        if (gbSecretStarFlags & flag) {
+            count++;
+        }
+    }
 
     return count;
 }
