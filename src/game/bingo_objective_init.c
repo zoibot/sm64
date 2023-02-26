@@ -894,13 +894,10 @@ s32 bingo_objective_collectable_init_dispatch(
             return bingo_objective_kill_bullies_init(class);
         case BINGO_OBJECTIVE_KILL_CHUCKYAS:
             return bingo_objective_kill_chuckyas_init(class);
-<<<<<<< HEAD
         case BINGO_OBJECTIVE_RIDE_SHELL:
             return bingo_objective_ride_shells_init(class);
         case BINGO_OBJECTIVE_CASTLE_SECRET_STARS:
             return bingo_objective_castle_secret_stars_init(class);
-=======
->>>>>>> origin/master
     }
 }
 

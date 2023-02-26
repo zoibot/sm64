@@ -147,9 +147,6 @@ void get_index_range(enum BingoObjectiveUpdate update, s32 *start, s32 *length) 
             case BINGO_UPDATE_CANNON_COLLECTABLE:
                 rangeLength = MAX_CANNONS;
                 break;
-            case BINGO_UPDATE_KILLED_CHUCKYA:
-                rangeLength = MAX_CHUCKYAS;
-                break;
             case BINGO_UPDATE_RODE_SHELL:
                 rangeLength = MAX_SHELLS;
                 break;
