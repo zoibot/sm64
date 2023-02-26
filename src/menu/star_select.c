@@ -144,7 +144,7 @@ void render_bingo_modifier_star(void) {
     // so I don't have to manually inspect it every
     // time I add a bingo modifier
     #define Y_POS 120
-    #define X_LEFT_POS -303
+    #define X_LEFT_POS -378
     #define X_SPACE 150
 
     sBingoStarSelectorModels[0] = spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR,
@@ -158,13 +158,17 @@ void render_bingo_modifier_star(void) {
         spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR_BLUE,
                                   bhvActSelectorStarTypeReversed, X_LEFT_POS + X_SPACE * 2, Y_POS, -300, 0, 0, 0);
 
+    sBingoStarSelectorModels[BINGO_MODIFIER_ORDERED_RED_COINS] =
+        spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR_ORANGE,
+                                  bhvActSelectorStarType, X_LEFT_POS + X_SPACE * 3, Y_POS, -300, 0, 0, 0);
+
     sBingoStarSelectorModels[BINGO_MODIFIER_CLICK_GAME] =
         spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR_GRAY,
-                                  bhvActSelectorStarType, X_LEFT_POS + X_SPACE * 3, Y_POS, -300, 0, 0, 0);
+                                  bhvActSelectorStarType, X_LEFT_POS + X_SPACE * 4, Y_POS, -300, 0, 0, 0);
 
     sBingoStarSelectorModels[BINGO_MODIFIER_DAREDEVIL] =
         spawn_object_abs_with_rot(gCurrentObject, 0, MODEL_STAR_RED,
-                                  bhvActSelectorStarType, X_LEFT_POS + X_SPACE * 4, Y_POS, -300, 0, 0, 0);
+                                  bhvActSelectorStarType, X_LEFT_POS + X_SPACE * 5, Y_POS, -300, 0, 0, 0);
     #undef Y_POS
     #undef X_LEFT_POS
     #undef X_SPACE
@@ -391,6 +395,7 @@ u8 gBingoTextGreenDemon[] = { BINGO_GREEN_DEMON };
 u8 gBingoTextReverseJoystick[] = { BINGO_REVERSE_JOYSTICK };
 u8 gBingoTextClickGame[] = { BINGO_CLICK_GAME };
 u8 gBingoTextDaredevil[] = { BINGO_DAREDEVIL_1HP };
+u8 gBingoTextRandomRedCoins[] = { BINGO_RANDOM_ROUTE_RED_COINS };
 
 /**
  * Print act selector strings, some with special checks.
@@ -469,6 +474,9 @@ static void print_act_selector_strings(void) {
             break;
         case BINGO_MODIFIER_DAREDEVIL:
             bingoModifierName = gBingoTextDaredevil;
+            break;
+        case BINGO_MODIFIER_ORDERED_RED_COINS:
+            bingoModifierName = gBingoTextRandomRedCoins;
             break;
     }
 

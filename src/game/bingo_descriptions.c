@@ -221,6 +221,9 @@ void get_star_objective_desc(struct BingoObjective *obj, char *desc) {
         case BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK:
             strcpy(noTouchButtonText, " with the joystick reversed");
             break;
+        case BINGO_OBJECTIVE_RANDOM_RED_COINS:
+            strcpy(noTouchButtonText, " using the Random Route Red Coin modifier");
+            break;
         case BINGO_OBJECTIVE_STAR_GREEN_DEMON:
             strcpy(noTouchButtonText, " before the Green Demon catches you");
             break;
@@ -636,6 +639,7 @@ void describe_objective(struct BingoObjective *objective, char *desc) {
         case BINGO_OBJECTIVE_STAR_GREEN_DEMON:
         case BINGO_OBJECTIVE_STAR_CLICK_GAME:
         case BINGO_OBJECTIVE_STAR_DAREDEVIL:
+        case BINGO_OBJECTIVE_RANDOM_RED_COINS:
             get_star_objective_desc(objective, desc);
             break;
         case BINGO_OBJECTIVE_STAR_TIMED:

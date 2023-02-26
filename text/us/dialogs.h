@@ -206,9 +206,9 @@ Wow! Another Power Star!\n\
 Mario gains more courage\n\
 from the power of the\n\
 castle.\n\
-Do you want to Save?\n\
-\n\
-//You Bet//Not Now"))
+Do you want to disable\n\
+active Bingo Modifiers?\n\
+//No////Yes"))
 
 DEFINE_DIALOG(DIALOG_015, 1, 4, 30, 200, _("\
 You can punch enemies to\n\

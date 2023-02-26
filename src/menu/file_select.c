@@ -1377,7 +1377,8 @@ u32 get_seed(void) {
 s32 lvl_update_obj_and_load_file_selected(UNUSED s32 arg, UNUSED s32 unused) {
     area_update_objects();
     if (sSelectedFileNum && !gBingoInitialized) {
-        setup_bingo_objectives(get_seed());
+        gBingoSeed = get_seed();
+        setup_bingo_objectives(gBingoSeed);
         if (gBingoFullGameUnlocked) {
             unlock_full_game();
         }

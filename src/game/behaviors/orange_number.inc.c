@@ -18,3 +18,10 @@ void bhv_orange_number_loop(void) {
         o->activeFlags = 0;
     }
 }
+
+void bhv_bingo_orange_number_init(void) {
+    o->oAnimState = o->oBehParams2ndByte;
+}
+
+void bhv_bingo_orange_number_loop(void) {
+}

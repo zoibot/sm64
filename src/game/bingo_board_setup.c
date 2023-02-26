@@ -42,7 +42,7 @@ struct ObjectiveWeight sWeightsMedium[] = {
     { BINGO_OBJECTIVE_KILL_MR_IS, 6, 1 },
     { BINGO_OBJECTIVE_KILL_SCUTTLEBUGS, 6, 1 },
     { BINGO_OBJECTIVE_KILL_BULLIES, 6, 1 },
-    { BINGO_OBJECTIVE_KILL_CHUCKYAS, 24, 1 }, // TODO for testing
+    { BINGO_OBJECTIVE_KILL_CHUCKYAS, 6, 1 },
     { BINGO_OBJECTIVE_AMPS, 6, 1 },
     { BINGO_OBJECTIVE_STAR_TIMED, 12, 3 },
     { BINGO_OBJECTIVE_STAR_TTC_RANDOM, 8, 2 },
@@ -51,6 +51,7 @@ struct ObjectiveWeight sWeightsMedium[] = {
     { BINGO_OBJECTIVE_STAR_DAREDEVIL, 12, 3 },
     { BINGO_OBJECTIVE_STAR_REVERSE_JOYSTICK, 8, 2 },
     { BINGO_OBJECTIVE_STAR_CLICK_GAME, 8, 2 },
+    { BINGO_OBJECTIVE_RANDOM_RED_COINS, 12, 3 },
     { BINGO_OBJECTIVE_1UPS_IN_LEVEL, 12, NO_LIMIT },
     { BINGO_OBJECTIVE_SIGNPOST, 12, 2 },
     { BINGO_OBJECTIVE_SHOOT_CANNONS, 12, 2 },
@@ -87,7 +88,7 @@ struct ObjectiveWeight sWeightsHard[] = {
     { BINGO_OBJECTIVE_RED_COIN, 12, 1 },
     { BINGO_OBJECTIVE_AMPS, 6, 1 },
     { BINGO_OBJECTIVE_KILL_BULLIES, 6, 1 },
-    { BINGO_OBJECTIVE_KILL_CHUCKYAS, 24, 1 }, // TODO for testing
+    { BINGO_OBJECTIVE_KILL_CHUCKYAS, 6, 1 },
     { BINGO_OBJECTIVE_SIGNPOST, 12, 1 },
     { BINGO_OBJECTIVE_MULTISTAR, 6, 1 },
     { BINGO_OBJECTIVE_STARS_MULTIPLE_LEVELS, 6, 1 },
@@ -301,6 +302,7 @@ s32 are_duplicates(struct BingoObjective *obj1, struct BingoObjective *obj2) {
                 type1 == BINGO_OBJECTIVE_COIN
                 || type1 == BINGO_OBJECTIVE_1UPS_IN_LEVEL
                 || type1 == BINGO_OBJECTIVE_STARS_IN_LEVEL
+                || type1 == BINGO_OBJECTIVE_RANDOM_RED_COINS
             )
             && (
                 obj1->data.courseCollectableData.course

@@ -1,5 +1,8 @@
 // chuckya.c.inc
 
+#include "game/bingo.h"
+#include "game/bingo_tracking_collectables.h"
+
 void func_802A8D18(f32 sp28, f32 sp2C, s32 sp30) {
     switch (o->parentObj->oChuckyaUnk88) {
         case 0:
@@ -75,8 +78,11 @@ void ActionChuckya0(void) {
     UNUSED u8 pad[16];
     s32 sp28;
     if (o->oTimer == 0) {
+        // HACK: For some reason, oPosX/Y/Z do not work here.
+        // However, there is at most 1 Chuckya per course, so
+        // (0, 0, 0) works.
+        o->oBingoId = get_unique_id(BINGO_UPDATE_KILLED_CHUCKYA, 0, 0, 0);
         o->oChuckyaUnkFC = 0;
-        o->oBingoId = get_unique_id(BINGO_UPDATE_KILLED_CHUCKYA, o->oPosX, o->oPosY, o->oPosZ);
     }
     o->oAngleToMario = angle_to_object(o, gMarioObject);
     switch (sp28 = o->oSubAction) {

@@ -441,6 +441,7 @@ extern const BehaviorScript bhvWdwRectangularFloatingPlatform[];
 extern const BehaviorScript bhvJrbFloatingPlatform[];
 extern const BehaviorScript bhvArrowLift[];
 extern const BehaviorScript bhvOrangeNumber[];
+extern const BehaviorScript bhvBingoOrangeNumber[];
 extern const BehaviorScript bhvMantaRay[];
 extern const BehaviorScript bhvFallingPillar[];
 extern const BehaviorScript bhvFallingPillarHitbox[];

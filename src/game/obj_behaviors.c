@@ -771,6 +771,10 @@ void spawn_orange_number(s8 behParam, s16 relX, s16 relY, s16 relZ) {
     orangeNumber->oPosY += 25.0f;
 }
 
+void spawn_bingo_orange_number(s8 behParam, s16 relX, s16 relY, s16 relZ) {
+    spawn_object_relative(behParam, relX, relY, relZ, o, MODEL_NUMBER, bhvBingoOrangeNumber);
+}
+
 /**
  * Unused variables for debug_sequence_tracker.
  */

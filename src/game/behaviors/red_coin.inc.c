@@ -5,6 +5,8 @@
  */
 #include "game/bingo.h"
 #include "game/bingo_tracking_collectables.h"
+// #include "menu/file_select.h"
+#include "engine/rand.h"
 
 /**
  * Red coin's hitbox details.
@@ -31,6 +33,10 @@ void bhv_red_coin_init(void) {
 
     struct Object *hiddenRedCoinStar;
 
+    s32 initialNum, targetNum = 0;
+    int permutation[] = {0, 1, 2, 3, 4, 5, 6, 7};
+    s32 i, j, temp;
+
     // Set the red coins to have a parent of the closest red coin star.
     hiddenRedCoinStar = obj_nearest_object_with_behavior(bhvHiddenRedCoinStar);
     if (hiddenRedCoinStar != NULL)
@@ -46,6 +52,24 @@ void bhv_red_coin_init(void) {
 
     set_object_hitbox(o, &sRedCoinHitbox);
     o->oBingoId = get_unique_id(BINGO_UPDATE_RED_COIN, o->oPosX, o->oPosY, o->oPosZ);
+
+    if (gBingoStarSelected == BINGO_MODIFIER_ORDERED_RED_COINS) {
+        genrand_push();
+        // Seed RNG with bingo seed + level
+        init_genrand(gBingoSeed + gCurrLevelNum);
+        // Perform Fisher-Yates shuffle based on bingoID
+        initialNum = (o->oBingoId % 8);
+        for (i = 7; i > 0; i--) {
+            j = genrand_int32() % (i + 1);
+            temp = permutation[i];
+            permutation[i] = permutation[j];
+            permutation[j] = temp;
+        }
+        targetNum = permutation[initialNum] + 1;
+        // Spawn orange number
+        spawn_bingo_orange_number(targetNum, 0, 150, 0);
+        genrand_pop();
+    }
 }
 
 /**
@@ -53,6 +77,7 @@ void bhv_red_coin_init(void) {
  * the orange number counter.
  */
 void bhv_red_coin_loop(void) {
+    struct Object *bingoNumber = NULL;
     // If Mario interacted with the object...
     if (o->oInteractStatus & INT_STATUS_INTERACTED) {
         // ...and there is a red coin star in the level...
@@ -80,6 +105,13 @@ void bhv_red_coin_loop(void) {
         CoinCollected();
         // Despawn the coin.
         o->oInteractStatus = 0;
+        bingoNumber = obj_nearest_object_with_behavior(bhvBingoOrangeNumber);
+        if (bingoNumber != NULL) {
+            if (o->parentObj->oHiddenStarTriggerCounter != bingoNumber->oBehParams2ndByte) {
+                bingo_update(BINGO_UPDATE_WRONG_RED_COIN);
+            }
+            bingoNumber->activeFlags = 0;
+        }
         // Tell Bingo
         if (is_new_kill(BINGO_UPDATE_RED_COIN, o->oBingoId)) {
             bingo_update(BINGO_UPDATE_RED_COIN);

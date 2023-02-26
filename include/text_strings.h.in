@@ -169,6 +169,7 @@
 #define TEXT_GREEN_DEMON _("Green Demon")
 #define TEXT_CLICK_GAME _("The Click Game!")
 #define TEXT_DAREDEVIL _("Daredevil")
+#define TEXT_RANDOM_REDS _("Random Route Reds")
 #define TEXT_COIN_LEVEL _("Coins in Level")
 #define TEXT_TOTAL_COIN _("Total Coins")
 #define TEXT_1UP_LEVEL _("1-ups in Level")
@@ -196,6 +197,7 @@
 #define TEXT_KILL_MR_IS _("Kill Mr. Is")
 #define TEXT_KILL_SCUTTLEBUGS _("Kill Scuttlebugs")
 #define TEXT_KILL_BULLIES _("Kill Bullies")
+#define TEXT_KILL_CHUCKYAS _("Kill Chuckyas")
 
 #define TEXT_DPAD _("Use C or D-Pad to select")
 #define TEXT_PRESS_A _("Press A to toggle")
@@ -286,6 +288,7 @@
 #define BINGO_REVERSE_JOYSTICK _("REVERSE JOYSTICK")
 #define BINGO_CLICK_GAME _("THE CLICK GAME!")
 #define BINGO_DAREDEVIL_1HP _("DAREDEVIL - 1 HP")
+#define BINGO_RANDOM_ROUTE_RED_COINS _("RANDOM ROUTE RED COINS")
 
 // Camera Options
 #define TEXT_LAKITU_MARIO _("LAKITU + MARIO")
