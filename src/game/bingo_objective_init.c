@@ -841,6 +841,16 @@ s32 bingo_objective_castle_secret_stars_init(enum BingoObjectiveClass class) {
     }
 }
 
+s32 bingo_objective_take_warps_init(enum BingoObjectiveClass class) {
+    switch (class) {
+        // probably should be more since double
+        default:
+            return random_range_inclusive(2, 6);
+        case BINGO_CLASS_HARD:
+            return random_range_inclusive(7, 10);
+    }
+}
+
 s32 bingo_objective_collectable_init(struct BingoObjective *obj, s32 toGet) {
     obj->data.collectableData.toGet = toGet;
     obj->data.collectableData.gotten = 0;
@@ -894,10 +904,12 @@ s32 bingo_objective_collectable_init_dispatch(
             return bingo_objective_kill_bullies_init(class);
         case BINGO_OBJECTIVE_KILL_CHUCKYAS:
             return bingo_objective_kill_chuckyas_init(class);
-        case BINGO_OBJECTIVE_RIDE_SHELL:
+        case BINGO_OBJECTIVE_RIDE_SHELLS:
             return bingo_objective_ride_shells_init(class);
         case BINGO_OBJECTIVE_CASTLE_SECRET_STARS:
             return bingo_objective_castle_secret_stars_init(class);
+        case BINGO_OBJECTIVE_TAKE_WARPS:
+            return bingo_objective_take_warps_init(class);
     }
 }
 

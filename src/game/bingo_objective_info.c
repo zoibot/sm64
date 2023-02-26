@@ -140,6 +140,10 @@ ALIGNED8 static const u8 seg2_texture_castle_secret_star[] = {
 #include "textures/segment2/custom/segment2.secretstar.rgba16.inc.c"
 };
 
+ALIGNED8 static const u8 seg2_texture_take_warps[] = {
+#include "textures/segment2/custom/segment2.warp.rgba16.inc.c"
+};
+
 ALIGNED8 static const u8 seg2_texture_yellowbox[] = {
 #include "textures/segment2/custom/segment2.yellowbox.rgba16.inc.c"
 };
@@ -213,8 +217,9 @@ struct BingoObjectiveInfo sBingoObjectiveInfo[] = {
     { BINGO_OBJECTIVE_KILL_SCUTTLEBUGS, BINGO_ICON_KILL_SCUTTLEBUGS, { TEXT_KILL_SCUTTLEBUGS }, seg2_texture_scuttlebug },
     { BINGO_OBJECTIVE_KILL_BULLIES, BINGO_ICON_KILL_BULLIES, { TEXT_KILL_BULLIES }, seg2_texture_bully },
     { BINGO_OBJECTIVE_KILL_CHUCKYAS, BINGO_ICON_KILL_CHUCKYAS, { TEXT_KILL_CHUCKYAS }, seg2_texture_chuckya },
-    { BINGO_OBJECTIVE_RIDE_SHELL, BINGO_ICON_RIDE_SHELLS, { TEXT_RIDE_SHELLS }, seg2_texture_shell },
+    { BINGO_OBJECTIVE_RIDE_SHELLS, BINGO_ICON_RIDE_SHELLS, { TEXT_RIDE_SHELLS }, seg2_texture_shell },
     { BINGO_OBJECTIVE_CASTLE_SECRET_STARS, BINGO_ICON_CASTLE_SECRET_STAR, { TEXT_CASTLE_SECRET_STARS }, seg2_texture_castle_secret_star },
+    { BINGO_OBJECTIVE_TAKE_WARPS, BINGO_ICON_TAKE_WARPS, { TEXT_TAKE_WARPS }, seg2_texture_take_warps },
 };
 
 struct BingoObjectiveInfo *get_objective_info(enum BingoObjectiveType type) {

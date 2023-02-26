@@ -845,6 +845,10 @@ u32 interact_warp(struct MarioState *m, UNUSED u32 interactType, struct Object *
                 m->interactObj = o;
                 m->usedObj = o;
 
+                // TODO WARP after would be nice but oh well
+                if (is_new_kill(BINGO_UPDATE_TOOK_WARP, o->oBingoId)){
+                    bingo_update(BINGO_UPDATE_TOOK_WARP);
+                }
                 sJustTeleported = TRUE;
                 return set_mario_action(m, ACT_TELEPORT_FADE_OUT, 0);
             }

@@ -19,6 +19,8 @@ void BehFadingWarpLoop() // identical to the above function except for o->hitbox
 {
     u16 sp6;
     if (o->oTimer == 0) {
+        o->oBingoId = get_unique_id(BINGO_UPDATE_TOOK_WARP, o->oPosX, o->oPosY, o->oPosZ);
+
         sp6 = (o->oBehParams >> 24) & 0xFF;
         if (sp6 == 0)
             o->hitboxRadius = 85.0f;
